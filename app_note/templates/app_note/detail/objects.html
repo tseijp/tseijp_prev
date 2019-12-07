@@ -1,0 +1,45 @@
+<div class="row">
+{% for note in object_list %}
+<div class="col-md-6 col-lg-4">
+    <div class="card news-card">
+        <div class="embed-responsive embed-responsive-1by1"style="height:200px">
+          <a href="{% url 'note_detail' note.id %}" class="stretched-link"></a>
+          <iframe class="embed-responsive-item"
+              src="{% url 'note_posted_frame' pk=note.id %}"
+              frameborder="0"
+              id="iframe_{{note.id}}"
+              sandbox="allow-scripts"
+              href="{%url 'note_edit' note.id%}"
+              allowfullscreen></iframe>
+        </div>
+        <!--img src="https://source.unsplash.com/user/diegyms/300x200" alt="vitateach" /-->
+        <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6"><h6>{{note.posted_head}}</h6></div>
+            <div class="col-sm-6 text-right">
+                {% if user.is_auth %}
+                <a href="{%url 'note_edit'   note.id%}" style="color:black"><i class="fas fa-pen-fancy"></i></a>
+                <a href="{%url 'note_delete' note.id%}" style="color:black"><i class="fas fa-pen-fancy"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+              <p>{{note.posted_text}}</p>
+              {% if note.posted_tag %}{% for tag in note.posted_tag_list %}{% if tag %}
+              <a href="{% url 'note' %}?tag={{ tag }}"><span class="badge badge-secondary">#{{ tag }}</span></a>
+              {% endif %}{% endfor %}{% else %}{% endif %}
+            </div>
+            <div class="col-sm-4">
+                {% if user.id is note.posted_user.id %}
+                <a href="{%url 'note_edit'   note.id%}" style="color:black"><p><i class="fas fa-pen-fancy"></i>edit</p></a>
+                <a href="{%url 'note_delete' note.id%}" style="color:black"><p><i class="fas fa-pen-fancy"></i>delete</p></a>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{% url 'note_detail' pk=note.id %}"><button class="btn btn-dark btn-sm"style="width:100%">View details</button></a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>

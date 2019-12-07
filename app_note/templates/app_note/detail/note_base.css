@@ -1,0 +1,26 @@
+body {
+    font-size:px;
+    margin: 0;
+    left:250px;
+    width :750px;
+    height:750px;
+    overflow: hidden;
+    padding:50px 50px 50px;
+}
+h6 {
+    font-size:25px;
+    padding:0px 0px 0px;
+}
+thead th {
+    background: #fff;
+}
+canvas {
+    width: 750px;
+    height: 750px;
+    background: black;
+}
+
+body { font-size:20px; }
+p  { font-size:  20px; }
+li { font-size:  20px; }
+li p { font-size:20px; }

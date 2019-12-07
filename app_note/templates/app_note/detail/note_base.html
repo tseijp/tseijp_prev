@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+{% block "head_block" %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+
+{% endblock %}
+
+{% block "css_block" %}{% include 'app_note/detail/note_base.css' %}{% endblock %}
+{% block "body_block" %}
+{% block "iframe_block" %}{% endblock %}
+<script type="text/javascript">{% include 'app_note/detail/note_base.js' %}</script>
+{% endblock %}

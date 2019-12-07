@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block "js_block" %}{% include  "app_note/note_list.js" %}{% endblock %}
+{% block "css_block" %}{% include "app_note/note_list.css" %}{% endblock %}
+{% block "nav_block" %}{% include "index/nav.html" %}{% endblock %}
+{% block "head_block" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.js"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/mode/overlay.min.js"></script>#}
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/markdown/markdown.min.js"></script>#}
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/gfm/gfm.min.js"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/edit/continuelist.min.js"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.2/marked.min.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>#}
+{% endblock %}
+
+{% block "main_block" %}
+<div class="row">
+<div class="col-sm-5">
+      <h1 style="display:inline;font-size:75px">note</h1>
+  <p class="page-header lead"></p>
+</div>
+<div class="col-sm-7" style="padding:25px 25px 10px;">
+      {% if user.is_authenticated %}
+      <form action="" style="display:inline" enctype="multipart/form-data" method="POST" id="new_create_form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-dark btn-sm" id="new_create">new create{% if page_tag %}#{{ page_tag }}{% endif %}</button>
+      </form>
+      {% endif %}
+      <a href="{% url 'note' %}"><button class="btn btn-dark btn-sm"><i class="fas fa-home"></i></button></a>
+      {%if id%}
+          <!--button type="submit" class="btn btn-dark btn-sm" data-toggle="collapse" href="#collapseNewNote"
+          aria-expanded="false" aria-controls="collapseExample">reply!</button-->
+      {%else%}{% if user.is_authenticated %}
+          <!--button type="submit" class="btn btn-dark btn-sm" data-toggle="collapse" href="#collapseNewNote"
+          aria-expanded="false" aria-controls="collapseExample"onclick="ScrollHeight();">NEW CREATE</button-->
+      {%endif%}{%endif%}
+</div>
+</div>
+<div class="row">
+{% include 'app_note/list/objects.html'%}
+{% if id or user.is_authenticated %}
+    <div class="collapse" id="collapseNewNote">
+      {% include "app_note/list/new.html" %}
+    </div>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block "foot_block" %}
+{% include 'app_note/list/pagination.html' %}
+{% include "index/content.html" %}
+{% include "index/foot.html" %}
+{% endblock %}

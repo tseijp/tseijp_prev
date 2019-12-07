@@ -1,0 +1,7 @@
+
+{% extends "app_note/detail/note_base.html" %}
+{% block "iframe_block" %}
+<h6>{{object.update_head}}</h6>
+<div id="mdraw" style="display:none;">{{object.update_text}}</div>
+<div id="mdrender"></div>
+{% endblock %}

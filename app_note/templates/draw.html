@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.2/paper-full.min.js"></script>
+  <script type="text/paperscript" canvas="myCanvas" resize>
+    {% include "draw.js" %}
+  </script>
+  <style media="screen">
+    {% include "draw.css" %}
+  </style>
+</head>
+<body>
+  <h2>powered by <a href="http://paperjs.org/">paper.js</a></h2>
+  <div class="container">
+    <canvas id="myCanvas" resize />
+  </div>
+</body>
+</html>

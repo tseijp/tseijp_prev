@@ -1,0 +1,79 @@
+let renderer = new marked.Renderer()
+hljs.initHighlightingOnLoad();
+
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes[0].nodeValue;
+}
+// -----------------------------------------------------------------------------
+// [ref](https://qiita.com/tiwu_official/items/4e56c833aff3dfb16231)
+// [ref](https://www.suzu6.net/posts/38/)
+
+//Block level renderer.
+renderer.code   = function (code, language) {
+    return '<pre' + '><code class="hljs">'
+    + hljs.highlightAuto(htmlDecode(code)).value
+    + '</code></pre>';
+};
+renderer.html   = function (html) {return htmlDecode(html)};
+renderer.heading = function(text, level) {
+    return `<h${level + 1} class="blog-post-title font-italic border-bottom">${htmlDecode(text)}`
+            +'<div style="text-align:right;float:right;">'
+            +`<a href="#" onclick="javascript:window.history.back(-1);return false;">Back</a>`
+            {% if user.id is object.posted_user.id %}
+                +`<a href="{%url 'note_edit'   object.id%}"><i class="fas fa-pen-fancy"></i></a>`
+                +`<a href="{%url 'note_delete' object.id%}"><i class="fas fa-trash"    ></i></a>`
+            {% endif %}
+            +'</div>'
+            +`</h${level + 1}>`
+}
+renderer.table   = function(header, body) {
+    if (body) body = '<tbody>' + body + '</tbody>';
+    return '<div class="wrapper mx-auto mt-5">'
+    + '<table class="table table-hover table-striped">'
+    + '<thead>'
+    + htmlDecode(header)
+    + '</thead>'
+    + htmlDecode(body)
+    + '</table>'
+    + '</div>';
+};
+// ----------------------------------------------
+renderer.codespan   = function (code){return htmlDecode(code);};
+renderer.em         = function(text) {
+    var indexNumber = text.indexOf('/');
+    if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
+        return '<span style="color:' + text.substr(0, indexNumber) + ';">' + text.substr(indexNumber + 1) + '</span>';
+    }
+    return '<em>' + text.replace('\\/','/') + '</em>';
+};
+renderer.image   = function (href, title, text) {return '';};
+renderer.text   = function (text){return htmlDecode(text)}
+// -----------------------------------------------------------------------------
+marked.setOptions({
+  gfm        : true , //Githubっぽいmd形式.use approved GitHub Flavored Markdown (GFM) specification.
+  tables     : true , //Githubっぽいmdの表.
+  breaks     : true , //Githubっぽいmdの改行形式.add <br> on a single line break (copies GitHub).
+  pedantic   : true , //Markdownのバグを修正するか.conform to the original markdown.pl as much as possible.
+  sanitize   : false, //HTML文字をエスケープするか. A function to sanitize the HTML passed into markdownString.
+  //sanitizer  : escape,
+
+  mangle     : false, //自動リンクされたメールアドレスがエスケープ
+  silent     : false, //例外をスローしません
+  smartLists : true , // スマートなリストにするか.use smarter list behavior than those found in markdown.pl.
+  smartypants: false, //クオートやダッシュの使い方.use "smart" typographic punctuation for things like quotes and dashes.
+  langPrefix : 'language-',
+  //highlight  : function(code, lang) {return code;}, //A function to highlight code blocks
+  renderer   : renderer, //An object containing functions to render tokens to HTML.
+});
+// -----------------------------------------------------------------------------
+// Monkey in String.trimStart() support for browsers that don't support it
+/*
+String.prototype.trimStart = String.prototype.trimStart || function() {
+    return this.replace(/^\s+/, '').replace(/&lt;/g, 'kkk');
+}*/
+
+document.getElementById("mdrender").innerHTML = marked(
+    document.getElementById("mdraw").innerHTML//.trimStart()
+);

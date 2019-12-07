@@ -1,0 +1,28 @@
+<div class="tab-pane fade show active" id="live" role="tabpanel" aria-labelledby="live-tab">
+<div class="row">
+<!--------------------------------------------------------------------->
+<div class="col-sm-12">
+    <div id="search_results_right"></div>
+    <button class="btn btn-dark btn-sm"id="reload"><label>reload</label></button>
+    <div id="previewWrapper">
+        <div id="preview"></div>
+    </div>
+</div>
+<!--------------------------------------------------------------------->
+<div class="col-sm-12">
+    <div id="search_results_left"></div>
+    <form method="POST">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        {% for field in form %}
+            <div class="form-group rounded-0 shadow-textarea">
+              {{ field.erros }}
+              <button class="btn btn-dark btn-sm" id="reload">{{ field.label_tag }}</button>
+              {% render_field field class="form-control" %}
+            </div>
+        {% endfor %}
+    </form>
+</div>
+<!--------------------------------------------------------------------->
+</div>
+</div>
