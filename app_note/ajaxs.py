@@ -4,26 +4,40 @@ from googletrans import Translator
 from django.http import JsonResponse### ajax
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+
 from app_note.models import NoteModel
+from app_note.views import get_user
 
 def note_list_ajax(request):
     dict ={"message":"Not working"}
     if request.GET:
+        print(request.GET)
         val = request.GET;
-        obj = NoteModel.objects.get(id=int(request.GET['id']))
-        if "%s"%val['user']=="%s"%obj.posted_user.id:#try:
-            if"head"in val:obj.update_head=val['head']
-            if"text"in val:obj.update_text=val['text']
-            if"tag" in val:obj.update_tag =val['tag']
-            obj.save()
-            if val['mode']=="posted":
-                obj.posted_head = obj.update_head
-                obj.posted_text = obj.update_text
-                obj.posted_tag  = obj.update_tag
-            obj.save()
-
-        #except:
-        #    dict['message']="Error"
+        note= NoteModel.objects.get(id=int(val["id"]))
+        if not "%s"%val['user']=="%s"%request.user.id and note:#editor違ってnote存在
+            obj = NoteModel.objects.create()
+            obj.posted_user = note.posted_user
+            obj.note_object = note
+        else:obj = note
+        print(NoteModel.objects.get(id=int(val["id"])))
+        print("\tobj",note, note.posted_user, note.note_object)
+        print("\tobj",obj,  obj.posted_user , obj.note_object)
+        if not obj.posted_user:obj.posted_user = get_user()
+        if"head"in val:obj.update_head=val['head']
+        if"text"in val:obj.update_text=val['text']
+        if"tag" in val:obj.update_tag =val['tag']
+        if"img" in val:obj.update_tag =val['img']
+        obj.save()
+        if val['mode']=="posted":
+            obj.posted_head = obj.update_head
+            obj.posted_text = obj.update_text
+            obj.posted_tag  = obj.update_tag
+            obj.posted_img  = obj.update_img
+        obj.save()
+        dict['note_id'     ] = "%s"%obj.id
+        dict['note_user_id'] = "%s"%obj.posted_user.id
+        #print(obj.posted_user)
+        #print(dict)
     return JsonResponse(dict)
 
 @login_required

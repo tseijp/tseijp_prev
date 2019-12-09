@@ -50,5 +50,7 @@
 {% block "foot_block" %}
 {% include 'app_note/list/pagination.html' %}
 {% include "index/content.html" %}
+{%if id%}
 {% include "index/foot.html" %}
+{% endif %}
 {% endblock %}

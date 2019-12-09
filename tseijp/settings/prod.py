@@ -3,8 +3,8 @@ from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY='**************************************************'
-DEBUG = True
-ALLOWED_HOSTS = ['*']#['tsei.jp', '3.134.52.211', '3.134.52.211:8000']
+DEBUG         = False
+ALLOWED_HOSTS = ['tsei.jp', '3.134.52.211', '3.134.52.211:8000']
 
 # Database
 DATABASES = {'default': {

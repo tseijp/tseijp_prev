@@ -5,10 +5,10 @@ body {
     width :750px;
     height:750px;
     overflow: hidden;
-    padding:50px 50px 50px;
+    padding:25px 50px 50px;
 }
 h6 {
-    font-size:25px;
+    font-size:50px;
     padding:0px 0px 0px;
 }
 thead th {

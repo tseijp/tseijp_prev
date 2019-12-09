@@ -4,14 +4,15 @@ function setup() {
   createCanvas(innerWidth, innerHeight);
   pg = createGraphics(innerWidth, innerHeight);
   textSize(80);
+  noStroke()
   textAlign(CENTER, CENTER);
 }
 
 function draw() {
   //fill(255)
   //rect(0,0,innerWidth, innerHeight)
-  fill(23,23,23)
-  noStroke()
+  /*fill(23,23,23)
+
   if(frameCount%100>50){
       fill(46,46,46);
   }
@@ -22,7 +23,7 @@ function draw() {
 
   fill(0);
   textAlign(CENTER);
-  drawWords(innerWidth * 0.5);
+  drawWords(innerWidth * 0.5);*/
 }
 
 function drawWords(x) {

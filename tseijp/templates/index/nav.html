@@ -27,18 +27,21 @@
       <i class="fab fa-github fa-3x mr-3 fa-spin" style="font-size:25px"></i>github</a></li>
   </ul>
   <br>
-  <a href="{% url 'login' %}">Login</a>
+  <!--a href="{% url 'login' %}">Login</a>
   <a href="{% url 'signup' %}">Signup</a>
-  <a href="{% url 'logout' %}">Logout</a>
+  <a href="{% url 'logout' %}">Logout</a-->
 </div>
 
-<div style="left:25px;top:0;position:absolute;font-size:75px;cursor:pointer" onclick="openNav()">
-<i class="fas fa-align-justify"></i>
+
+<div class="d-xs-none" style="left:25px;top:0;position:absolute;cursor:pointer" onclick="openNav()">
+  <div class="d-lg-none" style="font-size:50px"><i class="fas fa-align-justify"></i></div>
+  <div class="d-none d-lg-block" style="font-size:75px"><i class="fas fa-align-justify"></i></div>
 </div>
 
 <div style="right:25px;top:0;position:absolute;font-size:75px;cursor:pointer"
       href="#langSubmenu" data-toggle="collapse" aria-expanded="false">
-<i class="fas fa-align-right"></i>
+  <div class="d-lg-none" style="font-size:50px"><i class="fas fa-align-right"></i></div>
+  <div class="d-none d-lg-block" style="font-size:75px"><i class="fas fa-align-right"></i></div>
 <ul class="collapse list-unstyled" id="langSubmenu">
     <li><a style="color:#000" href="">Ja</a></li>
     <!--li><a style="color:#000"href="?la=en">En</a></li-->

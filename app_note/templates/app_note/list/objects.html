@@ -1,38 +1,40 @@
 {% for note in object_list %}
 
+<!--
 {%if id%}{%if id_user == note.posted_user.id%}
 a{%else%}{%if id == note.id%}
 b{%else%}
 c{%endif%}{%endif%}{%else%}
 d{%endif%}
-
 <br>a{{id_user}}
 <br>b{{user.id}}
 <br>c{{note.posted_user.id}}
 <br>d{{id}}
-<br>e{{note.id}}
+<br>e{{note.id}}-->
 
-
-<div class="col-sm-12 col-md-12 col-lg-{%if id%}12{%else%}6{%endif%}">
+<div class="col-sm-12 col-md-12 col-lg-12">
     <div class="card news-card">
         <div class="embed-responsive embed-responsive-1by1" style="height:
             {%if id%}{%if id_user == note.posted_user.id%}700px{%else%}
             {%if id == note.id%}700px{%else%}450px{%endif%}{%endif%}
             {%else%}450px{%endif%}">
-          <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
-          <iframe class="embed-responsive-item"
-              src="{% url 'note_posted_frame' pk=note.id %}"
-              frameborder="0"
-              id="iframe_{{note.id}}"
-              sandbox="allow-scripts"
-              href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}"
-              allowfullscreen></iframe>
+            {% if not id%}
+            <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
+            {% endif %}
+            <iframe class="embed-responsive-item"
+                src="{% url 'note_posted_frame' pk=note.id %}"
+                frameborder="0"
+                id="iframe_{{note.id}}"
+                sandbox="allow-scripts"
+                href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}"
+                allowfullscreen></iframe>
         </div>
         <!--img src="https://source.unsplash.com/user/diegyms/300x200" alt="vitateach" /-->
         <div class="card-body">
+        {% if user.is_staff %}
         <div class="row">
             <div class="col-sm text-right"><h6>
-              <i class="fas fa-comment"></i>{{note.reply_number}}
+              <i class="fas fa-comment"></i>{{note.reply_number}}:{{note.get_chichild_id}}
             </h6></div>
             <div class="col-sm text-right"><h6>
               <i class="fas fa-heart"></i>{{note.liked_number}}
@@ -41,6 +43,7 @@ d{%endif%}
               <i class="fas fa-external-link-alt"></i>id:{{note.id}}
             </h6></div>
         </div>
+        {% endif %}
         <hr>
         {% include "app_note/list/objects_body.html" %}
         </div>
