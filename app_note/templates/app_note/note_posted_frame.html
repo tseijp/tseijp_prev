@@ -1,8 +1,19 @@
 
 {% extends "app_note/detail/note_base.html" %}
 {% block "iframe_block" %}
+{%if object.posted_head%}
 <h6>{{object.posted_head}}</h6>
 <hr>
+{%endif%}
+{% if object.img_is_url %}
+<div class="text-center">
+<img src="{{object.posted_img}}"
+ class="img-fluid hoverable" alt="hoverable">
+</div>
+<hr>
+{% endif %}
+{% if object.posted_text %}
 <div id="mdraw" style="display:none;">{{object.posted_text}}</div>
 <div id="mdrender"></div>
+{% endif %}
 {% endblock %}

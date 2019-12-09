@@ -21,10 +21,12 @@ class NoteModel(m.Model):
     reply_number  = m.IntegerField(default=0             , blank=True, null=True)
     # posted
     posted_tag    = m.CharField(max_length=255           , blank=True, null=True)
+    posted_img    = m.CharField(max_length=65535         , blank=True, null=True)
     posted_head   = m.CharField(max_length=255           , blank=True, null=True)
     posted_text   = m.TextField(max_length=65535         , blank=True, null=True)
     ### update
     update_tag    = m.CharField(max_length=255           , blank=True, null=True)
+    update_img    = m.CharField(max_length=255           , blank=True, null=True)
     update_head   = m.CharField(max_length=255           , blank=True, null=True)
     update_text   = m.TextField (max_length=65535        , blank=True, null=True)
     ### liked_user    = m.ForeignKey(User, on_delete=m.CASCADE, null=True)
@@ -34,6 +36,7 @@ class NoteModel(m.Model):
     def posted_date (self)   :return self.posted_time.strftime('%d')
     def posted_month(self)   :return self.posted_time.strftime('%b')
     def posted_tag_list(self):return self.posted_tag.strip(' ').split('#')
+
     ### display
     def posted_frame_url       (self,*args,**kwargs):
         return reverse_lazy    ('note_posted_frame', kwargs={'pk': self.pk})
@@ -50,11 +53,13 @@ class NoteModel(m.Model):
         r = []
         if include_self:
             r.append(self)
-        for c in NoteModel.objects.filter(note_object=self):
+        for c in NoteModel.objects.order_by('id').filter(note_object=self):
             _r = c.get_children(include_self=True)
             if 0 < len(_r):
                 r.extend(_r)
         return r
+    def img_is_url(self):return True if ("%s"%self.posted_img)[:4]=="http" else False
+
 class LikeModel(m.Model):
     note_object   = m.ForeignKey('NoteModel',on_delete=m.CASCADE)
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE, blank=True, null=True)

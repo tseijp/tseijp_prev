@@ -1,6 +1,5 @@
-let renderer = new marked.Renderer()
+var renderer = new marked.Renderer()
 hljs.initHighlightingOnLoad();
-
 function htmlDecode(input){
   var e = document.createElement('div');
   e.innerHTML = input;
@@ -12,8 +11,8 @@ function htmlDecode(input){
 
 //Block level renderer.
 renderer.code   = function (code, language) {
-    return '<pre' + '><code class="hljs">'
-    + hljs.highlightAuto(htmlDecode(code)).value
+    return '<pre><code class='+language+'>'
+    + hljs.highlightAuto(htmlDecode(code))
     + '</code></pre>';
 };
 renderer.html   = function (html) {return htmlDecode(html)};
@@ -21,10 +20,6 @@ renderer.heading = function(text, level) {
     return `<h${level + 1} class="blog-post-title font-italic border-bottom">${htmlDecode(text)}`
             +'<div style="text-align:right;float:right;">'
             +`<a href="#" onclick="javascript:window.history.back(-1);return false;">Back</a>`
-            {% if user.id is object.posted_user.id %}
-                +`<a href="{%url 'note_edit'   object.id%}"><i class="fas fa-pen-fancy"></i></a>`
-                +`<a href="{%url 'note_delete' object.id%}"><i class="fas fa-trash"    ></i></a>`
-            {% endif %}
             +'</div>'
             +`</h${level + 1}>`
 }
@@ -48,7 +43,7 @@ renderer.em         = function(text) {
     }
     return '<em>' + text.replace('\\/','/') + '</em>';
 };
-renderer.image   = function (href, title, text) {return '';};
+renderer.image  = function (href, title, text) {return '';};
 renderer.text   = function (text){return htmlDecode(text)}
 // -----------------------------------------------------------------------------
 marked.setOptions({
@@ -64,7 +59,7 @@ marked.setOptions({
   smartLists : true , // スマートなリストにするか.use smarter list behavior than those found in markdown.pl.
   smartypants: false, //クオートやダッシュの使い方.use "smart" typographic punctuation for things like quotes and dashes.
   langPrefix : 'language-',
-  //highlight  : function(code, lang) {return code;}, //A function to highlight code blocks
+  highlight  : function(code, lang) {return hljs.highlightAuto(code, [lang]).value;}, //A function to highlight code blocks
   renderer   : renderer, //An object containing functions to render tokens to HTML.
 });
 // -----------------------------------------------------------------------------
@@ -77,3 +72,31 @@ String.prototype.trimStart = String.prototype.trimStart || function() {
 document.getElementById("mdrender").innerHTML = marked(
     document.getElementById("mdraw").innerHTML//.trimStart()
 );
+
+var clip_copy = function(){
+    var target = null;
+    var p = null;
+    window.getSelection().removeAllRanges();
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        target = document.querySelector('#target_text');
+        target.contentEditable  = true;
+        target.readOnly = false;
+    } else {
+        p = document.createElement('p');
+        p.setAttribute('id', 'target')
+        document.body.appendChild(p);
+        p.innerHTML = $('#target_text').val();
+        target = document.querySelector('#target');
+    }
+    var range = document.createRange();
+    range.selectNode(target);
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        target.contentEditable  = false;
+        target.readOnly = true;
+    } else {
+        document.body.removeChild(p);
+    }
+    window.getSelection().removeAllRanges();
+}

@@ -4,6 +4,7 @@
   <button class="badge elegant-color-dark" style="width:100%;font-size:25px">More</button></a>
 <h6>
 {% endif %}
+
 {% if note.posted_tag %}{% for tag in note.posted_tag_list %}{% if tag %}
 <a href="{%url 'note'%}?tag={{tag}};{{note.url_with_id}}">
   <span style="font-size:25px" class="badge elegant-color-dark">#{{ tag }}</span></a>
