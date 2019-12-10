@@ -1,8 +1,8 @@
 body {
-    font-size:px;
+    font-size:10px;
     margin: 0;
     left:250px;
-    width :750px;
+    /*width :500px*/;
     height:750px;
     overflow: hidden;
     padding:25px 50px 50px;
@@ -20,7 +20,7 @@ canvas {
     background: black;
 }
 
-body { font-size:20px; }
-p  { font-size:  20px; }
-li { font-size:  20px; }
-li p { font-size:20px; }
+body { font-size:18px; }
+p    { font-size:18px; }
+li   { font-size:18px; }
+li p { font-size:18px; }

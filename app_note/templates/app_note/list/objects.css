@@ -1,7 +1,7 @@
 .card{ position: relative;  cursor: pointer; border-radius: 16px;
     box-shadow: 0 0 13px 0px rgba(0,0,0,.5);
     transition: 0.75s; overflow: hidden; margin: .85rem;
-    width:{%if id%}750px{%else%}750px{%endif%};
+    /*width:{%if id%}750px{%else%}750px{%endif%}*/;
     height:{%if id%}750px{%else%}500px{%endif%};}
 .card:hover{ height: {%if id%}1000px{%else%}750px{%endif%};}
 

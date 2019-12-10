@@ -31,15 +31,18 @@
   {% block "body_block" %}{% endblock %}
   {% block "nav_block" %}{% endblock %}
   {% block "carousel_block" %}{% endblock %}
-  <main role="main" class="container">
+  <main role="main">
   <div class="wrapper">
       {% block "message_block" %}{% endblock %}
-      <section class="mt-5 wow fadeIn"style="padding-top:75px">
+      <section class="mt-5 wow fadeIn" style="padding-top:75px">
+      <div class="container">
       <div id="main">
           {% block "main_block" %}{% endblock %}
       </div>
+      </div>
       </section>
   </div>
+
 </main>
 <!--Footer-->
   {% block "foot_block" %}{% endblock %}

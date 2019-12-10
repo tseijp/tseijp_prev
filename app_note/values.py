@@ -12,7 +12,7 @@ note_qiita_8 = {
 先日, 大学のオープンキャンパスでGANによる動画生成のデモ発表をしました．
 
 TouchDesigner使えばリアルタイムで実装できるかな...と思って使ってみました．
-他の型のコードをかなり使ってますがですが，もしよければ試してみてください．
+他の方のコードをかなり使ってますが，もしよければ試してみてください．
 <s>[デモソースコード](https://gigthub.com/tsei/pytorch-yanai)</s>近日
 
 以降では二つのことを共有出来たらなーと思います．最後にデモについて少し書きます！
@@ -45,23 +45,26 @@ subprocess.Popen(['python', 'util/td_utils.py',
                   '-d','%s'%project.folder,'-c',cmd,'-s','15'],
                   cwd=dir,shell=True)
 </code></pre>
-[td_utils.pyコードサンプル](https://gist.github.com/tseijp/caab3149c3c9fcbe1e45c466c1f41a53)
-[参考:TouchDesigner | Python and the Subprocess Module | Matthew Ragan](https://matthewragan.com/2019/08/14/touchdesigner-python-and-the-subprocess-module/)
+
+* [td_utils.pyコードサンプル](https://gist.github.com/tseijp/caab3149c3c9fcbe1e45c466c1f41a53)
+* [参考:TouchDesigner | Python and the Subprocess Module | Matthew Ragan](https://matthewragan.com/2019/08/14/touchdesigner-python-and-the-subprocess-module/)
 """},
 
 "2.5":{"head":"","text":"""
-poseの動画から全身の動画をするopです. 前処理が終わったら生成を開始します．
+poseの動画から全身の動画をするベースCOMPです. 前処理が終わったら生成を開始します．
 生成が終わったら次の処理に通知させます．
 ""","img":"https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855138/pose2vid.jpg"},
 
 "3":{"head":"TouchDeisngerでのPythonライブラリについて",
     "text":"""
 venvでpip install -> TouchDesinger内でPathを通す or sys.path.append()
+
   * TouchDesingerでは内部にNumpyを含んでおり，しかも結構内部で依存してそうでした．
   * PyTorchを入れたとき，一緒にNumpyが入ってきて，壊れました．環境構築しなおしました．
 
 
-condaで仮想環境 -> TouchDesignerのsite-packages消す -> `mlink /d site-packages {{path-to-venv}}/site-packages`
+condaで仮想環境 -> TouchDesignerのsite-packages消す -> <code><pre>mlink /d site-packages {{path-to-venv}}/site-packages</code></pre>
+
   * この方法が唯一PyTorchが動いたのですが，デモ当日にGPU周りで謎のエラーが出ました．
   (`libiomp5md.dll、libiomp5mmd.pdb libiompstubs5md.dll` を上書きしたら動きました)
   * 結局最初からprocessを分ければよかったなと反省してます．結論はまだ出てないですが，自分なりの考えをまとめました．
@@ -85,7 +88,8 @@ TouchDesignerでスタイル変換をしてる方もいるみたいなので，�
 [Style Transfer in TouchDesigner](https://freesoft.dev/program/98209499)
 """},
 
-"5":{"head":"","text":"None","img":"https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855510/output2.gif"},
+"5":{"head":"","text":"左上が生成結果です．Webカメラを忘れて，内カメラで録画してます．",
+"img":"https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855510/output2.gif"},
 
 #"5.2":{"head":"about demo","text":"""
 #The other day, I did a demonstration of the moving image generation by GAN in the open campus of the University.
