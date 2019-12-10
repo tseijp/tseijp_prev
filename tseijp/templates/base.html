@@ -25,6 +25,18 @@
 
   <script type="text/javascript">{% include "base.js" %}</script>
   <script type="text/javascript">{% block "js_block" %}{% endblock %}</script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  {% if user.is_staff %}{% else %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154346934-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-154346934-1');
+  </script>
+  {% endif %}
+
 </head>
 
 <body>
