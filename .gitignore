@@ -5,7 +5,7 @@ csp.bat
 psq.bat
 static
 tseijp/settings/dev.py
-
+tseijp.sock
 
 # Created by https://www.gitignore.io/api/git,python,django,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=git,python,django,jupyternotebooks
