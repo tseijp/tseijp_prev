@@ -4,3 +4,4 @@ function ScrollHeight() {
     var bottom = element.scrollHeight - element.clientHeight;
     window.scroll(0, bottom);
 }
+//$('.file-upload').file_upload();

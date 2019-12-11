@@ -11,7 +11,6 @@ from app_note.views import get_user
 def note_list_ajax(request):
     dict ={"message":"Not working"}
     if request.GET:
-        print(request.GET)
         val = request.GET;
         note= NoteModel.objects.get(id=int(val["id"]))
         if not "%s"%val['user']=="%s"%request.user.id and note:#editor違ってnote存在
@@ -19,9 +18,10 @@ def note_list_ajax(request):
             obj.posted_user = note.posted_user
             obj.note_object = note
         else:obj = note
-        print(NoteModel.objects.get(id=int(val["id"])))
-        print("\tobj",note, note.posted_user, note.note_object)
-        print("\tobj",obj,  obj.posted_user , obj.note_object)
+        #print(request.GET)
+        #print(NoteModel.objects.get(id=int(val["id"])))
+        #print("\tobj",note, note.posted_user, note.note_object)
+        #print("\tobj",obj,  obj.posted_user , obj.note_object)
         if not obj.posted_user:obj.posted_user = get_user()
         if"head"in val:obj.update_head=val['head']
         if"text"in val:obj.update_text=val['text']

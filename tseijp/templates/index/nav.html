@@ -15,6 +15,9 @@
       <i class="fas fa-sticky-note fa-3x mr-3 fa-spin" style="font-size:25px"></i>note</a></li>
   </ul>
   <a href="#">About</a>
+  {% if user.is_staff %}
+  <a href="/admin">Admin</a>
+  {% endif %}
   <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Account</a>
   <ul class="collapse list-unstyled" id="accountSubmenu">
     <li><a href="https://twitter.com/jj1owz" target="_blank">
@@ -27,9 +30,13 @@
       <i class="fab fa-github fa-3x mr-3 fa-spin" style="font-size:25px"></i>github</a></li>
   </ul>
   <br>
-  <!--a href="{% url 'login' %}">Login</a>
+  {% if  user.is_authenticated %}
+  <a href="{% url 'logout' %}">Logout</a>
+  <a href="#COMING_SOON">{{user.username}}</a>
+  {% else %}
+  <a href="{% url 'login' %}">Login</a>
   <a href="{% url 'signup' %}">Signup</a>
-  <a href="{% url 'logout' %}">Logout</a-->
+  {% endif %}
 </div>
 
 

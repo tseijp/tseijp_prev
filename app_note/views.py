@@ -152,7 +152,7 @@ class NoteDeleteView(LoginRequiredMixin, DeleteView):
     model               = NoteModel
     success_url         = reverse_lazy("note")
     context_object_name = 'Note'
-    template_name       = "app_note/note_form_delete.html"
+    template_name       = "app_note/note_delete.html"
     login_url           =  reverse_lazy('login')
 
 @login_required

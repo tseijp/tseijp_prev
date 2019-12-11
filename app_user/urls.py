@@ -19,5 +19,5 @@ urlpatterns = [
     #path('<int:pk>/delete'   , UserDeleteView.as_view(), name='user_delete'   ),
     #path('<int:pk>/edit/ajax', user_edit_ajax          , name='user_edit_ajax'),
     ### google auth
-    #path('social/', include('social_django.urls', namespace='social')),
+    path('auth/', include('social_django.urls', namespace='social')),
 ]

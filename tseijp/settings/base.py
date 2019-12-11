@@ -44,8 +44,27 @@ INSTALLED_APPS+=['app_%s'%a for a in ['idea','note','user']]
 INSTALLED_APPS+=[
     'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1
     'widget_tweaks' ,# from ocw
-    
+    'social_django' #  signup with google
 ]
+###  sosial auth signup with google
+###  [ref](https://qiita.com/moi1990sk/items/a849fca7acb29db95508)
+TEMPLATES[0]['OPTIONS']['context_processors']+=[
+    'social_django.context_processors.backends',       # <- #  signup with google
+    'social_django.context_processors.login_redirect', # <- #  signup with google
+]
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth' ,     # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',     # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',     # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',     # for Github authentication
+ #'social_core.backends.facebook.FacebookOAuth2', # for Facebook authentication
+ 'django.contrib.auth.backends.ModelBackend',
+)
+LOGIN_URL           = 'login'
+LOGIN_REDIRECT_URL  = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY    = '243261037962-c4dg6k0nahvsho217f070c3togq62jd6.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2FX1OYni7_LhdNgpQuwgPQzE'  #Paste Secret Key
 ### host by django_hosts
 ROOT_URLCONF  = 'tseijp.urls'
 ROOT_HOSTCONF = 'tseijp.hosts'
