@@ -25,6 +25,8 @@ d{%endif%}
                 frameborder="0"
                 id="iframe_{{note.id}}"
                 sandbox="allow-scripts"
+                height="100%"
+                width="100%"
                 href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}"
                 allowfullscreen></iframe>
         </div>

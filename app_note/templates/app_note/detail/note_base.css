@@ -1,26 +1,39 @@
 body {
-    font-size:10px;
     margin: 0;
-    left:250px;
+    /*left:250px;*/
     /*width :500px*/;
-    height:750px;
+    height:100%;
     overflow: hidden;
     padding:25px 50px 50px;
-}
-h6 {
-    font-size:50px;
-    padding:0px 0px 0px;
 }
 thead th {
     background: #fff;
 }
-canvas {
+/*canvas {
     width: 750px;
     height: 750px;
     background: black;
-}
+}*/
 
-body { font-size:18px; }
-p    { font-size:18px; }
-li   { font-size:18px; }
-li p { font-size:18px; }
+
+@media screen and (max-width: 576px) {
+  h6   { font-size:25px; padding:0px 0px 0px; }
+  body { font-size:15px; }
+  p    { font-size:15px; }
+  li   { font-size:15px; }
+  li p { font-size:15px; }
+}
+@media screen and (min-width: 576px) and (max-width:768px) {
+  h6   { font-size:50px; padding:0px 0px 0px; }
+  body { font-size:18px; }
+  p    { font-size:18px; }
+  li   { font-size:18px; }
+  li p { font-size:18px; }
+}
+@media screen and (min-width: 768px) {
+  h6   { font-size:75px; padding:0px 0px 0px; }
+  body { font-size:20px; }
+  p    { font-size:20px; }
+  li   { font-size:20px; }
+  li p { font-size:20px; }
+}
