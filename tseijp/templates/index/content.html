@@ -11,7 +11,7 @@
             <div class="main"><a href="{% url c.url %}"style="color:white">{{b}}</a></div>
         </div>
         {% for k,v in c.main.items %}
-        <div class="col" onclick="{% if v.f %}{{k}}(){% endif %}">
+        <div class="col" onclick="{% if v.f %}{{v.f}}(){% endif %}">
             <div class="main"><i class="{{v.i}}"></i></div>
         </div>
         {% endfor %}
