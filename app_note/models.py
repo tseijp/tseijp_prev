@@ -38,11 +38,9 @@ class NoteModel(m.Model):
     def posted_tag_list(self):return self.posted_tag.strip(' ').split('#')
 
     ### display
-    def posted_frame_url       (self,*args,**kwargs):
-        return reverse_lazy    ('note_posted_frame', kwargs={'pk': self.pk})
-    def update_frame_url       (self,*args,**kwargs):
-        return reverse_lazy    ('note_update_frame', kwargs={'pk': self.pk})
-    def url_with_id    (self):return 'id=%s;'%self.pk;
+    def posted_frame_url(self,*args,**kwargs):return reverse_lazy('note_posted_frame',kwargs={'pk':self.pk})
+    def update_frame_url(self,*args,**kwargs):return reverse_lazy('note_update_frame',kwargs={'pk':self.pk})
+    def url_with_id    (self):return 'id=%s;'%self.pk
     def get_comment    (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child      (self):return [c for c in NoteModel.objects.filter(note_object=self)]
     def get_child_id   (self):return [c.id for c in self.get_child()]

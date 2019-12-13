@@ -27,6 +27,7 @@ d{%endif%}
                 sandbox="allow-scripts"
                 height="100%"
                 width="100%"
+                name ="iframe_{{note.id}}"
                 href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}"
                 allowfullscreen></iframe>
         </div>

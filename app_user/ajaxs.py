@@ -7,11 +7,19 @@ from django.contrib.auth.models import User
 
 import numpy as np
 from app_user.models import *
+from app_user.values import get_first_json
 
 def get_last_segs():
-    last = IndexJSONModel.objects.filter(user__is_staff=True).order_by('-time')[0]#;print(last)
-    return json.loads(last.segs)['segs']#[0] if last else []
-
+    objs = IndexJSONModel.objects.filter(user__is_staff=True).order_by('-time')
+    if objs: return json.loads(objs[0].segs)['segs']
+    return []
+def get_anonymous():
+    anonymous = User.objects.get(username="anonymous")
+    return anonymous if anonymous else User.objects.create_user('anonymous','None', 'johnpassword')
+def get_user(user_id=None):
+    if not user_id: return get_anonymous()
+    user = User.objects.get(id=user_id)
+    return user if user else get_anonymous()
 
 def index_json(request):
     dict = {'return_text':'not working','json':[], 'last':[]}
@@ -20,14 +28,14 @@ def index_json(request):
             if request.GET['json']!='':
                 obj     = IndexJSONModel.objects.create()
                 obj.json= request.GET['json']
-                obj.user= User.objects.get(pk=int(request.GET['user']))
+                obj.user= get_user(request.GET['user'])
                 children= json.loads(request.GET['json'])[0][1]['children']
                 obj.segs= json.dumps({'segs':[c[1]['segments'] for c in children if'segments'in c[1]]})
                 obj.save()#; print(data)
                 return JsonResponse(dict)
             paths = []
             for s in IndexJSONModel.objects.order_by('-time')[:5]:
-                paths += json.loads(s.segs)['segs']#[0]#;print(s)
+                if s.segs: paths+=json.loads("%s"%s.segs)['segs']#[0]#;print(s)
             dict['last'] = get_last_segs()
             dict['json'] = paths#;print(np.array(dict['last']).shape,np.array(dict['json']).shape,)
             return JsonResponse(dict)

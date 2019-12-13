@@ -27,6 +27,9 @@ body .options {
 @media screen and (max-width: 478px) {
 		body .options {min-width: 280px; }
 		body .options .option:nth-child(2) {display: none; }}
+@media screen and (max-width: 398px) {
+		body .options {min-width: 200px; }
+		body .options .option:nth-child(1) {display: none; }}
 body .options .option {
 		position: relative;
 		overflow : hidden;
@@ -65,8 +68,7 @@ body .options .option .label{
 		transition:0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95); }
 body .options .option .label .icon{
 		display:flex; flex-direction:row; justify-content:center;
-		/*align-items:center; min-width:40px; max-width:40px; height:40px;*/
-		align-items:center; min-width:25px; max-width:25px; height:25px;
+		align-items:center; min-width:40px; max-width:40px; height:40px;
 		border-radius:100%; background-color:white; color:var(--defaultBackground); }
 body .options .option .label .info {
 		display:flex; flex-direction:column; justify-content:center;

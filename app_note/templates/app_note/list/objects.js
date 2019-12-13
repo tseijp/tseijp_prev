@@ -71,3 +71,14 @@ var add_comment = function(){
     request.setAttribute('value',get_message());
     form.appendChild(request);
 }
+
+var open_japanese = function () {
+    {% for note in object_list %}
+    window.open("{% url 'note_update_frame' note.id %}", "iframe_{{note.id}}")
+    {% endfor %}
+}
+var open_english = function () {
+    {% for note in object_list %}
+    window.open("{% url 'note_posted_frame' note.id %}", "iframe_{{note.id}}")
+    {% endfor %}
+}
