@@ -25,9 +25,8 @@
 
   <script type="text/javascript">{% include "base.js" %}</script>
   <script type="text/javascript">{% block "js_block" %}{% endblock %}</script>
-  <!-- Global site tag (gtag.js) - Google Analytics
+  <!-- Global site tag (gtag.js) - Google Analytics-->
   {% if user.is_staff %}{% else %}{% include "google.html" %}{% endif %}
--->
 </head>
 
 <body>
