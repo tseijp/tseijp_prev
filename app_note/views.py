@@ -37,12 +37,9 @@ def get_user(user_id=None):
 ### import dateutil.parser
 
 # Create your views here.
-def home(request):
-    return render(request, 'index.html')
-
 @login_required
-def test(request):
-    return render(request, 'note_test.html')
+def test(request): return render(request, 'note_test.html')
+def home(request): return render(request, 'index.html')
 
 class NoteHomeView(ListView, ModelFormMixin):
     model        = NoteModel
@@ -52,10 +49,8 @@ class NoteHomeView(ListView, ModelFormMixin):
     template_name= 'app_note/note_list.html'
     def get(self, request, *args, **kwargs):
         self.object = None
-        #for obj in self.get_queryset():
-        #    if not obj.update_text:
-        #        obj.delete()
         return super().get(request, *args, **kwargs)
+    def get_success_url(self): return  reverse_lazy('note')+"?id=%s"%self.object.id
     def get_queryset(self):### 新しい順に表示 & コメント以外を取得
         year, month   = get_year_month(self.request)
         tag           = get_tag(self.request)
@@ -82,8 +77,6 @@ class NoteHomeView(ListView, ModelFormMixin):
         context['child_id'    ]  = id_obj[0].get_child_id()    if id_obj else []
         context['chichild_id' ]  = id_obj[0].get_chichild_id() if id_obj else []
         return context
-    def get_success_url(self):
-        return  reverse_lazy('note')+"?id=%s"%self.object.id
     def post(self, request, *args, **kwargs):
         tag    = get_tag(self.request)
         user   = get_user(self.request.user.id)
@@ -91,25 +84,79 @@ class NoteHomeView(ListView, ModelFormMixin):
         self.object_list = self.get_queryset()### ないとエラー
         form = self.get_form();print(self.request.POST)
         if form.is_valid():
-            for obj in self.get_queryset():
-                if not obj.update_text:
-                    obj.delete()
-            #if "message" in request.POST:
-            #    for k,v in request.POST["message"]:pass
-            if  tag:form.instance.update_tag  = tag
+            if  tag:form.instance.posted_tag  = tag
             if user:form.instance.posted_user = self.request.user
-            form.instance.update_head = ""
-            form.instance.update_text = ""
+            form.instance.ja_head = ""
+            form.instance.ja_text = ""
             form.instance.save()
             return super().form_valid(form)
         else:
             return super().form_invalid(form)
 
+class NoteJaView(DetailView):
+    model         = NoteModel
+    template_name = "app_note/note_ja.html"
+class NoteEnView(DetailView):
+    model         = NoteModel
+    template_name = "app_note/note_en.html"
+class NoteDeleteView(LoginRequiredMixin, DeleteView):
+    model               = NoteModel
+    success_url         = reverse_lazy("note")
+    context_object_name = 'Note'
+    template_name       = "app_note/note_delete.html"
+    login_url           =  reverse_lazy('login')
+
+@login_required
+def qiita_init(request):
+    NoteModel.objects.all().delete()
+    init_obj=None
+    ja_objs ={}
+    for i,note in note_qiita_8.items():
+        if not i in ja_objs:
+            obj = NoteModel.objects.create()
+            obj.posted_user=request.user
+            obj.ja_head=note["head"]
+            obj.ja_text=note["text"]
+            obj.posted_tag = "#touchdesigner #pytorch"
+            obj.posted_img = note["img"] if "img" in note else ''
+            ja_objs += {i:obj}
+        else:
+            obj = ja_objs[i]
+            obj.en_head=note["head"]
+            obj.en_text=note["text"]
+        obj.save()
+        print(obj)
+    return redirect ('note')
+
+@login_required
+def drop_all(request):
+    NoteModel.objects.all().delete()
+    return redirect('note')
+
+''' NOT USED ----- NOT USED ----- NOT USED ----- NOT USED ----- NOT USED -----'''
+#class NotePostedRawView(DetailView):
+#    model         = NoteModel
+#    template_name = "app_note/note_posted_raw.html"
+#class NoteUpdateRawView(DetailView):
+#    model         = NoteModel
+#    template_name = "app_note/note_update_raw.html"
+'''
+class NoteDetailView(DetailView):
+    model        = NoteModel
+    model        = NoteModel
+    form_class   = NoteEditForm
+    form         = NoteEditForm()
+    paginate_by  = 10
+    template_name= "app_note/detail/note_detail.html"
+    def get_context_data(self,**kwargs): ### pageを開いたときに処理.templateに返す値を制御
+        context = super(DetailView,self).get_context_data(**kwargs)
+        context['content'   ]  = get_index_content("note")
+        return context
 class NoteEditView(UpdateView):
     model         = NoteModel
     form_class    = NoteEditForm
     success_url   = reverse_lazy("note")
-    template_name = "app_note/note_form.html"
+    template_name = "app_note/form/note_form.html"
     def form_valid(self, form):### ボタンを押すと, posted_### を更新
         self.object.update_text = self.object.posted_text
         self.object.update_head = self.object.posted_head
@@ -122,60 +169,4 @@ class NoteEditView(UpdateView):
         context = super().get_context_data()
         #context.update({'tool_form': ToolForm()})
         return context
-
-class NoteDetailView(DetailView):
-    model        = NoteModel
-    model        = NoteModel
-    form_class   = NoteEditForm
-    form         = NoteEditForm()
-    paginate_by  = 10
-    template_name= "app_note/note_detail.html"
-    def get_context_data(self,**kwargs): ### pageを開いたときに処理.templateに返す値を制御
-        context = super(DetailView,self).get_context_data(**kwargs)
-        context['content'   ]  = get_index_content("note")
-        return context
-
-class NotePostedRawView(DetailView):
-    model         = NoteModel
-    template_name = "app_note/note_posted_raw.html"
-class NotePostedFrameView(DetailView):
-    model         = NoteModel
-    template_name = "app_note/note_posted_frame.html"
-class NoteUpdateRawView(DetailView):
-    model         = NoteModel
-    template_name = "app_note/note_update_raw.html"
-class NoteUpdateFrameView(DetailView):
-    model         = NoteModel
-    template_name = "app_note/note_update_frame.html"
-
-class NoteDeleteView(LoginRequiredMixin, DeleteView):
-    model               = NoteModel
-    success_url         = reverse_lazy("note")
-    context_object_name = 'Note'
-    template_name       = "app_note/note_delete.html"
-    login_url           =  reverse_lazy('login')
-
-@login_required
-def qiita_init(request):
-    NoteModel.objects.all().delete()
-    for i,note in note_qiita_8.items():
-        obj = NoteModel.objects.create()
-        obj.posted_head=note["head"]
-        obj.posted_text=note["text"]
-        if "img" in note:obj.posted_img =note["img"]
-        obj.update_head=note["head"]
-        obj.update_text=note["text"]
-        if "img" in note:obj.update_img =note["img"]
-        obj.tag ="#touchdesigner #pytorch"
-        obj.posted_user=request.user
-        if i=="1":init_obj = obj
-        else : obj.note_object=init_obj
-        obj.save()
-        print(obj)
-        print(obj.posted_head,obj.note_object,obj.posted_user)
-    return redirect ('note')
-
-@login_required
-def drop_all(request):
-    NoteModel.objects.all().delete()
-    return redirect('note')
+'''

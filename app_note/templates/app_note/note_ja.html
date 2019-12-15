@@ -1,8 +1,8 @@
 
 {% extends "app_note/detail/note_base.html" %}
 {% block "iframe_block" %}
-{%if object.posted_head%}
-<h6><a href="{%url 'note'%}/?id={{object.id}}" style="color:black">{{object.posted_head}}</a></h6>
+{%if object.ja_head%}
+<h6><a href="{%url 'note'%}/?id={{object.id}}" style="color:black">{{object.ja_head}}</a></h6>
 <hr>
 {%endif%}
 {% if object.img_is_url %}
@@ -12,8 +12,8 @@
 </div>
 <hr>
 {% endif %}
-{% if object.posted_text %}
-<div id="mdraw" style="display:none;">{{object.posted_text}}</div>
+{% if object.ja_text %}
+<div id="mdraw" style="display:none;">{{object.ja_text}}</div>
 <div id="mdrender"></div>
 {% endif %}
 {% endblock %}

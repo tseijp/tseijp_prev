@@ -1,19 +1,19 @@
 
 {% extends "app_note/detail/note_base.html" %}
 {% block "iframe_block" %}
-{%if object.update_head%}
-<h6><a href="{%url 'note'%}/?id={{object.id}}" style="color:black"></a>{{object.update_head}}</h6>
+{%if object.en_head%}
+<h6><a href="{%url 'note'%}/?id={{object.id}}" style="color:black"></a>{{object.en_head}}</h6>
 
 <hr>
 {%endif%}
 {% if object.img_is_url %}
 <div class="text-center">
-<img src="{{object.update_img}}"
+<img src="{{object.posted_img}}"
  class="img-fluid hoverable" alt="hoverable">
 </div>
 {% endif %}
-{% if object.update_text %}
-<div id="mdraw" style="display:none;">{{object.update_text}}</div>
+{% if object.en_text %}
+<div id="mdraw" style="display:none;">{{object.en_text}}</div>
 <div id="mdrender"></div>
 {% endif %}
 {% endblock %}

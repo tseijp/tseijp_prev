@@ -20,7 +20,8 @@ var send_message = function(url, note_id, mode="posted"){
         $.ajax({
             url     : url,
             data    : {
-                'id'    :note_id    ,
+                'id'    :note_id,
+                'la'    :now_la,
                 'user'  :{%if user.id%}{{user.id}}{%else%}''{%endif%},
                 'mode'  :mode,
                 'head'  :$("#id_update_head_"+note_id).val(),
@@ -74,11 +75,11 @@ var add_comment = function(){
 
 var open_japanese = function () {
     {% for note in object_list %}
-    window.open("{% url 'note_update_frame' note.id %}", "iframe_{{note.id}}")
+    window.open("{% url 'note_ja' note.id %}", "iframe_{{note.id}}")
     {% endfor %}
 }
 var open_english = function () {
     {% for note in object_list %}
-    window.open("{% url 'note_posted_frame' note.id %}", "iframe_{{note.id}}")
+    window.open("{% url 'note_en' note.id %}", "iframe_{{note.id}}")
     {% endfor %}
 }

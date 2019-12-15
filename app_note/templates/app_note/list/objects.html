@@ -1,16 +1,4 @@
 {% for note in object_list %}
-
-<!--
-{%if id%}{%if id_user == note.posted_user.id%}
-a{%else%}{%if id == note.id%}
-b{%else%}
-c{%endif%}{%endif%}{%else%}
-d{%endif%}
-<br>a{{id_user}}
-<br>b{{user.id}}
-<br>c{{note.posted_user.id}}
-<br>d{{id}}
-<br>e{{note.id}}-->
 <div class="col-md-12 col-lg-8">
     <div class="card news-card">
         <div class="embed-responsive embed-responsive-1by1" style="height:
@@ -21,7 +9,7 @@ d{%endif%}
             <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
             {% endif %}
             <iframe class="embed-responsive-item"
-                src="{% url 'note_posted_frame' pk=note.id %}"
+                src="{% url 'note_ja' pk=note.id %}"
                 frameborder="0"
                 id="iframe_{{note.id}}"
                 sandbox="allow-scripts"

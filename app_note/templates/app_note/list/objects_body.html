@@ -36,7 +36,7 @@
             {% csrf_token %}
             <i class="fa fa-pencil-alt prefix"></i>
             <textarea type="text" id="id_update_text_{{note.id}}"
-              class="md-textarea form-control">{%if user.id == note.posted_user.id and note.posted_text%}{{note.posted_text}}{%endif%}</textarea>
+              class="md-textarea form-control">{%if user.id == note.posted_user.id and note.ja_text%}{{note.ja_text}}{%endif%}</textarea>
             <label for="id_update_text_{{note.id}}">
               {%if user.id == note.posted_user.id%}Change{%else%}Send{%endif%} message</label>
             </form>
@@ -54,7 +54,7 @@
                     <i class="fa fa-tag prefix"></i>
                     <input type="text" id="id_update_head_{{note.id}}"
                     class="form-control form-control-sm"
-                    value="{%if user.id == note.posted_user.id and note.posted_head%}{{note.posted_head}}{%endif%}">
+                    value="{%if user.id == note.posted_user.id and note.ja_head%}{{note.ja_head}}{%endif%}">
                     <label for="id_update_head_{{note.id}}">title</label>
                     </form>
                 </div>

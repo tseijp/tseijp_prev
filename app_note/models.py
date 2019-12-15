@@ -13,34 +13,37 @@ from django.contrib.auth.models import User
 from markdownx.utils import markdownify
 from markdownx.models import MarkdownxField
 
+### URL
+from urllib.parse import urlparse
+MOVIE_URL = ["youtube.com"]
+SOUND_URL = ["soundcloud.com"]
+
 class NoteModel(m.Model):
     note_object   = m.ForeignKey('self',on_delete=m.CASCADE, blank=True, null=True)
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE, blank=True, null=True)
     posted_time   = m.DateTimeField(default=timezone.now , blank=True, null=True)
     liked_number  = m.IntegerField(default=0             , blank=True, null=True)
     reply_number  = m.IntegerField(default=0             , blank=True, null=True)
-    # posted
-    posted_tag    = m.CharField(max_length=255           , blank=True, null=True)
-    posted_img    = m.CharField(max_length=65535         , blank=True, null=True)
-    posted_head   = m.CharField(max_length=255           , blank=True, null=True)
-    posted_text   = m.TextField(max_length=65535         , blank=True, null=True)
-    ### update
-    update_tag    = m.CharField(max_length=255           , blank=True, null=True)
-    update_img    = m.CharField(max_length=255           , blank=True, null=True)
-    update_head   = m.CharField(max_length=255           , blank=True, null=True)
-    update_text   = m.TextField (max_length=65535        , blank=True, null=True)
+    posted_tag = m.CharField(max_length=255           , blank=True, null=True)
+    posted_img = m.CharField(max_length=255           , blank=True, null=True)
+    # ja
+    ja_head= m.CharField(max_length=255           , blank=True, null=True)
+    ja_text= m.TextField(max_length=65535         , blank=True, null=True)
+    ### en
+    en_head= m.CharField(max_length=255           , blank=True, null=True)
+    en_text= m.TextField (max_length=65535        , blank=True, null=True)
     ### liked_user    = m.ForeignKey(User, on_delete=m.CASCADE, null=True)
-    def list_of_text(self)   :return self.posted_text.split('\n')
-    def list_of_html(self)   :return markdownify(self.posted_text).split('\n')
-    def text_to_html(self)   :return markdownify(self.posted_text)
-    def posted_date (self)   :return self.posted_time.strftime('%d')
-    def posted_month(self)   :return self.posted_time.strftime('%b')
+    def list_of_text(self):return self.ja_text.split('\n')
+    def list_of_html(self):return markdownify(self.ja_text).split('\n')
+    def text_to_html(self):return markdownify(self.ja_text)
+    def posted_date (self):return self.posted_time.strftime('%d')
+    def posted_month(self):return self.posted_time.strftime('%b')
     def posted_tag_list(self):return self.posted_tag.strip(' ').split('#')
-
     ### display
-    def posted_frame_url(self,*args,**kwargs):return reverse_lazy('note_posted_frame',kwargs={'pk':self.pk})
-    def update_frame_url(self,*args,**kwargs):return reverse_lazy('note_update_frame',kwargs={'pk':self.pk})
+    def ja_url(self,*args,**kwargs):return reverse_lazy('note_ja',kwargs={'pk':self.pk})
+    def en_url(self,*args,**kwargs):return reverse_lazy('note_en',kwargs={'pk':self.pk})
     def url_with_id    (self):return 'id=%s;'%self.pk
+    ### child
     def get_comment    (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child      (self):return [c for c in NoteModel.objects.filter(note_object=self)]
     def get_child_id   (self):return [c.id for c in self.get_child()]
@@ -56,7 +59,11 @@ class NoteModel(m.Model):
             if 0 < len(_r):
                 r.extend(_r)
         return r
-    def img_is_url(self):return True if ("%s"%self.posted_img)[:4]=="http" else False
+    def get_ancestor(self, include_self=True):pass
+    ### url
+    def img_is_url  (self):return True if ("%s"%self.posted_img)[:4]=="http" else False
+    def img_is_movie(self):return True if urlparse("%s"%self.posted_img).netloc in MOVIE_URL else False
+    def img_is_sound(self):return True if urlparse("%s"%self.posted_img).netloc in SOUND_URL else False
 
 class LikeModel(m.Model):
     note_object   = m.ForeignKey('NoteModel',on_delete=m.CASCADE)
