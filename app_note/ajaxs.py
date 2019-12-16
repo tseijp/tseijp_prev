@@ -35,7 +35,7 @@ def liked_ajax(request, get, note):
         note_like = LikeModel.objects.filter(note_object=note).order_by('-id')
         try   :user_id = request.user.id
         except:user_id=None
-        if not user_id in [l.posted_user.id for l in note_like] or not request.user:
+        if not user_id in [l.posted_user.id for l in note_like if l.posted_user] or not request.user:
             #print('you are not in database of this note and there is note')
             obj = LikeModel.objects.create(note_object=note)
             obj.posted_user = get_user(request.user.id)
