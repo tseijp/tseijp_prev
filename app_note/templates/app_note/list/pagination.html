@@ -2,9 +2,9 @@
 <ul class="pagination pagination-circle pagination-lg justify-content-center pg-dark">
         <!-- back button -->
     		{% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page=1{{tag_in_url}}">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page=1;{{url_with_id}}{{url_with_tag}}">First</a></li>
         <li class="page-item">
-          <a class="page-link" aria-label="Previous" href="?page={{page_obj.previous_page_number}}{{tag_in_url}}">
+          <a class="page-link" aria-label="Previous" href="?page={{page_obj.previous_page_number}};{{url_with_id}}{{url_with_tag}}">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
@@ -13,20 +13,20 @@
         <!-- pagenation button -->
     		{% for page_num in page_obj.paginator.page_range %}
       			{% if page_num == page_obj.number %}
-            <li class="page-item active"><a class="page-link" href="?page={{ page_num }}{{tag_in_url}}">{{page_num}}</a></li>
+            <li class="page-item active"><a class="page-link" href="?page={{ page_num }};{{url_with_id}}{{url_with_tag}}">{{page_num}}</a></li>
       			{% else %}
-            <li class="page-item"><a class="page-link" href="?page={{page_num}}{{tag_in_url}}">{{page_num}}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{page_num}};{{url_with_id}}{{url_with_tag}}">{{page_num}}</a></li>
       			{% endif %}
     		{% endfor %}
         <!-- next button -->
     		{% if page_obj.has_next %}
         <li class="page-item">
-          <a class="page-link" aria-label="Next" href="?page={{page_obj.next_page_number}}{{tag_in_url}}">
+          <a class="page-link" aria-label="Next" href="?page={{page_obj.next_page_number}};{{url_with_id}}{{url_with_tag}}">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>
         </li>
-        <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}{{tag_in_url}}">Last</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}};{{url_with_id}}{{url_with_tag}}">Last</a></li>
     		{% endif %}
         <span class="sr-only">all {{page_obj.paginator.count}}</span>
 </ul>

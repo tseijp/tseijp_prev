@@ -11,7 +11,6 @@ function closeNav() {
     //document.getElementById("main").style.marginLeft= "0";
     //document.body.style.backgroundColor = "white";
     paper_background()
-
 }
 var now_la = "ja";
 function note_la_to(la, id, head=false, text=false) {
@@ -28,8 +27,8 @@ now_la = "ja";
 {% if object_list %}
 {% for note in object_list %}
     note_la_to('ja', {{note.id}},{%if user.id == note.posted_user.id%}
-    head={%if note.ja_head%}`{{note.ja_head}}`{%else%}''{%endif%},
-    text={%if note.ja_text%}`{{note.ja_text}}`{%else%}''{%endif%}{%endif%});
+    head={%if note.ja_head%}"{{note.ja_head}}"{%else%}''{%endif%},
+    text={%if note.ja_text%}"{{note.ja_back_of_text}}"{%else%}''{%endif%}{%endif%});
 {% endfor %}
 {% endif %}
 }
@@ -38,8 +37,8 @@ now_la = "en";
 {% if object_list %}
 {% for note in object_list %}
     note_la_to('en', {{note.id}}{%if user.id == note.posted_user.id%},
-    head={%if note.en_head%}`{{note.en_head}}`{%else%}''{%endif%},
-    text={%if note.en_text%}`{{note.en_text}}`{%else%}''{%endif%}{%endif%});
+    head={%if note.en_head%}"{{note.en_head}}""{%else%}''{%endif%},
+    text={%if note.en_text%}"{{note.en_back_of_text}}""{%else%}''{%endif%}{%endif%});
 {% endfor %}
 {% endif %}
 }

@@ -71,11 +71,13 @@ class NoteHomeView(ListView, ModelFormMixin):
         context['id']            = int(id)
         context['id_user']       = id_user
         context['page_tag'    ]  = tag
+        context['url_with_id' ]  = 'id=%s;'%id                     if id else ''
         context['url_with_tag']  = 'tag=%s;'%get_tag(self.request) if tag else ''
         context['carousel'    ]  = note_list_context['carousel']
         context['content'     ]  = get_index_content("note")
         context['child_id'    ]  = id_obj[0].get_child_id()    if id_obj else []
         context['chichild_id' ]  = id_obj[0].get_chichild_id() if id_obj else []
+        print(context)
         return context
     def post(self, request, *args, **kwargs):
         tag    = get_tag(self.request)
@@ -106,34 +108,45 @@ class NoteDeleteView(LoginRequiredMixin, DeleteView):
     template_name       = "app_note/note_delete.html"
     login_url           =  reverse_lazy('login')
 
-@login_required
-def qiita_init(request):
-    NoteModel.objects.all().delete()
-    init_obj=None
+def qiita_note_new(request, dict, tags):
+    init_obj_id=0
     ja_objs ={}
-    for i,note in note_qiita_8.items():
+    for i,note in dict.items():
         if not i in ja_objs:
             obj = NoteModel.objects.create()
             obj.posted_user=request.user
             obj.ja_head=note["head"]
             obj.ja_text=note["text"]
-            obj.posted_tag = "#touchdesigner #pytorch"
-            obj.posted_img = note["img"] if "img" in note else ''
-            ja_objs += {i:obj}
+            obj.save()
+            ja_objs[i]       = obj
         else:
             obj = ja_objs[i]
             obj.en_head=note["head"]
             obj.en_text=note["text"]
+        if "%s"%i=="%s"%1: init_obj_id= obj.id
+        elif init_obj_id:
+            obj.note_object=NoteModel.objects.get(id=init_obj_id)
+        obj.posted_tag = tags
+        obj.posted_img = note["img"] if "img" in note else ''
         obj.save()
-        print(obj)
+        print(i,init_obj_id,obj)
+
+@login_required
+def qiita_init(request):
+    NoteModel.objects.all().delete()
+    qiita_note_new(request, note_qiita_8 ,"#touchdesigner #pytorch")
+    qiita_note_new(request, note_qiita_16,"#AWS #Nginx #Django")
     return redirect ('note')
 
+
+
+''' NOT USED ----- NOT USED ----- NOT USED ----- NOT USED ----- NOT USED -----'''
+"""
 @login_required
 def drop_all(request):
     NoteModel.objects.all().delete()
     return redirect('note')
-
-''' NOT USED ----- NOT USED ----- NOT USED ----- NOT USED ----- NOT USED -----'''
+"""
 #class NotePostedRawView(DetailView):
 #    model         = NoteModel
 #    template_name = "app_note/note_posted_raw.html"

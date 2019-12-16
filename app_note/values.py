@@ -88,14 +88,140 @@ TouchDesignerでスタイル変換をしてる方もいるみたいなので，�
 [Style Transfer in TouchDesigner](https://freesoft.dev/program/98209499)
 """},
 
+"4":{"head":"about demo","text":"""
+The other day, I did a demonstration of the moving image generation by GAN in the open campus of the University.
+In the task of video synthesis, the title of paper is the thesis that Everytextdancenow.
+I found The implementation in PyTorch tried from Github.
+Demo estimates the Bose from video recorded,
+AI will generate a whole text image from the estimated pose.
+"""},
+
 "5":{"head":"","text":"左上が生成結果です．Webカメラを忘れて，内カメラで録画してます．",
 "img":"https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855510/output2.gif"},
+}
+note_qiita_16 ={
+"1":{"head":"Django in AWS and Nginx", "text":"""
+qiita初投稿は自分のサーバーでと思って，AWSとDjangoでデプロイしました．
+しかも間違えて連続して二つ登録してて，qiita才能なかったです．
+前提としてDjango,gunicornとPostgreSQLでサービスは作り終えた後の話です．
+"""},
 
-#"5.2":{"head":"about demo","text":"""
-#The other day, I did a demonstration of the moving image generation by GAN in the open campus of the University.
-#In the task of video synthesis, the title of paper is the thesis that Everytextdancenow.
-#I found The implementation in PyTorch tried from Github.
-#Demo estimates the Bose from video recorded,
-#AI will generate a whole text image from the estimated pose.
-#"""},
+"2":{"head":"AWS EC2インスタンス", "text":"""
+* サービス > EC2 > インスタンスでインスタンスの管理画面
+* [インスタンスの作成] を押下 > `~AMI(Amazon Machine Image)にUbuntu~` -> 新規にキーを作成する -> aws_ubuntu.pem をダウンロード
+* インスタンスの状態がrunningを確認
+* `chmod 400 aws-ubuntu.pem`:パーミッションを変更->"自分の.sshディレクトリとかに保管"
+* `ssh -i "~/.ssh/aws_ubuntu.pem" ubuntu@<ip address>`:ユーザー名はubuntu以外だとec2-userとか"""},
+
+"4":{"head":"Ubuntu env","text":"""
+* `sudo -i`
+* `apt update -y`
+* `adduser <app-user>` : ubuntu以外はuseradd
+* `gpasswd -a user_name sudo` : sudo グループに追加
+* `usermod -aG sudo <app-user>`
+* `cp -r /home/ec2-user/.ssh /home/<app-user>/.ssh`
+* `chown -R <app-user>:<app-user> /home/<app-user>/.ssh`
+* `sudo su <app-user>`
+* `chmod 0600 ~/.ssh/authorized_keys`
+* `apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib`"""},
+
+"5":{"head":"Python env", "text":"""
+* `apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib`
+* `sudo -H pip3 install virtualenv`
+* `virtualenv python3`
+* `source python3/bin/activate`
+* `pip install django gunicorn psycopg2 psycopg2-binary Pillow`"""},
+
+"6":{"head":"PostgreSQL", "text":"""
+* `sudo -u postgres psql`
+* `CREATE DATABASE <DB_NAME>;`
+* `CREATE USER <DB_USERNAME> WITH PASSWORD '<DB_PASSWORD>';`
+* `ALTER ROLE <DB_USERNAME> SET client_encoding TO 'utf8';`
+* `ALTER ROLE <DB_USERNAME> SET default_transaction_isolation TO 'read committed';`
+* `ALTER ROLE <DB_USERNAME> SET timezone TO 'UTC+9';`
+* `GRANT ALL PRIVILEGES ON DATABASE <DB_NAME> TO <DB_USERNAME>;`
+
+<pre><code>...
+ALLOWED_HOSTS = ['<ip adress>']
+...
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '<DB_NAME>',
+        'USER': '<DB_USERNAME>',
+        'PASSWORD': '<DB_PASSWORD>',
+        'HOST': 'localhost',
+        'PORT': '',
+}}</code></pre>
+"""},
+
+"7":{"head":"AWS","text":"""
+* 左カラムから、セキュリティグループ -> セキュリティグループを作成
+* インスタンス -> 右クリック(副クリック) -> ネットワーキング -> セキュリティグループの変更
+* `python3 manage.py runserver 0.0.0.0:8000`->`http://<your_ip>:8000`で確認->`deactivate`"""},
+
+"8":{"head":"gunicorn","text":"""
+* `sudo vi /etc/systemd/system/gunicorn.service`
+
+<pre><code>
+[Unit]
+Description=gunicorn daemon
+After=network.target
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/<PJ_NAME>
+ExecStart=<`which gunico` ででたpath:.**/gunicorn> --access-logfile - --workers 3 --bind unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock <PJ_NAME>.wsgi:application
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+* `sudo systemctl start gunicorn.service`
+* `sudo systemctl enable gunicorn`"""},
+
+"9":{"head":"nginx","text":"""
+* `sudo vim /etc/nginx/sites-available/<PJ_NAME>`
+<pre><code>
+server {
+        listen 80;
+        server_name <EC2のパブリックIP>;
+        location = /favicon.ico {access_log off; log_not_found off;}
+        location /static/ {
+                root /home/ubuntu/<PJ_NAME>;
+        }
+        location / {
+                include proxy_params;
+                proxy_pass http://unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock;
+        }
+}</code></pre>
+* `sudo ln -s /etc/nginx/sites-available/<PJ_NAME> /etc/nginx/sites-enabled/`
+* `sudo systemctl restart nginx`
+* `sudo ufw delete allow 8000` : #8000番ポートはもう使わないのでkill
+* `sudo ufw allow 'Nginx Full'`"""},
+
+"10":{"head":"ec2","text":"""
+* セキュリティグループ -> セキュリティグループにタイプ: HTTPのルールを追加
+* インスタンス-> ネットワーキング -> セキュリティグループの変更->セキュリティグループ選択"""},
+
+"11":{"head":"Elastic IPs","text":"""
+* サイドメニュー -> Elastic IPsからポチポチ
+* Elastic IP アドレスの割り当て -> 割り当て
+* Elastic IP アドレスの関連付け -> 関連付け"""},
+
+"12":{"head":"domain", "text":"""
+* AWS SERVICE -> Route 53 -> DNS 管理 -> Create Hosted Zone -> 取得したドメインを記入 -> create
+* ホストゾーンの詳細 -> レコードセットの作成 -> type:A, value:<取得したElastic IP記入> -> 作成
+* レコードセットの一覧に元々あるType:NSの四つのvalue（ns-\*\*.\*\*.\*\*）を控えておく
+* レコードセットの一覧のいずれを選択 -> TTL（キャッシュする時間）を300sに設定
+* お名前.com -> ドメイン一覧 -> 取得したドメインを選択 -> ネームサーバー情報
+* 他のネームサーバを利用 -> ネームサーバに先ほどのNSの四つのvalue -> 設定
+* `sudo vi /etc/nginx/sites-available/<PJ_NAME>` -> `server_name <your doman> <your Elastic IP>;`
+* `vi <PJ_NAME>/<settings file>.py` -> `ALOWED_HOST=["<DOMAIN>","<Elastic IP>"]`"""},
+
+"13":{"head":"ssl","text":"""
+* [certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)でUbuntuとNginx選択->コマンド上から実行
+* `sudo add-apt-repository universe`ができないので，URLから直接入れる
+* `sudo certbot --nginx`でポチポチ -> `whether or not to redirect HTTP`で2を選択
+* `sudo certbot renew --post-hook "systemctl restart nginx"`:を試す
+* `sudo vi /etc/cron.d/letsencrypt` -> `0 1 * * 1 sudo certbot renew --post-hook "systemctl restart nginx"`
+* ec2 -> セキュリティグループ -> セキュリティグループにタイプ: HTTPSのルールを追加"""}
 }
