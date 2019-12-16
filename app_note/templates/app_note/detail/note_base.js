@@ -10,10 +10,36 @@ function htmlDecode(input){
 // [ref](https://www.suzu6.net/posts/38/)
 
 //Block level renderer.
-renderer.code   = function (code, language) {
+/*renderer.code   = function (code, language) {
     return '<pre><code class='+language+'>'
     + hljs.highlightAuto(htmlDecode(code))
     + '</code></pre>';
+};*/
+
+/*[ref](https://qiita.com/59naga/items/7d46155715416561aa60)*/
+var highlight = function(code, lang, callback){
+  return hljs.highlight(lang,code).value;
+}
+renderer.code = function(code, lang, escaped) {
+  if (this.options.highlight) {
+    var out = this.options.highlight(code, lang);
+    if (out != null && out !== code) {
+      escaped = true;
+      code = out;
+    }
+  }
+
+  if (!lang) {
+    return '<pre><code>'
+      + (escaped ? code : escape(code, true))
+      + '\n</code></pre>';
+  }
+  return '<pre><code class="'
+    + this.options.langPrefix
+    + escape(lang, true)
+    + '">'
+    + (escaped ? code : escape(code, true))
+    + '\n</code></pre>\n';
 };
 renderer.html   = function (html) {return htmlDecode(html)};
 renderer.heading = function(text, level) {
@@ -35,7 +61,7 @@ renderer.table   = function(header, body) {
     + '</div>';
 };
 // ----------------------------------------------
-renderer.codespan   = function (code){return htmlDecode(code);};
+//renderer.codespan   = function (code){return htmlDecode(code);};
 renderer.em         = function(text) {
     var indexNumber = text.indexOf('/');
     if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
@@ -58,9 +84,14 @@ marked.setOptions({
   silent     : false, //例外をスローしません
   smartLists : true , // スマートなリストにするか.use smarter list behavior than those found in markdown.pl.
   smartypants: false, //クオートやダッシュの使い方.use "smart" typographic punctuation for things like quotes and dashes.
-  langPrefix : 'language-',
-  highlight  : function(code, lang) {return hljs.highlightAuto(code, [lang]).value;}, //A function to highlight code blocks
+  //langPrefix : 'language-',
+  //highlight  : function(code, lang) {return hljs.highlightAuto(code, [lang]).value;}, //A function to highlight code blocks
   renderer   : renderer, //An object containing functions to render tokens to HTML.
+        langPrefix: '',
+        highlight: function(code, lang) {
+          return hljs.highlightAuto(code, [lang]).value
+        }
+
 });
 // -----------------------------------------------------------------------------
 // Monkey in String.trimStart() support for browsers that don't support it

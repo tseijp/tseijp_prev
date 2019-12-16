@@ -1,10 +1,10 @@
 {% for note in object_list %}
-<div class="col-md-12 col-lg-8">
+<div class="col-xs-12 col-md-12 {%if id%}{%else%}col-lg-6{%endif%}">
     <div class="card news-card">
-        <div class="embed-responsive embed-responsive-1by1" style="height:
+        <div class="embed-responsive embed-responsive-1by1" {#style="height:
             {%if id%}{%if id_user == note.posted_user.id%}700px{%else%}
             {%if id == note.id%}700px{%else%}450px{%endif%}{%endif%}
-            {%else%}450px{%endif%}">
+            {%else%}450px{%endif%}"#>
             {% if not id%}
             <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
             {% endif %}
@@ -22,18 +22,18 @@
         <!--img src="https://source.unsplash.com/user/diegyms/300x200" alt="vitateach" /-->
         <div class="card-body">
         <div class="row">
-            <div class="col-sm text-right"><h6>
+            <div class="col text-center"><h6>
               <i class="far fa-comment">{{note.reply_number}}</i></h6></div>
-            <div class="col-sm text-right button" id="info_like_{{note.id}}"><h6>
+            <div class="col text-center button" id="info_like_{{note.id}}"><h6>
               <i class="far fa-heart"></i>
             </h6></div>
-            <div class="col-sm text-right"><h6>
+            <div class="col text-center"><h6>
               <i class="fas fa-external-link-alt"></i>
             </h6></div>
             {% if user.is_staff %}
-            <div class="col-sm text-right"><h6>
+            <!--div class="col-sm text-right"><h6>
               {{note.id}},{{note.get_chichild_id}}
-            </h6></div>
+            </h6></div-->
             {% endif %}
         </div>
         <hr>

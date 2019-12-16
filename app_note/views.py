@@ -17,7 +17,7 @@ from app_note.models  import *
 from app_note.values  import *
 from app_user.values  import *
 from app_note.initial import *
-def p(txt):print('\n\n');print('>>>>'+str(txt));print('\n\n')
+#def p(txt):print('\n\n');print('>>>>'+str(txt));print('\n\n')
 def md_to_text():pass
 def get_id  (request):return int(request.GET['id' ]) if'id' in request.GET else 0
 def get_tag (request):return request.GET['tag'] if'tag'in request.GET else ''
@@ -77,14 +77,13 @@ class NoteHomeView(ListView, ModelFormMixin):
         context['content'     ]  = get_index_content("note")
         context['child_id'    ]  = id_obj[0].get_child_id()    if id_obj else []
         context['chichild_id' ]  = id_obj[0].get_chichild_id() if id_obj else []
-        print(context)
         return context
     def post(self, request, *args, **kwargs):
         tag    = get_tag(self.request)
         user   = get_user(self.request.user.id)
         self.object      = None               ### ないとエラー
         self.object_list = self.get_queryset()### ないとエラー
-        form = self.get_form();print(self.request.POST)
+        form = self.get_form();#print(self.request.POST)
         if form.is_valid():
             if  tag:form.instance.posted_tag  = tag
             if user:form.instance.posted_user = self.request.user

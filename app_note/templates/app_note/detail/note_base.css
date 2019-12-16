@@ -4,7 +4,6 @@ body {
     /*width :500px*/;
     height:100%;
     overflow: hidden;
-    padding:25px 50px 50px;
 }
 thead th {
     background: #fff;
@@ -15,25 +14,30 @@ thead th {
     background: black;
 }*/
 
-
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 576px) {/*xs~*/
+  pre{ background-color: #F7F7F6;font-size:9px;width:80%; }
+  body { font-size:16px; padding:16px 16px 16px;}
   h6   { font-size:25px; padding:0px 0px 0px; }
-  body { font-size:15px; }
-  p    { font-size:15px; }
-  li   { font-size:15px; }
-  li p { font-size:15px; }
+  p    { font-size:16px; }
+  li   { font-size:16px; }
+  li p { font-size:16px; }
 }
-@media screen and (min-width: 576px) and (max-width:768px) {
+@media screen and (min-width: 576px) and (max-width:768px) {/*sm~md*/
+  pre{ background-color: #F7F7F6;font-size:18px;width:90%; }
+  body { font-size:18px; padding:25px 50px 50px;}
   h6   { font-size:50px; padding:0px 0px 0px; }
-  body { font-size:18px; }
   p    { font-size:18px; }
   li   { font-size:18px; }
   li p { font-size:18px; }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {/*~xl*/
+  pre{ background-color: #F7F7F6;font-size:25px;width:100%; }
+  body { font-size:20px; padding:25px 50px 50px;}
   h6   { font-size:75px; padding:0px 0px 0px; }
-  body { font-size:20px; }
   p    { font-size:20px; }
   li   { font-size:20px; }
   li p { font-size:20px; }
 }
+
+pre .filename   {display:inline-block; padding: 0 .25em; background: rgba(0,0,0,0.07);}
+pre .filename+ *{display:block;}

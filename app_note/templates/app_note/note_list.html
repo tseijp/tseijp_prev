@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block "main_block" %}
-<div class="">
+<div class="container">
 <div class="row">
 <div class="col-sm-5">
       <h1 style="display:inline;font-size:75px">note</h1>
@@ -53,8 +53,9 @@
       {#%endif%#}{#%endif%#}
 </div>
 </div>
-
-<div class="row justify-content-center">
+</div>
+<div class="container">
+<div class="row" >
   {% include 'app_note/list/objects.html'%}
 </div>
 </div>
