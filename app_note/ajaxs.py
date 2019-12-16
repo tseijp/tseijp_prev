@@ -33,8 +33,10 @@ def liked_ajax(request, get, note):
     dict ={"message":"Not working"}
     if note :#and not "%s"%get['user']=="%s"%request.user.id:#editor違ってnote存在
         note_like = LikeModel.objects.filter(note_object=note).order_by('-id')
-        if not request.user.id in [l.posted_user.id for l in note_like] or not request.user:
-            print('you are not in database of this note and there is note')
+        try   :user_id = request.user.id
+        except:user_id=None
+        if not user_id in [l.posted_user.id for l in note_like] or not request.user:
+            #print('you are not in database of this note and there is note')
             obj = LikeModel.objects.create(note_object=note)
             obj.posted_user = get_user(request.user.id)
             obj.save()
@@ -46,7 +48,7 @@ def liked_ajax(request, get, note):
             dict['result'] = 'delete like'
         note.save()
         dict['liked_number'] = note.liked_number
-        print(dict['result'], "\t", dict['liked_number'])
+        #print(dict['result'], "\t", dict['liked_number'])
     return dict
 
 def note_list_ajax(request):

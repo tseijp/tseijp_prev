@@ -1,5 +1,4 @@
 var renderer = new marked.Renderer()
-hljs.initHighlightingOnLoad();
 function htmlDecode(input){
   var e = document.createElement('div');
   e.innerHTML = input;
@@ -17,12 +16,13 @@ function htmlDecode(input){
 };*/
 
 /*[ref](https://qiita.com/59naga/items/7d46155715416561aa60)*/
+hljs.initHighlightingOnLoad();
 var highlight = function(code, lang, callback){
   return hljs.highlight(lang,code).value;
 }
 renderer.code = function(code, lang, escaped) {
   if (this.options.highlight) {
-    var out = this.options.highlight(code, lang);
+    var out = this.options.highlight(htmlDecode(code), lang);
     if (out != null && out !== code) {
       escaped = true;
       code = out;
@@ -31,7 +31,8 @@ renderer.code = function(code, lang, escaped) {
 
   if (!lang) {
     return '<pre><code>'
-      + (escaped ? code : escape(code, true))
+    //  + (escaped ? htmlDecode(code) : escape(htmlDecode(code), true))
+      + htmlDecode(code)
       + '\n</code></pre>';
   }
   return '<pre><code class="'
@@ -61,7 +62,9 @@ renderer.table   = function(header, body) {
     + '</div>';
 };
 // ----------------------------------------------
-//renderer.codespan   = function (code){return htmlDecode(code);};
+renderer.codespan   = function (code){
+    return '<code>'+htmlDecode(code)+'</code>';
+};
 renderer.em         = function(text) {
     var indexNumber = text.indexOf('/');
     if (indexNumber !== -1 && text.substr(indexNumber - 1, 1) !== "\\") {
@@ -85,13 +88,12 @@ marked.setOptions({
   smartLists : true , // スマートなリストにするか.use smarter list behavior than those found in markdown.pl.
   smartypants: false, //クオートやダッシュの使い方.use "smart" typographic punctuation for things like quotes and dashes.
   //langPrefix : 'language-',
-  //highlight  : function(code, lang) {return hljs.highlightAuto(code, [lang]).value;}, //A function to highlight code blocks
+  //highlight  : highlight,//function(code, lang) {return hljs.highlightAuto(code, [lang]).value;}, //A function to highlight code blocks
   renderer   : renderer, //An object containing functions to render tokens to HTML.
-        langPrefix: '',
-        highlight: function(code, lang) {
-          return hljs.highlightAuto(code, [lang]).value
-        }
-
+        //langPrefix: '',
+        //highlight: function(code, lang) {
+        //  return hljs.highlightAuto(code, [lang]).value
+        //}
 });
 // -----------------------------------------------------------------------------
 // Monkey in String.trimStart() support for browsers that don't support it

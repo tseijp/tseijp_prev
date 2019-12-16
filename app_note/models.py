@@ -24,8 +24,8 @@ class NoteModel(m.Model):
     posted_time   = m.DateTimeField(default=timezone.now , blank=True, null=True)
     liked_number  = m.IntegerField(default=0             , blank=True, null=True)
     reply_number  = m.IntegerField(default=0             , blank=True, null=True)
-    posted_tag = m.CharField(max_length=255           , blank=True, null=True)
-    posted_img = m.CharField(max_length=255           , blank=True, null=True)
+    posted_tag = m.CharField(max_length=255              , blank=True, null=True)
+    posted_img = m.CharField(max_length=255              , blank=True, null=True)
     # ja
     ja_head= m.CharField(max_length=255           , blank=True, null=True)
     ja_text= m.TextField(max_length=65535         , blank=True, null=True)
@@ -50,6 +50,7 @@ class NoteModel(m.Model):
     def get_comment    (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child      (self):return [c for c in NoteModel.objects.filter(note_object=self)]
     def get_child_id   (self):return [c.id for c in self.get_child()]
+    def get_child_num  (self):return len( self.get_child() )
     def get_child_child(self):return [c.get_child() for c in self.get_child()]
     def get_chichild_id(self):return list(itertools.chain.from_iterable([[c2.id for c2 in c] for c in self.get_child_child()]))
     def get_children_id(self):return [o.id for o in self.get_children()]
