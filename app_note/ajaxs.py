@@ -1,4 +1,5 @@
 ### Python
+import difflib
 from googletrans import Translator
 ### Django
 from django.http import JsonResponse### ajax
@@ -51,6 +52,23 @@ def liked_ajax(request, get, note):
         #print(dict['result'], "\t", dict['liked_number'])
     return dict
 
+def ret_ajax(request, get, note):
+    dict ={"message":"Not working"}
+    if note and get['ret']:
+        translator = Translator()
+        text0 = get['ret']
+        text1 = text0.replace(',','、').replace('.','。').replace('\n','').replace(' ','')
+        text2 = translator.translate(text1, dest='en').text
+        text3 = translator.translate(text2, dest='ja').text
+        text4 = text3.replace('.','.\n').replace('。', '. \n',).replace('、', ', ')
+        ratio = difflib.SequenceMatcher(None, text1, text3).ratio()
+        assss= [r[2] for r in[[0.9,9,'秀'],[0.8,0.9,'優'],[0.7,0.8,'良'],[0.6,0.7,'可'],[-9,0.6,'不可']]if r[0]<ratio<r[1]][0]
+        dict['retja'] =text4
+        dict['reten'] =text2
+        dict['ratio'] =ratio if text2 else 'Copy here!!'
+        dict['assss'] =assss
+    return dict
+
 def note_list_ajax(request):
     dict={}
     if request.GET:
@@ -60,11 +78,9 @@ def note_list_ajax(request):
         #print('note',note)
         if   get['mode']=="posted":dict = posted_ajax(request, get, note)
         elif get['mode']=="liked" :dict = liked_ajax(request, get, note)
+        elif get['mode']=="ret"   :dict = ret_ajax(request, get, note)
         #print('dict',dict)
     return JsonResponse(dict)
-
-
-
 
 
 

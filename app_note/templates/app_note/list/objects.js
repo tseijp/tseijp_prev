@@ -24,19 +24,26 @@ var get_message_data = function(url, note_id){
     }
 }
 var get_note_data = function(url, note_id){
-    data = get_message_data(url, note_id)
-    data['head']= $("#id_update_head_"+note_id).val()
-    data['text']= $("#id_update_text_"+note_id).val()
-    data['tag' ]= $("#id_update_tag_" +note_id).val()
-    data['img' ]= $("#id_update_img_" +note_id).val()
-    data['mode']="posted"
+    data = get_message_data(url, note_id);
+    data['head']= $("#id_update_head_"+note_id).val();
+    data['text']= $("#id_update_text_"+note_id).val();
+    data['tag' ]= $("#id_update_tag_" +note_id).val();
+    data['img' ]= $("#id_update_img_" +note_id).val();
+    data['mode']="posted";
     return data
 }
 var get_like_data = function(url, note_id){
-    data = get_message_data (url, note_id)
-    data['mode'] = "liked"
+    data = get_message_data (url, note_id);
+    data['mode'] = "liked";
     return data
 }
+var ret_send_data = function(url, note_id){
+    data = get_message_data (url, note_id);
+    data['mode'] = "ret";
+    data['ret']  = $("#ret_text_" +note_id).val();
+    return data
+}
+
 var send_message = function(data){
     clearTimeout(delayTimer);
     delayTimer = setTimeout(function(){
@@ -45,23 +52,30 @@ var send_message = function(data){
             data    : data,
             headers :{'X-CSRFToken': csrftoken },//[ref](https://jpn.itlibra.com/article?id=20974)
             dataType: 'json',
-            success : function(d){
+            success : function(d){if(d){
                 console.log(data['mode']);
                 if(data['mode']=="posted"){
                     if (d['note_user_id'] != "{{user.id}}"){
                         window.location.replace("{%url 'note'%}?id="+data['id']);
                     } else {reload_iframe(data['id']);}
-                } else if(data['mode']=="liked"){
+                }
+                else if(data['mode']=="liked"){
                     $('#info_like_'+data['id']).children('h6').children('i').text(d['liked_number'])
                     if (d['result'] == "delete like"){
                         $('#info_like_'+data['id']).children('h6').children('i').attr("class", "far fa-heart")
-                    } else if (d['result'] == "new like"){
+                    }
+                    else if (d['result'] == "new like"){
                         $('#info_like_'+data['id']).children('h6').children('i').attr("class", "fas fa-heart")
                     }
-                } else { console.log('no mode')}
-            }
+                } else if(data['mode']=="ret"){
+                    $('#ret_ratio_'+data['id']).text(d['assss']+'('+d['ratio']+')');
+                    $('#ret_retja_'+data['id']).text(d['retja']);
+                    $('#ret_reten_'+data['id']).text(d['reten']);
+                }
+                else { console.log('no mode')}
+            }}
         });
-    }, 1000);
+    }, {%if user.is_staff%}1000{%else%}3000{%endif%});
     return false;
 };
 $(document).ready( function(){
@@ -79,6 +93,16 @@ $(document).ready( function(){
             data = get_like_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data)
         })
+        {% if  user.is_authenticated %}{% endif %}
+        $('#ret_text_{{note.id}}').keyup(function(){
+            data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
+            send_message(data);
+        })
+        $('#ret_send_{{note.id}}').click(function(){
+            data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
+            send_message(data);
+        });
+
     {% endfor %}
 });
 /* ----------message---------- */

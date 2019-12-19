@@ -18,9 +18,13 @@
             <span style="font-size:25px" class="badge elegant-color-dark">
             <i class="fa fa-tag prefix"></i></span></a></li>
         <li class="nav-item"><a class="nav-link"        id="info-tab-{{note.id}}"  data-toggle="tab"
-            href="#info-{{note.id}}"role="tab" aria-controls="info"aria-selected="false">
+            href="#info-{{note.id}}"role="tab" aria-controls="info-{{note.id}}"aria-selected="false">
             <span style="font-size:25px" class="badge elegant-color-dark">
             <i class="fas fa-info-circle"></i></span></a></li>
+        <li class="nav-item"><a class="nav-link"        id="info-tab-{{note.id}}"  data-toggle="tab"
+            href="#ret-{{note.id}}"role="tab" aria-controls="ret-{{note.id}}"aria-selected="false">
+            <span style="font-size:25px" class="badge elegant-color-dark">
+            <i class="fas fa-exchange-alt"></i></span></a></li>
     </ul>
 </div>
 
@@ -35,7 +39,7 @@
             <form method="POST">
             {% csrf_token %}
             <i class="fa fa-pencil-alt prefix"></i>
-            <textarea type="text" id="id_update_text_{{note.id}}"
+            <textarea type="text" id="id_update_text_{{note.id}}"  rows="25"
               class="md-textarea form-control">{%if user.id == note.posted_user.id and note.ja_text%}{{note.ja_text}}{%endif%}</textarea>
             <label for="id_update_text_{{note.id}}">
               {%if user.id == note.posted_user.id%}Change{%else%}Send{%endif%} message</label>
@@ -45,55 +49,17 @@
     </div>
 
     <div class="tab-pane fade show" id="sub-{{note.id}}"
-         role="tabpanel" aria-labelledby="sub-tab-{{note.id}}">
-        <div class="row">
-            <div class="col-sm-6 text-right" >
-                <div class="md-form form-sm black-textarea">
-                    <form method="POST">
-                    {% csrf_token %}
-                    <i class="fa fa-tag prefix"></i>
-                    <input type="text" id="id_update_head_{{note.id}}"
-                    class="form-control form-control-sm"
-                    value="{%if user.id == note.posted_user.id and note.ja_head%}{{note.ja_head}}{%endif%}">
-                    <label for="id_update_head_{{note.id}}">title</label>
-                    </form>
-                </div>
-
-                <div class="md-form form-sm black-textarea">
-                    <form method="POST">
-                    {% csrf_token %}
-                    <i class="fa fa-tag prefix"></i>
-                    <input type="text" id="id_update_tag_{{note.id}}"
-                    class="form-control form-control-sm"
-                    value="{%if note.posted_tag%}{{note.posted_tag}}{%endif%}">
-                    <label for="id_update_tag_{{note.id}}">tags</label>
-                    </form>
-                </div>
-
-                <div class="md-form form-sm black-textarea">
-                    <form method="POST">
-                    {% csrf_token %}
-                    <i class="fa fa-tag prefix"></i>
-                    <input type="text" id="id_update_img_{{note.id}}"
-                    class="form-control form-control-sm"
-                    value="{%if user.id == note.posted_user.id and note.posted_img%}{{note.posted_img}}{%endif%}">
-                    <label for="id_update_img_{{note.id}}">imgs</label>
-                    </form>
-                </div>
-
-            </div>
-            <div class="col-sm-6 text-right" >
-                {% if user.id == note.posted_user.id and note.id%}
-                <a href="{% url 'note_delete' pk=note.id %}" style="color:black">
-                  <i class="fas fa-trash"></i>delete</a>
-                {% endif %}
-            </div>
-        </div>
+        role="tabpanel" aria-labelledby="sub-tab-{{note.id}}">
+        {% include "app_note/list/objects_body_tag.html" %}
     </div>
 
     <div class="tab-pane fade show" id="info-{{note.id}}"
          role="tabpanel" aria-labelledby="info-tab-{{note.id}}">
          {% include "app_note/list/objects_body_info.html" %}
+    </div>
+    <div class="tab-pane fade show" id="ret-{{note.id}}"
+         role="tabpanel" aria-labelledby="info-ret-{{note.id}}">
+         {% include "app_note/list/objects_body_ret.html" %}
     </div>
 </div>
 </div>

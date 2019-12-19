@@ -62,8 +62,14 @@ renderer.table   = function(header, body) {
     + '</div>';
 };
 // ----------------------------------------------
+new ClipboardJS('button');
 renderer.codespan   = function (code){
-    return '<code>'+htmlDecode(code)+'</code>';
+    decode=htmlDecode(code)
+    return '<span class="codespan">'
+            +'<button class="btn btn-sm" data-clipboard-text="'+decode+'">'
+            +'<i class="fas fa-copy"></i></button>'
+            +'<code class="code">'+decode+'</code>'
+            +'</span>';
 };
 renderer.em         = function(text) {
     var indexNumber = text.indexOf('/');

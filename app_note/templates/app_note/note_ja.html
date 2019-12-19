@@ -2,7 +2,7 @@
 {% extends "app_note/detail/note_base.html" %}
 {% block "iframe_block" %}
 {%if object.ja_head%}
-<h6><a href="{%url 'note'%}/?id={{object.id}}" style="color:black">{{object.ja_head}}</a></h6>
+<h6>{{object.ja_head}}</h6>
 <hr>
 {%endif%}
 {% if object.img_is_url %}

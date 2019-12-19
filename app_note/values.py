@@ -7,7 +7,7 @@ note_list_context = {"carousel":[
 ]}
 
 note_qiita_8 = {
-"1":{"head":"初めに","text":"""
+"1":{"head":"TouchDesignerで動画生成","text":"""
 都内の某国立大で化学生命（バイオ系）専攻してます.
 先日, 大学のオープンキャンパスでGANによる動画生成のデモ発表をしました．
 
@@ -17,16 +17,16 @@ TouchDesigner使えばリアルタイムで実装できるかな...と思って�
 
 以降では二つのことを共有出来たらなーと思います．最後にデモについて少し書きます！
 
-  * TouchDesignerでPythonの重い処理の実行.
-  * Pythonライブラリ（PyTorch等）を入れる.
+  1. TouchDesignerでPythonの重い処理の実行.
+  1. Pythonライブラリ（PyTorch等）を入れる.
 
-TouchDesignerを初めて数か月なのに, 何故かqiitaの記事に登録してました．qiitaも初めてです．
-しかも間違えて二つ入力しちゃってました．．．代替頂ける方ご連絡お願いします(;__;)
-実用性ありそうなこと書けませんでした．．．本当に申し訳ありません．
+TouchDesignerを初めて数か月なのに, 何故かqiitaの記事に登録してました．qiitaも初めてです．あまり実用性ありそうなこと書けませんでした(;_;)
+
 """},
 
 
 "2":{"head":"重い処理の実行について","text":"""
+TouchDesignerはPythonが本来の処理にも使われており，他で重い処理をするとフリーズします．
 TouchDesignerはPythonが本来の処理にも使われており，他で重い処理をするとフリーズします．
 なので，subprocessとしてプロセスをいくつかに分けます
 
@@ -48,6 +48,7 @@ subprocess.Popen(['python', 'util/td_utils.py',
 
 * [td_utils.pyコードサンプル](https://gist.github.com/tseijp/caab3149c3c9fcbe1e45c466c1f41a53)
 * [参考:TouchDesigner | Python and the Subprocess Module | Matthew Ragan](https://matthewragan.com/2019/08/14/touchdesigner-python-and-the-subprocess-module/)
+
 """},
 
 "2.5":{"head":"","text":"""
@@ -55,19 +56,18 @@ poseの動画から全身の動画をするベースCOMPです. 前処理が終�
 生成が終わったら次の処理に通知させます．
 ""","img":"https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855138/pose2vid.jpg"},
 
-"3":{"head":"TouchDeisngerでのPythonライブラリについて",
-    "text":"""
+"3":{"head":"TouchDeisngerでのPythonライブラリについて","text":"""
 venvでpip install -> TouchDesinger内でPathを通す or sys.path.append()
 
-  * TouchDesingerでは内部にNumpyを含んでおり，しかも結構内部で依存してそうでした．
-  * PyTorchを入れたとき，一緒にNumpyが入ってきて，壊れました．環境構築しなおしました．
+  1. TouchDesingerでは内部にNumpyを含んでおり，しかも結構内部で依存してそうでした．
+  1. PyTorchを入れたとき，一緒にNumpyが入ってきて，壊れました．環境構築しなおしました．
 
 
-condaで仮想環境 -> TouchDesignerのsite-packages消す -> <code><pre>mlink /d site-packages {{path-to-venv}}/site-packages</code></pre>
+condaで仮想環境 -> TouchDesignerのsite-packages消す -> `mlink /d site-packages {{path-to-venv}}/site-packages`
 
-  * この方法が唯一PyTorchが動いたのですが，デモ当日にGPU周りで謎のエラーが出ました．
+  1. この方法が唯一PyTorchが動いたのですが，デモ当日にGPU周りで謎のエラーが出ました．
   (`libiomp5md.dll、libiomp5mmd.pdb libiompstubs5md.dll` を上書きしたら動きました)
-  * 結局最初からprocessを分ければよかったなと反省してます．結論はまだ出てないですが，自分なりの考えをまとめました．
+  1. 結局最初からprocessを分ければよかったなと反省してます．結論はまだ出てないですが，自分なりの考えをまとめました．
 """},
 
 "4":{"head":"デモについて","text":"""
@@ -101,127 +101,177 @@ AI will generate a whole text image from the estimated pose.
 }
 note_qiita_16 ={
 "1":{"head":"Django in AWS and Nginx", "text":"""
-qiita初投稿は自分のサーバーでと思って，AWSとDjangoでデプロイしました．
-しかも間違えて連続して二つ登録してて，qiita才能なかったです．
-前提としてDjango,gunicornとPostgreSQLでサービスは作り終えた後の話です．
+今年の春にDjangoを勉強して，gunicornとHerokuでデプロイしたサービスを半年放置していたらサーバーエラーで動かなくなっていました．．．
+
+12月はqiitaが熱いですね！🔥自分も[Advent Calendar](https://qiita.com/advent-calendar/2019/touchdesigner)に参加したくて，でも初投稿は自分のサイトでしたかったので，結局AWSでデプロイし直しました．（あと，夏の増税前に駆け込みで買ったドメインも供養しないとなと思ってました．）
+
+AWSがKyashというバーチャルVisaカードが使えたので使ってみました．下のサイト通りにしたらうまくいきました（特に最初のサイト凄い！20分！）．AWSで初めてデプロイしたので，作業中のメモをまとめました．
+
+### ref
+1.  [【20分でデプロイ】AWS EC2にDjango+PostgreSQL+Nginx環境を構築してササッと公開 - Qiita](https://qiita.com/tachibanayu24/items/b8d73cdfd4cbd42c5b1d)
+1. [Djangoの既存プロジェクトをec2にデプロイ - Qiita](https://qiita.com/kur/items/fb75354ee53671c79614)
+1. [【AWSでサイト制作5】独自ドメイン設定 - Qiita](https://qiita.com/HitomiHoshisaki/items/7d7345eb67390f16fed4)
+1. [AWS Route 53を使って独自ドメインのWebページを表示させてみよう | Avintonジャパン株式会社](https://avinton.com/academy/route53-dns-vhost/)
+1. [お名前.comで取ったドメインをAWSの「Route 53」で利用する | melon.Lab](https://mel.onl/onamae-domain-aws-route-53/#toc2)
+1. [EC2上のDjangoアプリを独自ドメイン、SSL対応する - Qiita](https://qiita.com/moto2g/items/e6454a51d61570948171)
 """},
 
-"2":{"head":"AWS EC2インスタンス", "text":"""
-* サービス > EC2 > インスタンスでインスタンスの管理画面
-* [インスタンスの作成] を押下 > `~AMI(Amazon Machine Image)にUbuntu~` -> 新規にキーを作成する -> aws_ubuntu.pem をダウンロード
-* インスタンスの状態がrunningを確認
-* `chmod 400 aws-ubuntu.pem`:パーミッションを変更->"自分の.sshディレクトリとかに保管"
-* `ssh -i "~/.ssh/aws_ubuntu.pem" ubuntu@<ip address>`:ユーザー名はubuntu以外だとec2-userとか"""},
+"2":{"head":"AWS EC2", "text":"""
+最初間違えてUbuntuを選んでなくて気づくのに時間かかりました．．．(;__;)
 
-"4":{"head":"Ubuntu env","text":"""
-* `sudo -i`
-* `apt update -y`
-* `adduser <app-user>` : ubuntu以外はuseradd
-* `gpasswd -a user_name sudo` : sudo グループに追加
-* `usermod -aG sudo <app-user>`
-* `cp -r /home/ec2-user/.ssh /home/<app-user>/.ssh`
-* `chown -R <app-user>:<app-user> /home/<app-user>/.ssh`
-* `sudo su <app-user>`
-* `chmod 0600 ~/.ssh/authorized_keys`
-* `apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib`"""},
+1. サービス(左上) -> EC2 -> インスタンス(左側)->インスタンスの管理画面へ
+1. [インスタンスの作成] を押下 -> `AMI(Amazon Machine Image)`にUbuntu選択 -> 新規にキーを作成する -> `aws_ubuntu.pem` をダウンロード
+1. インスタンスの状態がrunningかを確認
+1. `chmod 400 aws-ubuntu.pem`:パーミッションを変更->自分の`~/.ssh`ディレクトリとかに保管
+1. `ssh -i "~/.ssh/aws_ubuntu.pem" ubuntu@<ip address>`:ユーザー名はubuntu以外だとec2-userとか
+"""},
 
-"5":{"head":"Python env", "text":"""
-* `apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib`
-* `sudo -H pip3 install virtualenv`
-* `virtualenv python3`
-* `source python3/bin/activate`
-* `pip install django gunicorn psycopg2 psycopg2-binary Pillow`"""},
+"3":{"head":"env","text":"""
+### Ubuntu env
+Ubuntuのユーザーを作成し，作ったユーザーでsshできるようにします．
 
-"6":{"head":"PostgreSQL", "text":"""
-* `sudo -u postgres psql`
-* `CREATE DATABASE <DB_NAME>;`
-* `CREATE USER <DB_USERNAME> WITH PASSWORD '<DB_PASSWORD>';`
-* `ALTER ROLE <DB_USERNAME> SET client_encoding TO 'utf8';`
-* `ALTER ROLE <DB_USERNAME> SET default_transaction_isolation TO 'read committed';`
-* `ALTER ROLE <DB_USERNAME> SET timezone TO 'UTC+9';`
-* `GRANT ALL PRIVILEGES ON DATABASE <DB_NAME> TO <DB_USERNAME>;`
+1. `sudo -i`
+1. `apt update -y`
+1. `adduser <app-user>` : ubuntu以外はuseraddでまた違うらしい
+1. `gpasswd -a user_name sudo` : sudo グループに追加
+1. `usermod -aG sudo <app-user>`
+1. `cp -r /home/ec2-user/.ssh /home/<app-user>/.ssh`
+1. `chown -R <app-user>:<app-user> /home/<app-user>/.ssh`
+1. `sudo su <app-user>`
+1. `chmod 0600 ~/.ssh/authorized_keys`
+
+### Python env
+
+1. `apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib`
+1. `sudo -H pip3 install virtualenv`
+1. `virtualenv <venv_name>`
+1. `source <venv_name>/bin/activate`
+1. `pip install django gunicorn psycopg2 psycopg2-binary Pillow`
+"""},
+
+"4":{"head":"PostgreSQL", "text":"""
+Herokuとかとだいたい同じです．
+
+1. `sudo -u postgres psql`
+1. `CREATE DATABASE <DB_NAME>;`
+1. `CREATE USER <DB_USERNAME> WITH PASSWORD '<DB_PASSWORD>';`
+1. `ALTER ROLE <DB_USERNAME> SET client_encoding TO 'utf8';`
+1. `ALTER ROLE <DB_USERNAME> SET default_transaction_isolation TO 'read committed';`
+1. `ALTER ROLE <DB_USERNAME> SET timezone TO 'UTC+9';`
+1. `GRANT ALL PRIVILEGES ON DATABASE <DB_NAME> TO <DB_USERNAME>;`
+
 
 <pre><code>...
-ALLOWED_HOSTS = ['<ip adress>']
+ALLOWED_HOSTS = ['{{ip adress}}']
 ...
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '<DB_NAME>',
-        'USER': '<DB_USERNAME>',
-        'PASSWORD': '<DB_PASSWORD>',
+        'NAME': '{{DB_NAME}}',
+        'USER': '{{DB_USERNAME}}',
+        'PASSWORD': '{{DB_PASSWORD}}',
         'HOST': 'localhost',
         'PORT': '',
 }}</code></pre>
 """},
 
-"7":{"head":"AWS","text":"""
-* 左カラムから、セキュリティグループ -> セキュリティグループを作成
-* インスタンス -> 右クリック(副クリック) -> ネットワーキング -> セキュリティグループの変更
-* `python3 manage.py runserver 0.0.0.0:8000`->`http://<your_ip>:8000`で確認->`deactivate`"""},
+"5":{"head":"AWS","text":"""
+1. 左カラムから、セキュリティグループ -> セキュリティグループを作成
+1. 作成したものを右クリック -> ルールの作成 ->
+    1. `カスタムTCP▽`,
+    1. `TCP`,
+    1. `8000`
+    1. `0,0,0,0/0`
+1. インスタンス -> 右クリック -> ネットワーキング -> セキュリティグループの変更->作成したものを選択
+1. `python3 manage.py runserver 0.0.0.0:8000`
+1. `http://<your_ip>:8000`で確認->`deactivate`:venvぬける
+"""},
 
-"8":{"head":"gunicorn","text":"""
-* `sudo vi /etc/systemd/system/gunicorn.service`
+"6":{"head":"gunicorn","text":"""
+gunicornの設定をします．自分はアクセスログとエラーログをホームディレクトリに保存してます．gunicornの場所を間違えてはまったので気を付けてください．（venv使ったかで変わります）
 
-<pre><code>
-[Unit]
+1. `sudo vi /etc/systemd/system/gunicorn.service`
+1. `sudo systemctl start gunicorn.service`
+1. `sudo systemctl enable gunicorn`
+
+<pre><code>[Unit]
 Description=gunicorn daemon
 After=network.target
 [Service]
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/<PJ_NAME>
-ExecStart=<`which gunico` ででたpath:.**/gunicorn> --access-logfile - --workers 3 --bind unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock <PJ_NAME>.wsgi:application
+ExecStart={{`which gunicorn` ででたpath. **/gunicornとか}}
+--workers 3 --bind unix:/home/{{user}}/{{prj}}/{{prj}}.sock
+{{prj_name}}.wsgi:application
+--access-logfile "{{any_dir}}/access.log"
+--error-logfile "{{any_dir}}/error.log"
 [Install]
-WantedBy=multi-user.target</code></pre>
+WantedBy=multi-user.target
+</code></pre>
+"""},
 
-* `sudo systemctl start gunicorn.service`
-* `sudo systemctl enable gunicorn`"""},
+"7":{"head":"nginx","text":"""
+nginxの設定をします．一度したらあんまり触れないです．viを使います🔥
 
-"9":{"head":"nginx","text":"""
-* `sudo vim /etc/nginx/sites-available/<PJ_NAME>`
+1. `sudo vi /etc/nginx/sites-available/<PJ_NAME>`
+1. `sudo ln -s /etc/nginx/sites-available/<PJ_NAME> /etc/nginx/sites-enabled/`
+1. `sudo systemctl restart nginx`
+1. `sudo ufw delete allow 8000`
+1. `sudo ufw allow 'Nginx Full'`
+
 <pre><code>
 server {
-        listen 80;
-        server_name <EC2のパブリックIP>;
-        location = /favicon.ico {access_log off; log_not_found off;}
-        location /static/ {
-                root /home/ubuntu/<PJ_NAME>;
-        }
-        location / {
-                include proxy_params;
-                proxy_pass http://unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock;
-        }
+    listen 80;
+    server_name <EC2のパブリックIP>;
+    location = /favicon.ico {access_log off; log_not_found off;}
+    location /static/ {
+        root /home/ubuntu/<PJ_NAME>;
+    }
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock;
+    }
 }</code></pre>
-* `sudo ln -s /etc/nginx/sites-available/<PJ_NAME> /etc/nginx/sites-enabled/`
-* `sudo systemctl restart nginx`
-* `sudo ufw delete allow 8000` : #8000番ポートはもう使わないのでkill
-* `sudo ufw allow 'Nginx Full'`"""},
+"""},
 
-"10":{"head":"ec2","text":"""
-* セキュリティグループ -> セキュリティグループにタイプ: HTTPのルールを追加
-* インスタンス-> ネットワーキング -> セキュリティグループの変更->セキュリティグループ選択"""},
+"8":{"head":"ec2","text":"""
+1. セキュリティグループ -> セキュリティグループにタイプ: HTTPのルールを追加
+1. （インスタンス-> ネットワーキング -> セキュリティグループの変更->セキュリティグループ選択）←先ほどしてなかったら
 
-"11":{"head":"Elastic IPs","text":"""
-* サイドメニュー -> Elastic IPsからポチポチ
-* Elastic IP アドレスの割り当て -> 割り当て
-* Elastic IP アドレスの関連付け -> 関連付け"""},
+### Elastic IPs
+1. サイドメニュー -> Elastic IPsからポチポチ
+1. Elastic IP アドレスの割り当て -> 割り当て
+1. Elastic IP アドレスの関連付け -> 関連付け
+"""},
 
-"12":{"head":"domain", "text":"""
-* AWS SERVICE -> Route 53 -> DNS 管理 -> Create Hosted Zone -> 取得したドメインを記入 -> create
-* ホストゾーンの詳細 -> レコードセットの作成 -> type:A, value:<取得したElastic IP記入> -> 作成
-* レコードセットの一覧に元々あるType:NSの四つのvalue（ns-\*\*.\*\*.\*\*）を控えておく
-* レコードセットの一覧のいずれを選択 -> TTL（キャッシュする時間）を300sに設定
-* お名前.com -> ドメイン一覧 -> 取得したドメインを選択 -> ネームサーバー情報
-* 他のネームサーバを利用 -> ネームサーバに先ほどのNSの四つのvalue -> 設定
-* `sudo vi /etc/nginx/sites-available/<PJ_NAME>` -> `server_name <your doman> <your Elastic IP>;`
-* `vi <PJ_NAME>/<settings file>.py` -> `ALOWED_HOST=["<DOMAIN>","<Elastic IP>"]`"""},
+"9":{"head":"domain", "text":"""
+ドメインとサーバーの繋げ方がいろいろあって混乱しますが，
 
-"13":{"head":"ssl","text":"""
-* [certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)でUbuntuとNginx選択->コマンド上から実行
-* `sudo add-apt-repository universe`ができないので，URLから直接入れる
-* `sudo certbot --nginx`でポチポチ -> `whether or not to redirect HTTP`で2を選択
-* `sudo certbot renew --post-hook "systemctl restart nginx"`:を試す
-* `sudo vi /etc/cron.d/letsencrypt` -> `0 1 * * 1 sudo certbot renew --post-hook "systemctl restart nginx"`
-* ec2 -> セキュリティグループ -> セキュリティグループにタイプ: HTTPSのルールを追加"""}
+* [お名前.comでのドメイン取得とRoute 53との連携(お名前.comへのRoute 53DNS登録) - のぴぴのメモ](http://nopipi.hatenablog.com/entry/2019/01/03/132701)
+
+に
+各メリットデメリットがまとめられていて，結局ネームサーバー1をいじるのがが一番楽でした
+
+
+1. AWS SERVICE -> Route 53 -> DNS 管理 -> Create Hosted Zone -> 取得したドメインを記入 -> create
+1. ホストゾーンの詳細 -> レコードセットの作成 -> type:A, value:<取得したElastic IP記入> -> 作成
+1. レコードセットの一覧に元々あるType:NSの四つのvalue（ns-\*\*.\*\*.\*\*）を控えておく
+1. レコードセットの一覧のいずれを選択 -> TTL（キャッシュする時間）を300sに設定
+1. お名前.com -> ドメイン一覧 -> 取得したドメインを選択 -> ネームサーバー情報
+1. 他のネームサーバを利用 -> ネームサーバに先ほどのNSの四つのvalue -> 設定
+1. `sudo vi /etc/nginx/sites-available/<PJ_NAME>` -> `server_name <your doman> <your Elastic IP>;`
+1. `vi <PJ_NAME>/<settings file>.py` -> `ALOWED_HOST=["<DOMAIN>","<Elastic IP>"]`
+"""},
+
+"10":{"head":"ssl","text":"""
+HTTPSで繋がるように設定します．
+
+1. [certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)でUbuntuとNginx選択->コマンド上から実行
+1. `sudo add-apt-repository universe`ができないので，URLから直接入れる
+1. `sudo certbot --nginx`でポチポチ -> `whether or not to redirect HTTP`で2を選択
+1. `sudo certbot renew --post-hook "systemctl restart nginx"`:を試す
+1. `sudo vi /etc/cron.d/letsencrypt` -> `0 1 * * 1 sudo certbot renew --post-hook "systemctl restart nginx"`
+1. ec2 -> セキュリティグループ -> セキュリティグループにタイプ: HTTPSのルールを追加
+"""}
 }
