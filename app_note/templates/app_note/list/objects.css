@@ -11,6 +11,7 @@
   .card .card-body   { padding:0rem 16px 16px; height:0   ; }
   .card .card-body h6{ padding:10px 0rem 0rem; margin:0 0px;   font-size:16px; }
   .card .card-body p { text-align: justify; font-size: 16px; line-height:16px;}
+  .card .card-body a { text-align: justify; font-size: 16px; line-height:16px;}
   .card .embed-responsive      { border-radius:25px;transition: 0.5s;
                                  height:{%if id%}750{%else%}450{%endif%}px}
 }
@@ -20,10 +21,11 @@
   .card:hover{ height:{%if id%}1000{%else%}750{%endif%}px;}
   .card .card-body   { padding:0rem 20px 20px; height:0   ; }
   .card .card-body h6{ padding:10px 0rem 0rem; margin:0 0px; font-size:20px;}
-  .card .card-body p { text-align: justify; font-size: 20px; line-height: 20px;}
+  .card .card-body p { text-align: justify; font-size: 18px; line-height: 18px;}
+  .card .card-body a { text-align: justify; font-size: 20px; line-height: 20px;}
   .card .embed-responsive      { border-radius:25px;transition: 0.5s;
                                  height:{%if id%}700{%else%}450{%endif%}px}
-  .card .embed-responsive:hover{ height:{%if id%}680{%else%}450{%endif%}px}
+  .card .embed-responsive:hover{ height:{%if id%}750{%else%}450{%endif%}px}
 }
 @media screen and (min-width: 768px) {/*~xl*/
   .card{border-radius:25px; margin:25px;
@@ -32,7 +34,8 @@
   .card:hover{ height:{%if id%}1000{%else%}750{%endif%}px;}
   .card .card-body   { padding:0rem 25px 25px; height:0   ; }
   .card .card-body h6{ padding:10px 0rem 0rem; margin:0 0px; font-size:25px; }
-  .card .card-body p { text-align: justify; font-size: 25px; line-height:25px;}
+  .card .card-body p { text-align: justify; font-size: 20px; line-height:20px;}
+  .card .card-body a { text-align: justify; font-size: 25px; line-height:25px;}
   .card .embed-responsive      { border-radius:25px;transition: 0.5s;
                                  height:{%if id%}700{%else%}450{%endif%}px}
   .card .embed-responsive:hover{ height:{%if id%}750{%else%}450{%endif%}px}

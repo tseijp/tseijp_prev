@@ -7,14 +7,12 @@
     <div class="icon"><i class="{{c.icon}}" style="font-size:25px"></i></div>
     <div class="info">
     <div class="container">
-    <div class="row center-block">
-        <div class="d-none d-lg-block">
-        <div class="col">
+    <div class="row">
+        <div class="col text-left">
             <div class="main"><a href="{% url c.url %}"style="color:white">{{b}}</a></div>
         </div>
-        </div>
         {% for k,v in c.main.items %}
-        <div class="col" onclick="{% if v.f %}{{v.f}}(){% endif %}">
+        <div class="col text-center" onclick="{% if v.f %}{{v.f}}(){% endif %}">
             <div class="main"><i class="{{v.i}}"></i></div>
         </div>
         {% endfor %}
