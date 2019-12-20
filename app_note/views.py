@@ -50,7 +50,10 @@ class NoteHomeView(ListView, ModelFormMixin):
     def get(self, request, *args, **kwargs):
         self.object = None
         return super().get(request, *args, **kwargs)
-    def get_success_url(self): return  reverse_lazy('note')+"?id=%s"%self.object.id
+    def get_success_url(self):
+        id     = get_id(self.request)
+        if id:return reverse_lazy('note')+"?id=%s"%id
+        else :return reverse_lazy('note')+"?id=%s"%self.object.id
     def get_queryset(self):### 新しい順に表示 & コメント以外を取得
         year, month   = get_year_month(self.request)
         tag           = get_tag(self.request)
@@ -81,12 +84,15 @@ class NoteHomeView(ListView, ModelFormMixin):
     def post(self, request, *args, **kwargs):
         tag    = get_tag(self.request)
         user   = get_user(self.request.user.id)
+        id     = get_id(self.request)
+        note   = NoteModel.objects.get(id=id)
         self.object      = None               ### ないとエラー
         self.object_list = self.get_queryset()### ないとエラー
         form = self.get_form();#print(self.request.POST)
         if form.is_valid():
             if  tag:form.instance.posted_tag  = tag
             if user:form.instance.posted_user = self.request.user
+            if note:form.instance.note_object=note
             form.instance.ja_head = ""
             form.instance.ja_text = ""
             form.instance.save()

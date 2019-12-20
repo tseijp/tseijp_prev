@@ -9,14 +9,16 @@ from django.contrib.auth.decorators import login_required
 from app_note.models import *
 from app_note.views  import get_user
 
-def posted_ajax(request, get, note):
+def posted_ajax(request, get, note, user):
     dict ={"message":"Not working"}
-    if not "%s"%get['user']=="%s"%request.user.id and note:#editor違ってnote存在
+    print("%s"%get['user'],"%s"%request.user.id)
+    ### comment
+    if "%s"%note.posted_user.id!="%s"%request.user.id and note:#editor違ってnote存在
+        print("new create")
         obj = NoteModel.objects.create()
-        obj.posted_user = note.posted_user
+        obj.posted_user = user
         obj.note_object = note
     else:obj = note
-    if not obj.posted_user:obj.posted_user = get_user()
     if"tag" in get:obj.posted_tag =get['tag']
     if"img" in get:obj.posted_img =get['img']
     if "ja" in get['la']:
@@ -30,16 +32,16 @@ def posted_ajax(request, get, note):
     dict['note_user_id'] = "%s"%obj.posted_user.id
     return dict
 
-def liked_ajax(request, get, note):
+def liked_ajax(request, get, note, user):
     dict ={"message":"Not working"}
     if note :#and not "%s"%get['user']=="%s"%request.user.id:#editor違ってnote存在
         note_like = LikeModel.objects.filter(note_object=note).order_by('-id')
         try   :user_id = request.user.id
-        except:user_id=None
-        if not user_id in [l.posted_user.id for l in note_like if l.posted_user] or not request.user:
+        except:user_id =None
+        if not user_id in [l.posted_user.id for l in note_like] or not request.user:
             #print('you are not in database of this note and there is note')
             obj = LikeModel.objects.create(note_object=note)
-            obj.posted_user = get_user(request.user.id)
+            obj.posted_user = user
             obj.save()
             note.liked_number+=1
             dict['result'] = 'new like'
@@ -52,7 +54,7 @@ def liked_ajax(request, get, note):
         #print(dict['result'], "\t", dict['liked_number'])
     return dict
 
-def ret_ajax(request, get, note):
+def ret_ajax(request, get, note, user):
     dict ={"message":"Not working"}
     if note and get['ret']:
         translator = Translator()
@@ -72,14 +74,15 @@ def ret_ajax(request, get, note):
 def note_list_ajax(request):
     dict={}
     if request.GET:
-        get = request.GET;
-        note= NoteModel.objects.get(id=int(get["id"]))
-        #print('get',get)
-        #print('note',note)
-        if   get['mode']=="posted":dict = posted_ajax(request, get, note)
-        elif get['mode']=="liked" :dict = liked_ajax(request, get, note)
-        elif get['mode']=="ret"   :dict = ret_ajax(request, get, note)
-        #print('dict',dict)
+        get  = request.GET;
+        user = get_user(get['user'])
+        note = NoteModel.objects.get(id=int(get["id"]))
+        print('get',get)
+        print('note',note)
+        if   get['mode']=="posted":dict = posted_ajax(request, get, note, user)
+        elif get['mode']=="liked" :dict =  liked_ajax(request, get, note, user)
+        elif get['mode']=="ret"   :dict =    ret_ajax(request, get, note, user)
+        print('dict',dict)
     return JsonResponse(dict)
 
 

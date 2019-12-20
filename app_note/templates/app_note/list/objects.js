@@ -82,8 +82,13 @@ $(document).ready( function(){
     {% for note in object_list %}
         /* init */
         $('#info_like_'+"{{note.id}}").children('h6').children('i').text("{{note.liked_number}}")
-        //var editor_{{note.id}}  = get_mirror("id_update_text_{{note.id}}");
-        //$("#id_update_text_{{note.id}}").keyup(function(){send_message("{%url 'note_list_ajax' %}","{{note.id}}")});
+        {% if user.is_staff and user.id and user.id == note.posted_user.id %}
+        $("#id_update_text_{{note.id}}").keyup(function(){
+            console.log('hello')
+            data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
+            send_message(data);
+        });
+        {% endif %}
         /* button */
         $('#send_message_{{note.id}}').click(function(){
             data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
