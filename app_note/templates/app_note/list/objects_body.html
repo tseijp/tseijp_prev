@@ -39,10 +39,10 @@
             <form method="POST">
             {% csrf_token %}
             <i class="fa fa-pencil-alt prefix"></i>
-            <textarea type="text" id="id_update_text_{{note.id}}"  rows="25"
+            <textarea type="text" id="id_update_text_{{note.id}}"  rows="6"
               class="md-textarea form-control">{%if user.id == note.posted_user.id and note.ja_text%}{{note.ja_text}}{%endif%}</textarea>
             <label for="id_update_text_{{note.id}}">
-              {%if user.id == note.posted_user.id%}Change{%else%}Send{%endif%} message</label>
+              {%if user.id == note.posted_user.id%}Change Text{%else%}Comment your reply{%endif%}</label>
             </form>
         </div>
 

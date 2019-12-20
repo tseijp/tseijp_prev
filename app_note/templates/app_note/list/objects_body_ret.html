@@ -1,8 +1,8 @@
 {% if  user.is_authenticated %}
 <div class="row">
     <div class="col-sm-6" >
-        <button class="badge elegant-color-dark " style="width:100%"
-          id="ret_send_{{note.id}}">Send</button>
+        <a><button class="badge elegant-color-dark " style="width:100%"
+          id="ret_send_{{note.id}}">Send</button></a>
         <div class="md-form form-sm black-textarea">
             <form method="POST">
             {% csrf_token %}
@@ -13,8 +13,8 @@
         </div>
     </div>
     <div class="col-sm-6" >
-        <button class="badge elegant-color-dark " style="width:100%"
-          id="ret_ratio_{{note.id}}">Copy</button>
+        <a><button class="badge elegant-color-dark " style="width:100%"
+          id="ret_ratio_{{note.id}}">Copy</button></a>
         <div class="md-form form-sm black-textarea">
             <textarea type="text" id="ret_retja_{{note.id}}"  rows="3"
               class="md-textarea form-control"></textarea>

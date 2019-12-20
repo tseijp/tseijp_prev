@@ -1,6 +1,9 @@
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+    width_size="250px";
+    if($(window).width()<576){width_size="150px";}
+    if(768<$(window).width()){width_size="350px";}
+    document.getElementById("mySidenav").style.width = width_size;
     //document.getElementById("main").style.marginLeft = "250px";
     //document.body.style.backgroundColor = "rgba(46,46,46,0.95)";
     paper_background()

@@ -1,10 +1,9 @@
 {% for note in object_list %}
-<div class="col-xs-12 col-md-12 {%if id%}{%else%}col-lg-6{%endif%}">
-    <div class="card news-card">
-        <div class="embed-responsive embed-responsive-1by1" {#style="height:
-            {%if id%}{%if id_user == note.posted_user.id%}700px{%else%}
-            {%if id == note.id%}700px{%else%}450px{%endif%}{%endif%}
-            {%else%}450px{%endif%}"#>
+<div class="{%if id%}col-lg-12{%else%}col-lg-6{%endif%}">
+    <div class="card news-card"
+    note-replied-num="{{note.get_child_num}}" note-liked-num="{{note.liked_num}}"
+    mode="{%if id == note.id or id == note.note_object.id%}posted{%else%}replied{%endif%}">
+        <div class="embed-responsive embed-responsive-1by1">
             {% if not id%}
             <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
             {% endif %}
