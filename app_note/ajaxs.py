@@ -4,17 +4,20 @@ from googletrans import Translator
 ### Django
 from django.http import JsonResponse### ajax
 from django.utils import timezone
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 ### my created
 from app_note.models import *
 from app_note.views  import get_user
 
+
+
 def posted_ajax(request, get, note, user):
     dict ={"message":"Not working"}
-    print("%s"%get['user'],"%s"%request.user.id)
+    #print("%s"%get['user'],"%s"%request.user.id)
     ### comment
     if "%s"%note.posted_user.id!="%s"%request.user.id and note:#editor違ってnote存在
-        print("new create")
+        #print("new create")
         obj = NoteModel.objects.create()
         obj.posted_user = user
         obj.note_object = note
@@ -71,18 +74,35 @@ def ret_ajax(request, get, note, user):
         dict['assss'] =assss
     return dict
 
+def paper_ajax(request, get, note, user):
+    dict ={"message":"Not working", 'eyes':[],'edit':[]}
+    if not 'json' in get: return dict
+    ### return json paper ------------------------------
+    if get['json'] in ['eyes', 'edit'] or user!=note.posted_user:### TODO:コメントとメインを別で送信させる
+        dict['eyes'] = note.get_eyes_paths()
+        dict['edit'] = note.get_edit_paths()
+        dict['message']= "send database paths"
+    ### new create json paper --------------------------
+    if not get['json'] in ['eyes', 'edit']:
+        obj =NoteJSONModel.objects.create(note_object=note)
+        obj.posted_user= user
+        obj.paper_segs = get['json']
+        obj.save()#; print(data)
+        dict['message'] = "new create your path"
+    return dict
+
 def note_list_ajax(request):
     dict={}
     if request.GET:
         get  = request.GET;
         user = get_user(get['user'])
         note = NoteModel.objects.get(id=int(get["id"]))
-        print('get',get)
-        print('note',note)
         if   get['mode']=="posted":dict = posted_ajax(request, get, note, user)
+        elif get['mode']=="paper" :dict =  paper_ajax(request, get, note, user)
         elif get['mode']=="liked" :dict =  liked_ajax(request, get, note, user)
         elif get['mode']=="ret"   :dict =    ret_ajax(request, get, note, user)
-        print('dict',dict)
+        ''''''
+        print('\n\n\tget:',get,'\n\tnote:',note,'\n\tuser:',user,'\n\tdict:',dict,'\n\n')
     return JsonResponse(dict)
 
 

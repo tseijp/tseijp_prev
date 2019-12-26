@@ -12,27 +12,39 @@
       More<i class="fas fa-angle-right"></i></button></a>
 </div>
 </div>
+<!--tag-->
 {% if note.posted_tag %}{% for tag in note.posted_tag_list %}{% if tag %}
 <h6><a href="{%url 'note'%}?tag={{tag}};{{note.url_with_id}}">
   <span style="font-size:16px" class="badge elegant-color-dark">#{{ tag }}</span></a></h6>
 {% endif %}{% endfor %}{% else %}{% endif %}
 
+<!--comment-->
+<div class="row">
+<div class="col-sm-6" >
+    {% for c1 in note.get_comment %}
+    <div><a href="#id_{{c1.pk}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color:black">
+    <i class="fas fa-comment"></i>{{c1.reply_number}}</a>
+    <a href="{%url 'note'%}?{{c1.url_with_id}}{{url_with_tag}}" style="color:black">{{c1.ja_head}}
+    <i class="fas fa-heart"></i>{{c1.liked_number}}</a>
+        <ul class="collapse list-unstyled" id="id_{{c1.pk}}">
+        {% if c1 %}{% for c2 in c1.get_comment %}{% if c2 %}
+          <li><a href="{%url 'note'%}?{{c2.url_with_id}}{{url_with_tag}}"
+            target="_blank" style="font-size:16px;color:black">
+            {{c2.ja_head}}
+            <i class="fas fa-heart"  ></i>{{c2.liked_number}}</a></li>
+        {% endif %}{% endfor %}{% endif %}
+        </ul>
+    </div>
+    {% empty %}
+    <a href="#"style="color:black"><i class="fas fa-comment"></i>No Reply</a>
+    {% endfor %}
+</div>
 
-        {% for c1 in note.get_comment %}
-        <div><a href="#id_{{c1.pk}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color:black">
-        <i class="fas fa-comment"></i>{{c1.reply_number}}</a>
-        <a href="{%url 'note'%}?{{c1.url_with_id}}{{url_with_tag}}" style="color:black">{{c1.ja_head}}
-        <i class="fas fa-heart"></i>{{c1.liked_number}}</a>
-            <ul class="collapse list-unstyled" id="id_{{c1.pk}}">
-            {% if c1 %}{% for c2 in c1.get_comment %}{% if c2 %}
-              <li><a href="{%url 'note'%}?{{c2.url_with_id}}{{url_with_tag}}"
-                target="_blank" style="font-size:16px;color:black">
-                {{c2.ja_head}}
-                <i class="fas fa-heart"  ></i>{{c2.liked_number}}</a></li>
-            {% endif %}{% endfor %}{% endif %}
-            </ul>
-        </div>
-        {% empty %}
-        <a href="#"style="color:black"><i class="fas fa-comment"></i>No Reply</a>
-        {% endfor %}
-        <h6>by:{{note.posted_user.username}}</h6>
+<div class="col-sm-6 text-right" >
+    <h6>by:{{note.posted_user.username}}</h6>
+    {% if user == note.posted_user and note.id%}
+    <h6 href="{% url 'note_delete' pk=note.id %}" style="color:black">
+      <i class="fas fa-trash"></i>delete</h6>
+    {% endif %}
+</div>
+</div>

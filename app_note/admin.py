@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import *
+from .models import *
 
-for m in [NoteModel, LikeModel]:
+for m in [NoteModel, LikeModel, NoteJSONModel]:
     admin.site.register(m)

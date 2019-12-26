@@ -19,7 +19,9 @@ from app_user.values  import *
 from app_note.initial import *
 #def p(txt):print('\n\n');print('>>>>'+str(txt));print('\n\n')
 def md_to_text():pass
-def get_id  (request):return int(request.GET['id' ]) if'id' in request.GET else 0
+def get_id  (request):
+    id = request.GET['id'] if 'id' in request.GET else 0
+    return id if id and id.isdigit() and NoteModel.objects.filter(id=id) else 0
 def get_tag (request):return request.GET['tag'] if'tag'in request.GET else ''
 def get_year_month(request):
     if   'year'  in request.GET: year  = int(request.GET['year'])
@@ -69,30 +71,32 @@ class NoteHomeView(ListView, ModelFormMixin):
         context = super().get_context_data()      ### **kwargsあるとError
         tag     = get_tag(self.request)
         id      = get_id(self.request)
-        id_obj  = NoteModel.objects.filter(id=id)
-        id_user = id_obj[0].posted_user.id if id_obj else 0
+        id_objs = NoteModel.objects.filter(id=id)
+        id_note = id_objs[0] if id_objs else None
+        id_user = get_user(id_note.posted_user.id) if id_objs else None
         context['id']            = int(id)
+        context['id_note']       = id_note
         context['id_user']       = id_user
         context['page_tag'    ]  = tag
         context['url_with_id' ]  = 'id=%s;'%id                     if id else ''
         context['url_with_tag']  = 'tag=%s;'%get_tag(self.request) if tag else ''
         context['carousel'    ]  = note_list_context['carousel']
         context['content'     ]  = get_index_content("note")
-        context['child_id'    ]  = id_obj[0].get_child_id()    if id_obj else []
-        context['chichild_id' ]  = id_obj[0].get_chichild_id() if id_obj else []
+        context['child_id'    ]  = id_note.get_child_id()    if id_note else []
+        context['chichild_id' ]  = id_note.get_chichild_id() if id_note else []
         return context
     def post(self, request, *args, **kwargs):
         tag    = get_tag(self.request)
         user   = get_user(self.request.user.id)
         id     = get_id(self.request)
-        note   = NoteModel.objects.get(id=id)
+        note   = NoteModel.objects.get(id=id) if id else None
         self.object      = None               ### ないとエラー
         self.object_list = self.get_queryset()### ないとエラー
         form = self.get_form();#print(self.request.POST)
         if form.is_valid():
             if  tag:form.instance.posted_tag  = tag
             if user:form.instance.posted_user = self.request.user
-            if note:form.instance.note_object=note
+            if note:form.instance.note_object = note
             form.instance.ja_head = ""
             form.instance.ja_text = ""
             form.instance.save()
@@ -113,6 +117,9 @@ class NoteDeleteView(LoginRequiredMixin, DeleteView):
     template_name       = "app_note/note_delete.html"
     login_url           =  reverse_lazy('login')
 
+
+''' NOT USED ----- NOT USED ----- NOT USED ----- NOT USED ----- NOT USED -----'''
+'''
 def qiita_note_new(request, dict, tags):
     init_obj_id=0
     ja_objs ={}
@@ -142,10 +149,8 @@ def qiita_init(request):
     qiita_note_new(request, note_qiita_8 ,"#touchdesigner #pytorch")
     qiita_note_new(request, note_qiita_16,"#AWS #Nginx #Django")
     return redirect ('note')
+'''
 
-
-
-''' NOT USED ----- NOT USED ----- NOT USED ----- NOT USED ----- NOT USED -----'''
 """
 @login_required
 def drop_all(request):

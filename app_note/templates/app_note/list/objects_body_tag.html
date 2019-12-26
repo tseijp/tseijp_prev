@@ -33,12 +33,5 @@
             <label for="id_update_img_{{note.id}}">imgs</label>
             </form>
         </div>
-
-    </div>
-    <div class="col-sm-6 text-right" >
-        {% if user.id == note.posted_user.id and note.id%}
-        <a href="{% url 'note_delete' pk=note.id %}" style="color:black">
-          <i class="fas fa-trash"></i>delete</a>
-        {% endif %}
     </div>
 </div>

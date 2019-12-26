@@ -6,7 +6,7 @@ var paper_background;
 window.onload = function(){
     var canvas = document.getElementById("myCanvas");//canvasを取得
     paper.setup(canvas);                             //空のproject,viewを作成
-    ajax_json('')
+    //?ajax_json('')
     var post;
     var path;
     var delayTimer;

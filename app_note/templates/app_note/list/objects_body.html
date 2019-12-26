@@ -4,7 +4,6 @@
     id="send_message_{{note.id}}">
     Send</button></a>
 
-
 <div class="row">
 <div class="col-sm-2" >
     <ul class="nav nav-tabs" id="myTab-{{note.id}}" role="tablist">
@@ -29,7 +28,7 @@
 </div>
 
 
-<div class="col-sm-10" >
+<div class="col-sm-10">
 <div class="tab-content" id="myTabContent-{{note.id}}">
     <div class="tab-pane fade show active" id="main-{{note.id}}"
          role="tabpanel" aria-labelledby="main-tab-{{note.id}}">
@@ -39,7 +38,7 @@
             <form method="POST">
             {% csrf_token %}
             <i class="fa fa-pencil-alt prefix"></i>
-            <textarea type="text" id="id_update_text_{{note.id}}"  rows="6"
+            <textarea type="text" id="id_update_text_{{note.id}}"  rows="3"
               class="md-textarea form-control">{%if user.id == note.posted_user.id and note.ja_text%}{{note.ja_text}}{%endif%}</textarea>
             <label for="id_update_text_{{note.id}}">
               {%if user.id == note.posted_user.id%}Change Text{%else%}Comment your reply{%endif%}</label>

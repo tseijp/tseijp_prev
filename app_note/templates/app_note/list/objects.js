@@ -80,16 +80,15 @@ var send_message = function(data){
 };
 $(document).ready( function(){
     {% for note in object_list %}
-        /* init */
-        $('#info_like_'+"{{note.id}}").children('h6').children('i').text("{{note.liked_number}}")
-        {% if user.is_staff and user.id and user.id == note.posted_user.id %}
+        /* ----------init---------- */
+        $('#info_like_{{note.id}}').children('h6').children('i').text("{{note.liked_number}}")
+        {% if user.is_authenticated and user.id and user.id == note.posted_user.id %}
         $("#id_update_text_{{note.id}}").keyup(function(){
-            console.log('hello')
             data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data);
         });
         {% endif %}
-        /* button */
+        /* ----------button---------- */
         $('#send_message_{{note.id}}').click(function(){
             data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data);
@@ -98,7 +97,7 @@ $(document).ready( function(){
             data = get_like_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data)
         })
-        {% if  user.is_authenticated %}{% endif %}
+        {% if  user.is_authenticated %}
         $('#ret_text_{{note.id}}').keyup(function(){
             data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data);
@@ -106,6 +105,14 @@ $(document).ready( function(){
         $('#ret_send_{{note.id}}').click(function(){
             data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
             send_message(data);
+        });
+        {% endif %}
+        /* ----------paper---------- */
+        $('#info_eye_{{note.id}}').click(function(){
+            paper_eye_{{note.id}}();
+        });
+        $('#info_edit_{{note.id}}').click(function(){
+            paper_edit_{{note.id}}();
         });
 
     {% endfor %}
@@ -132,14 +139,3 @@ var add_comment = function(){
     request.setAttribute('value',get_message());
     form.appendChild(request);
 }
-
-/*var open_japanese = function () {
-    {% for note in object_list %}
-    window.open("{% url 'note_ja' note.id %}", "iframe_{{note.id}}")
-    {% endfor %}
-}
-var open_english = function () {
-    {% for note in object_list %}
-    window.open("{% url 'note_en' note.id %}", "iframe_{{note.id}}")
-    {% endfor %}
-}*/
