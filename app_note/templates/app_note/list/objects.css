@@ -46,20 +46,23 @@
   .card[mode=replied][note-liked-num  ="0"]{                     height: 150px;}
   .card[mode=replied][note-replied-num="0"]{                     height: 150px;}
   .card:hover{ box-shadow:0px 5px 6px rgba(0,0,0,0.5);           height:1000px;}
-  .card .embed-responsive{ border-radius:25px;transition: 0.5s;  height: 700px;}}
+  .card .embed-responsive{ border-radius:25px; transition:0.5s;  height: 700px;}
+  .card .embed-responsive:hover{ border-radius:25px;             height: 100% ;}}
 @media screen and (min-width: 576px) and (max-width:768px) {/*sm, sm~md, md*/  /*!!!*/
   .card[mode=posted ]{border-radius:20px;margin:20px;width:500px;height: 750px;}
   .card[mode=replied]{border-radius:20px;margin:20px;width:500px;height: 500px;}
   .card[mode=replied][note-liked-num  ="0"]{                     height: 250px;}
   .card[mode=replied][note-replied-num="0"]{                     height: 250px;}
   .card:hover{ box-shadow:0px 5px 6px rgba(0,0,0,0.5);           height:1000px;}
-  .card .embed-responsive{ border-radius:25px;transition: 0.5s;  height: 700px;}}
+  .card .embed-responsive{ border-radius:25px; transition:0.5s;  height: 700px;}
+  .card .embed-responsive:hover{ border-radius:25px;             height: 100% ;}}
 @media screen and (min-width: 768px) {/*~xl*/
   .card[mode=posted ]{border-radius:25px;margin:25px;width:750px;height: 750px;}
   .card[mode=replied]{border-radius:25px;margin:25px;width:750px;height: 500px;}
   .card[mode=replied][note-liked-num  ="0"]{                     height: 250px;}
   .card[mode=replied][note-replied-num="0"]{                     height: 250px;}
   .card:hover{ box-shadow:0px 5px 6px rgba(0,0,0,0.5);           height:1000px;}
-  .card .embed-responsive{ border-radius:25px; transition:0.5s;  height: 700px;}}
+  .card .embed-responsive{ border-radius:25px; transition:0.5s;  height: 700px;}
+  .card .embed-responsive:hover{ border-radius:25px;             height: 100% ;}}
 {% endif %}{% endif %}
 /*------------------------------------------------------------*/
