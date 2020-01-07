@@ -18,7 +18,9 @@ from markdownx.models import MarkdownxField
 
 ### URL
 from urllib.parse import urlparse
-MOVIE_URL = ["youtube.com"]
+GOMAP_URL = ["maps.google.com"]
+VIEMO_URL = ["player.vimeo.com"]
+UTUBE_URL = ["youtube.com"]
 SOUND_URL = ["soundcloud.com"]
 
 def get_paths(json_objects, num=1):
@@ -54,7 +56,10 @@ class NoteModel(m.Model):
     def url_with_id          (self):return 'id=%s;'%self.pk
     ### url
     def img_is_url  (self):return True if ("%s"%self.posted_img)[:4]=="http" else False
+    def img_is_map  (self):return True if urlparse("%s"%self.posted_img).netloc in GOMAP_URL else False
     def img_is_movie(self):return True if urlparse("%s"%self.posted_img).netloc in MOVIE_URL else False
+    def img_is_utube(self):return True if urlparse("%s"%self.posted_img).netloc in UTUBE_URL else False
+    def img_is_viemo(self):return True if urlparse("%s"%self.posted_img).netloc in VIEMO_URL else False
     def img_is_sound(self):return True if urlparse("%s"%self.posted_img).netloc in SOUND_URL else False
     ### paper.js init path
     def get_json_objects(self):return NoteJSONModel.objects.filter(note_object=self).order_by('-posted_time')
