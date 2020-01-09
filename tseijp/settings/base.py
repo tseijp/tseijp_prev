@@ -40,7 +40,7 @@ USE_I18N  = True
 USE_L10N  = True
 USE_TZ    = True
 ### my changed -----------------------------------------------------------------
-INSTALLED_APPS+=['app_%s'%a for a in ['idea','note','user']]
+INSTALLED_APPS+=['app_%s'%a for a in ['idea','note','user','card']]
 INSTALLED_APPS+=[
     'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1
     'widget_tweaks' ,# from ocw

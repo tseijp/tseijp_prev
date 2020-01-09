@@ -3,7 +3,7 @@
     <div class="card news-card"
     note-replied-num="{{note.get_child_num}}" note-liked-num="{{note.liked_num}}"
     mode="{%if id == note.id or id == note.note_object.id%}posted{%else%}replied{%endif%}">
-        <div class="embed-responsive embed-responsive-1by1">
+        <div class="embed-responsive embed-responsive-1by1" id="embed_{{note.id}}">
             {% if not id%}
             <a href="{%url 'note'%}?{{note.url_with_id}}{{url_with_tag}}" class="stretched-link"></a>
             {% endif %}

@@ -3,6 +3,8 @@ run.bat
 mig.bat
 csp.bat
 psq.bat
+
+
 static
 tseijp/settings/dev.py
 tseijp.sock

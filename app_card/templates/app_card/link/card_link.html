@@ -1,0 +1,48 @@
+{% load static %}
+<!-- AFrameにAR.js紐付け -->
+<!-- Assetの用意　 -->
+<a-scene embedded arjs='sourceType: webcam;'
+inspector="url: https://aframe.io/releases/0.3.0/aframe-inspector.min.js">
+    <a-camera>
+    <a-cursor fuse="true" color="white" scale="2 2">
+        <a-animation
+            begin="mouseenter" easing="ease-out" attribute="scale" fill="forwards"
+            from="2 2 2" to="1 1 1" dur="300"></a-animation>
+        <a-animation
+            begin="mouseenter" attribute="color" fill="forwards"
+            from="white" to="red" dur="0">
+        </a-animation>
+        <a-animation
+            begin="mouseleave" easing="ease-in" attribute="scale" fill="forwards"
+            from="1 1 1" to="2 2 2" dur="300">
+        </a-animation>
+        <a-animation
+            begin="mouseleave" attribute="color" fill="forwards"
+            from="red" to="black" dur="0">
+        </a-animation>
+    </a-cursor>
+    </a-camera>
+    <a-assets>
+        <a-asset-item id="obj_twi" src="{%static 'app_card/icon/twitter.obj'%}"></a-asset-item><!-- 3Dモデル Twitter -->
+        <a-asset-item id="mtl_twi" src="{%static 'app_card/icon/twitter.mtl'%}"></a-asset-item><!-- マテリアル -->
+        <a-asset-item id="obj_fbo" src="{%static 'app_card/icon/facebook.obj'%}"></a-asset-item><!-- 3Dモデル Facebook -->
+        <a-asset-item id="mtl_fbo" src="{%static 'app_card/icon/facebook.mtl'%}"></a-asset-item><!-- マテリアル -->
+    </a-assets>
+    <a-marker preset="hiro">
+            <a-box position="0 0 0" scale="1 1 1" wireframe="true"></a-box>
+            <a-box position="0 0 0" scale="2 2 2" wireframe="true"></a-box>
+            <a-box position="0 0 0" scale="3 3 3" wireframe="true"></a-box>
+            <a-plane position="0 4 0" rotation="0 0 0" width="4" height="4" color="#ccc"></a-plane>
+            <a-text value="Augmented" position='0 0 3' rotation="0 0 0" scale="1 1 1" color="#000"></a-text>
+            <a-text value="Reality"   position='0 0 4' rotation="0 0 0" scale="1 1 1" color="#FFF"></a-text>
+            <a-obj-model
+                src="#obj_twi"
+                mtl="#mtl_twi"
+                scale="0.25 0.25 0.25"
+                position="0 -0.25 1"
+                rotation="0 180 0"
+                link="href: https://twitter.com;">
+            </a-obj-model>
+    </a-marker>
+    <a-entity camera></a-entity>
+</a-scene>

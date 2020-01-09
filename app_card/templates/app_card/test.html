@@ -1,0 +1,55 @@
+{% load static %}
+<!doctype HTML>
+<html>
+<!-- AR.js、A-Frame のライブラリを読み込む -->
+<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"></script>
+
+<body style='margin : 0px; overflow: hidden;'>
+<a-scene embedded arjs="debugUIEnabled:false; sourceType: webcam;">
+    <a-camera>
+    <a-cursor fuse="true" color="white" scale="2 2">
+        <a-animation
+            begin="mouseenter" easing="ease-out" attribute="scale" fill="forwards"
+            from="2 2 2" to="1 1 1" dur="300"></a-animation>
+        <a-animation
+            begin="mouseenter" attribute="color" fill="forwards"
+            from="white" to="red" dur="0">
+        </a-animation>
+        <a-animation
+            begin="mouseleave" easing="ease-in" attribute="scale" fill="forwards"
+            from="1 1 1" to="2 2 2" dur="300">
+        </a-animation>
+        <a-animation
+            begin="mouseleave" attribute="color" fill="forwards"
+            from="red" to="black" dur="0">
+        </a-animation>
+    </a-cursor>
+    </a-camera>
+
+    <a-assets>
+        <a-asset-item id="glb_maru" src="{%static 'app_card/maru.glb'%}"></a-asset-item><!-- 3Dモデル Twitter -->
+    </a-assets>
+
+    <a-marker preset="hiro">
+        <a-box position="0 0 0" scale="1 1 1" wireframe="true"></a-box>
+        <a-box position="0 0 0" scale="2 2 2" wireframe="true"></a-box>
+        <a-box position="0 0 0" scale="3 3 3" wireframe="true"></a-box>
+        <a-entity gltf-model="#glb_maru"
+            src="#glb_maru"
+            scale="1 1 1"
+            position="0 0 0"
+            rotation="0 180 0"></a-entity>
+
+        <a-box color="tomato" depth="0.2" height="2" width="8" position="0 3 -2.5" rotation="-10 0 0"></a-box>
+        <a-text value="Happy New Year!\n2020\n⎳ℴ♡⎷ℯ𝔜𝔬𝔲!!!!"
+            anchor="center" align="center" position="0 3.3 -2.0" width="12"
+            color="white" rotation="-10 0 0">
+        </a-text>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+
+</a-scene>
+</body>
+</html>

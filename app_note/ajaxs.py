@@ -102,7 +102,7 @@ def note_list_ajax(request):
         elif get['mode']=="liked" :dict =  liked_ajax(request, get, note, user)
         elif get['mode']=="ret"   :dict =    ret_ajax(request, get, note, user)
         ''''''
-        print('\n\n\tget:',get,'\n\tnote:',note,'\n\tuser:',user,'\n\tdict:',dict,'\n\n')
+        #print('\n\n\tget:',get,'\n\tnote:',note,'\n\tuser:',user,'\n\tdict:',dict,'\n\n')
     return JsonResponse(dict)
 
 

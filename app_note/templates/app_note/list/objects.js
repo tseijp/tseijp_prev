@@ -12,8 +12,7 @@ var get_mirror = function(text_id){
         extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
     });
 }
-
-/* ----------ajax---------- */
+/* ---------- ajax ---------- */
 var csrftoken = '{{csrf_token}}'
 var get_message_data = function(url, note_id){
     return {
@@ -78,44 +77,71 @@ var send_message = function(data){
     }, {%if user.is_staff%}1000{%else%}3000{%endif%});
     return false;
 };
-$(document).ready( function(){
-    {% for note in object_list %}
-        /* ----------init---------- */
-        $('#info_like_{{note.id}}').children('h6').children('i').text("{{note.liked_number}}")
-        {% if user.is_authenticated and user.id and user.id == note.posted_user.id %}
-        $("#id_update_text_{{note.id}}").keyup(function(){
-            data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
-            send_message(data);
-        });
-        {% endif %}
-        /* ----------button---------- */
-        $('#send_message_{{note.id}}').click(function(){
-            data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
-            send_message(data);
-        });
-        $('#info_like_{{note.id}}').click(function(){
-            data = get_like_data("{%url 'note_list_ajax' %}","{{note.id}}");
-            send_message(data)
-        })
-        {% if  user.is_authenticated %}
-        $('#ret_text_{{note.id}}').keyup(function(){
-            data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
-            send_message(data);
-        })
-        $('#ret_send_{{note.id}}').click(function(){
-            data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
-            send_message(data);
-        });
-        {% endif %}
-        /* ----------paper---------- */
-        $('#info_eye_{{note.id}}').click(function(){
-            paper_eye_{{note.id}}();
-        });
-        $('#info_edit_{{note.id}}').click(function(){
-            paper_edit_{{note.id}}();
-        });
+/* ----------height---------- */
+function changeParentHeight(e){
+  e.style.height = e.contentWindow.document.body.scrollHeight + "px";
+}
+var timer = 0;
+var iframe_height = {
+    {%for note in object_list%}"height_{{note.id}}":700,{%endfor}
+}
 
-    {% endfor %}
+window.addEventListener('message', function(e) {
+    console.log("parent",$('#iframe_'+e.data.id).parent().height);
+    //if(e.origin=="http://rwd-book.info"){
+    //$("#iframe_669").parent()[0].style.height = e.data.height;
+    //}
+}, false);
+/* ----------  ---------- */
+
+$(document).ready( function(){
+{% for note in object_list %}
+    /* ----------init---------- */
+    $('#info_like_{{note.id}}').children('h6').children('i').text("{{note.liked_number}}")
+    {% if user.is_authenticated and user.id and user.id == note.posted_user.id %}
+    $("#id_update_text_{{note.id}}").keyup(function(){
+        data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
+        send_message(data);
+    });
+    {% endif %}
+    /* ----------button---------- */
+    $('#send_message_{{note.id}}').click(function(){
+        data = get_note_data("{%url 'note_list_ajax' %}","{{note.id}}");
+        send_message(data);
+    });
+    $('#info_like_{{note.id}}').click(function(){
+        data = get_like_data("{%url 'note_list_ajax' %}","{{note.id}}");
+        send_message(data)
+    })
+    {% if  user.is_authenticated %}
+    $('#ret_text_{{note.id}}').keyup(function(){
+        data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
+        send_message(data);
+    })
+    $('#ret_send_{{note.id}}').click(function(){
+        data = ret_send_data("{%url 'note_list_ajax' %}","{{note.id}}");
+        send_message(data);
+    });
+    {% endif %}
+    /* ----------paper---------- */
+    $('#info_eye_{{note.id}}').click(function(){
+        paper_eye_{{note.id}}();
+    });
+    $('#info_edit_{{note.id}}').click(function(){
+        paper_edit_{{note.id}}();
+    });
+    /* ---------- ---------- */
+    $("#iframe_{{note.id}}").hover(function(){
+        console.log("test")
+        /*$(this).parent().animate({
+            height: "100"
+        });*/
+    }, function() {/*
+        $(this).parent().animate({
+            height: "700"
+        });*/
+    });
+{% endfor %}
 });
 /* ----------message---------- */
 var get_message = function (){

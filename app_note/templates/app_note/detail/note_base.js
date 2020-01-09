@@ -1,3 +1,12 @@
+
+$(document).ready( function(){
+    sendHeight();
+})
+function sendHeight(){
+  var h = document.documentElement.scrollHeight;
+  parent.postMessage({'height':h, 'id':{{object.id}}}, "*");
+}
+// -----------------------------------------------------------------------------
 var renderer = new marked.Renderer()
 function htmlDecode(input){
   var e = document.createElement('div');

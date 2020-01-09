@@ -6,14 +6,14 @@ function openNav() {
     document.getElementById("mySidenav").style.width = width_size;
     //document.getElementById("main").style.marginLeft = "250px";
     //document.body.style.backgroundColor = "rgba(46,46,46,0.95)";
-    paper_background()
+    {%if '/' == request.path%}paper_background(){%endif%}
 }
 
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     //document.getElementById("main").style.marginLeft= "0";
     //document.body.style.backgroundColor = "white";
-    paper_background()
+    {% if '/' == request.path %}paper_background(){% endif %}
 }
 var now_la = "ja";
 function note_la_to(la, id, head=false, text=false) {
@@ -27,7 +27,7 @@ function note_la_to(la, id, head=false, text=false) {
 }
 function to_ja(){
 now_la = "ja";
-{% if object_list %}
+{% if object_list and '/note' in request.path %}
 {% for note in object_list %}
     note_la_to('ja', {{note.id}},{%if user.id == note.posted_user.id%}
     head={%if note.ja_head%}"{{note.ja_head}}"{%else%}''{%endif%},
@@ -37,7 +37,8 @@ now_la = "ja";
 }
 function to_en(){
 now_la = "en";
-{% if object_list %}
+
+{% if object_list and '/note' in request.path %}
 {% for note in object_list %}
     note_la_to('en', {{note.id}}{%if user.id == note.posted_user.id%},
     head={%if note.en_head%}"{{note.en_head}}""{%else%}''{%endif%},
