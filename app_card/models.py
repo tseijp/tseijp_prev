@@ -22,7 +22,6 @@ class CardModel(m.Model):
     posted_link   = m.CharField(max_length=255             , blank=True, null=True)#url name
     #liked_number  = m.IntegerField(default=0               , blank=True, null=True)
     #reply_number  = m.IntegerField(default=0               , blank=True, null=True)
-
     ja_text= m.TextField(max_length=65535         , blank=True, null=True)
     en_text= m.TextField (max_length=65535        , blank=True, null=True)
     def get_sns      (self):return CardModel.objects.filter(card_object=self)
