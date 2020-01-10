@@ -12,6 +12,10 @@ from django.views.generic.edit  import ModelFormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
+### error
+from django.views.decorators.csrf import requires_csrf_token
+from django.http import HttpResponseServerError
+
 ### my created
 from app_user.forms  import *
 from app_user.models import *
@@ -22,6 +26,10 @@ from app_user.values import *
 def home(request):  return render(request, 'index/index.html', {"content":get_index_content()})
 def test(request):  return render(request, 'user_test.html')
 def code1(request): return render(request, 'code/tree.html')
+
+@requires_csrf_token
+def my_customized_server_error(request, template_name='500.html'):
+    return HttpResponseServerError('<h1>Server Error (500)</h1>t1810394@edu.cc.uec.ac.jp')
 
 class SignupView(CreateView):
     form_class    = UserCreationForm
