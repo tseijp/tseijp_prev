@@ -39,7 +39,7 @@ cat_iframes = [
 ]
 
 def get_cat_iframe():
-    return random.choices(cat_iframess)[0]
+    return random.choices(cat_iframes)[0]
 
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
