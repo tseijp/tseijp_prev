@@ -4,11 +4,6 @@ from django.contrib.auth.views import  LoginView, LogoutView
 from app_user.ajaxs import *
 from app_user.views import *
 
-
-### error
-from django.conf.urls import handler500
-handler500 = my_customized_server_error
-
 urlpatterns = [
     path(''                  , home                    , name='home'         ),
     #path('test'              , test                    , name='user_test'     ),

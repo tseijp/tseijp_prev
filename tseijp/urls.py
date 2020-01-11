@@ -19,6 +19,10 @@ from django.urls import path, include
 #from django.conf import settings###ROOT 用
 #from django.conf.urls.static import static
 
+### error
+from app_user.views import my_customized_server_error
+from django.conf.urls import handler500
+handler500 = my_customized_server_error
 ### my created
 urlpatterns = [
     path('admin/'     , admin.site.urls         ),
