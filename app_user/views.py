@@ -27,6 +27,7 @@ def home(request):  return render(request, 'index/index.html', {"content":get_in
 def test(request):  return render(request, 'user_test.html')
 def code1(request): return render(request, 'code/tree.html')
 
+webhook_url = 'https://hooks.slack.com/services/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'
 cat_iframes = [
     '<iframe src="https://giphy.com/embed/JIX9t2j0ZTN9S" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/JIX9t2j0ZTN9S">via GIPHY</a></p>',
     '<iframe src="https://giphy.com/embed/VbnUQpnihPSIgIXuZv" width="384" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/computer-cat-wearing-glasses-VbnUQpnihPSIgIXuZv">via GIPHY</a></p>',
@@ -43,8 +44,22 @@ def get_cat_iframe():
 
 @requires_csrf_token
 def my_customized_server_error(request, template_name='500.html'):
-    message  = '<h1>Server Error (500)!</h1>'
-    message += 't1810394@edu.cc.uec.ac.jp'
+    import json
+    import requests
+    import traceback
+    requests.post(
+        webhook_url,
+        data=json.dumps({
+            'text': '\n'.join([
+                f'Request uri: {request.build_absolute_uri()}',
+                traceback.format_exc(),
+            ]),
+            'username': 'Django エラー通知',
+            'icon_emoji': ':jack_o_lantern:',
+        })
+    )
+    message  = '<h1>Server Error (500)</h1>'
+    message += '<h5>t1810394@edu.cc.uec.ac.jp</h5>'
     message += get_cat_iframe()
     return HttpResponseServerError(message)
 
