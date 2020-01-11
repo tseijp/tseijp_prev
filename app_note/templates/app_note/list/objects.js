@@ -83,7 +83,7 @@ function changeParentHeight(e){
 }
 var timer = 0;
 var iframe_height = {
-    {%for note in object_list%}"height_{{note.id}}":700,{%endfor}
+    {%for note in object_list%}"height_{{note.id}}":700,{%endfor%}
 }
 
 window.addEventListener('message', function(e) {
