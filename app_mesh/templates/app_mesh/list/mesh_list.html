@@ -1,0 +1,7 @@
+{% load static %}
+<h1>There is no Card ! SORRY !</h1>
+{% for mesh in object_list %}
+
+<p><a href="{{mesh.url_with_link}}" style="color:black">{{mesh.posted_user}}</a></p>
+
+{% endfor %}

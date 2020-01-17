@@ -1,5 +1,4 @@
 ### Python
-import random
 from datetime import datetime
 ### Django
 from django.urls import reverse_lazy
@@ -40,6 +39,7 @@ cat_iframes = [
 ]
 
 def get_cat_iframe():
+    import random
     return random.choices(cat_iframes)[0]
 
 @requires_csrf_token
@@ -54,7 +54,7 @@ def my_customized_server_error(request, template_name='500.html'):
                 f'Request uri: {request.build_absolute_uri()}',
                 traceback.format_exc(),
             ]),
-            'username': 'Django エラー通知',
+            'username': 'Django Server Error 500',
             'icon_emoji': ':jack_o_lantern:',
         })
     )

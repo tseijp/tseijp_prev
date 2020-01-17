@@ -1,5 +1,6 @@
 
 from django.db import models as m
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -15,22 +16,23 @@ VIEMO_URL = ["player.vimeo.com"]
 
 # Create your models here.
 
-class CardModel(m.Model):
+class MeshModel(m.Model):
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE  , blank=True, null=True)
     posted_time   = m.DateTimeField(default=timezone.now   , blank=True, null=True)
     posted_data   = m.CharField(max_length=255             , blank=True, null=True)#img to url
     posted_link   = m.CharField(max_length=255             , blank=True, null=True)#url name
     #liked_number  = m.IntegerField(default=0               , blank=True, null=True)
     #reply_number  = m.IntegerField(default=0               , blank=True, null=True)
-    ja_text= m.TextField(max_length=65535         , blank=True, null=True)
-    en_text= m.TextField (max_length=65535        , blank=True, null=True)
-    def get_sns      (self):return CardModel.objects.filter(card_object=self)
+    ja_text= m.TextField(max_length=65535        , blank=True, null=True)
+    en_text= m.TextField(max_length=65535        , blank=True, null=True)
+    def get_sns      (self):return MeshModel.objects.filter(mesh_object=self)
     def get_child    (self):return [c    for c in self.get_sns()]
     def get_child_id (self):return [c.id for c in self.get_child()]
     def get_child_num(self):return len( self.get_child() )
+    def url_with_link(self):return "%s?l=%s"%(reverse_lazy('mesh'), self.posted_link)
 
-class CardSNSModel(m.Model):
-    card_object   = m.ForeignKey('CardModel',on_delete=m.CASCADE)
+class MeshSNSModel(m.Model):
+    mesh_object   = m.ForeignKey('MeshModel',on_delete=m.CASCADE)
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE, blank=True, null=True)
     posted_time   = m.DateTimeField(default=timezone.now , blank=True, null=True)
     posted_link   = m.CharField(max_length=255           , blank=True, null=True)

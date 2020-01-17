@@ -3,9 +3,9 @@
     {% include "index/nav.js" %}
     {% include "index/content.js" %}
     {% if link %}
-        {% include "app_card/link/card_link.js" %}
+        {% include "app_mesh/link/mesh_link.js" %}
     {% else %}
-        {% include "app_card/list/card_list.js" %}
+        {% include "app_mesh/list/mesh_list.js" %}
     {% endif %}
 {% endblock %}
 
@@ -13,9 +13,9 @@
     {% include "index/nav.css" %}
     {% include "index/content.css" %}
     {% if link %}
-        {% include "app_card/link/card_link.css" %}
+        {% include "app_mesh/link/mesh_link.css" %}
     {% else %}
-        {% include "app_card/list/card_list.css" %}
+        {% include "app_mesh/list/mesh_list.css" %}
     {% endif %}
 {% endblock %}
 
@@ -30,9 +30,9 @@
 {% block "foot_block" %}<!--coming soon-->{% endblock %}
 
 {% block "body_block" %}
-{% if link %}
-{% include "app_card/link/card_link.html" %}
-{% else %}
-{% include "app_card/list/card_list.html" %}
-{% endif %}
+{% if link %}{% include "app_mesh/link/mesh_link.html" %}{% endif %}
+{% endblock %}
+
+{% block "main_block" %}
+{% if not link %}{% include "app_mesh/list/mesh_list.html" %}{% endif %}
 {% endblock %}

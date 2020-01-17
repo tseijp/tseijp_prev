@@ -23,15 +23,21 @@ inspector="url: https://aframe.io/releases/0.3.0/aframe-inspector.min.js">
     </a-cursor>
     </a-camera>
     <a-assets>
-        <a-asset-item id="obj_twi" src="{%static 'app_card/icon/twitter.obj'%}"></a-asset-item><!-- 3Dモデル Twitter -->
-        <a-asset-item id="mtl_twi" src="{%static 'app_card/icon/twitter.mtl'%}"></a-asset-item><!-- マテリアル -->
-        <a-asset-item id="obj_fbo" src="{%static 'app_card/icon/facebook.obj'%}"></a-asset-item><!-- 3Dモデル Facebook -->
-        <a-asset-item id="mtl_fbo" src="{%static 'app_card/icon/facebook.mtl'%}"></a-asset-item><!-- マテリアル -->
+        <a-asset-item id="obj_twi" src="{%static 'app_mesh/icon/twitter.obj'%}"></a-asset-item><!-- 3Dモデル Twitter -->
+        <a-asset-item id="mtl_twi" src="{%static 'app_mesh/icon/twitter.mtl'%}"></a-asset-item><!-- マテリアル -->
+        <a-asset-item id="obj_fbo" src="{%static 'app_mesh/icon/facebook.obj'%}"></a-asset-item><!-- 3Dモデル Facebook -->
+        <a-asset-item id="mtl_fbo" src="{%static 'app_mesh/icon/facebook.mtl'%}"></a-asset-item><!-- マテリアル -->
     </a-assets>
     <a-marker preset="hiro">
             <a-box position="0 0 0" scale="1 1 1" wireframe="true"></a-box>
             <a-box position="0 0 0" scale="2 2 2" wireframe="true"></a-box>
             <a-box position="0 0 0" scale="3 3 3" wireframe="true"></a-box>
+            <a-box position="0 0 0" scale="4 4 4" wireframe="true"></a-box>
+            <a-box position="0 0 0" scale="5 5 5" wireframe="true"></a-box>
+            {% for c in circles_list %}
+            <a-entity position="{{c.pos}}" rotation="90 0 0" material="side:double"
+              geometry="primitive:circle;radius:{{c.rad}};thetaStart:{{c.rot}};thetaLength:90"></a-entity>
+            {% endfor %}
             <a-plane position="0 4 0" rotation="0 0 0" width="4" height="4" color="#ccc"></a-plane>
             <a-text value="Augmented" position='0 0 3' rotation="0 0 0" scale="1 1 1" color="#000"></a-text>
             <a-text value="Reality"   position='0 0 4' rotation="0 0 0" scale="1 1 1" color="#FFF"></a-text>
