@@ -1,11 +1,10 @@
+{% extends "app_mesh/test/test_base.html" %}
 {% load static %}
-<!doctype HTML>
-<html>
-<!-- AR.js、A-Frame のライブラリを読み込む -->
+{% block "head_block" %}
 <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
 <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"></script>
-
-<body style='margin : 0px; overflow: hidden;'>
+{% endblock %}
+{% block "body_block" %}
 <a-scene embedded arjs="debugUIEnabled:false; sourceType: webcam;">
     <a-camera>
     <a-cursor fuse="true" color="white" scale="2 2">
@@ -28,7 +27,7 @@
     </a-camera>
 
     <a-assets>
-        <a-asset-item id="glb_maru" src="{%static 'app_mesh/maru.glb'%}"></a-asset-item><!-- 3Dモデル Twitter -->
+        <a-asset-item id="glb_maru" src="{%static 'app_mesh/maru.glb'%}"></a-asset-item>
     </a-assets>
 
     <a-marker preset="hiro">
@@ -37,12 +36,10 @@
         <a-box position="0 0 0" scale="3 3 3" wireframe="true"></a-box>
         <a-box position="0 0 0" scale="4 4 4" wireframe="true"></a-box>
         <a-box position="0 0 0" scale="5 5 5" wireframe="true"></a-box>
-        {% for c in circles_list %}
-        <a-entity position="{{c.pos}}" rotation="90 0 0" material="side:double"
-          geometry="primitive:circle;radius:{{c.rad}};thetaStart:{{c.rot}};thetaLength:90"></a-entity>
+        {% for n,c in circ.items %}
+        <a-circle position="{{c.x}} {{c.y}} {{c.z}}" rotation="90 0 0" radius="{{c.R}}"
+          theta-start="{{c.rot}}" theta-length="90" wireframe="True"></a-circle>
         {% endfor %}
-        <a-entity geometry="primitive:circle; radius:0.25"
-          material="side:double"></a-entity>
         <a-entity gltf-model="#glb_maru"
             src="#glb_maru"
             scale="0.75 0.75 0.75"
@@ -55,9 +52,6 @@
             color="white" rotation="-10 0 0">
         </a-text>
     </a-marker>
-
     <a-entity camera></a-entity>
-
 </a-scene>
-</body>
-</html>
+{% endblock %}

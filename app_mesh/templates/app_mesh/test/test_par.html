@@ -1,0 +1,31 @@
+{% extends "app_mesh/test/test_base.html" %}
+{% load static %}
+{% block "head_block" %}
+<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+
+<script src="https://unpkg.com/aframe-animation-component@3.2.1/dist/aframe-animation-component.min.js"></script>
+<script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+{% endblock %}
+
+{% block "body_block" %}
+<a-scene embedded arjs='trackingMethod: best;'>
+<a-assets>
+  <a-asset-item id="glb_maru" src="{%static 'app_mesh/maru.glb'%}"></a-asset-item>
+</a-assets>
+<a-anchor hit-testing-enabled='true'>
+    <!-- Using rain component from Registry. -->
+    <!-- Using particle system component from Registry. -->
+    <a-entity particle-system="preset: snow; particleCount: 4000"></a-entity>
+    <a-entity gltf-model="#glb_maru"
+        src="#glb_maru"
+        scale="0.75 0.75 0.75"
+        position="0 0 0"
+        rotation="0 -180 0"
+        animation__rotation="property:rotation; to:0 180 0; loop:true"></a-entity>
+    <a-entity light="type:ambient; color: #BBB"></a-entity>
+    <a-entity light="type:directional; color: #AAA" position="0 2 0"></a-entity>
+</a-anchor>
+<a-camera-static/>
+</a-scene>
+{% endblock %}

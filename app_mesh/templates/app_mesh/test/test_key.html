@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>aframe-mvaterial 0.8.0 hack fix›</title>
+    <meta name="description" content="Aframe-Material">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+
+    <script type="text/javascript">
+      // KEYBOARD ASSETS PATH
+      AFRAME.ASSETS_PATH = "https://tuyoisaza.com/VROM/aframe-material-master/assets";
+      //hack fix show() position when on click
+      AFRAME.registerComponent('openkeyboard', {
+        init: function () {
+            var inputtoopen = this.el;
+          inputtoopen.addEventListener('click', function(event) {
+            var keyboard = document.querySelector("a-keyboard");
+            keyboard.setAttribute("position", '-1.5 -0.3 -2');
+            keyboard.show();
+            }) //eventlisener
+           } // init
+        }); //registercomponent
+
+   </script>
+    <script src="https://cdn.rawgit.com/etiennepinchon/aframe-material/master/dist/aframe-material.js"></script>
+  </head>
+  <body>
+    <a-scene>
+   <a-assets>
+
+     <!-- KEYBOARD IMGS hack fix-->
+      <img id="aframeKeyboardDismiss" crossorigin="anonymous"
+           src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/DismissIcon.png">
+     <img id="aframeKeyboardShift" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ShiftIcon.png">
+     <img id="aframeKeyboardShiftActive" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ShiftActiveIcon.png">
+     <img id="aframeKeyboardEnter" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/EnterIcon.png">
+     <img id="aframeKeyboardBackspace" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/BackspaceIcon.png">
+     <img id="aframeButtonShadow" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ButtonShadow.png">
+     <img id="aframeCheckboxMark" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/CheckmarkIcon.png">
+     <img id="aframeSwitchShadow" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/SwitchShadow.png">
+     <img id="aframeKeyboardShadow" crossorigin="anonymous"
+          src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/KeyShadow.png">
+
+     <!-- KEYBOARD SOUNDS hack fix-->
+     <audio id="1" crossorigin="anonymous"
+            src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/ButtonClick.mp3" preload="auto"></audio>
+     <audio id="2" crossorigin="anonymous"
+            src=" https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/ButtonClickDisabled.mp3" preload="auto"></audio>
+     <audio id="3" crossorigin="anonymous"
+            src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/InputClick.mp3" preload="auto"></audio>
+     <audio id="4" crossorigin="anonymous"
+            src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/KeyDown.mp3" preload="auto"></audio>
+     <audio id="5" crossorigin="anonymous"
+            src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/KeyIn.mp3" preload="auto"></audio>
+     <audio id="6" crossorigin="anonymous"
+            src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/sounds/ToastShow.mp3" preload="auto"></audio>
+
+  </a-assets>
+      <a-entity laser-controls="hand: right"></a-entity>
+      <a-sky color="#cccccc"></a-sky>
+      <a-entity> <a-camera look-controls wasd-controls
+                           cursor="rayOrigin: mouse"
+                           ></a-camera></a-entity>
+
+      <!-- BEGIN INPUTS/KEYBOARD -->
+      <a-keyboard id="OnVrKeyboard" physical-keyboard="true" is-open="false" ></a-keyboard>
+      <a-input position="-0.7 1 -2.5" placeholder="Username" color="black" width="1" openkeyboard></a-input>
+      <a-input position="-0.7 0.8 -2.5" type="password" placeholder="Password" color="black" width="1" openkeyboard></a-input>
+      <!-- END INPUTS/KEYBOARD -->
+
+      <!-- BEGIN FORM -->
+      <a-rounded position="0.5 0.5 -2.5" width="4" height="3.1" radius="0.05" rotation="0 -20 0" scale="0.3 0.3 0.3">
+        <a-form>
+          <a-switch position="0.2 2.7 0" enabled="true"></a-switch>
+          <a-radio position="0.2 2.4 0" width="3" name="food" label="Burger with fries and pizza" value="pizza"></a-radio>
+          <a-radio position="0.2 2.1 0" width="3" name="food" label="Veggies" checked="true" disabled="true"></a-radio>
+          <a-radio position="0.2 1.8 0" width="3" name="food" label="Ice cream"></a-radio>
+          <a-checkbox position="0.2 1.5 0" width="3" name="stuff" label="I am a checkbox" checked="true"></a-checkbox>
+          <a-checkbox position="0.2 1.2 0" width="3" name="stuff" label="And I am another one" checked="true" disabled="true"></a-checkbox>
+          <a-button position="0.2 0.8 0" name="stuff" value="Click me" type="raised"></a-button>
+          <a-button position="0.2 0.35 0" width="3" name="stuff" value="You cannot click me" disabled="true"></a-button>
+        </a-form>
+      </a-rounded>
+      <!-- END FORM -->
+
+      <!-- BEGIN TOAST -->
+      <a-toast message="This is a toast" action="Got it"></a-toast>
+      <!-- END TOAST -->
+
+    </a-scene>
+   <!-- KEYBOARD TOAST ACTIVATION -->
+    <script type="text/javascript">
+      let button = document.querySelector('a-button');
+      let toast = document.querySelector('a-toast');
+      toast.addEventListener('actionclick', ()=>{
+        toast.hide();
+      })
+      button.addEventListener('click', ()=> {
+        toast.show();
+      })
+    </script>
+  </body>
+</html>

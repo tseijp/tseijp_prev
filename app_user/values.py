@@ -12,6 +12,14 @@ def get_index_content(active="home"):
         "url"  :"home",
         "cloud":"rgba(46,46,46,1)"},
 
+    "mesh":{
+        "active":[" active" if active=="mesh" else ""][0],
+        "shadow":"",
+        "main":{},
+        "icon":"fas fa-address-card",
+        "url": "mesh",
+        "cloud":""},
+
     "note":{
         "active":[" active" if active=="note" else ""][0],
         "shadow":"",
@@ -23,20 +31,12 @@ def get_index_content(active="home"):
         "url"  :"note",
         "cloud":"rgba(46,46,46,0)"},
 
-    "coming soon":{
-        "active":[" active" if active=="idea" else ""][0],
-        "shadow":"",
-        "main":{},
-        "icon":"fas fa-walking"+[" fa-spin" if active=="idea" else ""][0],
-        "url": "idea",
-        "cloud":""},
-
     "coming soon!":{
         "active":[" active" if active=="idea" else ""][0],
         "shadow":"",
         "main":{},
         "icon":"fas fa-walking",
-        "url": "idea",
+        "url": "home",
         "cloud":""},
     }
 

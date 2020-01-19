@@ -1,0 +1,28 @@
+{% extends "app_mesh/test/test_base.html" %}
+{% load static %}
+{% block "head_block" %}
+  <script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+{% endblock %}
+{% block "body_block" %}
+<a-scene>
+    <a-assets>
+      <a-asset-item id="crate-obj" src="https://cdn.rawgit.com/aframevr/aframe/master/examples/assets/models/crate/crate.obj"></a-asset-item>
+      <a-asset-item id="crate-mtl" src="https://cdn.rawgit.com/aframevr/aframe/master/examples/assets/models/crate/crate.mtl"></a-asset-item>
+    </a-assets>
+    <a-entity
+        id="camera" camera position="0 0 5"
+        orbit-controls="
+            autoRotate: false;
+            target: #target;
+            enableDamping: true;
+            dampingFactor: 0.25;
+            rotateSpeed:0.14;
+            minDistance:3;
+            maxDistance:15;"
+        mouse-cursor="">
+    </a-entity>
+    <a-entity id="target" obj-model="obj: #crate-obj; mtl: #crate-mtl" position="0 0 0"></a-entity>
+    <a-sky color="#000000"></a-sky>
+</a-scene>
+{% endblock %}

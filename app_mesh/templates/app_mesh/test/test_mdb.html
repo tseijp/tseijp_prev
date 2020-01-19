@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% extends "app_mesh/test/test_base.html" %}
+{% load static %}
+{% block "head_block" %}
+<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/etiennepinchon/aframe-material/master/dist/aframe-material.js"></script>
+<script type="text/javascript">{% include "app_mesh/test/test_mdb.js" %}</script>
+{% endblock %}
+{% block "body_block" %}
+<a-scene>
+  <a-assets>
+    <!-- KEYBOARD IMGS hack fix-->
+    <img id="aframeKeyboardDismiss" crossorigin="anonymous"
+         src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/DismissIcon.png">
+    <img id="aframeKeyboardShift" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ShiftIcon.png">
+    <img id="aframeKeyboardShiftActive" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ShiftActiveIcon.png">
+    <img id="aframeKeyboardEnter" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/EnterIcon.png">
+    <img id="aframeKeyboardBackspace" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/BackspaceIcon.png">
+    <img id="aframeButtonShadow" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/ButtonShadow.png">
+    <img id="aframeCheckboxMark" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/CheckmarkIcon.png">
+    <img id="aframeSwitchShadow" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/SwitchShadow.png">
+    <img id="aframeKeyboardShadow" crossorigin="anonymous"
+        src="https://www.tuyoisaza.com/VROM/aframe-material-master/assets/images/KeyShadow.png">
+    <img id="mail"      crossorigin="anonymous" src="{%static 'app_mesh/sns/mail.png'%}">
+    <img id="twitter"   crossorigin="anonymous" src="{%static 'app_mesh/sns/twitter.png'%}">
+    <img id="facebook"  crossorigin="anonymous" src="{%static 'app_mesh/sns/facebook.png'%}">
+    <img id="instagram" crossorigin="anonymous" src="{%static 'app_mesh/sns/instagram.png'%}">
+  </a-assets>
+  <a-entity laser-controls="hand: right"></a-entity>
+  <a-sky color="#cccccc"></a-sky>
+  <a-entity><a-camera look-controls wasd-controls
+      cursor="rayOrigin: mouse"></a-camera></a-entity>
+
+  <!-- BEGIN FORM -->
+  <a-rounded position="-1 1 -1.5" width="4" height="3.5" radius="0.05" rotation="0 0 0" scale="0.5 0.5 0.5">
+    <a-form>
+      <a-link href="index.html" title="My Homepage" image="#homeThumbnail"></a-link>
+      <a-image src="#twitter" scale="0.25 0.25 0.25"
+      position="0.3 3.25 0"></a-image>
+
+      <a-switch position="0.2 2.7 0" enabled="true"></a-switch>
+      <a-radio position="0.2 2.4 0" width="3" name="food" label="Burger with fries and pizza" value="pizza"></a-radio>
+      <a-radio position="0.2 2.1 0" width="3" name="food" label="Veggies" checked="true" disabled="true"></a-radio>
+      <a-radio position="0.2 1.8 0" width="3" name="food" label="Ice cream"></a-radio>
+
+      <a-checkbox position="0.2 1.5 0" width="3" name="stuff" label="I am a checkbox" checked="true"></a-checkbox>
+      <a-checkbox position="0.2 1.2 0" width="3" name="stuff" label="And I am another one" checked="true" disabled="true"></a-checkbox>
+      <a-entity >
+      <a-button link="on: click; href: https://aframe-aincraft.glitch.me" position="0.2 0.8 0" name="stuff" value="Click me" type="raised"></a-button>
+      </a-entity>
+      <a-button position="0.2 0.35 0" width="3" name="stuff" value="You cannot click me" disabled="true"></a-button>
+    </a-form>
+  </a-rounded>
+  <!-- END FORM -->
+
+  <!-- BEGIN TOAST -->
+  <a-toast message="This is a toast" action="Got it"></a-toast>
+  <!-- END TOAST -->
+</a-scene>
+{% endblock %}

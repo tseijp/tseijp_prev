@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block "js_block" %}
+  {% include "index/nav.js" %}
+  {% include "index/content.js" %}
+{% endblock %}
+
+{% block "css_block" %}
+  {% include "index/nav.css" %}
+  {% include "index/content.css" %}
+{% endblock %}
+
+{% block "nav_block" %}
+  {% include "index/nav.html" %}
+{% endblock %}
+
+{% block "main_block" %}
+<h4>A-frame and AR.js</h4>
+<h6>hi! put here some test page of AR.js and a-frame.js! fun!</h6>
+<br>
+<p>AR.js</p>
+<li><a href="{% url 'mesh_test' %}?l=n" style="color:black">now</a></li>
+<li><a href="{% url 'mesh_test' %}?l=i" style="color:black">init</a></li>
+<li><a href="{% url 'mesh_test' %}?l=p" style="color:black">particle</a></li>
+<br>
+<h6>a-frame.js</h6>
+<li><a href="{% url 'mesh_test' %}?l=b" style="color:black">bar</a></li>
+
+<li><a href="{% url 'mesh_test' %}?l=r" style="color:black">rotate</a></li>
+<li><a href="{% url 'mesh_test' %}?l=m" style="color:black">map</a></li>
+
+<li><a href="{% url 'mesh_test' %}?l=k" style="color:black">keyboard</a></li>
+<li><a href="{% url 'mesh_test' %}?l=d" style="color:black">material</a></li>
+{% endblock %}
