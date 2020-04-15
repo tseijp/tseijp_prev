@@ -16,7 +16,7 @@ class Embed extends React.Component {
         //const exam = "# hi! \n hello world\n```\nimport numpy as np\nimport pandas as pd\n```"
         return (
             <div style={ {...styles[p.isHome?'homeembed':'postedembed']} }>
-                <ReactMarkdown source={`# ${p.head}\n${p.text}`} renderers={{ code:CodeBlock }} />
+                <ReactMarkdown source={p.text} renderers={{ code:CodeBlock }} />
             </div>
         )
     }

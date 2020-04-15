@@ -17,7 +17,7 @@ class Layout extends React.Component {
         return(
             <Auxil>
                 <Side />
-                <Trans />
+                <Trans toJa={this.props.toJa} toEn={this.props.toEn}/>
                 <main style={styles.container}>
                     <MDBContainer>
                     {this.props.children}

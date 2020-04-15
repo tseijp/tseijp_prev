@@ -19,15 +19,11 @@ import NoteContext from 'contexts/NoteContext.js';
 import {MDBCol, MDBRow, MDBCardBody, MDBInput} from 'mdbreact';
 
 class NoteCard extends React.Component {
-    state = {
-        lang:"ja",
-        head:this.props.note.ja_head,
-        text:this.props.note.ja_text,
-    }
+    state = {jaText:this.props.jaText, enText:this.props.enText,}
     editText (text) {
-        const pre = this.state.text
+        const pre = this.state[`${this.props.lang}Text`]
         if (pre!==text)
-            this.setState({text:text});
+            this.setState({[`${this.props.lang}Text`]:text});
     }
     render () {
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
@@ -79,15 +75,16 @@ class NoteCard extends React.Component {
                 <Radium.StyleRoot>
                 <div style={ {...styles.card, ...styles[c.isHome?'homecard':'postedcard']} }>
                     <MDBCardBody >
-                        <Embed isHome={c.isHome} head={s.head} text={s.text}/>
+                        <Embed isHome={c.isHome} text={s[`${p.lang}Text`]}/>
                         <MDBRow>
                             <MDBCol style={styles.col}><Icon icon="fa-eye"  click={this.eye} /></MDBCol>
                             <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
                             <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
                         </MDBRow>
                         <hr />{/*--------------------------------*/}
-                            <MDBInput type="textarea" label="test" rows="5" className="active-pink-textarea"
-                                value={s.text} onChange={(e)=>this.editText(e.target.value)} />
+                        <MDBInput type="textarea" label="test" rows="5"
+                            value={s[`${p.lang}Text`]}
+                            onChange={(e)=>this.editText(e.target.value)} />
                     </MDBCardBody>
                 </div>
                 </Radium.StyleRoot>

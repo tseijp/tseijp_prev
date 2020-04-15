@@ -16,8 +16,8 @@ class Side extends React.Component {
             <div>
                 <TransToggle isOpen={s.isOpen} click={this.click.bind(this)}/>
                 <TransItems isOpen={s.isOpen} collapseID={this.state.collapseID}>
-                    <TransItem click={console.log('ja')}>Ja</TransItem>
-                    <TransItem click={console.log('en')}>En</TransItem>
+                    <TransItem click={this.props.toJa}>Ja</TransItem>
+                    <TransItem click={this.props.toEn}>En</TransItem>
                 </TransItems>
             </div>
         )

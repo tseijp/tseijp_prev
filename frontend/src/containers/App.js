@@ -16,32 +16,34 @@ import "mdbreact/dist/css/mdb.css";
 
 
 class App extends React.Component {
-    constructor() {
+    constructor () {
         super()
         this.state = {
-            noteContext:{isDark:false, isHome:true, isAuth:false, tag:'',}
+            noteContext:{isDark:false, isHome:true, isAuth:false},
+            noteCards : NoteExample.map(note=>({
+                user:'tseijp',time:'now',like:'20',
+                jaText:note.ja_text,enText:note.en_text,  })),
+            lang :'ja',
         };
     }
+    addNoteCard () {
+        this.setState({noteCards:{...this.state.noteCards}})
+    }
     render(){
+        const s = this.state;
         return(
-            <NoteContext.Provider value={ {isDark:false, isHome:true, isAuth:false, tag:'',} }>
+            <NoteContext.Provider value={ this.state.noteContext }>
             <Radium.StyleRoot>
-            <Layout>
+            <Layout
+                toJa={()=>this.setState({lang:'ja'})}
+                toEn={()=>this.setState({lang:'en'})}>
                 <Tool />
                 <MDBRow>
                 {/* ここだけを for note in object_list に変える */}
-                {NoteExample.map((note,i)=>
-                    <NoteCard key={i} noteId={note.id}
-                        user={ note.posted_user } time={ note.posted_time }
-                        like={ note.liked_number } reply={ note.reply_number }
-                        note={ {
-                            //posted_tag:note.posted_img,
-                            //posted_img:note.posted_img,
-                            ja_head : note.ja_head,
-                            ja_text : note.ja_text,
-                            en_head : note.en_head,
-                            en_text : note.en_text,
-                        } }/>
+                {this.state.noteCards.map((note,i)=>
+                    <NoteCard key={i}
+                        user={note.user} time={note.time} like={note.like} lang={s.lang}
+                        jaText={note.jaText} enText={note.enText}/>
                 )}
                 </MDBRow>
             </Layout>
