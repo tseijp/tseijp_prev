@@ -12,14 +12,24 @@ _____________
 */
 //import Body from './NoteCard/Body.js';
 //import Canvas from './NoteCard/Canvas.js';
-import Icon  from './Icon';
-import Embed from './Embed';
-import Hover from '../NoteHover/NoteHover';
+import Icon  from 'components/NoteCard/Icon';
+import Embed from 'components/NoteCard/Embed';
+//import Hover from 'components//NoteHover/NoteHover';
 import NoteContext from 'contexts/NoteContext.js';
-import {MDBCol, MDBRow, MDBCardBody} from 'mdbreact';
+import {MDBCol, MDBRow, MDBCardBody, MDBInput} from 'mdbreact';
 
 class NoteCard extends React.Component {
-    render() {
+    state = {
+        lang:"ja",
+        head:this.props.note.ja_head,
+        text:this.props.note.ja_text,
+    }
+    editText (text) {
+        const pre = this.state.text
+        if (pre!==text)
+            this.setState({text:text});
+    }
+    render () {
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const shadow=a=>`${a[0]}px ${a[1]}px ${a[2]}px rgba(0,0,0,${a[3]})`
         const styles = {
@@ -69,14 +79,15 @@ class NoteCard extends React.Component {
                 <Radium.StyleRoot>
                 <div style={ {...styles.card, ...styles[c.isHome?'homecard':'postedcard']} }>
                     <MDBCardBody >
-                        <Embed isHome={c.isHome} />
+                        <Embed isHome={c.isHome} head={s.head} text={s.text}/>
                         <MDBRow>
                             <MDBCol style={styles.col}><Icon icon="fa-eye"  click={this.eye} /></MDBCol>
                             <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
                             <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
                         </MDBRow>
                         <hr />{/*--------------------------------*/}
-                        <Hover note={p.noe} edit={this.edit}/>
+                            <MDBInput type="textarea" label="test" rows="5" className="active-pink-textarea"
+                                value={s.text} onChange={(e)=>this.editText(e.target.value)} />
                     </MDBCardBody>
                 </div>
                 </Radium.StyleRoot>

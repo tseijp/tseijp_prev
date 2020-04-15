@@ -3,8 +3,9 @@ import Radium from 'radium';
 import {MDBRow} from 'mdbreact';
 //components
 import Layout from 'components/Layout'
-import NoteCard from 'components/NoteCard/NoteCard';
+//containers
 import Tool from 'containers/Tool';
+import NoteCard from 'containers/NoteCard';
 import NoteContext from 'contexts/NoteContext';
 //dev
 import NoteExample from 'dev/NoteExample';

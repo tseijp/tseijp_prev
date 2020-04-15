@@ -1,13 +1,18 @@
 import React from 'react';
 import Radium from 'radium';
+import {MDBInput} from 'mdbreact'
 //import AceEditor from 'react-ace';
 //import "ace-builds/src-noconflict/mode-java";
 //import "ace-builds/src-noconflict/theme-github";
 class Hover extends React.Component {
+    constructor(){
+        super();
+        this.inputElementRef = React.createRef();
+    }
     render() {
         /*
         return (
-            <div>Hover
+            <div>
                 <AceEditor
                     mode="Python"
                     theme="github"
@@ -17,7 +22,14 @@ class Hover extends React.Component {
             </div>
         )
         */
-        return(<div>Hover</div>)
+        const p = this.props
+        return(
+            <div>
+                <MDBInput type="textarea" label="textarea" rows="5"
+                    value="test" onChange={p.change}
+                    ref={this.inputElementRef}/>
+            </div>
+        )
     }
 }
 

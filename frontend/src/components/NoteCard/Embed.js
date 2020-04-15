@@ -13,10 +13,10 @@ class Embed extends React.Component {
                 [media({min:576,max:768})]:{height:"450px",borderRadius:"20px",transition:"0.5s",},
                 [media({min:768})]        :{height:"450px",borderRadius:"25px",transition:"0.5s",},},
         }
-        const exam = "# hi! \n hello world\n```\nimport numpy as np\nimport pandas as pd\n```"
+        //const exam = "# hi! \n hello world\n```\nimport numpy as np\nimport pandas as pd\n```"
         return (
             <div style={ {...styles[p.isHome?'homeembed':'postedembed']} }>
-                <ReactMarkdown source={exam} renderers={{ code:CodeBlock }} />
+                <ReactMarkdown source={`# ${p.head}\n${p.text}`} renderers={{ code:CodeBlock }} />
             </div>
         )
     }
