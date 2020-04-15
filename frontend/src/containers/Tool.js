@@ -4,9 +4,13 @@ import { MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
 
 class Tool extends React.Component{
     render(){
+        const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
-            head  :{display:"inline", fontSize:"75px"},
-            button:{padding:"25px 25px 10px"},
+            head  :{display:"inline",padding:"25px 25px 10px 10px",transition:"0.75s",
+                    [media({        max:576})]:{fontSize:"50px",},
+                    [media({min:576,max:768})]:{fontSize:"50px",},
+                    [media({min:768        })]:{fontSize:"75px",},},
+            button:{padding:"25px 25px 10px 10px"},
         }
         return (
             <MDBRow>

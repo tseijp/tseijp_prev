@@ -12,17 +12,18 @@ _____________
 */
 //import Body from './NoteCard/Body.js';
 //import Canvas from './NoteCard/Canvas.js';
-import Hover from './Hover';
-import Icons from './Icons';
+import Icon  from './Icon';
 import Embed from './Embed';
+import Hover from '../NoteHover/NoteHover';
 import NoteContext from 'contexts/NoteContext.js';
-import {MDBCol, MDBCardBody} from 'mdbreact';
+import {MDBCol, MDBRow, MDBCardBody} from 'mdbreact';
 
 class NoteCard extends React.Component {
     render() {
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const shadow=a=>`${a[0]}px ${a[1]}px ${a[2]}px rgba(0,0,0,${a[3]})`
         const styles = {
+            col:{textAlign:"center"},
             card:{position:"relative", cursor: "pointer", transition: "0.75s", overflow:"hidden",},/*allcard*/
             homecard:{                      height: "500px",boxShadow:shadow([0,1,50,.2]),
                 [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto",//display:"none",
@@ -59,7 +60,8 @@ class NoteCard extends React.Component {
                 [media({min:768})]        :{textAlign:"justify",lineHeight:"20px",fontSize:"20px",},},
             */
         }
-
+        const s = this.state;
+        const p = this.props;
         return (
             <NoteContext.Consumer>
             {(c) => (
@@ -67,10 +69,14 @@ class NoteCard extends React.Component {
                 <Radium.StyleRoot>
                 <div style={ {...styles.card, ...styles[c.isHome?'homecard':'postedcard']} }>
                     <MDBCardBody >
-                        <Embed isHome={c.isHome}/>
-                        <Icons className="NoteCardIcons"/>
+                        <Embed isHome={c.isHome} />
+                        <MDBRow>
+                            <MDBCol style={styles.col}><Icon icon="fa-eye"  click={this.eye} /></MDBCol>
+                            <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
+                            <MDBCol style={styles.col}><Icon icon="fa-edit" click={this.edit}/></MDBCol>
+                        </MDBRow>
                         <hr />{/*--------------------------------*/}
-                        <Hover className="NoteCardHover"/>
+                        <Hover note={p.noe} edit={this.edit}/>
                     </MDBCardBody>
                 </div>
                 </Radium.StyleRoot>

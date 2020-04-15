@@ -1,10 +1,11 @@
 import React from 'react';
 import Radium from 'radium';
-import AceEditor from 'react-ace';
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-github";
+//import AceEditor from 'react-ace';
+//import "ace-builds/src-noconflict/mode-java";
+//import "ace-builds/src-noconflict/theme-github";
 class Hover extends React.Component {
     render() {
+        /*
         return (
             <div>Hover
                 <AceEditor
@@ -15,6 +16,8 @@ class Hover extends React.Component {
                     onChange={()=>console.log('hi')} />
             </div>
         )
+        */
+        return(<div>Hover</div>)
     }
 }
 

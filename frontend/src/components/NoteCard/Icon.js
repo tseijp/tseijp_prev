@@ -1,5 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
+
 class Icons extends React.Component {
     render(){
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
@@ -14,8 +15,8 @@ class Icons extends React.Component {
         const p = this.props;
         return(
             <Radium.StyleRoot>
-                    <i style={styles.icon} className={"fas "+p.icon} onClick={p.click} />
-                    {p.children}
+                <i style={styles.icon} className={"fas "+p.icon} onClick={p.click} />
+                {p.children}
             </Radium.StyleRoot>
         )
     }

@@ -33,9 +33,9 @@ class App extends React.Component {
                     <NoteCard key={i} noteId={note.id}
                         user={ note.posted_user } time={ note.posted_time }
                         like={ note.liked_number } reply={ note.reply_number }
-                        content={ {
-                            posted_tag:note.posted_img,
-                            posted_img:note.posted_img,
+                        note={ {
+                            //posted_tag:note.posted_img,
+                            //posted_img:note.posted_img,
                             ja_head : note.ja_head,
                             ja_text : note.ja_text,
                             en_head : note.en_head,
