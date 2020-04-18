@@ -49,20 +49,16 @@ class App extends React.Component {
                 toEn={()=>this.setState({lang:'en'})}>
                 <NoteHead addCard={this.addCard}/>
                 <MDBRow>
-                    {this.state.noteCards.map(
-                        (note,j) => { return (
-                            <Auxil>
-                                <NoteCard key={j} {...note}
-                                    lang={s.lang} aithor={s.author}/>
-                                {note.reply&&note.reply.map((reply,i)=>
-                                    <NoteCard key={i} {...reply}
-                                        lang={s.lang} author={s.author}/>
-                                )}
-                            </Auxil>
+                {this.state.noteCards.map( (note,j) => { return (
+                    <Auxil>
+                        <NoteCard key={j} {...note} lang={s.lang} author={s.author}/>
+                        {note.reply&&note.reply.map((reply,i)=>
+                            <NoteCard key={i} {...reply} lang={s.lang} author={s.author}/>
                         )}
-                    )}
-                    <NoteTail addCard={this.addCard}/>
+                    </Auxil>
+                )} )}
                 </MDBRow>
+                <NoteTail addCard={this.addCard}/>
             </Layout>
             </Radium.StyleRoot>
             </NoteContext.Provider>
