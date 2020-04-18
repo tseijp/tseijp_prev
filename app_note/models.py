@@ -18,11 +18,6 @@ from markdownx.models import MarkdownxField
 
 ### URL
 from urllib.parse import urlparse
-GOMAP_URL = ["maps.google.com"]
-VIEMO_URL = ["player.vimeo.com"]
-UTUBE_URL = ["youtube.com"]
-SOUND_URL = ["soundcloud.com"]
-
 def get_paths(json_objects, num=1):
     paths = []
     for p in json_objects[:num]:
@@ -33,27 +28,30 @@ class NoteModel(m.Model):
     note_object   = m.ForeignKey('self',on_delete=m.CASCADE, blank=True, null=True)
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE  , blank=True, null=True)
     posted_time   = m.DateTimeField(default=timezone.now   , blank=True, null=True)
+"""deleted
     liked_number  = m.IntegerField(default=0               , blank=True, null=True)
     reply_number  = m.IntegerField(default=0               , blank=True, null=True)
     posted_tag    = m.CharField(max_length=255             , blank=True, null=True)
     posted_img    = m.CharField(max_length=255             , blank=True, null=True)#img to url
+"""
     # ja
-    ja_head= m.CharField(max_length=255           , blank=True, null=True)
+#    ja_head= m.CharField(max_length=255           , blank=True, null=True)
     ja_text= m.TextField(max_length=65535         , blank=True, null=True)
     ### en
-    en_head= m.CharField(max_length=255           , blank=True, null=True)
+#    en_head= m.CharField(max_length=255           , blank=True, null=True)
     en_text= m.TextField (max_length=65535        , blank=True, null=True)
-    def ja_list_of_text(self):return self.ja_text.split('\n')
-    def en_list_of_text(self):return self.en_text.split('\n')
-    def ja_back_of_text(self):return "\\\n".join( self.ja_list_of_text() )
-    def en_back_of_text(self):return "\\\n".join( self.en_list_of_text() )
+#    def ja_list_of_text(self):return self.ja_text.split('\n')
+#    def en_list_of_text(self):return self.en_text.split('\n')
+#    def ja_back_of_text(self):return "\\\n".join( self.ja_list_of_text() )
+#    def en_back_of_text(self):return "\\\n".join( self.en_list_of_text() )
     def posted_date    (self):return self.posted_time.strftime('%d')
     def posted_month   (self):return self.posted_time.strftime('%b')
     def posted_tag_list(self):return self.posted_tag.strip(' ').split('#')
     ### display
-    def ja_url(self,*args,**kwargs):return reverse_lazy('note_ja',kwargs={'pk':self.pk})
-    def en_url(self,*args,**kwargs):return reverse_lazy('note_en',kwargs={'pk':self.pk})
-    def url_with_id          (self):return 'id=%s;'%self.pk
+#    def ja_url(self,*args,**kwargs):return reverse_lazy('note_ja',kwargs={'pk':self.pk})
+#    def en_url(self,*args,**kwargs):return reverse_lazy('note_en',kwargs={'pk':self.pk})
+#    def url_with_id          (self):return 'id=%s;'%self.pk
+"""delete
     ### url
     def img_is_url  (self):return True if ("%s"%self.posted_img)[:4]=="http" else False
     def img_is_map  (self):return True if urlparse("%s"%self.posted_img).netloc in GOMAP_URL else False
@@ -67,6 +65,7 @@ class NoteModel(m.Model):
     def get_edit_objects(self):return self.get_json_objects().filter(posted_user=self.posted_user)
     def get_eyes_paths  (self):return get_paths(self.get_eyes_objects(), 5)
     def get_edit_paths  (self):return get_paths(self.get_edit_objects(), 1)
+"""
     ### child
     def get_comment     (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child       (self):return [c for c in NoteModel.objects.filter(note_object=self)]
@@ -88,7 +87,11 @@ class NoteModel(m.Model):
         return r
 
 class LikeModel(m.Model):
-    note_object   = m.ForeignKey('NoteModel',on_delete=m.CASCADE)
+#    note_object   = m.ForeignKey('NoteModel',on_delete=m.CASCADE)
+    posted_user   = m.ForeignKey(User,on_delete=m.CASCADE, blank=True, null=True)
+    posted_time   = m.DateTimeField(default=timezone.now , blank=True, null=True)
+
+class TagModel(m.Model)
     posted_user   = m.ForeignKey(User,on_delete=m.CASCADE, blank=True, null=True)
     posted_time   = m.DateTimeField(default=timezone.now , blank=True, null=True)
 

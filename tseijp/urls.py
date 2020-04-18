@@ -29,5 +29,5 @@ urlpatterns = [
     path(''           , include('app_user.urls')),
     path('note/'      , include('app_note.urls')),
     #path('idea/'      , include('app_idea.urls')),
-    path('mesh/'      , include('app_mesh.urls')),
+    #path('mesh/'      , include('app_mesh.urls')),
 ]# + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
