@@ -8,14 +8,14 @@ class Embed extends React.Component {
         const p = this.props;
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
-            homeembed:{transition:"0.5s",
+            homeembed:{transition:"0.5s", overflow:"hidden",
                 [media({max:576})]        :{height:"450px",borderRadius:"16px",},
-                [media({min:576,max:768})]:{height:"450px",borderRadius:"20px",transition:"0.5s",},
-                [media({min:768})]        :{height:"450px",borderRadius:"25px",transition:"0.5s",},},
-            postedembed:{transition:"0.5s",
-                [media({max:576})]        :{height:"700px",borderRadius:"16px",transition:"0.5s",},
-                [media({min:576,max:768})]:{height:"700px",borderRadius:"20px",transition:"0.5s",},
-                [media({min:768})]        :{height:"700px",borderRadius:"25px",transition:"0.5s",},},
+                [media({min:576,max:768})]:{height:"450px",borderRadius:"20px",},
+                [media({min:768})]        :{height:"450px",borderRadius:"25px",},},
+            postedembed:{transition:"0.5s", overflow:"hidden",
+                [media({max:576})]        :{height:"700px",borderRadius:"16px",},
+                [media({min:576,max:768})]:{height:"700px",borderRadius:"20px",},
+                [media({min:768})]        :{height:"700px",borderRadius:"25px",},},
             /*
             cardbody:{
                 [media({max:576})]        :{padding:"0rem 16px 16px", height:"0",},
@@ -32,7 +32,8 @@ class Embed extends React.Component {
             */
         }
         return (
-            <div style={ {...styles[p.isHome?'homeembed':'postedembed']} }>
+            <div style={ {...styles[p.isHome?'homeembed':'postedembed']} }
+                onClick={this.props.click}>
                 <ReactMarkdown source={p.text} renderers={{ code:CodeBlock }} />
             </div>
         )

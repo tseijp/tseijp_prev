@@ -1,33 +1,26 @@
-"""tseijp URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
 from django.urls import path, include
-
-#from django.conf import settings###ROOT 用
-#from django.conf.urls.static import static
-
+from django.contrib import admin
+from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 ### error
 from app_user.views import my_customized_server_error
 from django.conf.urls import handler500
 handler500 = my_customized_server_error
 ### my created
+from app_note.views import NoteViewSet#, TagsViewSet
+from app_note.dev.init import note_init
+router = routers.DefaultRouter()
+router.register('note', NoteViewSet)
+#router.register('tags', TagsViewSet)
+
 urlpatterns = [
-    path('admin/'     , admin.site.urls         ),
-    path(''           , include('app_user.urls')),
-    path('note/'      , include('app_note.urls')),
+    path('admin/', admin.site.urls         ),
+    path(''      , include('app_user.urls')),
+    path('api/'  , include(router.urls))
+    #path('auth/' , obtain_auth_token),
+    ### dev
+    #path('note_init', note_init),
+    ### coming soon
     #path('idea/'      , include('app_idea.urls')),
     #path('mesh/'      , include('app_mesh.urls')),
-]# + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+]# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

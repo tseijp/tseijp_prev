@@ -13,5 +13,5 @@ class LikeModelAdmin(admin.ModelAdmin):
 
 @admin.register(NoteModel)
 class NoteModelAdmin(admin.ModelAdmin):
-    list_display  = ['note_object', 'posted_user', 'posted_time',]
-    search_fields = ['note_object', 'posted_user', 'posted_time',]
+    list_display  = ['id', 'note_object', 'posted_user', 'posted_time',]
+    search_fields = ['id', 'note_object', 'posted_user', 'posted_time',]

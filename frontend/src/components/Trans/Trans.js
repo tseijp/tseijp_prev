@@ -11,7 +11,7 @@ class Side extends React.Component {
     })};
     render () {
         const s = this.state;
-        const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ');
+        //const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ');
         return (
             <div>
                 <TransToggle isOpen={s.isOpen} click={this.click.bind(this)}/>

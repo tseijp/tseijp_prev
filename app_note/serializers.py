@@ -17,4 +17,6 @@ class NoteSerializer(serializers.ModelSerializer):
     like_object = LikeSerializer(many=True)
     class Meta:
         model = NoteModel
-        fields = ['id','posted_user','posted_time', 'like_object','tags_object','like_mean']
+        fields = ['id','posted_user','posted_time',
+                 'like_object','tags_object','like_mean',
+                 'ja_text', 'en_text']

@@ -1,4 +1,4 @@
-[ { 'id':1, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
+note = [ { 'id':1, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# TouchDesignerで動画生成
 都内の某国立大で化学生命（バイオ系）専攻してます.
 先日, 大学のオープンキャンパスでGANによる動画生成のデモ発表をしました．
@@ -14,8 +14,8 @@ TouchDesigner使えばリアルタイムで実装できるかな...と思って�
 TouchDesignerを初めて数か月なのに, 何故かqiitaの記事に登録してました．qiitaも初めてです．あまり実用性ありそうなこと書けませんでした(;_;)
 '''},
   { 'id':2, 'note_object':1, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# 重い処理の実行について
-TouchDesignerはPythonが中の処理にも使われており，他で重い処理をするとフリーズします．
+    'ja_text':'''# 重い処理の実行について
+TouchDesignerは  Pythonが中の処理にも使われており，他で重い処理をするとフリーズします．
 なので，subprocessとしてプロセスをいくつかに分けます
 
 前のプロセスの終了をchop_execで取得し，td_utils.pyで実行するコマンドを渡します．
@@ -36,12 +36,12 @@ subprocess.Popen(['python', 'util/td_utils.py',
 * [参考:TouchDesigner | Python and the Subprocess Module | Matthew Ragan](https://matthewragan.com/2019/08/14/touchdesigner-python-and-the-subprocess-module/)
 '''},
   { 'id':3, 'note_object':1, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''poseの動画から全身の動画をするベースCOMPです. 前処理が終わったら生成を開始します．
+    'ja_text':'''poseの動画から全身の動画をするベースCOMPです. 前処理が終わったら生成を開始します．
 生成が終わったら次の処理に通知させます．
 [img](https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855138/pose2vid.jpg)
 '''},
   { 'id':4, 'note_object':1, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# TouchDeisngerでのPythonライブラリについて
+    'ja_text':'''# TouchDeisngerでのPythonライブラリについて
 venvでpip install -> TouchDesinger内でPathを通す or sys.path.append()
 
   1. TouchDesingerでは内部にNumpyを含んでおり，しかも結構内部で依存してそうでした．
@@ -55,11 +55,11 @@ condaで仮想環境 -> TouchDesignerのsite-packages消す -> `mlink /d site-pa
   1. 結局最初からprocessを分ければよかったなと反省してます．結論はまだ出てないですが，自分なりの考えをまとめました．
 '''},
   { 'id':5, 'note_object':1, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''左上が生成結果です．Webカメラを忘れて，内カメラで録画してます．
+    'ja_text':'''左上が生成結果です．Webカメラを忘れて，内カメラで録画してます．
 [img](https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855510/output2.gif)
 '''},
   { 'id':6, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Django in AWS and Nginx with お名前.com
+    'ja_text':'''# Django in AWS and Nginx with お名前.com
 今年の春にDjangoを勉強して，gunicornとHerokuでデプロイしたサービスを半年放置していたらサーバーエラーで動かなくなっていました．．．
 
 [Advent Calendar](https://qiita.com/advent-calendar/2019/touchdesigner)に参加したくて，でも初投稿は自分のサイトでしてみたかったので，結局別のサーバーでデプロイし直しました．（あと，夏の増税前に駆け込みで買ったドメインも供養しないとなと思ってました．）
@@ -76,7 +76,7 @@ AWSがKyashというバーチャルVisaカードを使えたので使ってみ�
 
 '''},
   { 'id':7, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# AWS EC2
+    'ja_text':'''# AWS EC2
 最初間違えてUbuntuを選んでなくて気づくのに時間かかりました．．．(;__;)
 
 1. サービス(左上) -> EC2 -> インスタンス(左側)->インスタンスの管理画面へ
@@ -86,7 +86,7 @@ AWSがKyashというバーチャルVisaカードを使えたので使ってみ�
 1. `ssh -i "~/.ssh/aws_ubuntu.pem" ubuntu@<ip address>`:ユーザー名はubuntu以外だとec2-userとか
 '''},
   { 'id':8, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Ubuntu env
+    'ja_text':'''# Ubuntu env
 Ubuntuのユーザーを作成し，作ったユーザーでsshできるようにします．
 
 1. `sudo -i`
@@ -108,7 +108,7 @@ Ubuntuのユーザーを作成し，作ったユーザーでsshできるよう�
 1. `pip install django gunicorn psycopg2 psycopg2-binary Pillow`
 '''},
   { 'id':9, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# PostgreSQL
+    'ja_text':'''# PostgreSQL
 Herokuとかとだいたい同じです．
 
 1. `sudo -u postgres psql`
@@ -134,7 +134,7 @@ DATABASES = {
 }}</code></pre>
 '''},
   { 'id':10, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# AWS
+    'ja_text':'''# AWS
 1. 左カラムから、セキュリティグループ -> セキュリティグループを作成
 1. 作成したものを右クリック -> ルールの作成 ->
     1. `カスタムTCP▽`,
@@ -147,7 +147,7 @@ DATABASES = {
 1. `http://<your_ip>:8000`で確認->`deactivate`:venvぬける
 '''},
   { 'id':11, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# gunicorn
+    'ja_text':'''# gunicorn
 gunicornの設定をします．自分はアクセスログとエラーログをホームディレクトリに保存してます．gunicornの場所を間違えてはまったので気を付けてください．（venv使ったかで変わります）
 
 1. `sudo vi /etc/systemd/system/gunicorn.service`
@@ -171,7 +171,7 @@ WantedBy=multi-user.target
 </code></pre>
 '''},
   { 'id':12, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# nginx
+    'ja_text':'''# nginx
 nginxの設定をします．一度したらあんまり触れないです．viを使います🔥
 
 1. `sudo vi /etc/nginx/sites-available/<PJ_NAME>`
@@ -195,7 +195,7 @@ server {
 }</code></pre>
 '''},
   { 'id':13, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# ec2
+    'ja_text':'''# ec2
 1. セキュリティグループ -> セキュリティグループにタイプ: HTTPのルールを追加
 1. （インスタンス-> ネットワーキング -> セキュリティグループの変更->セキュリティグループ選択）←先ほどしてなかったら
 
@@ -205,7 +205,7 @@ server {
 1. Elastic IP アドレスの関連付け -> 関連付け
 '''},
   { 'id':14, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# domain
+    'ja_text':'''# domain
 ドメインとサーバーの繋げ方がいろいろあって混乱しますが，
 
 * [お名前.comでのドメイン取得とRoute 53との連携(お名前.comへのRoute 53DNS登録) - のぴぴのメモ](http://nopipi.hatenablog.com/entry/2019/01/03/132701)
@@ -224,7 +224,7 @@ server {
 1. `vi <PJ_NAME>/<settings file>.py` -> `ALOWED_HOST=["<DOMAIN>","<Elastic IP>"]`
 '''},
   { 'id':15, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# SSL
+    'ja_text':'''# SSL
 HTTPSで繋がるように設定します．
 
 1. [certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)でUbuntuとNginx選択->コマンド上から実行
@@ -235,7 +235,7 @@ HTTPSで繋がるように設定します．
 1. ec2 -> セキュリティグループ -> セキュリティグループにタイプ: HTTPSのルールを追加
 '''},
   { 'id':16, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# pipenvで管理しなおす
+    'ja_text':'''# pipenvで管理しなおす
 pipでインストールしたlibを消して，再びinstallしようと思う.
 PyTorchのバージョンを新しくしようとしたら，solサーバーのメモリが30GBを超えてて，datasetsやcheckpointsを消してからもう一度調べてみても22GBも使っていた．
 
@@ -243,7 +243,7 @@ PyTorchのバージョンを新しくしようとしたら，solサーバーの�
 使っていないlibやバージョンを消せるらしいが，普段--userオプションでインストールしており，一気に削除しようとするとPermission Errorで処理が止まってしまうので，Pythonでなんとかしようと思った．
 '''},
   { 'id':17, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''<pre><code>[***@sol ~]$ du -h -d 3 | sort -hr | head -25
+    'ja_text':'''<pre><code>[***@sol ~]$ du -h -d 3 | sort -hr | head -25
 22G     .
 12G     ./IED_HOME
 9.1G    ./.ced_ubuntu
@@ -271,7 +271,7 @@ PyTorchのバージョンを新しくしようとしたら，solサーバーの�
 206M    ./IED_HOME/.local/share</code></pre>
 '''},
   { 'id':18, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''pythonからpipを実行するために，次のような関数を定義しておく．
+    'ja_text':'''pythonからpipを実行するために，次のような関数を定義しておく．
 
 <pre><code>
 import os
@@ -291,7 +291,7 @@ def run(cmd):
     return ''.join(buf)</code></pre>
 '''},
   { 'id':19, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''次に，現在のlibraryを取得し，配列を返す関数を用意する．
+    'ja_text':'''次に，現在のlibraryを取得し，配列を返す関数を用意する．
 
 <pre><code>def get_libs():
     run('python3 -m pip freeze > libs.txt')
@@ -302,18 +302,18 @@ def run(cmd):
 それでこう
 <pre><code>if __name__=='__main__':
     pri_libs = get_libs()
-    '''delete libs'''
+    # delete libs
     cmd = ["python3 -m pip uninstall %s -y"%l.split('==')[0] for l in installed_lib]
     _=[print(run(c)) for c in cmd]
     del_libs = [l for l in get_libs() if not l in pri_libs]
-    '''result'''
+    # result
     libs_len = tuple(len(l) for l in [pri_libs, get_libs(), del_libs])
     print("\npri:%s\tnow:%s\tdel:%s"%libs_len)
     _=[print("\tdel:",l) for l in del_libs ]
 </code></pre>
 '''},
   { 'id':20, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''結果を確認すると，ちょっとへったかも
+    'ja_text':'''結果を確認すると，ちょっとへったかも
 `pri:250,now:209`
 <pre><code>22->20G     .
 12->7.4G    ./.ced_ubuntu
@@ -341,7 +341,7 @@ iedでもcedと同様にためした．
 </code></pre>
 '''},
   { 'id':21, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''`.cache`削除したらすごいことになった（消していいのかよくわかってないです）
+    'ja_text':'''`.cache`削除したらすごいことになった（消していいのかよくわかってないです）
 <code><pre>8.5G    .
 7.3G    ./IED_HOME
 5.7G    ./IED_HOME/notebook
@@ -370,7 +370,7 @@ iedでもcedと同様にためした．
 </code></pre>
 '''},
   { 'id':22, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# pipenvで環境構築
+    'ja_text':'''# pipenvで環境構築
 sudoでない環境でvirtualenvだと 構文エラーかきょかがないといわれるので使えなかった．
 
 1. `python3 -m pip install pipenv`
@@ -383,7 +383,7 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
 1. `pip install opencv-python scipy pytz`
 '''},
   { 'id':23, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# few-shot-vid2vid
+    'ja_text':'''# few-shot-vid2vid
 自分用のメモです．英弱なので，ざっくり読んで，重要そうな部分をひたすらgoogle先生に聞いて読んでます．GAN全く詳しくないので間違ってる箇所多いと思います．無断転載なので5割理解出来たら消します🔥
 
 * [arXiv](https://arxiv.org/abs/1910.12713)
@@ -392,7 +392,7 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
 
 '''},
   { 'id':24, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Introdunction
+    'ja_text':'''# Introdunction
 1. vid2vid: 人間のポーズやマスクのセマンティックを入力ビデオとし，フォトリアルなビデオに変換するタスク．大きな制限がある．
   1.  生成したい人やシーンの多数の画像がトレーニングに必要
   1. トレーニングした人の動画のみ合成できる
@@ -403,13 +403,13 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
   1. vid2vidモデルが少数の画像だけで一般化できない場合，多くの画像を収集する必要がある
 '''},
   { 'id':25, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''1. attention(注目の？)メカニズムを使った新しいNetwork weight生成モジュールを介して、一般化を実現.
+    'ja_text':'''1. attention(注目の？)メカニズムを使った新しいNetwork weight生成モジュールを介して、一般化を実現.
 1. vid2vidがtrainデータと同じビデオのみ合成できるのに対し，このモデルでは,ビデオ合成メカニズムを動的に構成.
 1. サンプル画像を使用してネットワークの重みを生成するモジュールをトレーニング.
 1. 生成モジュールの学習を促進するため,the learning objective function(学習目的関数？)を慎重に設計する。
 '''},
   { 'id':26, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Related work
+    'ja_text':'''# Related work
 ### GAN
 
 1. GANs [[13](https://arxiv.org/abs/1612.05424)]: few-shot vid2vid modelの基盤．ノイズ分布からサンプルを変換して出力
@@ -426,7 +426,7 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
 3. vid2vid models [57, 7, 12, 67]: semantic入力動画からフォトリアルな動画に変換．見えないドメイン（学習していないモデル）のビデオを合成できることが新規性.
 '''},
   { 'id':27, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''### Adaptive networks
+    'ja_text':'''### Adaptive networks
 重みの一部が入力データに基づいて動的に計算されるnetworks. 通常のネットワークとは異なるinductive bias(誘導バイアス?)がある．
 
   1. sequence modeling [15],
@@ -444,7 +444,7 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
 1. (既存の人間のポーズ転送方法は主に静止画像合成用に設計されており、問題の時間的側面を考慮していない．より時間的に一貫した結果をレンダリングする)
 '''},
   { 'id':28, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''vid2vid model can convert a sequence of input semantic images $s^T_1 : s_1,s_2,...s_T$ to a sequence of output images $x^T_1=x_1,x_2,...x_T$
+    'ja_text':'''vid2vid model can convert a sequence of input semantic images $s^T_1 : s_1,s_2,...s_T$ to a sequence of output images $x^T_1=x_1,x_2,...x_T$
 sequential generative model given by
 
 $$x_t = F(x^{t-1}_{t-r}, s^t_{t-r}) = (1-m_t) \kentengCircle w_{t-1}(x_{t-1})+m_t \kentengCircle h_t$$
@@ -455,7 +455,7 @@ $$x_t = F(x^{t-1}_{t-r}, s^t_{t-r}) = (1-m_t) \kentengCircle w_{t-1}(x_{t-1})+m_
 
 '''},
   { 'id':29, 'note_object':23, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# few shot vid2vid synthesis
+    'ja_text':'''# few shot vid2vid synthesis
 fewshot vid2vid model convert novel input semantic videos,  K-shot example image and semantic image ${e_1,e_2,...e_K},{S_{e_1},S_{e_2},...S_{e_K}}$.
 
 $$x_t = F(x^{t-1}_{t-\tau}, s^t_{t-\tau},{e_1,e_2,...e_K}, {S_{e_1}, S_{e_2},...S_{e_K})$$
@@ -468,14 +468,14 @@ few-shot vid2vid framework based on Wang et al. [57],], which is the state-of-th
 
 '''},
   { 'id':30, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# How to hack Django Server Error 500
+    'ja_text':'''# How to hack Django Server Error 500
 Error文をSlackで送れたら簡単にServer Error 500を簡単に直せたので覚え書き．Errorが出るたびに悲しくなるので，ついでにエラー画面に猫のGIFを表示させた．
 
 * [Django Server Error (500)攻略法【2019 アドカレ】 - Qiita](https://qiita.com/yuu-eguci/items/a1e4b0a2f238d5ccc985)
 * [Pythonを使ってSlackに送信する方法 - Qiita](https://qiita.com/yoshitaku_jp/items/8a53272a0118e7604994)
 '''},
   { 'id':31, 'note_object':30, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Step1
+    'ja_text':'''# Step1
 1. SlackでLogin後，[Incoming](https://slack.com/services/new/incoming-webhook)にアクセス -> チャンネルを選び，Webhook URLを控え，ポチポチ進む
 1. 適当なviews.pyに以下のように書く
 
@@ -489,7 +489,7 @@ cat_iframes = [
 </code></pre>
 '''},
   { 'id':32, 'note_object':30, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''<pre><code>続き
+    'ja_text':'''<pre><code>続き
 @requires_csrf_token
 def my_server_error(request, template_name='500.html'):
     import json
@@ -513,7 +513,7 @@ def my_server_error(request, template_name='500.html'):
 </code></pre>
 '''},
   { 'id':33, 'note_object':30, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Step2
+    'ja_text':'''# Step2
 Djangoのhandler500にカスタムしたものを上書きする．
 
 <pre><code>your_prj_name/urls.py
@@ -522,7 +522,7 @@ from django.conf.urls import handler500
 handler500 = my_server_error</code></pre>
 '''},
   { 'id':34, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Linux コマンドメモ
+    'ja_text':'''# Linux コマンドメモ
 `export: Command not found.`がでてきて，また何か悪いことをしたのかと思って焦った．そもそもshellに種類があるらしい．
 
 1. setenv：csh系
@@ -536,7 +536,7 @@ tcshコマンドチートシート
 
 '''},
   { 'id':35, 'note_object':34, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Shellについて
+    'ja_text':'''# Shellについて
 ref
 
 1. [初心者が調べた。shellとは](https://qiita.com/ycoda/items/87d23b818cb06ba1c348)
@@ -553,7 +553,7 @@ ref
 1. 'cat /etc/profile' -> 起動時に読み込まれるファイル
 '''},
   { 'id':36, 'note_object':34, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# 環境変数について
+    'ja_text':'''# 環境変数について
 ref
 1. [シェル変数と環境変数の違いをコマンドラインで確認する - Qiita](https://qiita.com/kure/items/f76d8242b97280a247a1)
 
@@ -563,7 +563,7 @@ ref
 
 '''},
   { 'id':37, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# auto download datasets
+    'ja_text':'''# auto download datasets
 リモートサーバーからデータセットをwgetすると，`403 Forbidden`が出る．(`wget  <URL> -d`で確認すると，`You don't have permission to access <URL>といわれていた)．
 いつもはsshでデータを送っていたが，今回は600GBを超えていて(ローカルはあと5GBしかない...)どうにもできないので，直接いれたい．
 
@@ -578,7 +578,7 @@ ref
 1. [Pythonのrequestsを利用してファイルダウンロードする方法 - Qiita](https://qiita.com/5zm/items/366f10fcde5d3435b417)
 '''},
   { 'id':38, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''次のような関数を定義しておく．
+    'ja_text':'''次のような関数を定義しておく．
 <pre><code>import requests, zipfile, os, sys, subprocess
 from tqdm import tqdm
 def download_file(url, dir='./'):
@@ -600,7 +600,7 @@ def download_file(url, dir='./'):
         traceback.print_exc()</code></pre>
 '''},
   { 'id':39, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''unzipする．[torchnlp](https://pytorchnlp.readthedocs.io/en/latest/_modules/torchnlp/download.html)のコードを変えて利用する.
+    'ja_text':'''unzipする．[torchnlp](https://pytorchnlp.readthedocs.io/en/latest/_modules/torchnlp/download.html)のコードを変えて利用する.
 <pre><code>def unzip_file(url, dir='./'):
     destination  = os.path.join(dir, os.path.basename(url) )
     extension    = extension = os.path.basename(url).split('.', 1)[1]
@@ -628,7 +628,7 @@ if \_\_name\_\_=="\_\_main\_\_":
 </code></pre>
 '''},
   { 'id':40, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''### 追記：dataloader
+    'ja_text':'''### 追記：dataloader
 本来のnvidiaのコードとは異なるディレクトリ構成なので，dataloaderの構成を変えようと思ったら，そもそも画像データが入ったpathかで判別していた．
 
 <pre><code>IMG_EXTENSIONS = [
@@ -650,7 +650,7 @@ def make_grouped_dataset(dir):
 一行にすると`[p for p in [[os.path.join(fn[0],f) for f in sorted(fn[2])if is_image_file(f)] for fn in sorted(os.walk(dir))]if len(p)>0]`
 '''},
   { 'id':41, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''importlibによって, dataset_nameからimportするclassを選択できる．
+    'ja_text':'''importlibによって, dataset_nameからimportするclassを選択できる．
 <pre><code>dataset_filename = "data." + dataset_name + "_dataset"
 datasetlib = importlib.import_module(dataset_filename)</code></pre>
 importしたlibの中から，BaseDatasetを継承したカスタムデータセットのclassを見つける
@@ -661,7 +661,7 @@ for name, cls in datasetlib.__dict__.items():
         dataset = cls</code></pre>
 '''},
   { 'id':42, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# Python memo
+    'ja_text':'''# Python memo
 他人のコードで見かけた不思議な書き方を少しずつメモしていく
 
 - `new_w = new_w // 4 * 4`：4で割り切れる数にできる．`//`は切り捨て除算の演算子．
@@ -669,13 +669,13 @@ for name, cls in datasetlib.__dict__.items():
 - `a, b = b, a`：参照先を入れ替える`a,b = copy.copy(b), copy.copy(a)`も
 '''},
   { 'id':43, 'note_object':42, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''### opの関数一覧を取得
+    'ja_text':'''### opの関数一覧を取得
 `obj = op('/project1/...')`でopを取得したあと，dir(obj)でメンバー一覧が見れるが，`inspect.getmembers(obj, inspect.ismethod)`でメソッド一覧が取得できない．obj.errorかobj.warningが呼ばれると強制停止するらしい．
 
 - `[s for s in dir(obj) if not s in ['error','warning'] and callable(eval('obj.%s'%s))]` : 呼び出し可能のリスト
 '''},
   { 'id':44, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# htmlとviews.pyだけでDjango
+    'ja_text':'''# htmlとviews.pyだけでDjango
 Djangoばかり触っていたので，組み込みタグなしではwebページが作れないけど，Djangoは設定とか面倒なので，簡単にする方法を考えました．
 glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 
@@ -687,7 +687,7 @@ glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 * `INSTALLED_APPS+=['glsl%s'%s for s in [1,2,3,4]]` をthreejs/settings.py 最後に追加
 '''},
   { 'id':45, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''次に，下の様にディレクトリを作る(各appはviews.py以外消してok)
+    'ja_text':'''次に，下の様にディレクトリを作る(各appはviews.py以外消してok)
 <pre><code>C:.
 ├─glsl1
 │  └─views.py
@@ -712,7 +712,7 @@ threejs/urls.pyの最後に追加する
 </code></pre>
 '''},
   { 'id':46, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''各appのviews.pyに次のViewを追加する
+    'ja_text':'''各appのviews.pyに次のViewを追加する
 <pre><code>class FromDirView(TemplateView):
     def __init__(self):
         self.name = osp.basename(osp.dirname(osp.abspath(__file__)))
@@ -738,7 +738,7 @@ threejs/urls.pyの最後に追加する
         return paths</code></pre>
 '''},
   { 'id':47, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''各appのviews.pyに次のViewを追加する
+    'ja_text':'''各appのviews.pyに次のViewを追加する
 <pre><code>class FromDirView(TemplateView):
     def __init__(self):
         self.name = osp.basename(osp.dirname(osp.abspath(__file__)))
@@ -764,7 +764,7 @@ threejs/urls.pyの最後に追加する
         return paths</code></pre>
 '''},
   { 'id':48, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''FromDirViewで用いたmake_grouped_pagesは, urlの?p=で指定した名前と同じディレクトリがtemplatesディレクトリ内にあり，かつその内に同じ名前+.htmlファイルがある場合，そのhtmlファイルをtemplateに指定する.
+    'ja_text':'''FromDirViewで用いたmake_grouped_pagesは, urlの?p=で指定した名前と同じディレクトリがtemplatesディレクトリ内にあり，かつその内に同じ名前+.htmlファイルがある場合，そのhtmlファイルをtemplateに指定する.
 ospは`import os.path as osp`で略して利用している．
 settings.pyの変数は`from django.conf import settings`で取得できる
 一行にすると`{osp.basename(fname[0]):osp.join(fname[0], osp.basename(fname[0])+'.html')
@@ -778,7 +778,7 @@ glsl1/test.htmlは次の様に追加しておく
 {% endfor %}</code></pre>
 '''},
   { 'id':49, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# 開眼！JS
+    'ja_text':'''# 開眼！JS
 JSメモ
 ref
 
@@ -800,7 +800,7 @@ JSの優れた演算子の使いかたと足りない関数の代用のメモで
 * (shallow copyなので注意)
 '''},
   { 'id':50, 'note_object':49, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# basic Python vs JS
+    'ja_text':'''# basic Python vs JS
 
 * `value=50//c*c` <=> `value=~~(50/c)*c` //48 (c=4)
 * `value, _, _ = a` <=> `var [value, _, _] = a`
@@ -820,7 +820,7 @@ array Python vs JS
 * `[[k,v] for k,v in d.items()]` <=> `Object.keys(d).map((v,i)=>[v,Object.values(d)[i]])`
 '''},
   { 'id':51, 'note_object':49, 'posted_user':'tseijp', 'posted_time':'',
-    'posted_body':'''# class-based vs functional
+    'ja_text':'''# class-based vs functional
 class X extends React.Component{...} <=> const X=(props)=>{...}
 
 * access to state? : Yes <=> Yes

@@ -2,13 +2,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Application definition
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',]
+INSTALLED_APPS = ['django.contrib.%s'%s for s in ['admin','auth','contenttypes','sessions','messages','staticfiles']]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -28,24 +22,16 @@ TEMPLATES = [{
         'django.contrib.messages.context_processors.messages',],},},]
 WSGI_APPLICATION = 'tseijp.wsgi.application'
 # Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},]
+AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.%s'%s} for s in
+   ['UserAttributeSimilarityValidator','MinimumLengthValidator'  ,
+    'CommonPasswordValidator'         ,'NumericPasswordValidator',] ]
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N  = True
 USE_L10N  = True
 USE_TZ    = True
-### my changed -----------------------------------------------------------------
-INSTALLED_APPS+=['app_%s'%a for a in ['idea','note','user','mesh']]
-INSTALLED_APPS+=[
-    'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1
-    'widget_tweaks' ,# from ocw
-    'social_django' #  signup with google
-]
+###################### my changed #############################
 ###  sosial auth signup with google
 ###  [ref](https://qiita.com/moi1990sk/items/a849fca7acb29db95508)
 TEMPLATES[0]['OPTIONS']['context_processors']+=[
@@ -69,3 +55,21 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2FX1OYni7_LhdNgpQuwgPQzE'  #Paste Secret Key
 ROOT_URLCONF  = 'tseijp.urls'
 ROOT_HOSTCONF = 'tseijp.hosts'
 DEFAULT_HOST  = 'www'
+
+##################### my changed ######################
+INSTALLED_APPS += ['app_%s'%app for app in ['note','user']] + ['corsheaders']
+INSTALLED_APPS += ['rest_framework%s'%s for s in ['','.authtoken']]
+INSTALLED_APPS+=[
+    'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1
+    'widget_tweaks' ,# from ocw
+    'social_django' #  signup with google
+]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ( 'rest_framework.permissions.IsAuthenticated', ),
+}
+# CORS
+MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware',]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)

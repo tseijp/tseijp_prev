@@ -14,7 +14,6 @@ _____________
 //import Canvas from './NoteCard/Canvas.js';
 import Icon  from 'components/NoteCard/Icon';
 import Embed from 'components/NoteCard/Embed';
-//import Hover from 'components//NoteHover/NoteHover';
 import NoteContext from 'contexts/NoteContext.js';
 import {MDBCol, MDBRow, MDBCardBody, MDBInput} from 'mdbreact';
 
@@ -35,7 +34,7 @@ class NoteCard extends React.Component {
         const styles = {
             col:{textAlign:"center"},
             card:{position:"relative", cursor: "pointer", transition: "0.75s", overflow:"hidden",},/*allcard*/
-            homecard:{                      height: "500px",boxShadow:shadow([0,1,50,.2]),
+            homecard:{                      height: "500px",boxShadow:shadow([0,1,50,.2]), overflow:"hidden",
                                   ':hover':{height: "750px",boxShadow:shadow([0,5,10,.4]),},
                 [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto",},
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
@@ -55,8 +54,9 @@ class NoteCard extends React.Component {
                 <MDBCol xl={c.isHome?"6":"12"}>
                     <Radium.StyleRoot>
                     <div style={ {...styles.card, ...styles[c.isHome?'homecard':'postedcard']} }>
-                        <MDBCardBody >
-                            <Embed isHome={c.isHome} text={s[`${p.lang}Text`]}/>
+                        <MDBCardBody>
+                            <Embed isHome={c.isHome} text={s[`${p.lang}Text`]}
+                                click={()=>this.props.getCard(s.id)}/>
                             <MDBRow>
                                 <Icon far="comment" click={this.comment}></Icon>
                                 <Icon far="heart"   click={this.heart}></Icon>
