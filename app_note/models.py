@@ -32,10 +32,10 @@ class NoteModel(m.Model):
     def get_comment     (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child       (self):return [c for c in NoteModel.objects.filter(note_object=self)]
     def get_child_id    (self):return [c.id for c in self.get_child()]
-    def get_child_num   (self):return len( self.get_child() )
-    def get_child_child (self):return [c.get_child() for c in self.get_child()]
-    def get_chichil_arr (self):return [[c2.id for c2 in c] for c in self.get_child_child()]
-    def get_chichild_id (self):return list(itertools.chain.from_iterable(self.get_chichil_arr()))
+    #def get_child_num   (self):return len( self.get_child() )
+    #def get_child_child (self):return [c.get_child() for c in self.get_child()]
+    #def get_chichil_arr (self):return [[c2.id for c2 in c] for c in self.get_child_child()]
+    #def get_chichild_id (self):return list(itertools.chain.from_iterable(self.get_chichil_arr()))
     def get_children_id (self):return [o.id for o in self.get_children()]
     def get_children(self, include_self=True):
         r = []

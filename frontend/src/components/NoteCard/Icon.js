@@ -4,7 +4,7 @@ import {MDBCol} from 'mdbreact';
 class Icons extends React.Component {
     state = { active:false, fa:this.props.fas?'fas':'far' }
     click () {
-        //this.props.click();
+        this.props.click();
         this.setState({
             active:!this.state.active,
             fa:this.state.fa==='fas'?'far':'fas'})
@@ -25,7 +25,7 @@ class Icons extends React.Component {
             <Radium.StyleRoot style={styles.icon}>
                 <MDBCol>
                 <i className={`${s.fa} fa-${p.fas?p.fas:p.far}`}
-                    style={styles.icon} onClick={this.click.bind(this)} />
+                    style={styles.icon} onClick={()=>this.click()} />
                 {p.children}
                 </MDBCol>
             </Radium.StyleRoot>

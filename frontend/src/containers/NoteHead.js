@@ -2,7 +2,7 @@ import React from 'react';
 import Radium from 'radium';
 import { MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
 
-class NoteTail extends React.Component{
+class NoteHead extends React.Component{
     render(){
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
@@ -19,12 +19,13 @@ class NoteTail extends React.Component{
                     <h1 style={styles.head}>note</h1>
                 </MDBCol>
                 <MDBCol sm="7" style= { styles.button }>
-                    <MDBBtn size="sm" color="dark" onClick={p.addCard}>new create</MDBBtn>
-                    <MDBBtn size="sm" color="dark"><MDBIcon icon="home" /></MDBBtn>
+                    <MDBBtn size="sm" color="dark" onClick={()=>p.getCard()}><MDBIcon icon="home" /></MDBBtn>
+                    <MDBBtn size="sm" color="dark" onClick={p.isHome?()=>p.postCard():
+                            ()=>p.postCard({'note_object':p.mainNoteId})}>new create</MDBBtn>
                 </MDBCol>
             </MDBRow>
         )
     }
 }
 
-export default Radium(NoteTail);
+export default Radium(NoteHead);

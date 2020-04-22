@@ -120,7 +120,8 @@ Herokuとかとだいたい同じです．
 1. `GRANT ALL PRIVILEGES ON DATABASE <DB_NAME> TO <DB_USERNAME>;`
 
 
-<pre><code>...
+```
+...
 ALLOWED_HOSTS = ['{{ip adress}}']
 ...
 DATABASES = {
@@ -131,7 +132,8 @@ DATABASES = {
         'PASSWORD': '{{DB_PASSWORD}}',
         'HOST': 'localhost',
         'PORT': '',
-}}</code></pre>
+}}
+```
 '''},
   { 'id':10, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# AWS
@@ -154,7 +156,8 @@ gunicornの設定をします．自分はアクセスログとエラーログを
 1. `sudo systemctl start gunicorn.service`
 1. `sudo systemctl enable gunicorn`
 
-<pre><code>[Unit]
+```
+[Unit]
 Description=gunicorn daemon
 After=network.target
 [Service]
@@ -168,7 +171,8 @@ ExecStart={{`which gunicorn` ででたpath. **/gunicornとか}}
 --error-logfile "{{any_dir}}/error.log"
 [Install]
 WantedBy=multi-user.target
-</code></pre>
+
+```
 '''},
   { 'id':12, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# nginx
@@ -180,7 +184,8 @@ nginxの設定をします．一度したらあんまり触れないです．vi�
 1. `sudo ufw delete allow 8000`
 1. `sudo ufw allow 'Nginx Full'`
 
-<pre><code>
+```
+
 server {
     listen 80;
     server_name <EC2のパブリックIP>;
@@ -192,7 +197,8 @@ server {
         include proxy_params;
         proxy_pass http://unix:/home/ubuntu/<PJ_NAME>/<PJ_NAME>.sock;
     }
-}</code></pre>
+}
+```
 '''},
   { 'id':13, 'note_object':6, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# ec2
@@ -243,7 +249,8 @@ PyTorchのバージョンを新しくしようとしたら，solサーバーの�
 使っていないlibやバージョンを消せるらしいが，普段--userオプションでインストールしており，一気に削除しようとするとPermission Errorで処理が止まってしまうので，Pythonでなんとかしようと思った．
 '''},
   { 'id':17, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
-    'ja_text':'''<pre><code>[***@sol ~]$ du -h -d 3 | sort -hr | head -25
+    'ja_text':'''```
+[***@sol ~]$ du -h -d 3 | sort -hr | head -25
 22G     .
 12G     ./IED_HOME
 9.1G    ./.ced_ubuntu
@@ -268,12 +275,14 @@ PyTorchのバージョンを新しくしようとしたら，solサーバーの�
 445M    ./.cache/mozilla
 374M    ./.ced_ubuntu/.cache/mozilla
 281M    ./IED_HOME/notebook/y7_test_super_slomo
-206M    ./IED_HOME/.local/share</code></pre>
+206M    ./IED_HOME/.local/share
+```
 '''},
   { 'id':18, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''pythonからpipを実行するために，次のような関数を定義しておく．
 
-<pre><code>
+```
+
 import os
 import sys
 import subprocess
@@ -288,19 +297,23 @@ def run(cmd):
         sys.stdout.write(line)
         if not line and proc.poll() is not None:
             break
-    return ''.join(buf)</code></pre>
+    return ''.join(buf)
+```
 '''},
   { 'id':19, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''次に，現在のlibraryを取得し，配列を返す関数を用意する．
 
-<pre><code>def get_libs():
+```
+def get_libs():
     run('python3 -m pip freeze > libs.txt')
     with open("libs.txt", 'r') as f:
         return [l.rstrip('\n') for l in f.readlines()]
-</code></pre>
+
+```
 
 それでこう
-<pre><code>if __name__=='__main__':
+```
+if __name__=='__main__':
     pri_libs = get_libs()
     # delete libs
     cmd = ["python3 -m pip uninstall %s -y"%l.split('==')[0] for l in installed_lib]
@@ -310,27 +323,33 @@ def run(cmd):
     libs_len = tuple(len(l) for l in [pri_libs, get_libs(), del_libs])
     print("\npri:%s\tnow:%s\tdel:%s"%libs_len)
     _=[print("\tdel:",l) for l in del_libs ]
-</code></pre>
+
+```
 '''},
   { 'id':20, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''結果を確認すると，ちょっとへったかも
 `pri:250,now:209`
-<pre><code>22->20G     .
+```
+22->20G     .
 12->7.4G    ./.ced_ubuntu
 1.9G->0?    ./.ced_ubuntu/.local
 1.8G->0?    ./.ced_ubuntu/.local/lib
-</code></pre>
+
+```
 
 `conda clean --all`したらちょっと減った
-<pre><code>20->18G     .
+```
+20->18G     .
 7.4->4.8G    ./.ced_ubuntu
 1.9G->177M    ./.ced_ubuntu/.local
 1.8G->?M    ./.ced_ubuntu/.local/lib
-</code></pre>
+
+```
 
 iedでもcedと同様にためした．
 `pri:249 now:239 del:3`
-<pre><code>
+```
+
 18->16G     .
 12->11G     ./IED_HOME
 2.9G->0?M    ./.ced_ubuntu/.cache/pip
@@ -338,11 +357,13 @@ iedでもcedと同様にためした．
 2.7G->0?M    ./IED_HOME/.local/lib
 2.7->1.3G    ./IED_HOME/.local/lib
 
-</code></pre>
+
+```
 '''},
   { 'id':21, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''`.cache`削除したらすごいことになった（消していいのかよくわかってないです）
-<code><pre>8.5G    .
+```
+8.5G    .
 7.3G    ./IED_HOME
 5.7G    ./IED_HOME/notebook
 5.2G    ./IED_HOME/notebook/project
@@ -367,7 +388,8 @@ iedでもcedと同様にためした．
 53M     ./.ced_ubuntu/.old/ダウンロード
 53M     ./.ced_ubuntu/.old
 45M     ./.torch/models
-</code></pre>
+
+```
 '''},
   { 'id':22, 'note_object':16, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# pipenvで環境構築
@@ -479,17 +501,19 @@ Error文をSlackで送れたら簡単にServer Error 500を簡単に直せたの
 1. SlackでLogin後，[Incoming](https://slack.com/services/new/incoming-webhook)にアクセス -> チャンネルを選び，Webhook URLを控え，ポチポチ進む
 1. 適当なviews.pyに以下のように書く
 
-<pre><code>your_app/views.py
+```
+your_app/views.py
 from django.http import HttpResponseServerError
 from django.views.decorators.csrf import requires_csrf_token
 webhook_url = '控えたSlack Webhook URL をコピペ'
 cat_iframes = [
   '(https://giphy.com/)で検索して，埋め込み分をコピペ',
 ]
-</code></pre>
+```
 '''},
   { 'id':32, 'note_object':30, 'posted_user':'tseijp', 'posted_time':'',
-    'ja_text':'''<pre><code>続き
+    'ja_text':'''```
+続き
 @requires_csrf_token
 def my_server_error(request, template_name='500.html'):
     import json
@@ -510,16 +534,19 @@ def my_server_error(request, template_name='500.html'):
     message  = '\<h1\>Server Error (500)\</h1\>'
     message +=  random.choices(cat_iframes)[0]
     return HttpResponseServerError(message)
-</code></pre>
+
+```
 '''},
   { 'id':33, 'note_object':30, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# Step2
 Djangoのhandler500にカスタムしたものを上書きする．
 
-<pre><code>your_prj_name/urls.py
+```
+your_prj_name/urls.py
 from your_app_name.views import my_server_error
 from django.conf.urls import handler500
-handler500 = my_server_error</code></pre>
+handler500 = my_server_error
+```
 '''},
   { 'id':34, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# Linux コマンドメモ
@@ -579,7 +606,8 @@ ref
 '''},
   { 'id':38, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''次のような関数を定義しておく．
-<pre><code>import requests, zipfile, os, sys, subprocess
+```
+import requests, zipfile, os, sys, subprocess
 from tqdm import tqdm
 def download_file(url, dir='./'):
     session  = requests.Session()
@@ -597,11 +625,13 @@ def download_file(url, dir='./'):
         pbar.close()
     except:
         import traceback
-        traceback.print_exc()</code></pre>
+        traceback.print_exc()
+```
 '''},
   { 'id':39, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''unzipする．[torchnlp](https://pytorchnlp.readthedocs.io/en/latest/_modules/torchnlp/download.html)のコードを変えて利用する.
-<pre><code>def unzip_file(url, dir='./'):
+```
+def unzip_file(url, dir='./'):
     destination  = os.path.join(dir, os.path.basename(url) )
     extension    = extension = os.path.basename(url).split('.', 1)[1]
     if 'zip' in extension:
@@ -611,10 +641,12 @@ def download_file(url, dir='./'):
         subprocess.call(['tar', '-C', dir, '-zxvf', destination])
     elif 'tar' in extension:
         subprocess.call(['tar', '-C', dir, '-xvf', destination])
-    os.remove(destination)</code></pre>
+    os.remove(destination)
+```
 
 メインをかいておしまい．今回はrgb_urlにダウンロードできるurlの一覧があったので，リストで取得して各ダウンロードする．
-<pre><code>def main():
+```
+def main():
     rgb_url = "URL"
     chpt_path = "./datasets"
     rgb_dir = os.path.join(chpt_path, "train_images")
@@ -625,13 +657,15 @@ def download_file(url, dir='./'):
         unzip_file(url, rgb_dir)
 if \_\_name\_\_=="\_\_main\_\_":
     main()
-</code></pre>
+
+```
 '''},
   { 'id':40, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''### 追記：dataloader
 本来のnvidiaのコードとは異なるディレクトリ構成なので，dataloaderの構成を変えようと思ったら，そもそも画像データが入ったpathかで判別していた．
 
-<pre><code>IMG_EXTENSIONS = [
+```
+IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
     '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP', '.tiff', '.webp',
     '.txt', '.json',]
@@ -645,20 +679,25 @@ def make_grouped_dataset(dir):
                 paths.append(os.path.join(root, f))
         if len(paths) > 0:
             images.append(paths)
-    return images</code></pre>
+    return images
+```
 
 一行にすると`[p for p in [[os.path.join(fn[0],f) for f in sorted(fn[2])if is_image_file(f)] for fn in sorted(os.walk(dir))]if len(p)>0]`
 '''},
   { 'id':41, 'note_object':37, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''importlibによって, dataset_nameからimportするclassを選択できる．
-<pre><code>dataset_filename = "data." + dataset_name + "_dataset"
-datasetlib = importlib.import_module(dataset_filename)</code></pre>
+```
+dataset_filename = "data." + dataset_name + "_dataset"
+datasetlib = importlib.import_module(dataset_filename)
+```
 importしたlibの中から，BaseDatasetを継承したカスタムデータセットのclassを見つける
-<pre><code>dataset=None
+```
+dataset=None
 for name, cls in datasetlib.__dict__.items():
     if name.lower() == target_dataset_name.lower() \\
        and issubclass(cls, BaseDataset):
-        dataset = cls</code></pre>
+        dataset = cls
+```
 '''},
   { 'id':42, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# Python memo
@@ -688,7 +727,8 @@ glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 '''},
   { 'id':45, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''次に，下の様にディレクトリを作る(各appはviews.py以外消してok)
-<pre><code>C:.
+```
+C:.
 ├─glsl1
 │  └─views.py
 ├─glsl2
@@ -700,20 +740,24 @@ glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 │    (...同様に3,4と作る)
 └─threejs
    ├─settings.py
-   └─urls.py</code></pre>
+   └─urls.py
+```
 threejs/urls.pyの最後に追加する
-<pre><code>for i, app in enumerate(['glsl%s'%s for s in [1,2,3,4]]):
+```
+for i, app in enumerate(['glsl%s'%s for s in [1,2,3,4]]):
     views_name = app + ".views"
     views_lib  = importlib.import_module(views_name)
     for name, cls in views_lib.__dict__.items():
         if name.lower() == "fromdirview":
             url = "%s/%s"%( i, cls.url() )
             urlpatterns += [path(url, cls.as_view()]
-</code></pre>
+
+```
 '''},
   { 'id':46, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''各appのviews.pyに次のViewを追加する
-<pre><code>class FromDirView(TemplateView):
+```
+class FromDirView(TemplateView):
     def __init__(self):
         self.name = osp.basename(osp.dirname(osp.abspath(__file__)))
         self.path = osp.join(settings.TEMPLATES[0]['DIRS'][0], self.name)
@@ -735,11 +779,13 @@ threejs/urls.pyの最後に追加する
             page = osp.basename(fname[0])
             if any([ f==page+'.html' for f in fname[2] ]):
                 paths[page] = osp.join(fname[0], page+'.html')
-        return paths</code></pre>
+        return paths
+```
 '''},
   { 'id':47, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''各appのviews.pyに次のViewを追加する
-<pre><code>class FromDirView(TemplateView):
+```
+class FromDirView(TemplateView):
     def __init__(self):
         self.name = osp.basename(osp.dirname(osp.abspath(__file__)))
         self.path = osp.join(settings.TEMPLATES[0]['DIRS'][0], self.name)
@@ -761,7 +807,8 @@ threejs/urls.pyの最後に追加する
             page = osp.basename(fname[0])
             if any([ f==page+'.html' for f in fname[2] ]):
                 paths[page] = osp.join(fname[0], page+'.html')
-        return paths</code></pre>
+        return paths
+```
 '''},
   { 'id':48, 'note_object':44, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''FromDirViewで用いたmake_grouped_pagesは, urlの?p=で指定した名前と同じディレクトリがtemplatesディレクトリ内にあり，かつその内に同じ名前+.htmlファイルがある場合，そのhtmlファイルをtemplateに指定する.
@@ -773,9 +820,11 @@ settings.pyの変数は`from django.conf import settings`で取得できる
 
 
 glsl1/test.htmlは次の様に追加しておく
-<pre><code>{% for p in pages%}
+```
+{% for p in pages%}
   \<a href="?p={{p}}">{{p}} \</a>
-{% endfor %}</code></pre>
+{% endfor %}
+```
 '''},
   { 'id':49, 'note_object':None, 'posted_user':'tseijp', 'posted_time':'',
     'ja_text':'''# 開眼！JS
