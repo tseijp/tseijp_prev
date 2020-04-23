@@ -1,40 +1,43 @@
 import React from 'react';
-import {MDBInput, MDBBtn} from 'mdbreact'
+import {MDBInput, MDBBtn, MDBAlert} from 'mdbreact'
 import {withCookies} from 'react-cookie';
 import Layout from './Layout'
 
 class User extends React.Component {
-    url = "http://127.0.0.1:8000/"
-    state = {
-        isSignIn : true,
-        headers  : {'Content-Type':'application/json'},
-        credentials : { username:'', password:'', email   :'', }
+    url = "http://localhost:8000/"
+    constructor (props) {
+        super()
+        this.state = {
+            isAuth : props.cookies.get('authtoken').length>7?true:false,
+            isSignIn : true, isAlert:false,
+            headers  : {'Content-Type':'application/json'},
+            credentials : { username:'', password:'', email   :'', }
+        }
     }
     inputChange = (e) => {
         let cred = {...this.state.credentials}
         cred[e.target.name] = e.target.value;
         this.setState({credentials : cred})
     }
-    signin = () => {
-        const url = `${this.url}auth/`
-        const body = JSON.stringify(this.state.credentials)
-        fetch(url, {method:'POST', ...this.state.headers, body})
-        .then(r=>r.json()).then(res=>{
-            this.props.cookies.set('authtoken', res.token);
-            window.location.href = "/note"
-        })
-        .catch(e=>console.log(e))
+    signout = () => {
+        this.props.cookies.set('authtoken', null);
+        window.location.href = "/note"
     }
-    signup = () => {
-        const url = `${this.url}api/users/`
-        const headers = {'Content-Type':'application/json'}
-        const body = JSON.stringify(this.state.credentials)/*
+    signin = () => {
+        const url = this.url + (this.state.isSignIn?"auth/":"api/user/")
+        const body = JSON.stringify(this.state.credentials)
+        const headers = this.state.headers
         fetch(url, {method:'POST', headers, body})
         .then(r=>r.json()).then(res=>{
-            this.props.cookies.set('authtoken', res.token);
-            window.location.href = "/note"
-        })
-        .catch(e=>console.log(e))*/
+            console.log(res);
+            if (Object.keys(res).filter(k=>k==="token").length){
+                this.props.cookies.set('authtoken', res.token);
+                window.location.href = "/note"
+            } else {
+                this.setState({isAlert:true});
+                setTimeout(()=>this.setState({isAlert:false}), 2000);
+            }
+        }).catch(e=>console.log(e))
     }
     render () {
         const styles = {
@@ -51,6 +54,7 @@ class User extends React.Component {
         return (
             <Layout>
                 <div style={styles.Login}>
+                {!s.isAuth &&
                     <form>
                         <h1 style={styles.Head}>
                             {s.isSignIn?"Sign in":"Sign up"}
@@ -59,8 +63,11 @@ class User extends React.Component {
                                 onClick={()=>this.setState({isSignIn:!this.state.isSignIn})}>
                                 {s.isSignIn?"signup":"signin"}</MDBBtn>
                             <MDBBtn color="dark" style={styles.Btn}
-                                onClick={()=>{window.location.href = "/note"}}>
+                                onClick={()=>{window.location.href = "/"}}>
                                 <i className="fas fa-home" /></MDBBtn>
+                            <MDBBtn color="dark" style={styles.Btn}
+                                onClick={()=>{window.location.href = "/note"}}>
+                                <i className="fas fa-sticky-note" /></MDBBtn>
                             </h1>
                         <div className="grey-text text-left" style={styles.Form}>
                             {!s.isSignIn && <MDBInput label="Type your email" icon="envelope"
@@ -71,14 +78,19 @@ class User extends React.Component {
                                 name="username" onChange={this.inputChange}/>
                             <MDBInput label="Type your password" icon="lock"
                                 group type="password" validate
-                                name="password" onChange={this.inputChange}/>
+                                name="password" onChange={this.inputChange}
+                                autoComplete="on" />
                         </div>
+                        {s.isAlert && <MDBAlert color="danger">Someting wrong</MDBAlert>}
+                        {!s.isAlert && <MDBBtn color="dark" style={styles.Button}
+                            onClick={this.signin}>
+                            {s.isSignIn?"SIGNIN":"SIGNUP"}</MDBBtn>}
+                        <MDBBtn color="dark" className="fa-spin" style={styles.Btn}>OR</MDBBtn>
+                        <MDBBtn color="dark" style={styles.Button}>Signup with Google</MDBBtn>
                     </form>
-                    <MDBBtn color="dark" style={styles.Button}
-                        onClick={s.isSignIn?this.signin:this.signup}>
-                        {s.isSignIn?"SIGNIN":"SIGNUP"}</MDBBtn>
-                    <MDBBtn color="dark" style={styles.Btn}>OR</MDBBtn>
-                    <MDBBtn color="dark" style={styles.Button}>Signup with Google</MDBBtn>
+                }{s.isAuth &&
+                    <MDBBtn color="danger" onClick={this.signout}>Logout</MDBBtn>
+                }
                 </div>
             </Layout>
         )

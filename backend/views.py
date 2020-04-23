@@ -1,15 +1,33 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import viewsets, mixins
+################ status ###################
 from rest_framework.status import HTTP_200_OK as status200
+from rest_framework.status import HTTP_201_CREATED as status201
 from rest_framework.status import HTTP_404_NOT_FOUND as status404
+################ restfull ##################
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth.hashers import make_password
 from rest_framework.authentication import TokenAuthentication
-### my created
+from rest_framework.authtoken.models import Token
+################ my created ###################
 from .models      import NoteModel, TagsModel
 from .serializers import NoteSerializer, TagsSerializer
+
+class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    #authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny, )
+    def create(self, request):
+        data = request.data
+        res = {'message':'not working'}
+        if (all([f in data for f in ['password','username','email']])):
+            user = User(**{f:data[f] for f in ['username','email']})
+            user.set_password(data['password'])
+            user.save()
+            res = {"token":Token.objects.create(user=user).key}
+        return Response(res, status=status201)
 
 '''
 class TagsViewSet(viewsets.ModelViewSet):

@@ -10,7 +10,7 @@ import NoteTail from 'containers/Note/NoteTail';
 
 
 
-class App extends React.Component {
+class Note extends React.Component {
     url = "http://127.0.0.1:8000/api/"
     ///*************** for React ***********************/
     constructor (props) {
@@ -28,7 +28,7 @@ class App extends React.Component {
         this.deleteCard=this.deleteCard.bind(this);
     }
     componentDidMount () {
-        console.log(this.state.authtoken);
+        //console.log(this.state.authtoken);
         if (this.state.authtoken) {
             this.setState({
                 header: {...this.state.header,
@@ -102,4 +102,4 @@ class App extends React.Component {
     }
 }
 
-export default withCookies(App);
+export default withCookies(Note);

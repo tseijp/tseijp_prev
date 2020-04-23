@@ -25,7 +25,7 @@ class Side extends React.Component {
                         <MDBInput hint="Search" type="text" containerClass="mt-0" />
                         <SideItem link="/note">App</SideItem>
                         <SideItem link="#">About</SideItem>
-                        <SideItem link="/login">Login</SideItem>
+                        <SideItem link="/user">Signin</SideItem>
                     </SideItems>
                 </div>
             </div>
