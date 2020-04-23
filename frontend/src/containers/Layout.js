@@ -1,8 +1,8 @@
 import React from 'react';
 import Radium from 'radium';
 import {MDBContainer} from 'mdbreact';
-import Side  from 'components/Side/Side'
-import Trans from 'components/Trans/Trans'
+import Side  from 'components/Side/Side';
+import Trans from 'components/Trans/Trans';
 import Auxil from 'hoc/Auxil';
 //const Layout = (props) => (
 class Layout extends React.Component {

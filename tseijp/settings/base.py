@@ -57,7 +57,7 @@ ROOT_HOSTCONF = 'tseijp.hosts'
 DEFAULT_HOST  = 'www'
 
 ##################### my changed ######################
-INSTALLED_APPS += ['app_%s'%app for app in ['note','user']] + ['corsheaders']
+INSTALLED_APPS += ['backend', 'corsheaders']#['app_%s'%app for app in ['note',]]
 INSTALLED_APPS += ['rest_framework%s'%s for s in ['','.authtoken']]
 INSTALLED_APPS+=[
     'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1

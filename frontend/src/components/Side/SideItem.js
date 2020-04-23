@@ -12,7 +12,7 @@ class SideItem extends React.Component {
                     ':hover':{color:"#f1f1f1"}},
         }
         return (
-            <div  style={styles.Item}>
+            <div  onClick={()=>{window.location.href=this.props.link} } style={styles.Item}>
                 {this.props.children}
             </div>
         )

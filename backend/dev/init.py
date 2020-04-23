@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 
-from app_note.models import NoteModel
+from backend.models import NoteModel
 from .note import note
 
 def register_note(id, note, user):

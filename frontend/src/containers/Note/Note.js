@@ -1,37 +1,43 @@
 import React from 'react';
-import Radium from 'radium';
+//import Radium from 'radium';
 import {MDBRow} from 'mdbreact';
+import {withCookies} from 'react-cookie';
 //containers
-import Layout from 'containers/Layout'
-import NoteHead from 'containers/NoteHead';
-import NoteCard from 'containers/NoteCard';
-import NoteTail from 'containers/NoteTail';
+import Layout   from 'containers/Layout'
+import NoteHead from 'containers/Note/NoteHead';
+import NoteCard from 'containers/Note/NoteCard';
+import NoteTail from 'containers/Note/NoteTail';
 
-// Import style files into the src/index.js before the App.js file:
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import "bootstrap-css-only/css/bootstrap.min.css";
-import "mdbreact/dist/css/mdb.css";
 
 
 class App extends React.Component {
     url = "http://127.0.0.1:8000/api/"
     ///*************** for React ***********************/
-    state = {
-        header:{"Content-Type":"application/json",
-        Authorization:"Token 0e588d0104bb5a19efd03e02cc408fdac08c2ae1"},
-        context : {
-            isDark:false, isHome:true, isAuth:true,
-            tag:null, lang :'ja', author:'tseijp' },
-        noteCards : [],
-        noteMainId : null,
-    };
-    constructor () {
+    constructor (props) {
         super()
-        this.getCard = this.getCard.bind(this);
-        this.postCard= this.postCard.bind(this);
+        this.state = {
+            authtoken  : props.cookies.get('authtoken'),
+            noteCards  : [],
+            noteMainId : null,
+            context : { isDark:false, isHome:true, isAuth:true,
+                        tag:null, lang :'ja', author:'tseijp' },
+            header  : { "Content-Type":"application/json", },
+        }
+        this.getCard   = this.getCard.bind(this);
+        this.postCard  = this.postCard.bind(this);
+        this.deleteCard=this.deleteCard.bind(this);
     }
     componentDidMount () {
-        this.getCard();
+        console.log(this.state.authtoken);
+        if (this.state.authtoken) {
+            this.setState({
+                header: {...this.state.header,
+                            Authorization:`Token ${this.state.authtoken}`}
+            })
+            this.getCard();
+        } else {
+            window.location.href = '/login'
+        }
     }
     ///*************** for state ***********************/
     setCard(cards, init=true){
@@ -43,10 +49,10 @@ class App extends React.Component {
             noteCards : (init)?new_cards:pre_cards.map
                 (card => new_cards.find(c=>c.id===card.id) || card )
         })
-        const main = this.state.noteCards.find(n=>n.note_object===null)
+        const main = this.state.noteCards.filter(n=>n.note_object===null)
         this.setState({
-            noteMainId:(isHome && main)?null:main.id})
-        console.log(this.state.noteMainId);
+            noteMainId:(isHome && main)?null:main[0].id})
+        //console.log(this.state.noteMainId);
     }
     ///*************** for API ***********************/
     getCard (id=null) {
@@ -57,24 +63,23 @@ class App extends React.Component {
         this.setState({context:{...this.state.context,isHome:id?false:true}});
     }
     postCard(data=null, id=null){
-        const isHome = this.state.context.isHome;
         const body = data || {'ja_text':''}
+        console.log(body);
         const url = `${this.url}note/${id?id+'/ajax/':''}`
-        console.log(url);
         fetch(url, {method:"POST", headers:this.state.header, body:JSON.stringify(body)})
-        .then(r=>r.json()).then(r=>{
-            console.log(r);
-            if(r.length && r instanceof Array){this.getCard()}
-            else {this.setCard(r, isHome?true:false)}
-        })
+        .then(r=>r.json()).then(r=>{this.setCard(r, false)})
         .catch(err=>console.log(err));
-        this.setState({context:{...this.state.context, isHome:false}});
+        //this.setState({context:{...this.state.context, isHome:false}});
+    }
+    deleteCard(id){
+        this.postCard({'delete_note':true}, id)
+        const isToHome = this.state.noteMainId || this.state.noteMainId===id
+        this.getCard(isToHome?null:id)
     }
     ///*************** for Render ***********************/
     render(){
         const s = this.state;
         return(
-            <Radium.StyleRoot>
             <Layout
                 toJa={()=>this.setState({lang:'ja'})}
                 toEn={()=>this.setState({lang:'en'})}>
@@ -84,16 +89,17 @@ class App extends React.Component {
                 <MDBRow>
                 {this.state.noteCards.map( (note,j) => { return (
                     <NoteCard key={j} {...note} {...s.context}
-                        getCard={this.getCard} postCard={this.postCard}/>
+                        getCard={this.getCard}
+                        postCard={this.postCard}
+                        deleteCard={this.deleteCard}/>
                 )} )}
                 </MDBRow>
                 <NoteTail noteMainId={s.noteMainId}
                     getCard={this.getCard}
                     postCard={this.postCard} />
             </Layout>
-            </Radium.StyleRoot>
         );
     }
 }
 
-export default Radium(App);
+export default withCookies(App);

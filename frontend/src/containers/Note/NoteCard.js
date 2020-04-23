@@ -26,7 +26,6 @@ class NoteCard extends React.Component {
     heart () {}
     eye () {}
     edit () {}
-    trash() {this.props.postCard({delete_note:true}, this.props.id, )}
     editText (text) {
         const pre = this.state[`${this.props.lang}_text`]
         if (pre!==text)
@@ -54,7 +53,6 @@ class NoteCard extends React.Component {
         const isDisplay = true//!p.isHome && p.isAuth;
         return (
             <MDBCol xl={p.isHome?"6":"12"}>
-                <Radium.StyleRoot>
                 <div style={ {...styles.card, ...styles[p.isHome?'homecard':'postedcard']} }>
                     <MDBCardBody>
                         <Embed isHome={p.isHome} text={s[`${p.lang}_text`]}
@@ -65,8 +63,8 @@ class NoteCard extends React.Component {
                             <Icon far="comment" click={this.comment}></Icon>
                             <Icon far="heart"   click={this.heart}></Icon>
                             <Icon far="eye"     click={this.eye}>{s.id}</Icon>
-                            {isDisplay&& <Icon fas="trash"     click={()=>this.trash()}></Icon>}
-                            {isDisplay&& <Icon fas="angle-down"click={()=>this.trash()}></Icon>}
+                            {isDisplay&& <Icon fas="trash"click={()=>p.deleteCard(p.id)}></Icon>}
+                            {isDisplay&& <Icon fas="angle-down"></Icon>}
                         </MDBRow>
                         <hr />{/*--------------------------------*/}
                         <MDBInput type="textarea" label="test" rows="5"
@@ -74,7 +72,6 @@ class NoteCard extends React.Component {
                             onChange={(e)=>this.editText(e.target.value)} />
                     </MDBCardBody>
                 </div>
-                </Radium.StyleRoot>
             </MDBCol>
         )
     }

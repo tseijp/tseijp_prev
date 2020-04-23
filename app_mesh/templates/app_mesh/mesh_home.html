@@ -1,38 +1,5 @@
-{% extends "base.html" %}
-{% block "js_block" %}
-    {% include "index/nav.js" %}
-    {% include "index/content.js" %}
-    {% if link %}
-        {% include "app_mesh/link/mesh_link.js" %}
-    {% else %}
-        {% include "app_mesh/list/mesh_list.js" %}
-    {% endif %}
-{% endblock %}
-
-{% block "css_block" %}
-    {% include "index/nav.css" %}
-    {% include "index/content.css" %}
-    {% if link %}
-        {% include "app_mesh/link/mesh_link.css" %}
-    {% else %}
-        {% include "app_mesh/list/mesh_list.css" %}
-    {% endif %}
-{% endblock %}
-
-{% block "head_block" %}
-<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"></script>
-
-<!--script src="https://aframe.io/releases/1.0.3/aframe.min.js" type="text/javascript"></script>
-<script src="https://raw.githack.com/jeromeetienne/AR.js/2.1.4/aframe/build/aframe-ar.js" type="text/javascript"></script-->
-{% endblock %}
-{% block "nav_block" %}{% include "index/nav.html" %}{% endblock %}
-{% block "foot_block" %}<!--coming soon-->{% endblock %}
-
-{% block "body_block" %}
-{% if link %}{% include "app_mesh/link/mesh_link.html" %}{% endif %}
-{% endblock %}
-
-{% block "main_block" %}
-{% if not link %}{% include "app_mesh/list/mesh_list.html" %}{% endif %}
-{% endblock %}
+{% if link %}
+  {% include "app_mesh/link/mesh_link.html" %}
+{% else %}
+  {% include "app_mesh/list/mesh_list.html" %}
+{% endif %}

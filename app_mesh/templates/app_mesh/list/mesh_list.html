@@ -1,7 +1,33 @@
-{% load static %}
-<h1>There is no Card ! SORRY !</h1>
+{% extends "base.html" %}
+{% block "js_block" %}
+    {% include "index/nav.js" %}
+    {% include "index/content.js" %}
+    {% include "app_mesh/list/mesh_list.js" %}
+{% endblock %}
+
+{% block "css_block" %}
+    {% include "index/nav.css" %}
+    {% include "index/content.css" %}
+    {% include "app_mesh/list/mesh_list.css" %}
+{% endblock %}
+
+{% block "head_block" %}
+{% endblock %}
+
+{% block "nav_block" %}{% include "index/nav.html" %}{% endblock %}
+{% block "foot_block" %}<!--coming soon-->{% endblock %}
+
+{% block "body_block" %}{% endblock %}
+
+{% block "main_block" %}
+{% if user.is_authenticated %}
+    {% include "app_mesh/list/mesh_user_is_auth.html" %}
+{% else %}
+    {% include "app_mesh/list/mesh_user_no_auth.html" %}
+{% endif %}
+
+<h1>Card List</h1>
 {% for mesh in object_list %}
-
-<p><a href="{{mesh.url_with_link}}" style="color:black">{{mesh.posted_user}}</a></p>
-
+    <p><a href="{{mesh.url_with_link}}" style="color:black">{{mesh.posted_user}}</a></p>
 {% endfor %}
+{% endblock %}

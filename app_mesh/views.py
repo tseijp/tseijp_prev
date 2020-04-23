@@ -60,4 +60,5 @@ class MeshListView(ListView):
         link    = get_link(self.request)
         context = super().get_context_data()
         context['link']   = '%s'%link     if link else 0
+        context['circ']   = circles
         return context
