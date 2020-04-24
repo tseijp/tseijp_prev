@@ -7,6 +7,7 @@ import Auxil from 'hoc/Auxil';
 //const Layout = (props) => (
 class Layout extends React.Component {
     render() {
+        const p = this.props;
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
             container:{
@@ -16,7 +17,7 @@ class Layout extends React.Component {
         };
         return(
             <Auxil>
-                <Side/>
+                <Side isAuth={p.isAuth}/>
                 <Trans toJa={this.props.toJa} toEn={this.props.toEn}/>
                 <main style={styles.container}>
                     <MDBContainer>

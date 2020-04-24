@@ -15,16 +15,7 @@ from rest_framework.authtoken.models import Token
 ################ my created ###################
 from .models      import NoteModel, TagsModel
 from .serializers import NoteSerializer, TagsSerializer
-'''
-from django.contrib.auth.models import AnonymousUser
-def _get_user_from_token(request):
-    token = request.data.get('header',{}).get('Authorization','').split('Token ')[-1]
-    try:
-        valid_data = VerifyJSONWebTokenSerializer().validate({'token': token})
-        return valid_data['user']
-    except ValidationError:
-        return AnonymousUser()
-'''
+
 class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     #authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
@@ -37,22 +28,18 @@ class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             user.save()
             res = {"token":Token.objects.create(user=user).key}
         return Response(res, status=status201)
-mymixin = [
-    mixins.RetrieveModelMixin, # for GET to tsei.jp/note/2/
-    mixins.ListModelMixin    , # for GET to tsei.jp/note/
-    mixins.CreateModelMixin  , # for POST to tsei.jp/note/
-    viewsets.GenericViewSet  , ]
-class NoteViewSet(*mymixin):#viewsets.ModelViewSet):
+
+class NoteViewSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,mixins.CreateModelMixin,viewsets.GenericViewSet):
     queryset = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
     serializer_class = (NoteSerializer)
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None):### for GET to tsei.jp/note/2/
         reps = self.get_object().get_children_id()
-        objs = NoteModel.objects.filter(id__in=reps)
+        objs = NoteModel.objects.filter(id__in=reps).order_by('id')
         data = self.get_serializer(objs, many=True).data
         return Response(data, status=status200)
-    def create(self, request):
+    def create(self, request):           ### for POST to tsei.jp/note/
         print(request.data, request.user)
         res = self.post_note(request.data, request.user)
         if res: return Response(res, status=status200)

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import {MDBInput, MDBBtn, MDBAlert} from 'mdbreact'
 import {withCookies} from 'react-cookie';
@@ -20,23 +21,22 @@ class User extends React.Component {
         this.setState({credentials : cred})
     }
     signout = () => {
-        this.props.cookies.set('authtoken', null);
+        this.props.cookies.remove('authtoken');
         window.location.href = "/note"
     }
     signin = () => {
         const url = this.url + (this.state.isSignIn?"auth/":"api/user/")
-        const body = JSON.stringify(this.state.credentials)
         const headers = this.state.headers
-        fetch(url, {method:'POST', headers, body})
-        .then(r=>r.json()).then(res=>{
-            if (Object.keys(res).filter(k=>k==="token").length){
+        axios.post(url, this.state.credentials, {headers}).then(res=>{
+            console.log(res);
+            if (res.status===200){
                 this.props.cookies.set('authtoken', res.token);
                 window.location.href = "/note"
-            } else {
-                this.setState({isAlert:true});
-                setTimeout(()=>this.setState({isAlert:false}), 2000);
             }
-        }).catch(e=>console.log(e))
+        }).catch(e=>{
+            this.setState({isAlert:true});
+            setTimeout(()=>this.setState({isAlert:false}), 1000);
+        })
     }
     render () {
         const styles = {

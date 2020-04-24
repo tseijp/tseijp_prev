@@ -35,7 +35,7 @@ class NoteCard extends React.Component {
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const shadow=a=>`${a[0]}px ${a[1]}px ${a[2]}px rgba(0,0,0,${a[3]})`
         const styles = {
-            col:{textAlign:"center"},
+            col:{transition: "0.75s", },
             card:{position:"relative", cursor: "pointer", transition: "0.75s", overflow:"hidden",},/*allcard*/
             homecard:{                      height: "500px",boxShadow:shadow([0,1,50,.2]), overflow:"hidden",
                                   ':hover':{height: "750px",boxShadow:shadow([0,5,10,.4]),},
@@ -52,7 +52,7 @@ class NoteCard extends React.Component {
         const p = this.props;
         const isDisplay = true//!p.isHome && p.isAuth;
         return (
-            <MDBCol xl={p.isHome?"6":"12"}>
+            <MDBCol style={styles.col} xl={p.isHome?"6":"12"}>
                 <div style={ {...styles.card, ...styles[p.isHome?'homecard':'postedcard']} }>
                     <MDBCardBody>
                         <Embed isHome={p.isHome} text={s[`${p.lang}_text`]}

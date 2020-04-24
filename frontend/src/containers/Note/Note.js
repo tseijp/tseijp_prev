@@ -18,7 +18,7 @@ class Note extends React.Component {
             authtoken  : props.cookies.get('authtoken'),
             noteCards  : [],
             noteMainId : null,
-            context : { isDark:false, isHome:true, isAuth:true,
+            context : { isDark:false, isHome:true, isAuth:false,
                         tag:null, lang :'ja', author:'tseijp' },
             header  : { "Content-Type":"application/json", },
         }
@@ -26,14 +26,15 @@ class Note extends React.Component {
         this.postCard  = this.postCard.bind(this);
     }
     componentDidMount () {
-        //console.log(this.state.authtoken);
+        console.log(this.state.authtoken);
         if (this.state.authtoken) {
             this.setState({
-                header: {...this.state.header,
-                            Authorization:`Token ${this.state.authtoken}`}
+                context:{...this.state.context, isAuth:true},
+                header: {...this.state.header , Authorization:`Token ${this.state.authtoken}`}
             })
             this.getCard();
         } else {
+            console.log(this.state.authtoken)
             window.location.href = '/user'
         }
     }
@@ -42,20 +43,18 @@ class Note extends React.Component {
         const noteCards = (cards instanceof Array)?[...cards]:[cards]
         const pre_cards = [...this.state.noteCards];
         const new_cards = noteCards.filter(n=>pre_cards.filter(p=>n.id===p.id).length===0)
-        console.log(new_cards);
         this.setState({noteCards:[]}) // reset noteCards keys in state
-        this.setState({
-            noteCards : (init)?noteCards : [...new_cards,
-                ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card )]
+        this.setState({ noteCards : (init)?noteCards :
+            [...(this.state.context.isHome?new_cards:[]),
+             ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card ),
+             ...(!this.state.context.isHome?new_cards:[]),]
         })
     }
     deleteCard(id){
         const isHome = [null,id].filter(v=>v===this.state.noteMainId).length?true:false
         const context = {...this.state.context, isHome}
-        if (isHome){ this.getCard(); } else {
-            this.setState({noteCards:this.state.noteCards.filter(n=>n.id!==id)});
-        }
-        this.setState({context})
+        if (isHome){ this.getCard(); this.setState({context}); return; }
+        this.setState({noteCards:this.state.noteCards.filter(n=>n.id!==id)});
     }
     ///*************** for API ***********************/
     getCard (id=null) {
@@ -74,7 +73,6 @@ class Note extends React.Component {
         const data = body || {"delete_note":true}
         const headers = this.state.header;
         axios.post(url,data,{headers}).then(res=>{
-            console.log(res);
             if(res.status===200){
                 if(body===null){ this.deleteCard(id) };
                 if(body!==null){//add(null,{note_object:null}) or edit (321,{enText:'hello'})
@@ -83,20 +81,15 @@ class Note extends React.Component {
             }
         }).catch(err=>console.log(err))
     }
-    /*
-    deleteCard(id){
-        this.postCard({'delete_note':true}, id)
-
-        this.getCard(isToHome?null:id)
-    }*/
     ///*************** for Render ***********************/
     render(){
         const s = this.state;
         return(
-            <Layout
+            <Layout {...s.context}
                 toJa={()=>this.setState({lang:'ja'})}
                 toEn={()=>this.setState({lang:'en'})}>
-                <NoteHead noteMainId={s.noteMainId}
+                <NoteHead
+                    noteMainId={s.noteMainId}
                     getCard={this.getCard}
                     postCard={this.postCard}/>
                 <MDBRow>
@@ -107,7 +100,8 @@ class Note extends React.Component {
                         deleteCard={this.deleteCard}/>
                 )} )}
                 </MDBRow>
-                <NoteTail noteMainId={s.noteMainId}
+                <NoteTail
+                    noteMainId={s.noteMainId}
                     getCard={this.getCard}
                     postCard={this.postCard} />
             </Layout>

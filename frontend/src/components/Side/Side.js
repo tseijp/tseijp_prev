@@ -9,6 +9,7 @@ class Side extends React.Component {
     openSide () {this.setState({isOpen:!this.state.isOpen})};
     closeSide () {this.setState({isOpen:false})};
     render () {
+        const p = this.props;
         const s = this.state;
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ');
         const styles = {
@@ -25,7 +26,7 @@ class Side extends React.Component {
                         <MDBInput hint="Search" type="text" containerClass="mt-0" />
                         <SideItem link="/note">App</SideItem>
                         <SideItem link="#">About</SideItem>
-                        <SideItem link="/user">Signin</SideItem>
+                        <SideItem link="/user">{p.isAuth?"Signout":"Signin"}</SideItem>
                     </SideItems>
                 </div>
             </div>
