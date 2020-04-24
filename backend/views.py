@@ -15,7 +15,16 @@ from rest_framework.authtoken.models import Token
 ################ my created ###################
 from .models      import NoteModel, TagsModel
 from .serializers import NoteSerializer, TagsSerializer
-
+'''
+from django.contrib.auth.models import AnonymousUser
+def _get_user_from_token(request):
+    token = request.data.get('header',{}).get('Authorization','').split('Token ')[-1]
+    try:
+        valid_data = VerifyJSONWebTokenSerializer().validate({'token': token})
+        return valid_data['user']
+    except ValidationError:
+        return AnonymousUser()
+'''
 class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     #authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
@@ -28,78 +37,58 @@ class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             user.save()
             res = {"token":Token.objects.create(user=user).key}
         return Response(res, status=status201)
-
-'''
-class TagsViewSet(viewsets.ModelViewSet):
-    queryset = TagsModel.objects.all()
-    #serializer_class = (TagSerializer)
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAuthenticated, )
-    def retrieve(self, request, *args, **kargs): #detail
-        instance = Model.objects.filter(tags_object__id__contains=self.get_object().id)
-        serializer = Serializer(instance, many=True)
-        return Response(serializer.data)
-'''
 mymixin = [
     mixins.RetrieveModelMixin, # for GET to tsei.jp/note/2/
     mixins.ListModelMixin    , # for GET to tsei.jp/note/
     mixins.CreateModelMixin  , # for POST to tsei.jp/note/
-    viewsets.GenericViewSet  ,]
+    viewsets.GenericViewSet  , ]
 class NoteViewSet(*mymixin):#viewsets.ModelViewSet):
     queryset = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
     serializer_class = (NoteSerializer)
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
     def retrieve(self, request, pk=None):
-        try:
-            children = self.get_object().get_children_id()
-            queryset = NoteModel.objects.filter(id__in=children)
-            return Response(self.get_serializer(queryset, many=True).data)
-        except (NoteModel.DoesNotExist, KeyError):
-             return Response({"error": "does not exist"}, status=status404)
+        reps = self.get_object().get_children_id()
+        objs = NoteModel.objects.filter(id__in=reps)
+        data = self.get_serializer(objs, many=True).data
+        return Response(data, status=status200)
     def create(self, request):
-        res = self.post_note(request)
+        print(request.data, request.user)
+        res = self.post_note(request.data, request.user)
         if res: return Response(res, status=status200)
-        else  : return Response({"error": "does not exist"}, status=status404)
+        else  : return Response({"error": "not exist"}, status=status404)
     @action(detail=True, methods=['POST']) # for POST to tsei.jp/note/2/ajax/
     def ajax(self, request, pk=None):      # any change or delete for text, like, tags
         note = NoteModel.objects.get(id=pk)
+        req  = dict(data=request.data, user=request.user, note=note)
         res  = {'message':'not working in ajax (%s)'%pk}
-        res1 = self.post_note(request, note)
-        res2 = self.post_like(request, note)
-        res3 = self.delete_note(request, note)
-        print([res,res1,res2,res3] )
+        res1 = self.post_note(**req)
+        res2 = self.post_like(**req)
+        res3 = self.delete_note(**req)
         return Response([r for r in [res,res1,res2,res3] if r is not None][-1], status=status200)
     ########################## base ##########################
-    def post_note(self, request, fields=[], note=None):
+    def post_note(self, data, user, note=None):
         fields = ['ja_text', 'en_text', 'note_object']
-        if any([f in request.data for f in fields]):
-            user = request.user
-            data = request.data
-            obj  = note if note else NoteModel.objects.create(posted_user=user)
-            for field in fields:
-                if field in data:
-                    setattr(obj, field, data[field])
+        if any([f in data for f in fields]):
+            objs = NoteModel.objects
+            top  = objs.filter(id=data.get('note_object', None))
+            obj  = note if note else objs.create(posted_user=user)
+            if not note and top: obj.note_object = top[0]
+            if 'ja_text'in data: obj.ja_text = data.get('ja_text')
+            if 'en_text'in data: obj.en_text = data.get('en_text')
             obj.save()
             return NoteSerializer(obj).data
-    def post_like(self, request, note):
-        if 'like_object' in request.data:
-            user = request.user
+    def post_like(self, data, user, note):
+        if 'like_object' in data:
             objs= note.like_object.filter(posted_user=user)
             obj = objs[0] if objs else note.like_object.create(posted_user=user)
             obj.like_number = request.data['like_object']['like_number']
             obj.save()
             return NoteSerializer(note).data
-    def delete_note(self, request, note):
-        if 'delete_note' in request.data:
-            if note.note_object is None: #main
-                queryset = []
-            else:
-                children = [o.id for o in note.get_children(include_self=False)]
-                queryset = NoteModel.objects.filter(id__in=children)
-            if request.data['delete_note']:
-                note.delete();
-            return NoteSerializer(queryset, many=True).data
+    def delete_note(self, data, user, note):
+        if data.get('delete_note',False):# and user==note.posted_user:
+            note.delete();
+            return {'message':"deleted"}
 
 ###################### error ######################
 webhook_url = 'https://hooks.slack.com/services/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'

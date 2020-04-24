@@ -8,7 +8,7 @@ class User extends React.Component {
     constructor (props) {
         super()
         this.state = {
-            isAuth : props.cookies.get('authtoken').length>7?true:false,
+            isAuth : props.cookies.get('authtoken')?true:false,
             isSignIn : true, isAlert:false,
             headers  : {'Content-Type':'application/json'},
             credentials : { username:'', password:'', email   :'', }
@@ -29,7 +29,6 @@ class User extends React.Component {
         const headers = this.state.headers
         fetch(url, {method:'POST', headers, body})
         .then(r=>r.json()).then(res=>{
-            console.log(res);
             if (Object.keys(res).filter(k=>k==="token").length){
                 this.props.cookies.set('authtoken', res.token);
                 window.location.href = "/note"

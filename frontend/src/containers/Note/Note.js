@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 //import Radium from 'radium';
 import {MDBRow} from 'mdbreact';
@@ -7,8 +8,6 @@ import Layout   from 'containers/Layout'
 import NoteHead from 'containers/Note/NoteHead';
 import NoteCard from 'containers/Note/NoteCard';
 import NoteTail from 'containers/Note/NoteTail';
-
-
 
 class Note extends React.Component {
     url = "http://127.0.0.1:8000/api/"
@@ -25,7 +24,6 @@ class Note extends React.Component {
         }
         this.getCard   = this.getCard.bind(this);
         this.postCard  = this.postCard.bind(this);
-        this.deleteCard=this.deleteCard.bind(this);
     }
     componentDidMount () {
         //console.log(this.state.authtoken);
@@ -36,46 +34,61 @@ class Note extends React.Component {
             })
             this.getCard();
         } else {
-            window.location.href = '/login'
+            window.location.href = '/user'
         }
     }
     ///*************** for state ***********************/
-    setCard(cards, init=true){
-        const isHome = this.state.context.isHome;
-        const new_cards = (cards instanceof Array)?[...cards]:[cards]
+    setCard(cards, init=true){ //get => init=true // add or edit => init=false
+        const noteCards = (cards instanceof Array)?[...cards]:[cards]
         const pre_cards = [...this.state.noteCards];
-        this.setState({noteCards:[]}) // reset state in NoteCard
+        const new_cards = noteCards.filter(n=>pre_cards.filter(p=>n.id===p.id).length===0)
+        console.log(new_cards);
+        this.setState({noteCards:[]}) // reset noteCards keys in state
         this.setState({
-            noteCards : (init)?new_cards:pre_cards.map
-                (card => new_cards.find(c=>c.id===card.id) || card )
+            noteCards : (init)?noteCards : [...new_cards,
+                ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card )]
         })
-        const main = this.state.noteCards.filter(n=>n.note_object===null)
-        this.setState({
-            noteMainId:(isHome && main)?null:main[0].id})
-        //console.log(this.state.noteMainId);
+    }
+    deleteCard(id){
+        const isHome = [null,id].filter(v=>v===this.state.noteMainId).length?true:false
+        const context = {...this.state.context, isHome}
+        if (isHome){ this.getCard(); } else {
+            this.setState({noteCards:this.state.noteCards.filter(n=>n.id!==id)});
+        }
+        this.setState({context})
     }
     ///*************** for API ***********************/
     getCard (id=null) {
         const url = `${this.url}note/${id?id+'/':''}`
-        fetch(url, {method:"GET", headers:this.state.header})
-        .then(r=>r.json()).then(r=>this.setCard(r))
-        .catch(err=>console.log(err));
-        this.setState({context:{...this.state.context,isHome:id?false:true}});
+        const headers = this.state.header;
+        axios.get(url,{headers}).then(res=>{
+            if(res.status===200){
+                const context = {...this.state.context, isHome:id?false:true}
+                this.setCard(res.data);
+                this.setState({noteMainId:id, context})
+            }
+        }).catch(err=>console.log(err))
     }
-    postCard(data=null, id=null){
-        const body = data || {'ja_text':''}
-        console.log(body);
+    postCard(id=null, body=null){
         const url = `${this.url}note/${id?id+'/ajax/':''}`
-        fetch(url, {method:"POST", headers:this.state.header, body:JSON.stringify(body)})
-        .then(r=>r.json()).then(r=>{this.setCard(r, false)})
-        .catch(err=>console.log(err));
-        //this.setState({context:{...this.state.context, isHome:false}});
+        const data = body || {"delete_note":true}
+        const headers = this.state.header;
+        axios.post(url,data,{headers}).then(res=>{
+            console.log(res);
+            if(res.status===200){
+                if(body===null){ this.deleteCard(id) };
+                if(body!==null){//add(null,{note_object:null}) or edit (321,{enText:'hello'})
+                    this.setCard(res.data, false)
+                }
+            }
+        }).catch(err=>console.log(err))
     }
+    /*
     deleteCard(id){
         this.postCard({'delete_note':true}, id)
-        const isToHome = this.state.noteMainId || this.state.noteMainId===id
+
         this.getCard(isToHome?null:id)
-    }
+    }*/
     ///*************** for Render ***********************/
     render(){
         const s = this.state;

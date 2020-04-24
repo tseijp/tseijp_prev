@@ -21,7 +21,7 @@ class NoteHead extends React.Component{
                 <MDBCol sm="7" style= { styles.button }>
                     <MDBBtn size="sm" color="dark" onClick={()=>p.getCard()}><MDBIcon icon="home" /></MDBBtn>
                     <MDBBtn size="sm" color="dark" onClick={p.isHome?()=>p.postCard():
-                            ()=>p.postCard({'note_object':p.mainNoteId})}>new create</MDBBtn>
+                            ()=>p.postCard(null, {'note_object':p.noteMainId})}>new create</MDBBtn>
                 </MDBCol>
             </MDBRow>
         )

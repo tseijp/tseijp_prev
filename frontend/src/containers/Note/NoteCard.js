@@ -63,12 +63,12 @@ class NoteCard extends React.Component {
                             <Icon far="comment" click={this.comment}></Icon>
                             <Icon far="heart"   click={this.heart}></Icon>
                             <Icon far="eye"     click={this.eye}>{s.id}</Icon>
-                            {isDisplay&& <Icon fas="trash"click={()=>p.deleteCard(p.id)}></Icon>}
+                            {isDisplay&& <Icon fas="trash"click={()=>p.postCard(p.id)}></Icon>}
                             {isDisplay&& <Icon fas="angle-down"></Icon>}
                         </MDBRow>
                         <hr />{/*--------------------------------*/}
                         <MDBInput type="textarea" label="test" rows="5"
-                            value={s[`${p.lang}_text`]}
+                            value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
                             onChange={(e)=>this.editText(e.target.value)} />
                     </MDBCardBody>
                 </div>

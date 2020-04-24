@@ -17,7 +17,9 @@ class NoteTail extends React.Component{
         const p = this.props;
         return (
             <div style={styles.tail} onClick={()=>p.postCard()}>
-                <MDBBtn style={styles.button} size="sm" color="dark" onClick={p.addCard}>+</MDBBtn>
+                <MDBBtn style={styles.button} size="sm" color="dark"
+                    onClick={()=>p.postCard(null, {'note_object':p.noteMainId})}>
+                    +</MDBBtn>
             </div>
         )
     }
