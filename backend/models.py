@@ -24,9 +24,6 @@ class NoteModel(m.Model):
     note_object = m.ForeignKey('self',on_delete=m.CASCADE   ,blank=True,null=True)
     tags_object = M2MF(TagsModel, related_name="note_object",blank=True)
     like_object = M2MF(LikeModel, related_name="note_object",blank=True)
-    def posted_date (self):return self.posted_time.strftime('%d')
-    def posted_month(self):return self.posted_time.strftime('%b')
-    def like_mean   (self):return "%s"%np.mean([int(l.like_number) for l in self.like_object.all() if l.like_number.isdigit()])
     ### child
     def get_comment     (self):return NoteModel.objects.filter(Q(note_object=self))
     def get_child       (self):return [c for c in NoteModel.objects.filter(note_object=self)]

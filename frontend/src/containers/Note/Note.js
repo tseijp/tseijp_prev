@@ -26,7 +26,6 @@ class Note extends React.Component {
         this.postCard  = this.postCard.bind(this);
     }
     componentDidMount () {
-        console.log(this.state.authtoken);
         if (this.state.authtoken) {
             this.setState({
                 context:{...this.state.context, isAuth:true},
@@ -58,7 +57,7 @@ class Note extends React.Component {
     }
     ///*************** for API ***********************/
     getCard (id=null) {
-        const url = `${this.url}note/${id?id+'/':''}`
+        const url = `${this.url}note/${ id?id+'/':'' }`
         const headers = this.state.header;
         axios.get(url,{headers}).then(res=>{
             if(res.status===200){
@@ -66,6 +65,7 @@ class Note extends React.Component {
                 this.setCard(res.data);
                 this.setState({noteMainId:id, context})
             }
+            //console.log(res);
         }).catch(err=>console.log(err))
     }
     postCard(id=null, body=null){
@@ -79,6 +79,7 @@ class Note extends React.Component {
                     this.setCard(res.data, false)
                 }
             }
+            //console.log(res);
         }).catch(err=>console.log(err))
     }
     ///*************** for Render ***********************/

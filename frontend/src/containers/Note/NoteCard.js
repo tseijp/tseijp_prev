@@ -20,7 +20,7 @@ import {MDBCol, MDBRow, MDBCardBody, MDBInput} from 'mdbreact';
 class NoteCard extends React.Component {
     constructor (props) {
         super();
-        this.state = {...props}
+        this.state = {...props, isHover:false}
     }
     comment () {}
     heart () {}
@@ -37,7 +37,7 @@ class NoteCard extends React.Component {
         const styles = {
             col:{transition: "0.75s", },
             card:{position:"relative", cursor: "pointer", transition: "0.75s", overflow:"hidden",},/*allcard*/
-            homecard:{                      height: "500px",boxShadow:shadow([0,1,50,.2]), overflow:"hidden",
+            homecard:{height: "500px",boxShadow:shadow([0,1,50,.2]), overflow:"hidden",
                                   ':hover':{height: "750px",boxShadow:shadow([0,5,10,.4]),},
                 [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto",},
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
@@ -57,8 +57,8 @@ class NoteCard extends React.Component {
                     <MDBCardBody>
                         <Embed isHome={p.isHome} text={s[`${p.lang}_text`]}
                             click={()=>p.getCard(s.id)}
-                            mouseEnter={()=>this.mouseEnter()}
-                            mouseLeave={()=>this.mouseLeave()}/>
+                            onMouseOut ={()=>this.setState({isHover:false})}
+                            onMouseOver={()=>this.setState({isHover: true})}/>
                         <MDBRow>
                             <Icon far="comment" click={this.comment}></Icon>
                             <Icon far="heart"   click={this.heart}></Icon>

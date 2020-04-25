@@ -29,8 +29,8 @@ class User extends React.Component {
         const headers = this.state.headers
         axios.post(url, this.state.credentials, {headers}).then(res=>{
             console.log(res);
-            if (res.status===200){
-                this.props.cookies.set('authtoken', res.token);
+            if ((res.status===200||res.status===201) && res.data.token){
+                this.props.cookies.set('authtoken', res.data.token);
                 window.location.href = "/note"
             }
         }).catch(e=>{
