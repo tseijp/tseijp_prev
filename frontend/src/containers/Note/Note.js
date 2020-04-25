@@ -64,8 +64,7 @@ class Note extends React.Component {
                 const context = {...this.state.context, isHome:id?false:true}
                 this.setCard(res.data);
                 this.setState({noteMainId:id, context})
-            }
-            //console.log(res);
+            } console.log(res);
         }).catch(err=>console.log(err))
     }
     postCard(id=null, body=null){
@@ -74,11 +73,9 @@ class Note extends React.Component {
         const headers = this.state.header;
         axios.post(url,data,{headers}).then(res=>{
             if(res.status===200){
-                if(body===null){ this.deleteCard(id) };
-                if(body!==null){//add(null,{note_object:null}) or edit (321,{enText:'hello'})
-                    this.setCard(res.data, false)
-                }
-            }
+                if(body===null){ this.deleteCard(id) ;};
+                if(body!==null){ this.setCard(res.data, false) ;};
+            }//add(null,{note_object:null}) or edit (321,{enText:'hello'})
             //console.log(res);
         }).catch(err=>console.log(err))
     }
