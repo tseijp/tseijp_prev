@@ -23,28 +23,37 @@ class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         data = request.data
         res = {'message':'not working'}
         if (all([f in data for f in ['password','username','email']])):
-            user = User(**{f:data[f] for f in ['username','email']})
+            user = User( **{f:data[f] for f in ['username','email']} )
             user.set_password(data['password'])
             user.save()
             res = {"token":Token.objects.create(user=user).key}
         return Response(res, status=status201)
 
-class NoteViewSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,mixins.CreateModelMixin,viewsets.GenericViewSet):
+class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateModelMixin,viewsets.GenericViewSet):
     queryset = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
     serializer_class = (NoteSerializer)
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
-    def retrieve(self, request, pk):#3###################### for GET to /note/2/
+    def list(self, request):################################ for GET to /note/
+        objs = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
+        data = NoteSerializer(objs, many=True, request_user=request.user)
+        return Response(data.data, status=status200)
+    def retrieve(self, request, pk):######################## for GET to /note/2/
         reps = self.get_object().get_children_id()
         objs = NoteModel.objects.filter(id__in=reps).order_by('id')
         data = NoteSerializer(objs, many=True, request_user=request.user)
         return Response(data.data, status=status200)
     def create(self, request):############################### for POST to /note/
-        res = self.post_note(request.data, request.user)
-        if res: return Response(res, status=status200)
-        else  : return Response({"error": "not exist"}, status=status404)
+        if request.user:
+            res = self.post_note(request.data, request.user)
+            print(request.user, res)
+        if res:
+            return Response(res, status=status201)
+        return Response({"error": "not exist"}, status=status404)
     @action(detail=True, methods=['POST'])
     def ajax(self, request, pk):###################### for POST to /note/2/ajax/
+        if not request.user:
+            return Response({"error": "not exist"}, status=status404)
         note = NoteModel.objects.get(id=pk)
         req  = dict(data=request.data, user=request.user, note=note)
         res0  = {'message':'not working in ajax (%s)'%pk}
@@ -52,7 +61,7 @@ class NoteViewSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,mixins.CreateM
         res2 = self.post_like(**req)
         res3 = self.delete_note(**req)
         res  = [r for r in [res0,res1,res2,res3] if r is not None][-1]
-        return Response(res, status=status200)
+        return Response(res, status=status201)
     ########################## base ##########################
     def post_note(self, data, user, note=None):
         fields = ['ja_text', 'en_text', 'note_object']
@@ -63,8 +72,8 @@ class NoteViewSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,mixins.CreateM
             if not note and top: obj.note_object = top[0]
             if 'ja_text'in data: obj.ja_text = data.get('ja_text')
             if 'en_text'in data: obj.en_text = data.get('en_text')
-            obj.save()
-            return NoteSerializer(obj, many=False, request_user=user).data
+            obj.save()            #↓ if enter query, request_user is null
+            return NoteSerializer([obj], many=True, request_user=user).data
     def post_like(self, data, user, note):
         if 'like_object' in data:
             objs= note.like_object.filter(posted_user=user)

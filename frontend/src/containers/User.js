@@ -28,11 +28,10 @@ class User extends React.Component {
         const url = this.url + (this.state.isSignIn?"auth/":"api/user/")
         const headers = this.state.headers
         axios.post(url, this.state.credentials, {headers}).then(res=>{
-            console.log(res);
             if ((res.status===200||res.status===201) && res.data.token){
                 this.props.cookies.set('authtoken', res.data.token);
                 window.location.href = "/note"
-            }
+            }//console.log(res);
         }).catch(e=>{
             this.setState({isAlert:true});
             setTimeout(()=>this.setState({isAlert:false}), 1000);

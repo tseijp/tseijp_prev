@@ -3,6 +3,10 @@ import Radium from 'radium';
 import { MDBBtn } from "mdbreact";
 
 class NoteTail extends React.Component{
+    click() {
+        const body = {'note_object':this.props.noteMainId}
+        this.props.postCard(null, body)
+    }
     render(){
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
@@ -16,10 +20,12 @@ class NoteTail extends React.Component{
         }
         const p = this.props;
         return (
-            <div style={styles.tail} onClick={()=>p.postCard()}>
+            <div style={styles.tail}>
+                {(p.isAuth && !p.isHome) &&
                 <MDBBtn style={styles.button} size="sm" color="dark"
-                    onClick={()=>p.postCard(null, {'note_object':p.noteMainId})}>
+                    onClick={()=>this.click()}>
                     +</MDBBtn>
+            }
             </div>
         )
     }

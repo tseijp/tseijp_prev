@@ -12,8 +12,8 @@ class Icon extends React.Component {
     render(){
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
-            Col:{margin:"auto auto", textAlign:"center",},
-            icon:{textAlign:"center", margin:"auto auto",transition: "0.75s",
+            Col:{margin:"auto auto", textAlign:"center",transition: "1.75s",},
+            icon:{textAlign:"center", margin:"auto auto",transition: "1.75s",
                 [media({max:576})]        :{lineHeight:"16px",fontSize:"16px",},
                 [media({min:576,max:768})]:{lineHeight:"18px",fontSize:"18px",},
                 [media({min:768})]        :{lineHeight:"25px",fontSize:"25px",},
@@ -23,9 +23,9 @@ class Icon extends React.Component {
         const p = this.props;
         const s = this.state;
         return(
-                <MDBCol style={styles.Col}>
+                <MDBCol style={styles.Col} onClick={()=>this.click()} >
                     <i className={`${s.fa} fa-${p.fas?p.fas:p.far}`}
-                        style={styles.icon} onClick={()=>this.click()} />
+                        style={styles.icon} />
                     {p.children}
                 </MDBCol>
         )

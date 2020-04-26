@@ -14,39 +14,36 @@ class Note extends React.Component {
     ///*************** for React ***********************/
     constructor (props) {
         super()
+        const authtoken = props.cookies.get('authtoken');
+        const headers = { "Content-Type":"application/json",
+                    ...(authtoken&&{Authorization:`Token ${authtoken}`})};
+        const context = { isDark:false, isHome:true, tag:null, lang :'ja',
+                          isAuth:(authtoken?true:false)};
         this.state = {
-            authtoken  : props.cookies.get('authtoken'),
+            authtoken, headers, context,
             noteCards  : [],
             noteMainId : null,
-            context : { isDark:false, isHome:true, isAuth:false,
-                        tag:null, lang :'ja', author:'tseijp' },
-            header  : { "Content-Type":"application/json", },
         }
         this.getCard   = this.getCard.bind(this);
         this.postCard  = this.postCard.bind(this);
     }
     componentDidMount () {
         if (this.state.authtoken) {
-            this.setState({
-                context:{...this.state.context, isAuth:true},
-                header: {...this.state.header , Authorization:`Token ${this.state.authtoken}`}
-            })
             this.getCard();
         } else {
-            console.log(this.state.authtoken)
             window.location.href = '/user'
         }
     }
     ///*************** for state ***********************/
-    setCard(cards, init=true){ //get => init=true // add or edit => init=false
+    setCard(cards, mode='init'){ //get => init=true // add or edit => init=false
         const noteCards = (cards instanceof Array)?[...cards]:[cards]
         const pre_cards = [...this.state.noteCards];
         const new_cards = noteCards.filter(n=>pre_cards.filter(p=>n.id===p.id).length===0)
         this.setState({noteCards:[]}) // reset noteCards keys in state
-        this.setState({ noteCards : (init)?noteCards :
-            [...(this.state.context.isHome?new_cards:[]),
+        this.setState({ noteCards : (mode==='init')?noteCards :
+            [...(mode==='head'?new_cards:[]),
              ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card ),
-             ...(!this.state.context.isHome?new_cards:[]),]
+             ...(mode==='tail'?new_cards:[]),]
         })
     }
     deleteCard(id){
@@ -58,25 +55,27 @@ class Note extends React.Component {
     ///*************** for API ***********************/
     getCard (id=null) {
         const url = `${this.url}note/${ id?id+'/':'' }`
-        const headers = this.state.header;
+        const headers = this.state.headers;
         axios.get(url,{headers}).then(res=>{
             if(res.status===200){
                 const context = {...this.state.context, isHome:id?false:true}
                 this.setCard(res.data);
                 this.setState({noteMainId:id, context})
-            } console.log(res);
+            }console.log('get', res);
         }).catch(err=>console.log(err))
     }
     postCard(id=null, body=null){
         const url = `${this.url}note/${id?id+'/ajax/':''}`
         const data = body || {"delete_note":true}
-        const headers = this.state.header;
+        const headers = this.state.headers;
         axios.post(url,data,{headers}).then(res=>{
-            if(res.status===200){
+            if(res.status===201){
+                const isAdd = Object.keys(data).map(v=>v==="note_object").every(v=>v===true)
+                const isHome = this.state.context.isHome;
                 if(body===null){ this.deleteCard(id) ;};
-                if(body!==null){ this.setCard(res.data, false) ;};
+                if(body!==null && isAdd){ this.setCard(res.data, isHome?'head':'tail');};
             }//add(null,{note_object:null}) or edit (321,{enText:'hello'})
-            //console.log(res);
+            console.log('post',res);
         }).catch(err=>console.log(err))
     }
     ///*************** for Render ***********************/
@@ -87,6 +86,7 @@ class Note extends React.Component {
                 toJa={()=>this.setState({lang:'ja'})}
                 toEn={()=>this.setState({lang:'en'})}>
                 <NoteHead
+                    {...s.context}
                     noteMainId={s.noteMainId}
                     getCard={this.getCard}
                     postCard={this.postCard}/>
@@ -99,6 +99,7 @@ class Note extends React.Component {
                 )} )}
                 </MDBRow>
                 <NoteTail
+                    {...s.context}
                     noteMainId={s.noteMainId}
                     getCard={this.getCard}
                     postCard={this.postCard} />

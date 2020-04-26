@@ -3,6 +3,10 @@ import Radium from 'radium';
 import { MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
 
 class NoteHead extends React.Component{
+    click() {
+        const body = {'note_object':this.props.noteMainId}
+        this.props.postCard(null, body)
+    }
     render(){
         const media =d=>'@media '+Object.entries(d).map(v=>`(${v[0]}-width:${v[1]}px)`).join(' and ')
         const styles = {
@@ -20,8 +24,10 @@ class NoteHead extends React.Component{
                 </MDBCol>
                 <MDBCol sm="7" style= { styles.button }>
                     <MDBBtn size="sm" color="dark" onClick={()=>p.getCard()}><MDBIcon icon="home" /></MDBBtn>
-                    <MDBBtn size="sm" color="dark" onClick={p.isHome?()=>p.postCard():
-                            ()=>p.postCard(null, {'note_object':p.noteMainId})}>new create</MDBBtn>
+                    {p.isAuth &&
+                    <MDBBtn size="sm" color="dark"
+                        onClick={()=>this.click()}>
+                        new create</MDBBtn> }
                 </MDBCol>
             </MDBRow>
         )

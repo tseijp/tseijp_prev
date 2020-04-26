@@ -28,13 +28,14 @@ class LikeSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     tags_object = TagsSerializer(many=True)
     like_object = LikeSerializer(many=True)
-    posted_user = UserSerializer(many=False)
+    posted_user = UserSerializer(many=False, read_only=True)
     request_user = serializers.SerializerMethodField()
     like_mean = serializers.SerializerMethodField()
     def __init__(self, *args, **kwargs):
         self.request = dict( user=kwargs.pop('request_user', None) )
         super().__init__()
     def get_request_user(self, obj):
+        print('request', self.request)
         return UserSerializer(self.request['user']).data
     def get_like_mean(self, obj):
         like_objs = [l for l in obj.like_object.all()]
