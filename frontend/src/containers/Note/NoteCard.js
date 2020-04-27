@@ -12,10 +12,10 @@ _____________
 */
 //import Body from './NoteCard/Body.js';
 //import Canvas from './NoteCard/Canvas.js';
+import Md from 'components/Md/Md';
 import Icon  from 'components/NoteCard/Icon';
-import Md from 'components/NoteCard/Md';
 //import NoteContext from 'contexts/NoteContext.js';
-import {MDBCol, MDBRow, MDBCardBody, MDBInput} from 'mdbreact';
+import {MDBCol, MDBRow, MDBInput} from 'mdbreact';
 
 class NoteCard extends React.Component {
     constructor (props) {
@@ -60,13 +60,15 @@ class NoteCard extends React.Component {
         //console.log(`1\tid:${s.id} isHome:${s.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
         const styles = {
             col:{transition: "0.75s", },
-            card:{position:"relative", cursor: "pointer", transition: "0.75s", overflow:"hidden",
+            card:{
+                 position:"relative", cursor: "pointer", padding:"25px 0",
+                 transition: "0.75s", overflow:"hidden",
                         boxShadow:shadow([0,1,50,.2]), height:`${cardHeight}px`,
               ':hover':{boxShadow:shadow([0,5,10,.4]), height:`${cardHeight + hoverHeight}px`,},
             ...(p.isHome?{
-                [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto",},
-                [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
-                [media({min:768})]        :{width : "500px",borderRadius:"25px", margin:"25px auto",},}
+                [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto"},
+                [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto"},
+                [media({min:768})]        :{width : "500px",borderRadius:"25px", margin:"25px auto"},}
             :!s.isComment?{
                 [media({max:576})]        :{width :  "100%",borderRadius:"20px", margin:"20px auto",},
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
@@ -77,7 +79,6 @@ class NoteCard extends React.Component {
         return (
             <MDBCol style={styles.col} xl={p.isHome?"6":"12"}>
                 <div style={ styles.card }>
-                    <MDBCardBody>
                         <div ref={this.embedRef}
                             style={ styles.embedcard }
                             onClick={p.isHome?()=>p.getCard(s.id):null}>
@@ -92,10 +93,9 @@ class NoteCard extends React.Component {
                         </MDBRow>
                         <hr />{/*--------------------------------*/}
                         {isDisplay&&
-                        <MDBInput type="textarea" label="test" rows="9"
+                        <MDBInput type="textarea" label="test" rows="9" style={{padding:"25px"}}
                             value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
                             onChange={(e)=>this.editText(e.target.value)} />    }
-                    </MDBCardBody>
                 </div>
             </MDBCol>
         )

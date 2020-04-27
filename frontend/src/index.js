@@ -3,8 +3,10 @@ import Radium from 'radium';
 import ReactDOM from 'react-dom';
 import './css/index.css';
 
+import User from './containers/User';
 import Note from './containers/Note/Note';
-import User from './containers/User'
+import Home from './containers/Home/Home';
+
 import * as serviceWorker from './dev/serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
@@ -19,8 +21,9 @@ const routing = (
         <Radium.StyleRoot>
             <CookiesProvider>
                 <div>
+                    <Route exact path="/"     component={Home}/>
                     <Route exact path="/user" component={User}/>
-                    <Route exact path="/note"  component={Note}/>
+                    <Route exact path="/note" component={Note}/>
                 </div>
             </CookiesProvider>
         </Radium.StyleRoot>
