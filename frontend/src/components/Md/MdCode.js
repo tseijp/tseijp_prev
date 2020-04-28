@@ -1,11 +1,17 @@
 import React from "react";
 import {MDBTooltip} from 'mdbreact'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { a11yLight as style } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+//import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
+import { atomOneLight as style } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+//import { coy as style } from 'react-syntax-highlighter/dist/esm/styles/prism';
+//SyntaxHighlighter.registerLanguage('javascript', js);
 
 class MdCode extends React.PureComponent {
-    state = {isHover:false, isCopied:false}
+    constructor () {
+        super();
+        this.state = {isHover:false, isCopied:false}
+    }
     click () {
         this.setState({isCopied:true})
     }
@@ -13,14 +19,15 @@ class MdCode extends React.PureComponent {
         const p = this.props;
         const s = this.state;
         const styles = {
-            tip  :{display:p.inline?"inline-block":"block",margin:"2px 2px"},
-            clip :{display:p.inline?"inline-block":"block",height:1,verticalAlign:"top"},
-            light:{display:p.inline?"inline-block":"block"},
+            tip  :{display:p.inline?"inline-block":"fixed",},
+            clip :{display:p.inline?"inline-block":"fixed",verticalAlign:"top",height:1},
+            light:{display:p.inline?"inline-block":"fixed",margin:"5px 5px",padding:"5px 5px"},
         }
         return (
             <MDBTooltip domElement tag="span" placement="bottom"
                 style={styles.tip}>
                 <span>{/*for position of tooltip*/}
+                    {p.value &&
                     <CopyToClipboard text={p.value} style={styles.clip}
                         onCopy={()=>this.setState({isCopied: true})}>
                         <span>{/*for recognition by clicpboard*/}
@@ -30,7 +37,7 @@ class MdCode extends React.PureComponent {
                                 {p.value}
                             </SyntaxHighlighter>
                         </span>
-                    </CopyToClipboard>
+                    </CopyToClipboard>}
                 </span>
                 <span>{s.isCopied?"Copied !":"Click and Copy"}</span>
             </MDBTooltip>

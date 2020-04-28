@@ -6,7 +6,7 @@ run.bat
 mig.bat
 csp.bat
 psq.bat
-
+frontend/start.bat
 
 static
 tseijp/settings/dev.py

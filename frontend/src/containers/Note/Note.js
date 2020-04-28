@@ -39,7 +39,7 @@ class Note extends React.Component {
         const noteCards = (cards instanceof Array)?[...cards]:[cards]
         const pre_cards = [...this.state.noteCards];
         const new_cards = noteCards.filter(n=>pre_cards.filter(p=>n.id===p.id).length===0)
-        this.setState({noteCards:[]}) // reset noteCards keys in state
+        //this.setState({noteCards:[]}) // reset noteCards keys in state
         this.setState({ noteCards : (mode==='init')?noteCards :
             [...(mode==='head'?new_cards:[]),
              ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card ),
@@ -92,7 +92,8 @@ class Note extends React.Component {
                     postCard={this.postCard}/>
                 <MDBRow>
                 {this.state.noteCards.map( (note,j) => { return (
-                    <NoteCard key={j} {...note} {...s.context}
+                    <NoteCard {...note} {...s.context}
+                        key={`card${note.id}`}
                         getCard={this.getCard}
                         postCard={this.postCard}
                         deleteCard={this.deleteCard}/>

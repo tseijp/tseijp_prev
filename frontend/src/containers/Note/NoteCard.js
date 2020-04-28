@@ -23,11 +23,17 @@ class NoteCard extends React.Component {
         const isComment  = false;
         const isNoteAuth = (props.request_user)? ['id','username'].every(v=>
             props.request_user[v]===props.posted_user[v]):false
-        //console.log(isNoteAuth, props.request_user, props.posted_user);
-        this.state = {...props, isComment, isNoteAuth, isChanged:false};
+        //console.log(`auth:${isNoteAuth}`, props.request_user, props.posted_user);
+        this.state = {...props, isComment, isNoteAuth, isChanged:false, nowHeight:0};
         this.embedRef = React.createRef();
+        this.clickTrash = this.clickTrash.bind(this);
     }
     componentDidMount(){
+        setTimeout(() => {
+            const nowHeight=this.embedRef.current?this.embedRef.current.clientHeight:0;
+            if (nowHeight!==0 && nowHeight!==this.state.nowHeight);
+                this.setState({nowHeight});
+        }, 1)
         this.timerID = setInterval(() => {
             if(this.state.isChanged){
                 const key = `${this.props.lang}_text`
@@ -40,8 +46,11 @@ class NoteCard extends React.Component {
     componentWillUnmount(){
         clearInterval(this.timerID);
     }
+    clickEdit () {}
+    clickTrash(){this.props.postCard(this.props.id)}
     clickComment () {}
     clickHeart () {}
+    clickEye(){}
     editText (text) {
         const pre = this.state[`${this.props.lang}_text`]
         const body = {[`${this.props.lang}_text`] : text}
@@ -53,16 +62,17 @@ class NoteCard extends React.Component {
         const s = this.state;
         const p = this.props;
         const isDisplay = (!p.isHome && s.isNoteAuth);
-        const nowHeight = (this.embedRef.current) ? this.embedRef.current.clientHeight+50:0
+        const nowHeight = (s.nowHeight) ? s.nowHeight+50:0
         const minHeight = (this.props.isHome?450:700);
-        const cardHeight = [minHeight, nowHeight].reduce((a,b)=>a>b?a:b)
+        const cardHeight = (this.props.isHome||minHeight>nowHeight)?minHeight:nowHeight
         const hoverHeight = (isDisplay)?300:0
-        //console.log(`1\tid:${s.id} isHome:${s.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
+        //if (p.id===311)// || p.id===311)
+        //    console.log(`1\tid:${s.id} isHome:${p.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
         const styles = {
             col:{transition: "0.75s", },
             card:{
-                 position:"relative", cursor: "pointer", padding:"25px 0",
-                 transition: "0.75s", overflow:"hidden",
+                position:"relative", cursor: "pointer", padding:"25px 0",
+                transition: "0.75s", overflow:"hidden",
                         boxShadow:shadow([0,1,50,.2]), height:`${cardHeight}px`,
               ':hover':{boxShadow:shadow([0,5,10,.4]), height:`${cardHeight + hoverHeight}px`,},
             ...(p.isHome?{
@@ -74,28 +84,28 @@ class NoteCard extends React.Component {
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
                 [media({min:768})]        :{width : "750px",borderRadius:"25px", margin:"25px auto",},}
             :{display:"none"}),},
-            embedcard  :{transition:"0.5s", overflow:"hidden", minHeight:`${isDisplay?650:400}px`,},
+            embedcard  :{transition:"0.5s", overflow:"hidden", minHeight:`${!p.isHome?650:400}px`,},
         }
         return (
             <MDBCol style={styles.col} xl={p.isHome?"6":"12"}>
                 <div style={ styles.card }>
-                        <div ref={this.embedRef}
-                            style={ styles.embedcard }
-                            onClick={p.isHome?()=>p.getCard(s.id):null}>
-                            <Md text={s[`${p.lang}_text`]}/>
-                        </div>
-                        <MDBRow>
-                            {isDisplay&& <Icon fas="edit" click={()=>null}></Icon>}
-                            <Icon far="comment" click={this.clickComment}></Icon>
-                            <Icon far="eye" click={()=>null}>{s.id}</Icon>
-                            <Icon far="heart"   click={this.clickHeart}  ></Icon>
-                            {isDisplay&& <Icon fas="trash"click={()=>p.postCard(p.id)}></Icon>}
-                        </MDBRow>
-                        <hr />{/*--------------------------------*/}
-                        {isDisplay&&
-                        <MDBInput type="textarea" label="test" rows="9" style={{padding:"25px"}}
-                            value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
-                            onChange={(e)=>this.editText(e.target.value)} />    }
+                    <div ref={this.embedRef}
+                        style={ styles.embedcard }
+                        onClick={p.isHome?()=>p.getCard(s.id):null}>
+                        <Md text={s[`${p.lang}_text`]}/>
+                    </div>
+                    <MDBRow>
+                        {isDisplay&& <Icon fas="edit" click={this.clickEdit}></Icon>}
+                        <Icon far="comment" click={this.clickComment}></Icon>
+                        <Icon far="eye"     click={this.clickEye}>{s.id}</Icon>
+                        <Icon far="heart"   click={this.clickHeart}  ></Icon>
+                        {isDisplay&& <Icon fas="trash"click={this.clickTrash}></Icon>}
+                    </MDBRow>
+                    <hr />{/*--------------------------------*/}
+                    {isDisplay&&
+                    <MDBInput type="textarea" label="test" rows="9" style={{padding:"25px"}}
+                        value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
+                        onChange={(e)=>this.editText(e.target.value)} />    }
                 </div>
             </MDBCol>
         )
