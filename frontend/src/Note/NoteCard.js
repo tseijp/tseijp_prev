@@ -1,6 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
-
+import Mdmd from '@tsei/mdmd';
 /*
 card and (homecard or postedcard)
 _____________
@@ -10,11 +10,8 @@ _____________
 |  cardhover |
 |____________|
 */
-//import Body from './NoteCard/Body.js';
 //import Canvas from './NoteCard/Canvas.js';
-import Md from 'components/Md/Md';
-import Icon  from 'components/NoteCard/Icon';
-//import NoteContext from 'contexts/NoteContext.js';
+import Icon  from '../components/Icon';
 import {MDBCol, MDBRow, MDBInput} from 'mdbreact';
 
 class NoteCard extends React.Component {
@@ -23,7 +20,7 @@ class NoteCard extends React.Component {
         const isComment  = false;
         const isNoteAuth = (props.request_user)? ['id','username'].every(v=>
             props.request_user[v]===props.posted_user[v]):false
-        //console.log(`auth:${isNoteAuth}`, props.request_user, props.posted_user);
+        //console.log(`[auth in constructor]:${isNoteAuth}`, props.request_user, props.posted_user);
         this.state = {...props, isComment, isNoteAuth, isChanged:false, nowHeight:0};
         this.embedRef = React.createRef();
         this.clickTrash = this.clickTrash.bind(this);
@@ -61,20 +58,15 @@ class NoteCard extends React.Component {
         const shadow=a=>`${a[0]}px ${a[1]}px ${a[2]}px rgba(0,0,0,${a[3]})`;
         const s = this.state;
         const p = this.props;
-        const isDisplay = (!p.isHome && s.isNoteAuth);
+        const isEditable = (!p.isHome && s.isNoteAuth);
         const nowHeight = (s.nowHeight) ? s.nowHeight+50:0
-        const minHeight = (this.props.isHome?450:700);
+        const minHeight = (this.props.isHome?440:680);
         const cardHeight = (this.props.isHome||minHeight>nowHeight)?minHeight:nowHeight
-        const hoverHeight = (isDisplay)?300:0
-        //if (p.id===311)// || p.id===311)
-        //    console.log(`1\tid:${s.id} isHome:${p.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
+        const hoverHeight = (isEditable)?300:0
+        //console.log(`[height in render]\tid:${s.id} isHome:${p.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
         const styles = {
-            col:{transition: "0.75s", },
             card:{
-                position:"relative", cursor: "pointer", padding:"25px 0",
-                transition: "0.75s", overflow:"hidden",
-                        boxShadow:shadow([0,1,50,.2]), height:`${cardHeight}px`,
-              ':hover':{boxShadow:shadow([0,5,10,.4]), height:`${cardHeight + hoverHeight}px`,},
+                cursor:"pointer", transition: "0.75s", overflow:"hidden",//position:"relative", padding:"25px 0",
             ...(p.isHome?{
                 [media({max:576})]        :{width :   "95%",borderRadius:"16px", margin:"16px auto"},
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto"},
@@ -83,26 +75,41 @@ class NoteCard extends React.Component {
                 [media({max:576})]        :{width :  "100%",borderRadius:"20px", margin:"20px auto",},
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
                 [media({min:768})]        :{width : "750px",borderRadius:"25px", margin:"25px auto",},}
-            :{display:"none"}),},
-            embedcard  :{transition:"0.5s", overflow:"hidden", minHeight:`${!p.isHome?650:400}px`,},
-        }
+            :{display:"none"}),
+                        height:`${cardHeight}px`              ,boxShadow:shadow([0,1,50,.2]),
+              ':hover':{height:`${cardHeight + hoverHeight}px`,boxShadow:shadow([0,5,10,.4]), },},//card
+            mdmd : { minHeight:`${p.isHome?400:650}px`,
+                textAlign:"justify",transition:"0.5s", overflow:"hidden",
+                [media({max:576})]        :{fontSize:"16px",},
+                [media({min:576,max:768})]:{fontSize:"18px",},
+                [media({min:768})]        :{fontSize:"20px",},},
+        };
+        const mdmdStyles = {
+            imageStyle    :{position:"absolute"},
+            styleRoot     :{padding:"25px 0 25px 0"},
+            styleListItem :{padding:"0 50px"},
+            styleParagraph:{padding:"0 25px 0 25px"}
+        };
         return (
-            <MDBCol style={styles.col} xl={p.isHome?"6":"12"}>
+            <MDBCol style={ {transition:"0.75s"} } xl={p.isHome?"6":"12"}>
                 <div style={ styles.card }>
                     <div ref={this.embedRef}
-                        style={ styles.embedcard }
+                        style={ styles.mdmd }
                         onClick={p.isHome?()=>p.getCard(s.id):null}>
-                        <Md text={s[`${p.lang}_text`]}/>
+                        <Mdmd
+                            {...mdmdStyles}
+                            source={s[`${p.lang}_text`]}
+                            color="elegant-color"/>
                     </div>
                     <MDBRow>
-                        {isDisplay&& <Icon fas="edit" click={this.clickEdit}></Icon>}
+                        {isEditable&& <Icon fas="edit" click={this.clickEdit}></Icon>}
                         <Icon far="comment" click={this.clickComment}></Icon>
                         <Icon far="eye"     click={this.clickEye}>{s.id}</Icon>
                         <Icon far="heart"   click={this.clickHeart}  ></Icon>
-                        {isDisplay&& <Icon fas="trash"click={this.clickTrash}></Icon>}
+                        {isEditable&& <Icon fas="trash"click={this.clickTrash}></Icon>}
                     </MDBRow>
                     <hr />{/*--------------------------------*/}
-                    {isDisplay&&
+                    {isEditable&&
                     <MDBInput type="textarea" label="test" rows="9" style={{padding:"25px"}}
                         value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
                         onChange={(e)=>this.editText(e.target.value)} />    }

@@ -4,10 +4,10 @@ import React from 'react';
 import {MDBRow} from 'mdbreact';
 import {withCookies} from 'react-cookie';
 //containers
-import Layout   from 'containers/Layout'
-import NoteHead from 'containers/Note/NoteHead';
-import NoteCard from 'containers/Note/NoteCard';
-import NoteTail from 'containers/Note/NoteTail';
+import Layout   from '../components/Layout'
+import NoteHead from './NoteHead';
+import NoteCard from './NoteCard';
+import NoteTail from './NoteTail';
 
 class Note extends React.Component {
     url = "http://127.0.0.1:8000/api/"
@@ -83,8 +83,8 @@ class Note extends React.Component {
         const s = this.state;
         return(
             <Layout {...s.context}
-                toJa={()=>this.setState({lang:'ja'})}
-                toEn={()=>this.setState({lang:'en'})}>
+                toJa={()=>this.setState({context:{...this.state.context, lang:'ja'}})}
+                toEn={()=>this.setState({context:{...this.state.context, lang:'en'}})}>
                 <NoteHead
                     {...s.context}
                     noteMainId={s.noteMainId}

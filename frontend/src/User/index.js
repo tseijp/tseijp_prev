@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import {MDBInput, MDBBtn, MDBAlert} from 'mdbreact'
 import {withCookies} from 'react-cookie';
-import Layout from './Layout'
+import Layout from '../components/Layout';
 
 class User extends React.Component {
     url = "http://localhost:8000/"
@@ -83,7 +83,7 @@ class User extends React.Component {
                         {!s.isAlert && <MDBBtn color="dark" style={styles.Button}
                             onClick={this.signin}>
                             {s.isSignIn?"SIGNIN":"SIGNUP"}</MDBBtn>}
-                        <MDBBtn color="dark" className="fa-spin" style={styles.Btn}>OR</MDBBtn>
+                        <MDBBtn color="dark" style={styles.Btn}>OR</MDBBtn>
                         <MDBBtn color="dark" style={styles.Button}>Signup with Google</MDBBtn>
                     </form>
                 }{s.isAuth &&

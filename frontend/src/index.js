@@ -3,9 +3,9 @@ import Radium from 'radium';
 import ReactDOM from 'react-dom';
 import './css/index.css';
 
-import User from './containers/User';
-import Note from './containers/Note/Note';
-import Home from './containers/Home/Home';
+import User from './User';
+import Note from './Note';
+import Home from './Home';
 
 import * as serviceWorker from './dev/serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';

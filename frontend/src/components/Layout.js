@@ -1,9 +1,8 @@
 import React from 'react';
 import Radium from 'radium';
 import {MDBContainer} from 'mdbreact';
-import Side  from 'components/Side/Side';
-import Trans from 'components/Trans/Trans';
-import Auxil from 'hoc/Auxil';
+import Side  from '../components/Side';
+import Trans from '../components/Trans';
 //const Layout = (props) => (
 class Layout extends React.Component {
     render() {
@@ -16,7 +15,7 @@ class Layout extends React.Component {
                 [media({min:768        })]:{margin:"75px 75px 75px 75px",},},
         };
         return(
-            <Auxil>
+            <>
                 <Side isAuth={p.isAuth}/>
                 <Trans toJa={this.props.toJa} toEn={this.props.toEn}/>
                 <main style={styles.container}>
@@ -24,7 +23,7 @@ class Layout extends React.Component {
                     {this.props.children}
                     </MDBContainer>
                 </main>
-            </Auxil>
+            </>
         )
     }
 };

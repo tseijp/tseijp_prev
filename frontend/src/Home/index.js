@@ -1,7 +1,7 @@
 import React from 'react'
 import {MDBBtn} from 'mdbreact'
 
-import Layout from 'containers/Layout';
+import Layout from '../components/Layout';
 
 export default class Home extends React.Component {
     constructor () {
