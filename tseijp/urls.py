@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib import admin
 from rest_framework import routers
 from django.shortcuts import render
@@ -24,14 +24,15 @@ urlpatterns = [
     path('admin/', admin.site.urls     ),
     path('auth/' , obtain_auth_token   ),
     path('api/'  , include(router.urls)),
-    # views
-    path('note/' , note),
-    path('mdmd/' , mdmd),
-    ### dev
     path('note_init', note_init),
-    ### coming soon
-    #path('note/', note_view),
-
+    # views
+    #path('<route:path>', note),
+    *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+    re_path('mdmd', mdmd),
+    re_path(''    , note),
+    #re_path(r'^$' , note),
+    #re_path(r'^(?:.*)/?$', note)
+    ### dev
     #path('idea/'      , include('app_idea.urls')),
     #path('mesh/'      , include('app_mesh.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

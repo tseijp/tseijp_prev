@@ -1,4 +1,13 @@
-# MEMO
+# TSEI.jp
+
+### Build JSX
+* cd frontend
+* npm run build
+* git clone https://github.com/tseijp/mdmd
+* cd mdmd
+* npm run build
+* cd ../..
+* python manage.py collectstatic
 
 ### for Model
 using in React only ...

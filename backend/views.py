@@ -46,7 +46,6 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
     def create(self, request):############################### for POST to /note/
         if request.user:
             res = self.post_note(request.data, request.user)
-            print(request.user, res)
         if res:
             return Response(res, status=status201)
         return Response({"error": "not exist"}, status=status404)

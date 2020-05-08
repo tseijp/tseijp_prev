@@ -1,13 +1,12 @@
 ### temp
 app_mesh
-frontend/mdmd
+#frontend/mdmd
 
 ### my created
 run.bat
-mig.bat
-csp.bat
-psq.bat
-frontend/start.bat
+frontend/scripts/start.bat
+frontend/scripts/build.bat
+#backend/dev
 
 static
 tseijp/settings/dev.py

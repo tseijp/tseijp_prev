@@ -21,9 +21,9 @@ const routing = (
         <Radium.StyleRoot>
             <CookiesProvider>
                 <div>
-                    <Route exact path="/"     component={Home}/>
                     <Route exact path="/user" component={User}/>
                     <Route exact path="/note" component={Note}/>
+                    <Route exact path="/" component={Home}/>
                 </div>
             </CookiesProvider>
         </Radium.StyleRoot>

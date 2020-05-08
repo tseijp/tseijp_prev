@@ -35,7 +35,6 @@ class NoteSerializer(serializers.ModelSerializer):
         self.request = dict( user=kwargs.pop('request_user', None) )
         super().__init__()
     def get_request_user(self, obj):
-        print('request', self.request)
         return UserSerializer(self.request['user']).data
     def get_like_mean(self, obj):
         like_objs = [l for l in obj.like_object.all()]

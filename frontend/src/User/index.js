@@ -21,7 +21,7 @@ class User extends React.Component {
         this.setState({credentials : cred})
     }
     signout = () => {
-        this.props.cookies.remove('authtoken');
+        this.props.cookies.remove('authtoken', {path:"/"});
         window.location.href = "/note"
     }
     signin = () => {
@@ -29,7 +29,7 @@ class User extends React.Component {
         const headers = this.state.headers
         axios.post(url, this.state.credentials, {headers}).then(res=>{
             if ((res.status===200||res.status===201) && res.data.token){
-                this.props.cookies.set('authtoken', res.data.token);
+                this.props.cookies.set('authtoken', res.data.token, {path:"/"});
                 window.location.href = "/note"
             }//console.log(res);
         }).catch(e=>{

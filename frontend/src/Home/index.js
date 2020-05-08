@@ -1,5 +1,5 @@
 import React from 'react'
-import {MDBBtn} from 'mdbreact'
+import {MDBContainer, MDBBtn} from 'mdbreact'
 
 import Layout from '../components/Layout';
 
@@ -11,8 +11,12 @@ export default class Home extends React.Component {
     render () {
         return (
             <Layout>
-                <MDBBtn color="black" href="/note">Note</MDBBtn>
-                <MDBBtn color="black" href="/user">User</MDBBtn>
+                <MDBContainer>
+                    <h1>TSEI.jp (COMING SOON)</h1>
+                    <MDBBtn color="black" href="/note">Note</MDBBtn>
+                    <MDBBtn color="black" href="/user">User</MDBBtn>
+                    <MDBBtn color="black" href="/mdmd">Mdmd</MDBBtn>
+                </MDBContainer>
             </Layout>
         )
     }
