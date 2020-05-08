@@ -1,5 +1,6 @@
 ### temp
 app_mesh
+frontend/mdmd
 
 ### my created
 run.bat
@@ -39,7 +40,7 @@ media
 
 # Distribution / packaging
 .Python
-build/
+#build/
 develop-eggs/
 dist/
 downloads/

@@ -1,6 +1,7 @@
 import os
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import os.path as osp
+# Build paths inside the project like this: osp.join(BASE_DIR, ...)
+BASE_DIR = osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))
 # Application definition
 INSTALLED_APPS = ['django.contrib.%s'%s for s in ['admin','auth','contenttypes','sessions','messages','staticfiles']]
 MIDDLEWARE = [
@@ -13,7 +14,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',]
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [os.path.normpath(os.path.join(BASE_DIR, "tseijp/templates")), ],
+    'DIRS': [osp.normpath(osp.join(BASE_DIR, "frontend")), ],
     'APP_DIRS': True,
     'OPTIONS': {'context_processors': [
         'django.template.context_processors.debug',
@@ -31,6 +32,14 @@ TIME_ZONE = 'UTC'
 USE_I18N  = True
 USE_L10N  = True
 USE_TZ    = True
+
+
+###################### static #############################
+STATIC_URL = 'note','static/'
+STATIC_ROOT = osp.join(BASE_DIR, "static/")
+STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s"%s) for s in [
+    'frontend/build/static/note/',
+]]
 ###################### my changed #############################
 ###  sosial auth signup with google
 ###  [ref](https://qiita.com/moi1990sk/items/a849fca7acb29db95508)

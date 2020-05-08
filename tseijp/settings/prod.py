@@ -14,7 +14,7 @@ DATABASES = {'default': {
     'PASSWORD': 'django1234',
     'HOST'    : 'localhost',
     'PORT'    : ''}}
-
+"""
 # Static files (CSS, JavaScript, Images) -------------------------------------
 ### [ref:Django staticファイルとAWS S3 - Qiita](https://qiita.com/sand/items/2eae781e2b904e0e67b9)
 INSTALLED_APPS+=['storages']
@@ -31,3 +31,4 @@ AWS_STORAGE_BUCKET_NAME = 'tseijp-static'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+"""
