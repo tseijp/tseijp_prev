@@ -9,7 +9,7 @@ frontend/scripts/build.bat
 #backend/dev
 
 static
-tseijp/settings/dev.py
+#tseijp/settings/dev.py
 tseijp.sock
 
 # Created by https://www.gitignore.io/api/git,python,django,jupyternotebooks
