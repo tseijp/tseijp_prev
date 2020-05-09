@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls     ),
     path('auth/' , obtain_auth_token   ),
     path('api/'  , include(router.urls)),
-    path('note_init', note_init),
+#    path('note_init', note_init),
     # views
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     re_path('mdmd', mdmd, name='mdmd'),

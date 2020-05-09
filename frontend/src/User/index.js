@@ -34,7 +34,7 @@ class User extends React.Component {
                 window.location.href = "/note"
             }//console.log(res);
         }).catch(e=>{
-            //window.location.href = "/user"
+            window.location.href = "/user"
             this.setState({isAlert:true});
         })
     }
