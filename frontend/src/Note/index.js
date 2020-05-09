@@ -10,15 +10,15 @@ import NoteCard from './NoteCard';
 import NoteTail from './NoteTail';
 
 class Note extends React.Component {
-    url = "http://127.0.0.1:8000/api/"
+    url = window.location.origin.match('localhost')?"http://localhost:8000/":"https://tsei.jp/"
     ///*************** for React ***********************/
     constructor (props) {
-        super()
+        super();
         const authtoken = props.cookies.get('authtoken');
         const headers = { "Content-Type":"application/json",
                     ...(authtoken&&{Authorization:`Token ${authtoken}`})};
         const context = { isDark:false, isHome:true, tag:null, lang :'ja',
-                          isAuth:(authtoken?true:false)};
+                          isAuth:authtoken?true:false };
         this.state = {
             authtoken, headers, context,
             noteCards  : [],
@@ -54,7 +54,7 @@ class Note extends React.Component {
     }
     ///*************** for API ***********************/
     getCard (id=null) {
-        const url = `${this.url}note/${ id?id+'/':'' }`
+        const url = `${this.url}api/note/${ id?id+'/':'' }`
         const headers = this.state.headers;
         axios.get(url,{headers}).then(res=>{
             if(res.status===200){
@@ -65,7 +65,7 @@ class Note extends React.Component {
         }).catch(err=>console.log(err))
     }
     postCard(id=null, body=null){
-        const url = `${this.url}note/${id?id+'/ajax/':''}`
+        const url = `${this.url}api/note/${id?id+'/ajax/':''}`
         const data = body || {"delete_note":true}
         const headers = this.state.headers;
         axios.post(url,data,{headers}).then(res=>{

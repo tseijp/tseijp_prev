@@ -1,6 +1,7 @@
+from django.http import HttpResponseRedirect
+from backend.models import NoteModel
 from django.contrib.auth.decorators import login_required
 
-from backend.models import NoteModel
 from .note import note
 
 def register_note(id, note, user):
@@ -26,3 +27,4 @@ def note_init(request):
     id = None
     for n in note:
         id = register_note(id, n, user)
+    return HttpResponseRedirect('/')

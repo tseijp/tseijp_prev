@@ -13,7 +13,7 @@ handler500 = my_customized_server_error
 ### my created
 from backend.views import UserViewSet, NoteViewSet#, TagsViewSet
 from backend.dev.init import note_init
-router = routers.DefaultRouter()
+router = routers.SimpleRouter()
 router.register('note', NoteViewSet)
 router.register('user', UserViewSet, basename="user")
 #router.register('tags', TagsViewSet)
@@ -26,10 +26,9 @@ urlpatterns = [
     path('api/'  , include(router.urls)),
     path('note_init', note_init),
     # views
-    #path('<route:path>', note),
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
-    re_path('mdmd', mdmd),
-    re_path(''    , note),
+    re_path('mdmd', mdmd, name='mdmd'),
+    re_path(''    , note, name='home'),
     #re_path(r'^$' , note),
     #re_path(r'^(?:.*)/?$', note)
     ### dev

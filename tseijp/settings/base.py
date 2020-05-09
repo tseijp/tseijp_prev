@@ -66,7 +66,7 @@ ROOT_HOSTCONF = 'tseijp.hosts'
 DEFAULT_HOST  = 'www'
 
 ##################### my changed ######################
-INSTALLED_APPS += ['backend', 'corsheaders']#['app_%s'%app for app in ['note',]]
+INSTALLED_APPS += ['backend']#['app_%s'%app for app in ['note',]]
 INSTALLED_APPS += ['rest_framework%s'%s for s in ['','.authtoken']]
 INSTALLED_APPS+=[
     'django_hosts'  ,# it's sub domain lib for exam : note.tsei.jp/1
@@ -74,12 +74,7 @@ INSTALLED_APPS+=[
     'social_django' #  signup with google
 ]
 REST_FRAMEWORK = {
-    #'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.%sAuthentication'%s for s in ['Basic', 'Session','Token']),
-    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated', ),
+    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated' ,),
+    'DEFAULT_RENDERER_CLASSES'  : ('rest_framework.renderers.JSONRenderer' ,),#Hide Django rest framework Routers Api
 }
-# CORS
-MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware',]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-)

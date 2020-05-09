@@ -5,11 +5,12 @@ import {withCookies} from 'react-cookie';
 import Layout from '../components/Layout';
 
 class User extends React.Component {
-    url = "http://localhost:8000/"
+    url = window.location.origin.match('localhost')?"http://localhost:8000/":"https://tsei.jp/"
     constructor (props) {
         super()
+        const authtoken = props.cookies.get('authtoken');
         this.state = {
-            isAuth : props.cookies.get('authtoken')?true:false,
+            isAuth : authtoken?true:false,
             isSignIn : true, isAlert:false,
             headers  : {'Content-Type':'application/json'},
             credentials : { username:'', password:'', email   :'', }
@@ -33,8 +34,8 @@ class User extends React.Component {
                 window.location.href = "/note"
             }//console.log(res);
         }).catch(e=>{
+            //window.location.href = "/user"
             this.setState({isAlert:true});
-            setTimeout(()=>this.setState({isAlert:false}), 1000);
         })
     }
     render () {
@@ -79,7 +80,7 @@ class User extends React.Component {
                                 name="password" onChange={this.inputChange}
                                 autoComplete="on" />
                         </div>
-                        {s.isAlert && <MDBAlert color="danger">Someting wrong</MDBAlert>}
+                        {s.isAlert && <MDBAlert color="danger">Bad Request</MDBAlert>}
                         {!s.isAlert && <MDBBtn color="dark" style={styles.Button}
                             onClick={this.signin}>
                             {s.isSignIn?"SIGNIN":"SIGNUP"}</MDBBtn>}
