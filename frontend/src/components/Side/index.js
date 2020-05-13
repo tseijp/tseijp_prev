@@ -24,8 +24,8 @@ class Side extends React.Component {
                 <div style={styles.Side}>
                     <SideItems isOpen={s.isOpen} closeSide={this.closeSide.bind(this)}>
                         <MDBInput hint="Search" type="text" containerClass="mt-0" />
-                        <SideItem link="/note">App</SideItem>
-                        <SideItem link="#">About</SideItem>
+                            <SideItem link="/note">Note</SideItem>
+                            <SideItem link="/mdmd">Mdmd</SideItem>
                         <SideItem link="/user">{p.isAuth?"Signout":"Signin"}</SideItem>
                     </SideItems>
                 </div>

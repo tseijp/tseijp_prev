@@ -8,12 +8,13 @@ class User extends React.Component {
     url = window.location.origin.match('localhost')?"http://localhost:8000/":"https://tsei.jp/"
     constructor (props) {
         super()
+        const username = props.cookies.get('username');
         const authtoken = props.cookies.get('authtoken');
+        const isAuth = authtoken? true:false;
         this.state = {
-            isAuth : authtoken?true:false,
-            isSignIn : true, isAlert:false,
+            isAuth, isSignIn:true, isAlert:false,
             headers  : {'Content-Type':'application/json'},
-            credentials : { username:'', password:'', email   :'', }
+            credentials : { username:username||'', password:'', email   :'', }
         }
     }
     inputChange = (e) => {
@@ -31,6 +32,7 @@ class User extends React.Component {
         axios.post(url, this.state.credentials, {headers}).then(res=>{
             if ((res.status===200||res.status===201) && res.data.token){
                 this.props.cookies.set('authtoken', res.data.token, {path:"/"});
+                this.props.cookies.set('username' , this.state.credentials.username, {path:"/"});
                 window.location.href = "/note"
             }//console.log(res);
         }).catch(e=>{
@@ -72,10 +74,10 @@ class User extends React.Component {
                             {!s.isSignIn && <MDBInput label="Type your email" icon="envelope"
                                 group type="email" validate error="wrong" success="right"
                                 name="email" onChange={this.inputChange}/> }
-                            <MDBInput label="Type your username" icon="user"
+                            <MDBInput label="Type your username" icon="user" value={s.credentials.username}
                                 group type="text" validate error="wrong" success="right"
                                 name="username" onChange={this.inputChange}/>
-                            <MDBInput label="Type your password" icon="lock"
+                            <MDBInput label="Type your password" icon="lock" value={s.credentials.password}
                                 group type="password" validate
                                 name="password" onChange={this.inputChange}
                                 autoComplete="on" />

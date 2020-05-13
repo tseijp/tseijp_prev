@@ -4,7 +4,7 @@ import { MDBBtn } from "mdbreact";
 
 class NoteTail extends React.Component{
     click() {
-        const body = {'note_object':this.props.noteMainId}
+        const body = {'note_object':this.props.topNoteId}
         this.props.postCard(null, body)
     }
     render(){
@@ -21,7 +21,7 @@ class NoteTail extends React.Component{
         const p = this.props;
         return (
             <div style={styles.tail}>
-                {(p.isAuth && !p.isHome) &&
+                {(p.isAuth && !p.isHome && p.topNoteUser) &&
                 <MDBBtn style={styles.button} size="sm" color="dark"
                     onClick={()=>this.click()}>
                     +</MDBBtn>

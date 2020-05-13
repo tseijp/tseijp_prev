@@ -4,7 +4,7 @@ import { MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
 
 class NoteHead extends React.Component{
     click() {
-        const body = {'note_object':this.props.noteMainId}
+        const body = {'note_object':this.props.topNoteId}
         this.props.postCard(null, body)
     }
     render(){
@@ -19,12 +19,12 @@ class NoteHead extends React.Component{
         const p = this.props;
         return (
             <MDBRow>
-                <MDBCol sm="5">
+                <MDBCol sm="5" onClick={()=>p.getCard()}>
                     <h1 style={styles.head}>note</h1>
                 </MDBCol>
-                <MDBCol sm="7" style= { styles.button }>
+                <MDBCol sm="7" style={styles.button}>
                     <MDBBtn size="sm" color="dark" onClick={()=>p.getCard()}><MDBIcon icon="home" /></MDBBtn>
-                    {p.isAuth &&
+                    {(p.isAuth&&p.isHome) &&
                     <MDBBtn size="sm" color="dark"
                         onClick={()=>this.click()}>
                         new create</MDBBtn> }

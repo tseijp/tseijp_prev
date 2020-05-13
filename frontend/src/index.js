@@ -15,14 +15,16 @@ import { CookiesProvider } from 'react-cookie';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
+//import whyDidYouRender from '@welldone-software/why-did-you-render';
+//whyDidYouRender(React,{onlyLogs:true,titleColor:"green",diffNameColor:"darkturquoise"});
 
 const routing = (
     <BrowserRouter>
         <Radium.StyleRoot>
             <CookiesProvider>
                 <div>
+                    <Route path="/note" component={Note}/>
                     <Route exact path="/user" component={User}/>
-                    <Route exact path="/note" component={Note}/>
                     <Route exact path="/" component={Home}/>
                 </div>
             </CookiesProvider>
