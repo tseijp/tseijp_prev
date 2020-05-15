@@ -63,7 +63,7 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
         return Response(res, status=status201)
     ########################## base ##########################
     def post_note(self, data, user, note=None):
-        fields = ['ja_text', 'en_text', 'note_object']
+        fields = ['ja_text', 'en_text', 'note_object', 'order_back']
         if any([f in data for f in fields]):
             objs = NoteModel.objects
             top  = objs.filter(id=data.get('note_object', None))

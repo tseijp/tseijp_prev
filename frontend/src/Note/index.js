@@ -3,8 +3,10 @@ import React from 'react';
 //import Radium from 'radium';
 import {MDBRow} from 'mdbreact';
 import {withCookies} from 'react-cookie';
+import {animateScroll} from 'react-scroll';
 //containers
-import Layout   from '../components/Layout'
+import Pill     from '../components/Pill';
+import Layout   from '../components/Layout';
 import NoteHead from './NoteHead';
 import NoteCard from './NoteCard';
 import NoteTail from './NoteTail';
@@ -19,16 +21,17 @@ class Note extends React.Component {
         const topNoteId = /^([1-9]\d*|0)$/.test(urlId)?urlId:null;
         const headers = { "Content-Type":"application/json",
                     ...(authtoken&&{Authorization:`Token ${authtoken}`})};
-        const context = { isDark:false, tag:null, lang :'ja', topNoteId, topNoteUser:null,
-                          isAuth:authtoken?true:false, isHome:topNoteId?false:true, };
+        const context = { isDark:false, tag:null, lang :'ja', status:null,
+                          topNoteId, topNoteUser:null, bottomNoteId:null,
+                          isAuth:authtoken?true:false, isHome:topNoteId?false:true,};
         this.state = { authtoken, headers, context, noteCards:[], }
         this.getCard   = this.getCard.bind(this);
         this.postCard  = this.postCard.bind(this);
     }
     componentDidMount () {
-        if (this.state.authtoken)
+        //if (this.state.authtoken)
             return this.getCard(this.state.context.topNoteId);
-        window.location.href = '/user'
+        //window.location.href = '/user'
     }
     ///*************** for state ***********************/
     setCard(cards, mode='init'){ //get => init=true // add or edit => init=false
@@ -36,11 +39,15 @@ class Note extends React.Component {
         const pre_cards = [...this.state.noteCards];
         const new_cards = noteCards.filter(n=>pre_cards.filter(p=>n.id===p.id).length===0)
         //this.setState({noteCards:[]}) // reset noteCards keys in state
+        const bottomNoteId = this.state.context.isHome?null:(mode==='head'?pre_cards:noteCards).slice(-1)[0].id;
         this.setState({ noteCards : (mode==='init')?noteCards :
             [...(mode==='head'?new_cards:[]),
              ...pre_cards.map(card=>noteCards.find(c=>c.id===card.id)||card ),
-             ...(mode==='tail'?new_cards:[]),]
+             ...(mode==='tail'?new_cards:[]),],
+            context:{...this.state.context, bottomNoteId},
         })
+        if (mode==='tail')
+            return animateScroll.scrollToBottom();
     };
     deleteCard(id){
         if ( id===this.state.context.topNoteId )
@@ -63,6 +70,8 @@ class Note extends React.Component {
         }).catch(err=>{console.log(err)})
     };
     postCard(id=null, body=null){
+        if (!this.state.context.isAuth)
+            return this.setState({context:{...this.state.context, status:500}})
         const url = `${this.url}api/note/${id?id+'/ajax/':''}`
         const data = body || {"delete_note":true}
         const headers = this.state.headers;
@@ -78,6 +87,10 @@ class Note extends React.Component {
     ///*************** for Render ***********************/
     render(){
         const s = this.state;
+        const shareText = s.context.topNoteUser?`by ${s.context.topNoteUser.username}`:''
+        const hatebURL = `https://b.hatena.ne.jp/entry/${window.location.href}`
+        const tweetURL = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${shareText}`;
+        const fbookURL = `https://www.facebook.com/sharer/sharer.php?u=${window.location.host}`
         return (
             <Layout {...s.context}
                 toJa={()=>this.setState({context:{...this.state.context, lang:'ja'}})}
@@ -93,12 +106,33 @@ class Note extends React.Component {
                         getCard={this.getCard}
                         postCard={this.postCard}
                         deleteCard={this.deleteCard}/>
-                ):<h1>Not Found</h1>}
+                ):
+                <div className="spinner-grow" style={{width:"750px",height:"750px",fontSize:"500px", margin:"0 auto"}} role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                }
                 </MDBRow>
                 <NoteTail
                     {...s.context}
                     getCard={this.getCard}
                     postCard={this.postCard} />
+                <Pill icon='ellipsis-h' open='onMouseEnter'>
+                    <Pill icon='share-square'>
+                        <Pill icon='bold'      onClick={()=>{window.open(hatebURL,"_blank")}}/>
+                        <Pill fab='twitter'    onClick={()=>{window.open(tweetURL,"_blank")}}/>
+                        <Pill fab='facebook-f' onClick={()=>{window.open(fbookURL,"_blank")}}/>
+                    </Pill>
+                    {s.context.isAuth?
+                    <Pill icon={s.context.isHome?'plus':'comment'}
+                        onClick={()=>this.postCard(null,{'note_object':s.context.topNoteId})}/>
+                    : <Pill icon="sign-in-alt"onClick={()=>{window.location.href="/user"}}/> }
+                    <Pill icon="location-arrow" onClick={()=>null}>
+                        <Pill icon="angle-up"   onClick={()=>animateScroll.scrollToTop()}/>
+                        <Pill icon="home"       onClick={()=>this.getCard()}/>
+                        <Pill icon="user-alt"   onClick={()=>null}/>
+                        <Pill icon="angle-down" onClick={()=>animateScroll.scrollToBottom()}/>
+                    </Pill>
+                </Pill>
             </Layout>
         );
     }

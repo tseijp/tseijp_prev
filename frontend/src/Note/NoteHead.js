@@ -1,6 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
-import { MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
+import { MDBBtn, MDBIcon, MDBRow, MDBCol, MDBNotification} from "mdbreact";
 
 class NoteHead extends React.Component{
     click() {
@@ -17,6 +17,12 @@ class NoteHead extends React.Component{
             button:{padding:"25px 25px 10px 10px"},
         }
         const p = this.props;
+        const getMessage =(status)=> {
+            if (status===400) return "Bad Request"
+            if (status===403) return "Forbidden"
+            if (status===404) return "Not Found"
+            if (status===500) return "Please Login"
+        }
         return (
             <MDBRow>
                 <MDBCol sm="5" onClick={()=>p.getCard()}>
@@ -29,6 +35,11 @@ class NoteHead extends React.Component{
                         onClick={()=>this.click()}>
                         new create</MDBBtn> }
                 </MDBCol>
+                {p.status>299&&
+                <MDBNotification style={{position:"fixed",fontSize:"50px",width:"auto",bottom:"50px",right:"50px"}}
+                      show fade iconClassName="yellow-text" title="WARNING" autohide={5000}
+                      message={getMessage(p.status)}
+                    />}
             </MDBRow>
         )
     }
