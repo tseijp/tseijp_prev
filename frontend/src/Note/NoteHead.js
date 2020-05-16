@@ -25,10 +25,10 @@ class NoteHead extends React.Component{
         }
         return (
             <MDBRow>
-                <MDBCol sm="5" onClick={()=>p.getCard()}>
-                    <h1 style={styles.head}>note</h1>
+                <MDBCol onClick={()=>p.getCard()}>
+                    <h1 style={styles.head}>{p.topUser?`${p.topUser}`:'note'}</h1>
                 </MDBCol>
-                <MDBCol sm="7" style={styles.button}>
+                <MDBCol style={styles.button}>
                     <MDBBtn size="sm" color="dark" onClick={()=>p.getCard()}><MDBIcon icon="home" /></MDBBtn>
                     {(p.isAuth&&p.isHome) &&
                     <MDBBtn size="sm" color="dark"

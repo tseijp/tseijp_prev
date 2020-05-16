@@ -5,6 +5,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.status import HTTP_200_OK as status200
 from rest_framework.status import HTTP_201_CREATED as status201
 from rest_framework.status import HTTP_404_NOT_FOUND as status404
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR as status500
 ################ restfull ##################
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -20,14 +21,18 @@ class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     #authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
     def create(self, request):
+        fields = ['password','username','email']
+        status = status500
         data = request.data
         res = {'message':'not working'}
-        if (all([f in data for f in ['password','username','email']])):
+        if (all([data.get(f,None) for f in fields])) \
+            and not data.get('username','').isdecimal():
             user = User( **{f:data[f] for f in ['username','email']} )
             user.set_password(data['password'])
             user.save()
             res = {"token":Token.objects.create(user=user).key}
-        return Response(res, status=status201)
+            status = status201
+        return Response(res, status=status)
 
 class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateModelMixin,viewsets.GenericViewSet):
     queryset = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
@@ -39,8 +44,15 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
         data = NoteSerializer(objs, many=True, request_user=request.user)
         return Response(data.data, status=status200)
     def retrieve(self, request, pk):######################## for GET to /note/2/
-        reps = self.get_object().get_children_id()
-        objs = NoteModel.objects.filter(id__in=reps).order_by('id')
+        if str(pk).isdecimal():
+            reps = self.get_object().get_children_id()
+            objs = NoteModel.objects.filter(id__in=reps).order_by('id')
+        else:
+            user = User.objects.filter(username=pk)
+            objs = NoteModel.objects.filter(posted_user=user[0])\
+                    .filter(note_object__isnull=True).order_by('id') if user else None
+        if not objs:
+            return Response("Not found", status=status404)
         data = NoteSerializer(objs, many=True, request_user=request.user)
         return Response(data.data, status=status200)
     def create(self, request):############################### for POST to /note/
@@ -58,6 +70,7 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
         res0  = {'message':'not working in ajax (%s)'%pk}
         res1 = self.post_note(**req)
         res2 = self.post_like(**req)
+        res3 = self.post_tags(**req)
         res3 = self.delete_note(**req)
         res  = [r for r in [res0,res1,res2,res3] if r is not None][-1]
         return Response(res, status=status201)
@@ -77,9 +90,15 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
         if 'like_object' in data:
             objs= note.like_object.filter(posted_user=user)
             obj = objs[0] if objs else note.like_object.create(posted_user=user)
-            obj.like_number = request.data['like_object']['like_number']
+            obj.like_number = request.data.get('like_object',{}).get('like_number',0)
             obj.save()
             return NoteSerializer(note, many=False, request_user=user).data
+    def post_tags(self, data,user, note):
+        if 'tags_object' in data:
+            objs = note.tags_object.filter(posted_user=user)
+            obj = objs[0] if objs else note.tags_object.create(posted_user=user)
+            obj.posted_head = request.data.get('tags_object',{}).get('posted_head','')
+            obj.save()
     def delete_note(self, data, user, note):
         if data.get('delete_note',False):# and user==note.posted_user:
             note.delete();

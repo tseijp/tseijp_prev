@@ -1,7 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
-import Mdmd from '@tsei/mdmd';
-/*
+import Mdmd from '@tsei/mdmd';/*
 card and (homecard or postedcard)
 _____________
 |cardbody    |
@@ -12,6 +11,7 @@ _____________
 */
 //import Canvas from './NoteCard/Canvas.js';
 import Icon  from '../components/Icon';
+import Heading  from '../components/Heading';
 import {MDBCol, MDBRow, MDBInput} from 'mdbreact';
 
 class NoteCard extends React.Component {
@@ -59,7 +59,7 @@ class NoteCard extends React.Component {
         const isEditable = (!p.isHome && s.isNoteAuth);
         const firstHeight= this.state.firstHeight?this.state.firstHeight+50:50;
         const nowHeight  = this.embedRef.current?this.embedRef.current.clientHeight+50:firstHeight;
-        const minHeight  = (this.props.isHome)?450:(this.state.isNoteMain?700:200);
+        const minHeight  = (this.props.isHome)?450:(this.state.isNoteMain?700:250);
         const cardHeight = (this.props.isHome||minHeight>nowHeight)?minHeight:nowHeight;
         //console.log(`[height in render]\tid:${s.id} isHome:${p.isHome},\t now:${nowHeight} ${(nowHeight>minHeight?">":"<")} min:${minHeight}`)
         const styles = {
@@ -72,7 +72,7 @@ class NoteCard extends React.Component {
                 [media({min:576,max:768})]:{width : "500px",borderRadius:"20px", margin:"20px auto",},
                 [media({min:768})]        :{width : "750px",borderRadius:"25px", margin:"25px auto",},}),
                         height:`${cardHeight}px`                     ,boxShadow:shadow([0,1,50,.2]),
-              ':hover':{height:`${cardHeight + (isEditable?300:0)}px`,boxShadow:shadow([0,5,10,.4]), },},//card
+              ':hover':{height:`${cardHeight + (isEditable?250:0)}px`,boxShadow:shadow([0,5,10,.4]), },},//card
             mdmd:{...(p.isHome?{height:"400px"}:{minHeight:s.isNoteMain?'650px':'150px'}),
                     overflow:"hidden", fontSize:"20px",
                 [media({max:576})]        :{fontSize:"16px",},
@@ -84,9 +84,12 @@ class NoteCard extends React.Component {
             color         :"elegant-color",
             imageStyle    :{position:"absolute"},
             styleRoot     :{padding:"0 0 0 0"},
-            styleHeading  :{margin :"25px 0 0 0"},
             styleListItem :{padding:"0 50px"},
-            styleParagraph:{padding:"0 25px 0 25px"}
+            styleParagraph:{padding:"0 25px 0 25px"},
+            renderers     :{heading:props=>
+                <Heading {...props}
+                    getCard={p.getCard}
+                    username={this.state.posted_user.username}/>,},
         };
         return (
             <MDBCol style={ {transition:"1.75s"} } xl={p.isHome?"6":"12"}>
@@ -103,9 +106,9 @@ class NoteCard extends React.Component {
                         {isEditable&& <Icon fas="trash"click={this.clickTrash}></Icon>}
                     </MDBRow>
                     {isEditable&&
-                    <MDBInput type="textarea" rows="9" style={{padding:"25px"}}
+                    <MDBInput type="textarea" rows="8" style={{padding:"25px"}}
                         label={`${p.lang} ${s.isNoteMain?'text':'comment'}`}
-                        value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:''}
+                        value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:'#'}
                         onChange={(e)=>this.editText(e.target.value)} />    }
                 </div>
             </MDBCol>

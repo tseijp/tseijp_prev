@@ -22,6 +22,7 @@ class Note extends React.Component {
         const headers = { "Content-Type":"application/json",
                     ...(authtoken&&{Authorization:`Token ${authtoken}`})};
         const context = { isDark:false, tag:null, lang :'ja', status:null,
+                          topUser:topNoteId?null:urlId,requestUser:null,
                           topNoteId, topNoteUser:null, bottomNoteId:null,
                           isAuth:authtoken?true:false, isHome:topNoteId?false:true,};
         this.state = { authtoken, headers, context, noteCards:[], }
@@ -30,7 +31,7 @@ class Note extends React.Component {
     }
     componentDidMount () {
         //if (this.state.authtoken)
-            return this.getCard(this.state.context.topNoteId);
+        return this.getCard(this.state.context.topNoteId||this.state.context.topUser);
         //window.location.href = '/user'
     }
     ///*************** for state ***********************/
@@ -61,11 +62,14 @@ class Note extends React.Component {
         axios.get(url,{headers}).then(res=>{
             if(res.status===200){
                 const topNote = id&&res.data.find(v=>""+v.id===""+id);
-                const topNoteUser = (topNote)?topNote.posted_user:null;
-                const context = {...this.state.context, topNoteId:id, topNoteUser, isHome:id?false:true}
+                const topNoteId = (id&&topNote&&/^([1-9]\d*|0)$/.test(topNote.id))?topNote.id:null;
+                const topNoteUser = (id&&topNote)?topNote.posted_user:null;
+                const topUser     = (id&&!topNoteId)?id:null
+                const requestUser = res.data[0]?res.data[0].request_user.username:null
+                const context = {...this.state.context,topNoteId,topNoteUser,topUser,requestUser,isHome:topNoteId?false:true}
+                window.history.replaceState('','',`/note/${id?id+'/':''}`);
                 this.setState({context});
                 this.setCard(res.data);
-                window.history.replaceState('','',`/note/${id?id+'/':''}`);
             };//console.log('get', res);
         }).catch(err=>{console.log(err)})
     };
@@ -87,10 +91,11 @@ class Note extends React.Component {
     ///*************** for Render ***********************/
     render(){
         const s = this.state;
+        const nowURL = window.location.origin + window.location.pathname
         const shareText = s.context.topNoteUser?`by ${s.context.topNoteUser.username}`:''
-        const hatebURL = `https://b.hatena.ne.jp/entry/${window.location.href}`
-        const tweetURL = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${shareText}`;
-        const fbookURL = `https://www.facebook.com/sharer/sharer.php?u=${window.location.host}`
+        const hatebURL = `https://b.hatena.ne.jp/entry/${nowURL}`
+        const tweetURL = `https://twitter.com/intent/tweet?url=${nowURL}&text=${shareText}`;
+        const fbookURL = `https://www.facebook.com/sharer/sharer.php?u=${nowURL}`
         return (
             <Layout {...s.context}
                 toJa={()=>this.setState({context:{...this.state.context, lang:'ja'}})}
@@ -107,7 +112,7 @@ class Note extends React.Component {
                         postCard={this.postCard}
                         deleteCard={this.deleteCard}/>
                 ):
-                <div className="spinner-grow" style={{width:"750px",height:"750px",fontSize:"500px", margin:"0 auto"}} role="status">
+                <div className="spinner-grow" style={{width:"50vw",height:"50vw", margin:"0 auto"}} role="status">
                     <span className="sr-only">Loading...</span>
                 </div>
                 }
@@ -129,7 +134,10 @@ class Note extends React.Component {
                     <Pill icon="location-arrow" onClick={()=>null}>
                         <Pill icon="angle-up"   onClick={()=>animateScroll.scrollToTop()}/>
                         <Pill icon="home"       onClick={()=>this.getCard()}/>
-                        <Pill icon="user-alt"   onClick={()=>null}/>
+                        {(this.state.context.requestUser)?
+                            <Pill icon="user-alt"   onClick={()=>this.getCard(this.state.context.requestUser)}/>:
+                            <Pill icon="user-alt"   onClick={()=>this.getCard('tseijp')}/>
+                        }
                         <Pill icon="angle-down" onClick={()=>animateScroll.scrollToBottom()}/>
                     </Pill>
                 </Pill>
