@@ -88,7 +88,7 @@ class NoteCard extends React.Component {
             styleParagraph:{padding:"0 25px 0 25px"},
             renderers     :{heading:props=>
                 <Heading {...props}
-                    getCard={p.getCard}
+                    getCard={p.getCard} isHome={p.isHome}
                     username={this.state.posted_user.username}/>,},
         };
         return (

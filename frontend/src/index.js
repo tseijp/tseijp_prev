@@ -7,7 +7,7 @@ import User from './User';
 import Note from './Note';
 import Home from './Home';
 
-import * as serviceWorker from './dev/serviceWorker';
+import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 

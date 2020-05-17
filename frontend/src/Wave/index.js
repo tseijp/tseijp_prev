@@ -1,9 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react'
 //import {RecoilRoot,atom,selector,useRecoilState,useRecoilValue} from 'recoil';
 import * as THREE from "three";
+//import {Canvas,useThree,useFrame} from 'react-three-fiber'
+
 import Layout from '../components/Layout';
-import shaderF from './shaderF.glsl'
-import shaderV from './shaderV.glsl'
+import shaderF from './shaderF.glsl';
+import shaderV from './shaderV.glsl';
 //const counterState = atom({key:"counterState", default:0});
 
 const Home = (props) => {

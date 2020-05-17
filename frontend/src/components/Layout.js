@@ -18,7 +18,7 @@ class Layout extends React.Component {
             <>
                 <Side isAuth={p.isAuth}/>
                 <Trans toJa={this.props.toJa} toEn={this.props.toEn}/>
-                <main style={styles.container}>
+                <main style={p.isMargin?styles.container:{}}>
                     <MDBContainer>
                     {this.props.children}
                     </MDBContainer>

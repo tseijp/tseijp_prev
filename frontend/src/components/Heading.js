@@ -9,7 +9,7 @@ const Heading = (props) => {
             tag={"h"+props.level} abbr='false'
             style={{margin:"25px 0 25px 25px"}}
             variant={`h${props.level}-display`}>
-            {props.level===1&&
+            {!props.isHome&&props.level===1&&
                 <MDBBtn color="elegant" style={stylebtn}
                     onClick={()=>props.getCard(props.username)}>
                     {props.username[0]+props.username[1]}</MDBBtn>
