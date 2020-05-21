@@ -38,6 +38,7 @@ USE_TZ    = True
 STATIC_URL = 'static/'
 STATIC_ROOT = osp.join(BASE_DIR, "static/")
 STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s"%s) for s in [
+    'frontend/public/static/',
     'frontend/build/static/','frontend/mdmd/build/static/',
 ]]
 ###################### my changed #############################

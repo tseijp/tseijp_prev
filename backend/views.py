@@ -50,7 +50,7 @@ class NoteViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.CreateM
         else:
             user = User.objects.filter(username=pk)
             objs = NoteModel.objects.filter(posted_user=user[0])\
-                    .filter(note_object__isnull=True).order_by('id') if user else None
+                    .filter(note_object__isnull=True).order_by('-id') if user else None
         if not objs:
             return Response("Not found", status=status404)
         data = NoteSerializer(objs, many=True, request_user=request.user)

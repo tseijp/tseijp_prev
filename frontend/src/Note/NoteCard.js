@@ -106,7 +106,7 @@ class NoteCard extends React.Component {
                         {isEditable&& <Icon fas="trash"click={this.clickTrash}></Icon>}
                     </MDBRow>
                     {isEditable&&
-                    <MDBInput type="textarea" rows="8" style={{padding:"25px"}}
+                    <MDBInput type="textarea" rows="7" style={{padding:"25px"}}
                         label={`${p.lang} ${s.isNoteMain?'text':'comment'}`}
                         value={s[`${p.lang}_text`]? s[`${p.lang}_text`]:'#'}
                         onChange={(e)=>this.editText(e.target.value)} />    }
