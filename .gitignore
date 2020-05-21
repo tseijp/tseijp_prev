@@ -8,7 +8,7 @@ frontend/scripts/start.bat
 frontend/scripts/build.bat
 #backend/dev
 
-static
+/static
 tseijp.sock
 
 # Created by https://www.gitignore.io/api/git,python,django,jupyternotebooks
