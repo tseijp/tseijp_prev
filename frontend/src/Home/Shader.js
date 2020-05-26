@@ -15,11 +15,6 @@ uniform vec2 uResolution;
 
 mat2 getRotationMatrix(float theta){return mat2(cos(theta), -sin(theta), sin(theta), cos(theta));}
 mat2 getScaleMatrix(float scale){return mat2(scale,0, 0,scale);}
-float ellipse(vec2 pt, vec2 center, vec2 radius){return 1.0 - step(0.5, length(pt - center));}
-float ellipse(vec2 pt, vec2 center, vec2 radius, bool soften){return 1.0 - smoothstep(radius.x-radius.x*0.5, radius.y+radius.y*0.5, length(pt-center));}
-float ellipse(vec2 pt, vec2 center, vec2 radius, float linewidth){return step(radius.x-linewidth/2.0, length(pt - center)) - step(radius.y+linewidth/2.0, length(pt - center));}
-float rect(vec2 pt, vec2 center, vec2 size, vec2 anchor){return step(-size.x-anchor.x,pt.x-center.x)-step(size.x-anchor.x,pt.x-center.x)*step(-size.y-anchor.x,pt.y-center.y)-step(size.y-anchor.y,pt.y-center.y);}
-float line(vec2 pt, float linewidth, float edge_thickness){return smoothstep(pt.x-linewidth/2.0-edge_thickness, pt.x+linewidth/2.0, pt.y)-smoothstep(pt.x+linewidth/2.0-edge_thickness, pt.x+linewidth/2.0, pt.y);}
 float random(vec2 pt, float seed){return fract(sin(dot(pt, vec2(12.9,78.2))+seed)*43758.5);}
 float noise(vec2 st, float seed){
     vec2 i = floor(st);

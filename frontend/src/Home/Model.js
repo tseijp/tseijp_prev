@@ -7,14 +7,15 @@ import { useControl } from 'react-three-gui';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
 export default function Model({ mouse, ...props }) {
+    const url = "https://tseijp-static.s3.ap-northeast-1.amazonaws.com/Xbot.glb"
     const group = useRef()
-    const { nodes, animations } = useLoader(GLTFLoader, "/static/Xbot.glb")
+    const { nodes, animations } = useLoader(GLTFLoader, url)
     //const texture = useLoader(THREE.TextureLoader, "/stacy.jpg")
     const actions = useRef()
     const [action, setAction] = useState(0)
     const [mixer] = useState(() => new THREE.AnimationMixer())
     const modelPos  = useControl('model' , {type:"xypad", value:{x:0,y:0} ,scrub:true,distance:10})
-    const cameraPos = useControl('camera', {type:"xypad", value:{x:0,y:3},scrub:true,distance:10})
+    const cameraPos = useControl('camera', {type:"xypad", value:{x:0,y:3} ,scrub:true,distance:10})
     useFrame((state, delta) => mixer.update(delta))
     useFrame(({clock,camera})=>{
         group.current.position.x = modelPos.x
@@ -31,9 +32,9 @@ export default function Model({ mouse, ...props }) {
         actions.current.idle.timeScale = 0.5
         return () => animations.forEach(clip => mixer.uncacheClip(clip))
     }, [action,animations,mixer])
-    useControl('Action'   ,{type:"select",value:3  ,state:[action, setAction],items:[...Array(animations.length)].map((_,i)=>i)})
-    useControl('Time',{type:"number",value:0.5,max:1,onChange:v=>{actions.current.idle.timeScale=v}})
-    useControl('Weight'   ,{type:"number",value:1  ,max:1,onChange:v=>{actions.current.idle.weight=v}})
+    useControl('Action',{type:"select",value:3  ,state:[action, setAction],items:[...Array(animations.length)].map((_,i)=>i)})
+    useControl('Time'  ,{type:"number",value:0.5,max:1,onChange:v=>{actions.current.idle.timeScale=v}})
+    useControl('Weight',{type:"number",value:1  ,max:1,onChange:v=>{actions.current.idle.weight=v}})
     useFrame((state, delta) => {
         mixer.update(delta)
         //moveJoint(mouse, nodes.mixamorigNeck)

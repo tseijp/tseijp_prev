@@ -20,6 +20,7 @@ router.register('user', UserViewSet, basename="user")
 
 def note(request): return render(request, 'build/index.html')
 def mdmd(request): return render(request, 'mdmd/build/index.html')
+def colo(request): return render(request, 'colo/build/index.html')
 urlpatterns = [
     path('admin/', admin.site.urls     ),
     path('auth/' , obtain_auth_token   ),
@@ -28,6 +29,7 @@ urlpatterns = [
     # views
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     re_path('mdmd', mdmd, name='mdmd'),
+    re_path('colo', colo, name='colo'),
     re_path(''    , note, name='home'),
     #re_path(r'^$' , note),
     #re_path(r'^(?:.*)/?$', note)

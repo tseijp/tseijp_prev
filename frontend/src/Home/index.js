@@ -1,6 +1,6 @@
 import React, { Suspense, useRef } from "react"
 import { Canvas } from "react-three-fiber"
-import { Controls} from 'react-three-gui';
+//import { Controls} from 'react-three-gui';
 import Model from "./Model"
 import Shader from './Shader';
 //import { getMousePos } from "./utils"
@@ -33,7 +33,6 @@ const App = (props) => {
                 <Model mouse={mouse} position={[0, -11, 0]} scale={[7, 7, 7]} />
             </Suspense>
         </Canvas>
-        <Controls />
     </Logerror>
   )
 }
