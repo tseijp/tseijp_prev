@@ -9,6 +9,7 @@
 /coverage
 mdmd
 colo
+use-amazon
 # production
 #/build
 

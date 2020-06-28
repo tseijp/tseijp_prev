@@ -42,7 +42,8 @@ STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s"%s) for s in [
     'frontend/build/static/',
     'frontend/mdmd/build/static/',
     'frontend/colo/build/static/',
-]]
+    'frontend/use-amazon/build/static',
+    ]]
 ###################### my changed #############################
 ###  sosial auth signup with google
 ###  [ref](https://qiita.com/moi1990sk/items/a849fca7acb29db95508)
