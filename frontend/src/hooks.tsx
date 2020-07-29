@@ -1,10 +1,6 @@
 import { useEffect, useCallback, useMemo, useState, useRef } from 'react'
 //import {animateScroll} from 'react-scroll';
 
-export const useAxios = (urls:string) => {
-    return [urls]
-}
-
 /*
 const Note = () => {
 

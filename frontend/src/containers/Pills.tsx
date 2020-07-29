@@ -4,7 +4,7 @@ import { useSprings, animated/*, config*/ } from 'react-spring'
 
 export const Pills:FC<any> = ({
     position={x:0,y:0,r:Math.PI/4}, depth=0, rate=1.414,
-    size=50, dark=false, isOpen=true, ...props}) => {
+    size=50, isOpen=true, ...props}) => {
     const length = useMemo( () => props?.children?.length||1, [props] )
     const childPos = useRef( Array(length).fill(position) )
     const [childHub, setChildHub] = useState( Array(length).fill(false) )
@@ -27,7 +27,7 @@ export const Pills:FC<any> = ({
         set(fn())
         return child?.props?.children
           ? React.cloneElement(child, {children:
-                <Pills {...{key, dark, isOpen:isOpen&&childHub[key],
+                <Pills {...{key, isOpen:isOpen&&childHub[key],
                     depth:depth+1, position:childPos.current[key],
                     rate:rate*(1+(depth+1)*0.2),
                     fontSize:size/(1+(depth+1)*0.2),
@@ -36,10 +36,10 @@ export const Pills:FC<any> = ({
           : child
     })//), [props.children, isOpen, childHub, dark,depth,pso])
     const style = useMemo<CSSProperties>(()=>({
-        color:dark?"#818181":"#ffffff",fontSize:size,width:size,padding:"0px",
+        color:"#818181", fontSize:size, width:size,padding:"0px",
         background:"#212121",      borderRadius:size,height:size,zIndex:1,
         position:"absolute" ,transform:`translate(-50%,-50%)`,
-    }), [size, dark])
+    }), [size])
     return (
         <div style={{position:"fixed",left:position.x,bottom:position.y,}}>
             {springs.map((spring, key) =>
