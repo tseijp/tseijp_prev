@@ -1,5 +1,5 @@
 import React, {FC,CSSProperties,useCallback,useRef} from 'react';
-import { useSpring, animated, config } from 'react-spring'
+import { useSpring, animated as a, config } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 import { BindsProps, SidesProps } from'../types'
 
@@ -11,7 +11,7 @@ export const SidesArea :FC<BindsProps> = ({spring, bind, size=50}) => {
         return `linear-gradient(90deg,rgba(0,0,0,${rate+s-1}),rgba(0,0,0,0))`
     })
     const style = {position:"fixed",top:0,left:0,height:"100%",zIndex:1,overflow:"hidden"}
-    return <animated.div style={{...style,width,background}} {...bind()} />
+    return <a.div style={{...style,width,background}} {...bind()} />
 }
 
 export const SidesToggle : FC<BindsProps> = ({spring, bind, size=50}) => {
@@ -19,9 +19,9 @@ export const SidesToggle : FC<BindsProps> = ({spring, bind, size=50}) => {
                     color:"#212121",transform:`translate(-50%,-50%)`,textAlign:"center",
                     userSelect:"none",} as CSSProperties
     return (
-        <animated.div {...bind()} style={{top:size,left:size,position:"absolute",...spring}}>
+        <a.div {...bind()} style={{top:size,left:size,position:"absolute",...spring}}>
             <i className={`fas fa-${"align-left"}`} style={style}/>
-        </animated.div>
+        </a.div>
     )
 }
 
@@ -32,9 +32,9 @@ export const SidesContainer : FC<BindsProps> = ({size, spring, children}) => {
                     borderRadius:`0px ${size}px ${size}px 0px`,
                     height:`96%`, backgroundColor:"#212121",} as CSSProperties
     return (
-        <animated.div style={{...style,width}}>
+        <a.div style={{...style,width}}>
             <div style={{position:"absolute",margin}}>{children}</div>
-        </animated.div>
+        </a.div>
     )
 }
 
@@ -42,7 +42,7 @@ export const SidesItem :FC<BindsProps> = ({children, size, /*spring, width*/}) =
     //const x = spring.x.to( (x:number) => (x-width) ) // TODO1701
     const style = { padding:"10px 10px 10px 32px",color:"#818181",
                     display:"block",transition:"0.75s",fontSize:size, }//x, y:spring.y}
-    return <animated.div {...{children, style}} />
+    return <a.div {...{children, style}} />
 }
 
 export const Sides : FC<SidesProps> = ({children, width=500, size=50, onOpen=()=>null}={}) => {

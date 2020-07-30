@@ -1,5 +1,5 @@
-import React, {FC, useState} from 'react'
-import { Card, Case, Foot, Head } from '../src/components'
+import React, {FC, useState, useMemo} from 'react'
+import { Card, Foot, Head } from '../src/components'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
 import { useGrid } from 'use-grid'
 
@@ -11,18 +11,22 @@ export const Note :FC = () => {
     const [share, setShare]   = useState<boolean>(false)
     const [signin, setSignin] = useState<boolean>(false)
     const [width] = useGrid<number>({xs:4/5, md:500, lg:750})
+    const styles = useMemo<React.CSSProperties[]>(()=>[
+      { position:"relative", transition:"1s", minHeight:"100vw", padding:size*2 },
+      { padding:`${size}px`, color:dark?"#818181":"#000",background:dark?"#212121":"#fff" },
+    ], [size, dark])
+    console.log(styles[1])
     return (
-    <Case size={size} style={{background:dark?"#000":"#fff"}}>
+    <div style={{...styles[0],background:dark?"#000":"#fff"}}>
         <Head size={size} style={{color:dark?"#818181":"#000"}}>Note</Head>
         <Foot size={size} style={{color:dark?"#818181":"#000"}}>ⓒtsei</Foot>
-        <Modal {...{size, width, open:signin, set:setSignin}}>
-            Hello
+        <Modal {...{size, width, state:[signin,setSignin]}}>
+            <Card style={styles[1]}>Hello</Card>
         </Modal>
-        <Modal {...{size, width, open:share, set:setShare}}>
-            World
-        </Modal>
+        <Modal {...{size, width, state:[share,setShare]}}> World </Modal>
         <Notes {...{size, width}}>
-            <Card style={{padding:`${size}px`, background:dark?"#000":"#fff"}}>Hello~</Card>
+            <Card style={styles[1]}>Hello~</Card>
+            <Card style={styles[1]}>Hello~</Card>
         </Notes>
         <Sides {...{size, width}}>
             <p onClick={()=>window.location.href="/note"}>Note</p>
@@ -45,6 +49,6 @@ export const Note :FC = () => {
                 </i>
             </i>
         </Pills>
-    </Case>
+    </div>
     )
 }
