@@ -1,44 +1,80 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">React Markdown with Material Design</h1>
+<p align="center"><b>Markdown</b> for Fantastic UI Component, Grid System, and many more.</>
 
-## Available Scripts
+<p align="center">
+    <img alt="build passing" src="https://img.shields.io/badge/build-👌-green.svg"/>
+    <img alt="types passing" src="https://img.shields.io/badge/types-👌-yellow.svg"/>
+    <img alt="demos passing" src="https://img.shields.io/badge/demos-‍👌-red.svg"/>
+    <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
+    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.1-green.svg"/>
+</p>
 
-In the project directory, you can run:
+<hr>
 
-### `npm start`
+# Table of Contents
+- [Demo](#Demo)  
+- [Quick started](#quick-started)  
+- [Simple example](#simple-example)  
+- [Available hooks](#available-hooks)  
+- [Install via npm](#install-via-npm)  
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Demo
+- ~[TSEI.JP/home](https://tsei.jp/)~COMING SOON
+- ~[TSEI.JP/hook](https://tsei.jp/hook)~COMING SOON
+- ~[TSEI.JP/note](https://tsei.jp/note)~COMING SOON
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+# Simple example
 
-### `npm test`
+__containers__
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```typescript
+const App = () => <>
+    <Sides>
+        <>Home</>
+        <>Hook</>
+        <>Note</>
+    </Sides>
+    <Trans>
+        <>JA</>
+        <>🌛</>
+        <>👶</>
+    </Trans>
+</>
+```
 
-### `npm run build`
+<hr>
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+__containers__
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```typescript
+const App = () => <>
+    <Modal>
+        <>hello🥰</>
+        <>login🌚</>
+    </Modal>
+    <Notes>
+        <>notes📒</>
+        <>
+            <>card➊</>
+            <>card➋</>
+        </>
+    </Notes>
+    <Pills>
+        <>
+            <>o‍</>
+            <>x</>
+        </>
+    </Pills>
+<>
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#Available hooks
+hooks | what?  
+:-----|:-----  
+useGrid  | build responsive layouts of all shapes and sizes
+useNotes | manage data stored in Notes  
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Install via npm
+- create your project - `create-react-app myproject`
+- `cd myproject`
+- `npm install -S @tsei/core`

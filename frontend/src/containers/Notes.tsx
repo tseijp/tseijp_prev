@@ -1,12 +1,7 @@
 import React, {FC, CSSProperties, Children,useCallback,useMemo,useEffect,useState,useRef} from 'react'
 import { useSprings, animated as a } from 'react-spring'
 import { useGesture, } from 'react-use-gesture'
-
-const clamp = (x:number, min=0, max=1) :number  => (x<min)?min:(x>max)?max:x
-const swap=(arr:number[],ind:number,row:number) => {
-    const ret = [...arr.slice(0, ind), ...arr.slice(ind+1, arr.length)]
-    return [...ret.slice(0, row), ...arr.slice(ind, ind+1), ...ret.slice(row)]
-}
+import { clamp, swap } from '../utils'
 
 export const Notes:FC<any> = ({children, toggleRight, toggleLeft, depth=0, ...props}) => {
     const {size=50, width=500, height=500, style={}} = props

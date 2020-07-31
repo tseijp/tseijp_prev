@@ -1,10 +1,9 @@
 import React, {FC, useState, useMemo} from 'react'
-import { Card, Foot, Head } from '../src/components'
-import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
+import { Card, Foot, Head } from '../../src/components'
+import { Modal, Notes, Pills, Sides, Trans } from '../../src/containers'
 import { useGrid } from 'use-grid'
 
 export const Note :FC = () => {
-    /* state */
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
     const [size, setSize] = useGrid<number> ({md:50   , lg:75  })
@@ -15,7 +14,6 @@ export const Note :FC = () => {
       { position:"relative", transition:"1s", minHeight:"100vw", padding:size*2 },
       { padding:`${size}px`, color:dark?"#818181":"#000",background:dark?"#212121":"#fff" },
     ], [size, dark])
-    console.log(styles[1])
     return (
     <div style={{...styles[0],background:dark?"#000":"#fff"}}>
         <Head size={size} style={{color:dark?"#818181":"#000"}}>Note</Head>
@@ -29,8 +27,9 @@ export const Note :FC = () => {
             <Card style={styles[1]}>Hello~</Card>
         </Notes>
         <Sides {...{size, width}}>
-            <p onClick={()=>window.location.href="/note"}>Note</p>
+            <p onClick={()=>window.location.href="/"    }>Home</p>
             <p onClick={()=>window.location.href="/hook"}>Hook</p>
+            <p onClick={()=>window.location.href="/note"}>Note</p>
             <p onClick={()=>window.location.href="/sign"}>Sign</p>
         </Sides>
         <Trans {...{size, width}}>
