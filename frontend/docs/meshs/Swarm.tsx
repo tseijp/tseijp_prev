@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useRef} from 'react'
 import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 
-export const Swarm = ({ count=100, mouse={current:[0,0]}}:{count:number,mouse:any}) => {
+export const Swarm = ({ dark=false, size=50, count=100}:any) => {
     const mesh = useRef<any>(null)
     const dummy = useMemo(() => new THREE.Object3D(), [])
     const random = useCallback((mul=1,add=0)=>add+Math.random()*mul, [])
@@ -16,9 +16,7 @@ export const Swarm = ({ count=100, mouse={current:[0,0]}}:{count:number,mouse:an
             t = particle.t += speed / 2
             const a = Math.cos(t) + Math.sin(t * 1) / 10
             const b = Math.sin(t) + Math.cos(t * 2) / 10
-            const s = Math.max(1.5, Math.cos(t) * 5)
-            particle.mx += (mouse.current[0] - particle.mx) * 0.02
-            particle.my += (-mouse.current[1] - particle.my) * 0.02
+            const s = Math.max(1.5, Math.cos(t) * size / 10)
             dummy.position.set(
                 (particle.mx/10)*a + xFactor + Math.cos((t/10)*factor) + (Math.sin(t*1)*factor)/10,
                 (particle.my/10)*b + yFactor + Math.sin((t/10)*factor) + (Math.cos(t*2)*factor)/10,
@@ -34,7 +32,7 @@ export const Swarm = ({ count=100, mouse={current:[0,0]}}:{count:number,mouse:an
         <>
             <instancedMesh ref={mesh} args={[null,null,count] as [any,any,number]}>
                 <sphereBufferGeometry attach="geometry" args={[1, 32, 32]} />
-                <meshPhongMaterial attach="material" color='white' />
+                <meshPhongMaterial attach="material" color={dark?0x000000:0xffffff} />
             </instancedMesh>
         </>
     )

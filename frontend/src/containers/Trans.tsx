@@ -1,7 +1,7 @@
 import React, {FC,CSSProperties,useCallback,useMemo,useRef} from 'react';
 import { useSpring, animated, config, UseSpringProps } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
-import {BindsProps, TransProps} from '../types'
+import {BindsProps, BasedProps} from '../types'
 
 export const TransArea :FC<BindsProps> = ({spring, bind, size=50}) => {
     const background = spring.scale.to((s:number) => `linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,${s-1}))`)
@@ -47,7 +47,7 @@ export const TransItem :FC<BindsProps> = ({children, size=50, /*spring, width*/}
     )
 }
 
-export const Trans : FC<TransProps> = ({children, size=50, width=500, onOpen=()=>null}={}) => {
+export const Trans : FC<BasedProps> = ({children, size=50, width=500, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring<UseSpringProps>( () => ({x:0, y:0, rotateX:0, rotateY:0, rotateZ:90, scale:1,}) )

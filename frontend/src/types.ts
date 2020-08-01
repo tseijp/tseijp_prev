@@ -1,11 +1,8 @@
 import {CSSProperties} from 'react'
 export interface BasedProps {
-    width?:number,size?:number,
+    onOpen ?:null|(()=>void),  size?:number,
+    onClose?:null|(()=>void), width?:number,
     className?:string,color?:string,style?:CSSProperties
 }
 export interface BindsProps extends BasedProps{bind?:any,spring?:any,}
-export interface SidesProps extends BasedProps{onOpen?:()=>void,}
-export interface TransProps extends BasedProps{onOpen?:()=>void,}
-export interface NotesProps extends BasedProps{}
-export interface PagesProps extends BasedProps{}
-export interface ModalProps extends BasedProps{state:[boolean,(b:boolean)=>void]}
+export interface ModalProps extends BasedProps{open?:boolean}

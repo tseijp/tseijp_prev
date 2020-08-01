@@ -1,7 +1,7 @@
 import React, {FC,CSSProperties,useCallback,useRef} from 'react';
 import { useSpring, animated as a, config } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
-import { BindsProps, SidesProps } from'../types'
+import { BindsProps, BasedProps } from'../types'
 
 
 export const SidesArea :FC<BindsProps> = ({spring, bind, size=50}) => {
@@ -45,7 +45,7 @@ export const SidesItem :FC<BindsProps> = ({children, size, /*spring, width*/}) =
     return <a.div {...{children, style}} />
 }
 
-export const Sides : FC<SidesProps> = ({children, width=500, size=50, onOpen=()=>null}={}) => {
+export const Sides : FC<BasedProps> = ({children, width=500, size=50, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring<any>( () => ({x:0,y:0,scale:1}) )

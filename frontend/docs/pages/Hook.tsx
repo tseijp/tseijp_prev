@@ -1,5 +1,6 @@
 import React, {FC, useState, useMemo} from 'react'
-import { Pages, Sides, Trans } from '../../src/containers'
+import { Head, Foot } from '../../src/components'
+import { Sides, Trans } from '../../src/containers'
 import { useGrid } from 'use-grid'
 
 export const Hook :FC = () => {
@@ -15,16 +16,12 @@ export const Hook :FC = () => {
     console.log(styles[1])
     return (
     <div style={{...styles[0],background:dark?"#000":"#fff"}}>
-        <Pages>
-            <div style={{background:"green"}}/>
-            <div style={{background:"blue"}}/>
-            <div style={{background:"red"}}/>
-        </Pages>
+        <Head {...{size, style:{color:dark?0x818181:0x000}}}>Hook</Head>
+        <Foot {...{size, style:{color:dark?0x818181:0x000}}}>ⓒtsei</Foot>
         <Sides {...{size, width}}>
             <p onClick={()=>window.location.href="/"    }>Home</p>
             <p onClick={()=>window.location.href="/hook"}>Hook</p>
             <p onClick={()=>window.location.href="/note"}>Note</p>
-            <p onClick={()=>window.location.href="/sign"}>Sign</p>
         </Sides>
         <Trans {...{size, width}}>
             <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>

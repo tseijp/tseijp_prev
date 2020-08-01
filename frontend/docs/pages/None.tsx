@@ -43,7 +43,6 @@ export const None :FC = () => {
                 <p onClick={()=>window.location.href="/"    }>Home</p>
                 <p onClick={()=>window.location.href="/hook"}>Hook</p>
                 <p onClick={()=>window.location.href="/note"}>Note</p>
-                <p onClick={()=>window.location.href="/sign"}>Sign</p>
             </Sides>
             <Trans {...{size, width}}>
                 <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>
