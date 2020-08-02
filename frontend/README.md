@@ -1,10 +1,10 @@
-<h1 align="center">React Markdown with Material Design</h1>
-<p align="center"><b>Markdown</b> for Fantastic UI Component, Grid System, and many more.</>
+<h1 align="center">@tsei/core</h1>
+<p align="center">🌌Fantastic <b>UI</b> in tsei.jp</p>
 
 <p align="center">
-    <img alt="build passing" src="https://img.shields.io/badge/build-👌-green.svg"/>
+    <img alt="build passing" src="https://img.shields.io/badge/build-👌🏿-green.svg"/>
     <img alt="types passing" src="https://img.shields.io/badge/types-👌-yellow.svg"/>
-    <img alt="demos passing" src="https://img.shields.io/badge/demos-‍👌-red.svg"/>
+    <img alt="demos passing" src="https://img.shields.io/badge/demos-‍👌🏻-red.svg"/>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
     <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.1-green.svg"/>
 </p>
@@ -13,16 +13,27 @@
 
 # Table of Contents
 - [Demo](#Demo)  
-- [Quick started](#quick-started)  
-- [Simple example](#simple-example)  
-- [Available hooks](#available-hooks)  
 - [Install via npm](#install-via-npm)  
+- [Available hook](#available-hook)  
+- [Simple example](#simple-example)  
 
 # Demo
 - ~[TSEI.JP/home](https://tsei.jp/)~COMING SOON
-- ~[TSEI.JP/hook](https://tsei.jp/hook)~COMING SOON
 - ~[TSEI.JP/note](https://tsei.jp/note)~COMING SOON
 
+# Install via npm
+- create your project - `create-react-app myproject`
+- `cd myproject`
+- `npm install -S @tsei/core`
+
+
+#Available hook
+hooks | what?  
+:-----|:-----  
+useCookie| fork of [useCookie](https://github.com/rrudol/useCookie) fro typescript
+useGrid  | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
+useNotes | manage data stored in Notes  
+useSignin| basic function of account authentication using cookies
 # Simple example
 
 __containers__
@@ -67,14 +78,3 @@ const App = () => <>
     </Pills>
 <>
 ```
-
-#Available hooks
-hooks | what?  
-:-----|:-----  
-useGrid  | build responsive layouts of all shapes and sizes
-useNotes | manage data stored in Notes  
-
-# Install via npm
-- create your project - `create-react-app myproject`
-- `cd myproject`
-- `npm install -S @tsei/core`
