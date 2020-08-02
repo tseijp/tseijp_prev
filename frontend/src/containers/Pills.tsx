@@ -19,9 +19,6 @@ export const Pills:FC<any> = ({
     }
     const [springs, set] = useSprings( length, fn() )
     const setHub=(key=0,isopen=true)=>setChildHub(pre => Object.assign([],pre,{[key]:isopen}))
-    //const open =(key=0,velocity=0)=>1&&(setHub(key,true ), console.log(`\topen:${key}`))   TODO 1607
-    //const close=(key=0,velocity=0)=>1&&(setHub(key,false), console.log(`\tclose:${key}`))  TODO 1607
-    //const bind = useGesture({ onDrag:({last,down,args:[key],movement:[mx,my]}) => null  }) TODO 1607
     const children = Children.map( props.children, (child,key) => {
         //depth>1 && console.log(`\tChildren useMemo:${depth}`);
         set(fn())
@@ -36,10 +33,8 @@ export const Pills:FC<any> = ({
           : child
     })//), [props.children, isOpen, childHub, dark,depth,pso])
     const style = useMemo<CSSProperties>(()=>({
-        color:"#818181", fontSize:size, width:size,padding:"0px",
-        background:"#212121",      borderRadius:size,height:size,zIndex:1,
-        position:"absolute" ,transform:`translate(-50%,-50%)`,
-    }), [size])
+        position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,
+    }), [])
     return (
         <div style={{position:"fixed",left:position.x,bottom:position.y,}}>
             {springs.map((spring, key) =>

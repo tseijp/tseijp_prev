@@ -5,8 +5,8 @@ import {createPortal} from 'react-dom';
 import { ModalProps } from '../types';
 
 export const Modal:FC<ModalProps> = ({
-        size=50, width=500, open=false, onClose=null,//onOpen=null,
-        children, style={},
+        width=500, open=false, onClose=null,//onOpen=null,size=50, 
+        children, color="", style={},
     }) => {
     const [spring, set] = useSpring<any>(()=>({x:0,y:-width,scale:0}))
     const close=useCallback( (vx=0,vy=0) => {
@@ -24,8 +24,8 @@ export const Modal:FC<ModalProps> = ({
     const root = useMemo<HTMLElement|null>(()=>document.getElementById('root'),[])
     const styles = useMemo<React.CSSProperties[]>(()=>[
           { display:"flex",justifyContent:"center",alignItems:"center",top:0,left:0,transition:"1s",
-            position:"fixed",width:"100%",height:"100%",zIndex:200,...style},
-        ], [style])
+            position:"fixed",width:"100%",height:"100%",zIndex:200,color,...style},
+        ], [color, style])
     useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     return open ? createPortal(
         <div style={styles[0]} onClick={()=>onClose&&onClose()}>

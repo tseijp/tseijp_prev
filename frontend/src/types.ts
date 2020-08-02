@@ -1,6 +1,7 @@
 import {CSSProperties} from 'react'
 
 export interface BasedProps {
+    [key:string]:any,
     onOpen ?:null|(()=>void),  size?:number,
     onClose?:null|(()=>void), width?:number,
     className?:string,color?:string,style?:CSSProperties
