@@ -3,8 +3,11 @@ import { useSprings, animated as a } from 'react-spring'
 import { useGesture, } from 'react-use-gesture'
 import { clamp, swap } from '../utils'
 
-export const Notes:FC<any> = ({children, toggleRight, toggleLeft, depth=0, ...props}) => {
-    const {size=50, width=500, height=500, style={}} = props
+export const Notes:FC<any> = ({
+       toggleRight, toggleLeft, depth=0,
+       children, size=1, style={},...props
+   }) => {
+    const [width, height] = useMemo(()=>[size*500,size*500],[size])
     const length = children?.length || 1
     const [openLeft , setOpenLeft ] = useState<boolean[]>(Array(length).fill(false))
     const [openRight, setOpenRight] = useState<boolean[]>(Array(length).fill(false))
@@ -31,7 +34,7 @@ export const Notes:FC<any> = ({children, toggleRight, toggleLeft, depth=0, ...pr
             const arr = swap(order.current, pre, row)
             if(!down && timeStamp-startTime>100) order.current = arr // TODO
             if(!last) return timeStamp-startTime>100 && set( getF({arr,i,pre,mx,my,down}) )
-            const x = (mx>0?1:-1) * size // window.innerWidth/2 - width/2 - size*2
+            const x = (mx>0?1:-1) * 50 * size // window.innerWidth/2 - width/2 - size*2
             if(my**2>width**2/4 && cancel) cancel()
             if(!isopen.current) return (mx**2<.1||x**2/2<mx**2||vx**2>1/4)?open({i,x}):close({i})
             if( isopen.current) return (mx**2<.1||x**2/2<mx**2||vx**2>1/4)?close({i}):open({i,x})
@@ -40,12 +43,12 @@ export const Notes:FC<any> = ({children, toggleRight, toggleLeft, depth=0, ...pr
     /* ------------------------- ➋ Child Render -------------------------*/
     const styles = useMemo<CSSProperties[]>( () => [
         {width,position:"relative",left:"50%",transform:"translateX(-50%)"},
-        {width,position:"absolute",padding:`${size/2}px 0`,transformOrigin:"50% 50% 0px"},///*DEV*/background:"rgba(0,100,0,0.5)"},
-        {width,position:"relative",minHeight:height-size, padding:`${size/2}px 0px`,...style},
+        {width,position:"absolute",padding:`${size*50/2}px 0`,transformOrigin:"50% 50% 0px"},///*DEV*/background:"rgba(0,100,0,0.5)"},
+        {width,position:"relative",padding:`${size*50/2}px 0px`, minHeight:height-size, ...style},
         {position:"absolute",left:"50%",top:0    ,transform:"translateX(-50%)",overflow:"hidden"},///*DEV*/background:"rgba(0,0,255,0.5)"},
-        {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",fontSize:size,}
+        {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",fontSize:50*size,}
     ], [width,size,height, style])
-    children = Children.map(children, (child,key) => { //toArray(children)
+    children = Children.map(children, (child) => { //toArray(children)
         const grand = Children.toArray(child.props.children) || []//count(child.props.children) || 0
         return (grand.length>1 && depth===0) // TODO form depth > 0
             ? React.cloneElement(child, {children:grand[0], left:null, right:(

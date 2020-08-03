@@ -8,8 +8,7 @@ import {MDBInput, MDBBtn} from 'mdbreact'
 export const Note :FC = () => {
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
-    const [size, setSize] = useGrid<number> ({md:50   , lg:75  })
-    const [width] = useGrid<number>({xs:4/5, md:500, lg:750})
+    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     // ******************** for Modal ******************** //
     const [signin, setSignin] = useState<boolean>(true)
     // ******************** for Signin ******************** //
@@ -28,15 +27,15 @@ export const Note :FC = () => {
       { position:"absolute",top:0,right:0,transform:"translate(30%,-30%)"},
     ], [size, dark])
     return (
-    <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*2}}>
+    <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*100}}>
         <Head size={size}>Note</Head>
         <Foot size={size}>ⓒtsei</Foot>
-        <Notes {...{size, width}}>
+        <Notes {...{size}}>
             <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>Hello~</Card>
             <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>Hello~</Card>
         </Notes>
         {/******************** Modals ********************/}
-        <Modal {...{size,width,open:signin,style:styles[0],onClose:()=>setSignin(false)}}>
+        <Modal {...{size,open:signin,style:styles[0],onClose:()=>setSignin(false)}}>
             <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>
                 <Icon fa="times" color={dark?"#818181":"#fff"}
                     size={size} style={styles[2]} onOpen={()=>setSignin(false)}/>
@@ -53,17 +52,17 @@ export const Note :FC = () => {
             </Card>
         </Modal>
         {/******************** Sub UI ********************/}
-        <Sides {...{size, width}}>
+        <Sides {...{size}}>
             <p onClick={()=>window.location.href="/"    }>Home</p>
             <p onClick={()=>window.location.href="/hook"}>Hook</p>
             <p onClick={()=>window.location.href="/note"}>Note</p>
         </Sides>
-        <Trans {...{size, width}}>
+        <Trans {...{size}}>
             <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>
             <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌛':'🌞'}</div>
             <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👶':'👨'}</div>
         </Trans>
-        <Pills {...{size, width}}>
+        <Pills {...{size}}>
             <Icon fa="ellipsis-h"        color={dark?"#818181":"#fff"} size={size} onOpen={()=>null}>
                 <Icon fa="share-square"  color={dark?"#818181":"#fff"} size={size} onOpen={()=>null}/>
                 <Icon fa="sign-in-alt"   color={dark?"#818181":"#fff"} size={size} onOpen={()=>setSignin(true)}/>

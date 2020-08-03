@@ -2,9 +2,9 @@
 <p align="center">🌌Fantastic <b>UI</b> in tsei.jp</p>
 
 <p align="center">
-    <img alt="build passing" src="https://img.shields.io/badge/build-👌🏿-green.svg"/>
+    <img alt="build passing" src="https://img.shields.io/badge/build-👌-green.svg"/>
     <img alt="types passing" src="https://img.shields.io/badge/types-👌-yellow.svg"/>
-    <img alt="demos passing" src="https://img.shields.io/badge/demos-‍👌🏻-red.svg"/>
+    <img alt="demos passing" src="https://img.shields.io/badge/demos-👌-red.svg"/>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
     <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.1-green.svg"/>
 </p>
@@ -30,10 +30,9 @@
 #Available hook
 hooks | what?  
 :-----|:-----  
-useCookie| fork of [useCookie](https://github.com/rrudol/useCookie) fro typescript
 useGrid  | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
+useUser  | basic function of account authentication using cookies
 useNotes | manage data stored in Notes  
-useSignin| basic function of account authentication using cookies
 # Simple example
 
 __containers__

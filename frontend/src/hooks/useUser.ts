@@ -1,5 +1,5 @@
+import {useEffect, useCallback} from 'react'
 //import axios from 'axios';
-import {useCallback} from 'react'
 //import {useCookie} from './useCookie';
 import {User, UseUser} from '../types'
 import {useCookies} from 'react-cookie'
@@ -9,10 +9,11 @@ export const useUser:UseUser<User> = ( getUser, dependencies=[] ) => {
     //const [authtoken, setAuthtoken] = useCookie('authtoken', '')
     const [cookies, set] = useCookies(['username','authtoken'])
     const setUser = useCallback(()=> {
-        const user = getUser && getUser() || false
-        user && user.username && set('username',user.username)//setUsername(user.username)
-        user && user.authtoken && set('authtoken',user.authtoken)//setAuthtoken(user.authtoken)
-    }, [dependencies] )
+        const user = getUser && getUser()
+        user && user.username && set('username',user.username)
+        user && user.authtoken && set('authtoken',user.authtoken)
+    }, [set, getUser] )
+    useEffect(()=>setUser(), [dependencies, setUser])
     return [ cookies as User, setUser]
 }
 /* Example

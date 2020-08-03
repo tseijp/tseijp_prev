@@ -4,8 +4,8 @@ import { useGesture } from 'react-use-gesture'
 import { BindsProps, BasedProps } from'../types'
 
 
-export const SidesArea :FC<BindsProps> = ({spring, bind, size=50}) => {
-    const width = spring.x.to((x:number)=>x>1?"100%":`${size/2}px`)
+export const SidesArea :FC<BindsProps> = ({spring, bind, size=1}) => {
+    const width = spring.x.to((x:number)=>x>1?"100%":`${size*50/2}px`)
     const background = spring.scale.to((s:number)=>{
         const rate  = spring.x.animation.to/window.innerWidth //0 ~ 0.5
         return `linear-gradient(90deg,rgba(0,0,0,${rate+s-1}),rgba(0,0,0,0))`
@@ -14,22 +14,22 @@ export const SidesArea :FC<BindsProps> = ({spring, bind, size=50}) => {
     return <a.div style={{...style,width,background}} {...bind()} />
 }
 
-export const SidesToggle : FC<BindsProps> = ({spring, bind, size=50}) => {
-    const style = { position:"fixed",fontSize:size,width:size,
+export const SidesToggle : FC<BindsProps> = ({spring, bind, size=1}) => {
+    const style = { position:"fixed",fontSize:size*50,width:size*50,
                     color:"#212121",transform:`translate(-50%,-50%)`,textAlign:"center",
                     userSelect:"none",} as CSSProperties
     return (
-        <a.div {...bind()} style={{top:size,left:size,position:"absolute",...spring}}>
+        <a.div {...bind()} style={{top:size*50,left:size*50,position:"absolute",...spring}}>
             <i className={`fas fa-${"align-left"}`} style={style}/>
         </a.div>
     )
 }
 
-export const SidesContainer : FC<BindsProps> = ({size, spring, children}) => {
-    const margin = `${size}px 0px 0px 0px`
+export const SidesContainer : FC<BindsProps> = ({size=1, spring, children}) => {
+    const margin = `${50*size}px 0px 0px 0px`
     const width = spring.x.to((x:number)=>x > 0 ? x : 0)
     const style = { position:"fixed",top:"2%",left:0,zIndex:1,overflow:"hidden",
-                    borderRadius:`0px ${size}px ${size}px 0px`,
+                    borderRadius:`0px ${50*size}px ${50*size}px 0px`,
                     height:`96%`, backgroundColor:"#212121",} as CSSProperties
     return (
         <a.div style={{...style,width}}>
@@ -38,14 +38,14 @@ export const SidesContainer : FC<BindsProps> = ({size, spring, children}) => {
     )
 }
 
-export const SidesItem :FC<BindsProps> = ({children, size, /*spring, width*/}) => { // TODO1701
+export const SidesItem :FC<BindsProps> = ({children, size=1, /*spring, width*/}) => { // TODO1701
     //const x = spring.x.to( (x:number) => (x-width) ) // TODO1701
     const style = { padding:"10px 10px 10px 32px",color:"#818181",
-                    display:"block",transition:"0.75s",fontSize:size, }//x, y:spring.y}
+                    display:"block",transition:"0.75s",fontSize:50*size, }//x, y:spring.y}
     return <a.div {...{children, style}} />
 }
 
-export const Sides : FC<BasedProps> = ({children, width=500, size=50, onOpen=()=>null}={}) => {
+export const Sides : FC<BasedProps> = ({children, width=500, size=1, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring<any>( () => ({x:0,y:0,scale:1}) )

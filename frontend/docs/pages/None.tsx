@@ -12,8 +12,7 @@ export const None :FC = () => {
     const url = '/static/kinect.mp4'
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
-    const [size, setSize] = useGrid<number> ({md:50   , lg:75  })
-    const [width] = useGrid<number>({xs:4/5, md:500, lg:750})
+    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     const styles = useMemo<React.CSSProperties[]>(()=>[
       { position:"relative", height:"100vw", padding:size*2, background:dark?"#000":"#fff"},
       { padding:`${size}px`, color:dark?"#818181":"#000", background:dark?"#212121":"#fff" },
@@ -38,12 +37,12 @@ export const None :FC = () => {
                     <OrbitControls />
                 </Canvas>
             </div>
-            <Sides {...{size, width}}>
+            <Sides {...{size}}>
                 <p onClick={()=>window.location.href="/"    }>Home</p>
                 <p onClick={()=>window.location.href="/hook"}>Hook</p>
                 <p onClick={()=>window.location.href="/note"}>Note</p>
             </Sides>
-            <Trans {...{size, width}}>
+            <Trans {...{size}}>
                 <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>
                 <div onClick={()=>setDark( (p:any)=>({md:p.lg,lg:p.md}) )}>{dark?'🌛':'🌞'}</div>
                 <div onClick={()=>setSize( (p:any)=>({md:p.lg,lg:p.md}) )}>{size<75?'👶':'👨'}</div>

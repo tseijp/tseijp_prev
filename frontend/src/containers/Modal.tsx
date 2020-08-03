@@ -3,11 +3,11 @@ import { useSpring, animated as a } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
 import {createPortal} from 'react-dom';
 import { ModalProps } from '../types';
-
 export const Modal:FC<ModalProps> = ({
-        width=500, open=false, onClose=null,//onOpen=null,size=50, 
+        open=false, onClose=null, size=1, //onOpen=null,
         children, color="", style={},
     }) => {
+    const width = useMemo(()=>500 * size,[size])
     const [spring, set] = useSpring<any>(()=>({x:0,y:-width,scale:0}))
     const close=useCallback( (vx=0,vy=0) => {
         set({x:vx*width, y:(vy-1)*width, scale:0})
