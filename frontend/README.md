@@ -1,12 +1,12 @@
 <h1 align="center">@tsei/core</h1>
-<p align="center">🌌Fantastic <b>UI</b> in tsei.jp</p>
-
+<p align="center">🌌Fantastic <b>UI</b> in next tsei.jp</p>
 <p align="center">
     <img alt="build passing" src="https://img.shields.io/badge/build-👌-green.svg"/>
     <img alt="types passing" src="https://img.shields.io/badge/types-👌-yellow.svg"/>
     <img alt="demos passing" src="https://img.shields.io/badge/demos-👌-red.svg"/>
+    <br>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.1-green.svg"/>
+    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.4-green.svg"/>
 </p>
 
 <hr>

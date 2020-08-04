@@ -6,16 +6,16 @@ import { useGrid } from 'use-grid'
 import {MDBInput, MDBBtn} from 'mdbreact'
 
 export const Note :FC = () => {
+    // ******************** for manage ******************** //
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
-    const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
-    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
-    // ******************** for Modal ******************** //
-    const [signin, setSignin] = useState<boolean>(true)
+    const [dark, setDark] = useGrid<boolean>({md:false, lg:false})
+    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5  })
     // ******************** for Signin ******************** //
     const login = useCallback(()=>{
-        setSignin(false)
+        setSign(false)
         return {username:"",authtoken:""}
     }, [])
+    const [sign, setSign] = useState<boolean>(true)
     const [inup, setINUP] = useState<string[]>(['IN','UP'])
     const [user, setUser] = useUser(()=>login(), [login])
     const [cred, setCred] = useState({username:user?.username as string||'',password:'',email:''})
@@ -31,16 +31,23 @@ export const Note :FC = () => {
         <Head size={size}>Note</Head>
         <Foot size={size}>ⓒtsei</Foot>
         <Notes {...{size}}>
-            <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>Hello~</Card>
-            <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>Hello~</Card>
+            <>
+                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➊</Card>
+                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➊の➋</Card>
+            </>
+            <>
+                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➋</Card>
+                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➋の➊</Card>
+            </>
+            <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➌</Card>
         </Notes>
         {/******************** Modals ********************/}
-        <Modal {...{size,open:signin,style:styles[0],onClose:()=>setSignin(false)}}>
-            <Card {...{color:dark?"#818181":"#000",style:styles[1]}}>
+        <Modal {...{size,open:sign,style:styles[0],onClose:()=>setSign(false)}}>
+            <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>
                 <Icon fa="times" color={dark?"#818181":"#fff"}
-                    size={size} style={styles[2]} onOpen={()=>setSignin(false)}/>
-                <h1>SIGN {inup[0]} <Icon fa="exchange-alt" color={dark?"#818181":"#fff"}
-                    size={size} onOpen={()=>setINUP(pre=>[...pre.reverse()])}/></h1>
+                    size={size} style={styles[2]} onOpen={()=>setSign(false)}/>
+                <Head size={size}>SIGN {inup[0]} <Icon fa="exchange-alt" color={dark?"#818181":"#fff"}
+                      size={size} onOpen={()=>setINUP(pre=>[...pre.reverse()])}/></Head>
                 <MDBInput value={cred.username} onChange={onChange} name="username" type="text"
                     label="Type your username" icon="user" group validate error="wrong" success="right"/>
                 <MDBInput value={cred.password} onChange={onChange} name="password" type="password"
@@ -65,7 +72,7 @@ export const Note :FC = () => {
         <Pills {...{size}}>
             <Icon fa="ellipsis-h"        color={dark?"#818181":"#fff"} size={size} onOpen={()=>null}>
                 <Icon fa="share-square"  color={dark?"#818181":"#fff"} size={size} onOpen={()=>null}/>
-                <Icon fa="sign-in-alt"   color={dark?"#818181":"#fff"} size={size} onOpen={()=>setSignin(true)}/>
+                <Icon fa="sign-in-alt"   color={dark?"#818181":"#fff"} size={size} onOpen={()=>setSign(true)}/>
                 <Icon fa="location-arrow"color={dark?"#818181":"#fff"} size={size} onOpen={()=>null}/>
             </Icon>
         </Pills>

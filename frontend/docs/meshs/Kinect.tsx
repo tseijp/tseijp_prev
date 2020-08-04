@@ -39,7 +39,7 @@ void main() {
 }
 `
 
-export const Kinect = ({ url, center=[0,0,-1000],
+export const Kinect = ({ url, /*center=[0,0,-1000],*/
         width=640, nearClipping=850, pointSize=2,
         height=850, farClipping=4000, zOffset=1000,
     }:any) => {
@@ -54,7 +54,7 @@ export const Kinect = ({ url, center=[0,0,-1000],
         return new THREE.VideoTexture( video )
     }, [url])
     // ******************** Render ******************** //
-    useFrame(({camera, mouse})=>{
+    useFrame((/*{camera, mouse}*/)=>{
         const position = new Float32Array( width*height*3 )
         for ( var i=0, j=0, l=position.length; i<l; i+=3, j++ ) {
             position[i]   = j % width;
