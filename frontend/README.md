@@ -6,7 +6,7 @@
     <img alt="demos passing" src="https://img.shields.io/badge/demos-👌-red.svg"/>
     <br>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.2.4-green.svg"/>
+    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.3.0-green.svg"/>
 </p>
 
 <hr>

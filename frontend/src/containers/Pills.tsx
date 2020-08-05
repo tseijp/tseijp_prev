@@ -32,13 +32,14 @@ export const Pills:FC<any> = ({
             })
           : child
     })//), [props.children, isOpen, childHub, dark,depth,pso])
-    const style = useMemo<CSSProperties>(()=>({
-        position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,
-    }), [])
+    const styles = useMemo<CSSProperties[]>(()=>[
+        {position:"fixed",left:position.x,bottom:position.y},
+        {position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,}
+    ], [position])
     return (
-        <div style={{position:"fixed",left:position.x,bottom:position.y,}}>
+        <div style={styles[0]}>
             {springs.map((spring, key) =>
-                <animated.div key={`${depth}-${key}`} style={{...spring, ...style}}
+                <animated.div key={`${depth}-${key}`} style={{...spring, ...styles[1]}}
                     onClick={e=>1&&(setHub(key, !childHub[key]),e.stopPropagation())}>
                     {children[key]}
                 </animated.div>

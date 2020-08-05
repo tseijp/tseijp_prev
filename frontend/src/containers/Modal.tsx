@@ -26,6 +26,7 @@ export const Modal:FC<ModalProps> = ({
           { display:"flex",justifyContent:"center",alignItems:"center",top:0,left:0,transition:"1s",
             position:"fixed",width:"100%",height:"100%",zIndex:200,color,...style},
         ], [color, style])
+    console.log(open);
     useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     return open ? createPortal(
         <div style={styles[0]} onClick={()=>onClose&&onClose()}>

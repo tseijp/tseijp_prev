@@ -61,7 +61,7 @@ export const Sides : FC<BasedProps> = ({children, width=500, size=1, onOpen=()=>
         },
     })
     return (
-        <div style={{position:"fixed", top:0,left:0}}>
+        <div style={{position:"fixed", top:0,left:0,zIndex:100}}>
             <SidesToggle {...{size, spring, bind, }} />
             <SidesArea   {...{size, spring, bind, }} />
             <SidesContainer{...{size, spring, bind, }}>

@@ -12,7 +12,7 @@ export const Note :FC = () => {
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5  })
     // ******************** for Signin ******************** //
     const login = useCallback(()=>{
-        setSign(false)
+        //setSign(false)
         return {username:"",authtoken:""}
     }, [])
     const [sign, setSign] = useState<boolean>(true)
@@ -23,29 +23,34 @@ export const Note :FC = () => {
     // ******************** for Render ******************** //
     const styles = useMemo<React.CSSProperties[]>(()=>[
       { background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`,},
-      { background:dark?"#212121":"#fff", padding:size/2,},
-      { position:"absolute",top:0,right:0,transform:"translate(30%,-30%)"},
+      { background:dark?"#212121":"#fff",color:dark?"#818181":"#000",padding:size/2,},
+      { position:"absolute",color:dark?"#818181":"#fff",top:0,right:0,transform:"translate(30%,-30%)"},
+      { position:"relative",color:dark?"#818181":"#fff",left:"50%",transform:"translate(-50%)",margin:`${size*50}px auto`},
     ], [size, dark])
     return (
     <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*100}}>
         <Head size={size}>Note</Head>
         <Foot size={size}>ⓒtsei</Foot>
+        {sign?"open":"close"}
         <Notes {...{size}}>
             <>
-                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➊</Card>
-                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➊の➋</Card>
+                <Card {...{size,style:styles[1]}}>➊</Card>
+                <Card {...{size,style:styles[1]}}>➊の➋</Card>
             </>
             <>
-                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➋</Card>
-                <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➋の➊</Card>
+                <Card {...{size,style:styles[1]}}>➋</Card>
+                <>
+                    <Card {...{size,style:styles[1]}}>➋の➊</Card>
+                    <Card {...{size,style:styles[1]}}>➋の➋</Card>
+                </>
             </>
-            <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>➌</Card>
+            <Card {...{size,style:styles[1]}}>➌</Card>
         </Notes>
+        <Icon size={size} fa="plus" style={styles[3]} />
         {/******************** Modals ********************/}
         <Modal {...{size,open:sign,style:styles[0],onClose:()=>setSign(false)}}>
-            <Card {...{size,color:dark?"#818181":"#000",style:styles[1]}}>
-                <Icon fa="times" color={dark?"#818181":"#fff"}
-                    size={size} style={styles[2]} onOpen={()=>setSign(false)}/>
+            <Card {...{size,style:styles[1]}}>
+                <Icon fa="times" size={size} style={styles[2]} onOpen={()=>setSign(false)}/>
                 <Head size={size}>SIGN {inup[0]} <Icon fa="exchange-alt" color={dark?"#818181":"#fff"}
                       size={size} onOpen={()=>setINUP(pre=>[...pre.reverse()])}/></Head>
                 <MDBInput value={cred.username} onChange={onChange} name="username" type="text"
@@ -58,7 +63,7 @@ export const Note :FC = () => {
                 <MDBBtn onClick={setUser} color="elegant" style={{width:"100%",borderRadus:size}}>Get!</MDBBtn>
             </Card>
         </Modal>
-        {/******************** Sub UI ********************/}
+        {/******************** FANTASTIC UI ********************/}
         <Sides {...{size}}>
             <p onClick={()=>window.location.href="/"    }>Home</p>
             <p onClick={()=>window.location.href="/hook"}>Hook</p>

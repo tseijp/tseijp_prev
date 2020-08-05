@@ -70,7 +70,7 @@ export const Trans : FC<BasedProps> = ({children, size=1, onOpen=()=>null}={}) =
         onDrag  : ({last,down,vxvy:[vx,],movement:[mx,my],}) => onBind({down,last,vx,mx:mx})
     })
     return (
-        <div style={{position:"fixed",top:0,right:0}}>
+        <div style={{position:"fixed",top:0,right:0,zIndex:100}}>
             <TransToggle    {...{size, spring, bind, }} />
             <TransArea      {...{size, spring, bind, }} />
             <TransContainer {...{size, spring, bind}}>
