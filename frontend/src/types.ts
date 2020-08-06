@@ -2,6 +2,7 @@ import {ReactChild as RN, CSSProperties} from 'react'
 /// ************************* 🌌For Containers🌌 ************************* ///
 export interface BasedProps {
     [key:string]:any,
+    dark?:boolean,
     size?:number, //TODO to scale //width?:number, fontSize?:number,
     onOpen ?:null|(()=>void),
     onClose?:null|(()=>void),

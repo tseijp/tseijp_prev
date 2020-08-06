@@ -9,8 +9,8 @@ import { MDBInput, MDBBtn } from 'mdbreact'
 export const Note :FC = () => {
     // ******************** FOR MANAGE ******************** //
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
-    const [dark, setDark] = useGrid<boolean>({md:false, lg:false})
-    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5  })
+    const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
+    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     // ******************** FOR SIGNIN ******************** //
     const login = useCallback(()=>({username:"",authtoken:""}),[]) //TODO
     const [sign, setSign] = useState<boolean>(false)
@@ -22,32 +22,30 @@ export const Note :FC = () => {
     const [notes, setNotes] = useNotes([{ ja_text:'hello', children:[{ja_text:'im child'}] }])
     // const ref = useVisible(()=>{return ()=>null}, [])
     // ******************** FOR RENDER ******************** //
-    const styles = useMemo<React.CSSProperties[]>(()=>[
-      { background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`,},
-      { background:dark?"#212121":"#fff",color:dark?"#818181":"#000",padding:size/2,},
-      { position:"absolute",color:dark?"#818181":"#fff",top:0,right:0,transform:"translate(30%,-30%)"},
-      { position:"relative",color:dark?"#818181":"#fff",left:"50%",transform:"translate(-50%)",margin:`${size*50}px auto`},
-    ], [size, dark])
+    const styles = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
+      { position:"absolute",transform:"translate(30%,-30%)"},
+      { position:"relative",transform:"translate(-50%)",left:"50%"},
+    ], [])
     return (
     <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*100}}>
-        <Head size={size}>Note</Head>
-        <Foot size={size}>ⓒtsei</Foot>
+        <Head {...{dark,size}}>Note</Head>
+        <Foot {...{dark,size}}>ⓒtsei</Foot>
         <Notes {...{size}}
-            right={(<Icon fa="plus"   size={size*2} style={styles[3]} onOpen={()=>null}/>)}
-            left ={(<Icon fa="comment"size={size*2} style={styles[3]} onOpen={()=>null}/>)}>
+            right={(<Icon fa="plus"   size={size} style={styles[1]} onOpen={()=>null}/>)}
+            left ={(<Icon fa="comment"size={size} style={styles[1]} onOpen={()=>null}/>)}>
         {(notes||[]).map((note,key)=>
             <>
-                <Card {...{key,size,style:styles[1]}}>{note.ja_text}</Card>
+                <Card {...{key,dark,size}}>{note.ja_text}</Card>
                 {(note.children||[]).map((child,i) =>
-                    <Card {...{key:i,size,style:styles[1]}}>{child.ja_text}</Card>)}
+                    <Card {...{key:i,dark,size}}>{child.ja_text}</Card>)}
             </>
         )}
         </Notes>
-        <Icon size={size*2} fa="plus" style={styles[3]} onOpen={setNotes}/>
+        <Icon size={size*2} fa="plus" style={styles[1]} onOpen={setNotes}/>
         {/******************** Modals ********************/}
-        <Modal {...{size,open:sign,style:styles[0],onClose:()=>setSign(false)}}>
-            <Card {...{size,style:styles[1]}}>
-                <Icon fa="times" size={size} style={styles[2]} onOpen={()=>setSign(false)}/>
+        <Modal {...{dark,size,open:sign,onClose:()=>setSign(false)}}>
+            <Card {...{dark,size}}>
+                <Icon fa="times" size={size} style={styles[0]} onOpen={()=>setSign(false)}/>
                 <Head size={size}>SIGN {inup[0]} <Icon fa="exchange-alt" color={dark?"#818181":"#fff"}
                       size={size} onOpen={()=>setINUP(pre=>[...pre.reverse()])}/></Head>
                 <MDBInput value={cred.username} onChange={onChange} name="username" type="text"

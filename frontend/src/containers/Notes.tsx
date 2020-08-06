@@ -38,7 +38,7 @@ export const Notes:FC<NotesProps> = ({
             const arr = swap(order.current, pre, row)
             if(!down) order.current = arr // TODO ?
             if(!last) return set( getG({i,arr,pre,mx,my,down}) )
-            const x = (mx<0?-1:1) * fontSize * 2 // window.innerWidth/2 -
+            const x = (mx<0?-1:1) * fontSize// * 2 // window.innerWidth/2 -
             setIsOpen(p=>[...Object.assign([],{[i]:!p[i]})])
             const op = (mx**2<.1||x**2/2<mx**2||vx**2+vy**2>1) ? !isOpen[i] : isOpen[i]
             setTimeout(()=>{setPosition();set(getF({i,x:op?x:0,s:op?.9:1}))},1)
@@ -46,8 +46,8 @@ export const Notes:FC<NotesProps> = ({
     })
     /* ------------------------- ➋ Child Render -------------------------*/
     const styles = useMemo<CSSProperties[]>( () => [
-        {width,position:"relative",margin:`0 auto`,height,   ...style/*DEV*/,background:"rgba(100,0,0,0.5)"},
-        {width,position:"relative",minHeight:width,marginTop:fontSize/*DEV*/,background:"rgba(0,100,0,0.5)"},
+        {width,position:"relative",margin:`auto`,...style,height     /*DEV*/,background:"rgba(100,0,0,0.5)"},
+        {width,position:"relative",marginTop:fontSize,minHeight:width/*DEV*/,background:"rgba(0,100,0,0.5)"},
         {position:"absolute",top:0,left:0,right:0 ,margin:"auto"     /*DEV*/,background:"rgba(0,0,100,0.5)"},
         {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",fontSize},
     ], [width,height,fontSize,style] )

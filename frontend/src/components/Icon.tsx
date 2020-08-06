@@ -4,7 +4,7 @@ import { useSpring, animated as a } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 
 export const Icon :FC<BasedProps> = ({
-    fa="",size=1,onOpen=null, //onClose=null,
+    fa="",dark=false,size=1,onOpen=null, //onClose=null,
     children, className='', style={}, color='',
 }) => {
     className = className + fa?` fas fa-${fa}`:""
@@ -22,8 +22,9 @@ export const Icon :FC<BasedProps> = ({
         }
     })
     const styles = useMemo<React.CSSProperties[]>(()=>[
-          { textAlign:"center", background:"#212121", padding:"0px", color, ...style },
-    ], [color, style] )
+          { textAlign:"center", background:"#212121", padding:"0px", top:0,right:0,
+            color:color||dark?"#818181":"#fff", ...style },
+    ], [color, dark,style] )
     return (
         <a.div {...{className,children,style:{fontSize,borderRadius:fontSize,width:fontSize,height:fontSize,...spring, ...styles[0]}}} {...bind()} />
     )

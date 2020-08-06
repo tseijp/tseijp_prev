@@ -4,7 +4,7 @@ import { useGesture } from 'react-use-gesture';
 import {createPortal} from 'react-dom';
 import { ModalProps } from '../types';
 export const Modal:FC<ModalProps> = ({
-        open=false, onClose=null, size=1, //onOpen=null,
+        open=false, onClose=null, dark=false, size=1, //onOpen=null,
         children, color="", style={},
     }) => {
     const width = useMemo(()=>500 * size,[size])
@@ -24,8 +24,10 @@ export const Modal:FC<ModalProps> = ({
     const root = useMemo<HTMLElement|null>(()=>document.getElementById('root'),[])
     const styles = useMemo<React.CSSProperties[]>(()=>[
           { display:"flex",justifyContent:"center",alignItems:"center",top:0,left:0,transition:"1s",
-            position:"fixed",width:"100%",height:"100%",zIndex:200,color,...style},
-        ], [color, style])
+            position:"fixed",width:"100%",height:"100%",zIndex:200,
+            color:color||dark?"#212121":"000",
+            background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`,...style},
+        ], [dark, color, style])
     useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     return open ? createPortal(
         <div style={styles[0]} onClick={()=>onClose&&onClose()}>

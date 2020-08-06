@@ -1,13 +1,15 @@
 import React, {FC, useEffect, useMemo} from 'react'
 import {useSpring, animated as a} from 'react-spring'
-export const Head :FC<any> = ({children, size=50, style={}}) => {
+import {BasedProps} from '../types'
+
+export const Head :FC<BasedProps> = ({children, color="", dark=false,size=50, style={}}) => {
     const [{fontSize}, set] = useSpring<any>(()=>({fontSize:size*50}))
     useEffect(()=>{set({fontSize:size*50})}, [size,set])
     const styles = useMemo<React.CSSProperties[]>(()=>[
-        {fontSize, ...style},
-    ], [fontSize, style])
+        {color:color||dark?"#212121":"#000", ...style},
+    ], [color,dark, style])
     return (
-        <a.div style={styles[0]}>
+        <a.div style={{...styles[0], fontSize} as any}>
             {children}
         </a.div>
     )

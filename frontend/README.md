@@ -6,7 +6,7 @@
     <img alt="demos passing" src="https://img.shields.io/badge/demos-👌-red.svg"/>
     <br>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.3.1-green.svg"/>
+    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.3.2-green.svg"/>
 </p>
 
 <hr>
@@ -51,10 +51,11 @@ const App = () => <>
         <>login🌚</>
     </Modal>
     <Notes>
-        <>notes📒</>
+        <>note ➊</>
         <>
-            <>card➊</>
-            <>card➋</>
+            <>note ➋</>
+            <>note ➋ - ➊</>
+            <>note ➋ - ➋</>
         </>
     </Notes>
 <>
