@@ -1,7 +1,7 @@
 {
   "name": "@tsei/core",
   "homepage": "/",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "module": "index.js",
   "types": "index.d.ts",
   "main": "index.cjs.js",

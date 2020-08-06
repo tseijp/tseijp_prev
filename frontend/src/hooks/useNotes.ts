@@ -1,46 +1,18 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState,  } from 'react'
+import { NoteNode as NN, UseNotes } from '../types'
 
-/*
-const Note = () => {
-
-    useEffect(()=>{
-
-    }, [])
-}
-*/
-
-interface Note {
-    posted_user:string,
-    posted_time:number,
-    ja_text  :string,
-    en_text  :string,
-    note_id  :number,
-    id  :number,
-    isAuthor?: boolean,
-    isAdmin ?: boolean,
-    children?: Note[]
-}
-
-export const useNotes = ({ initNotes=[] }) => {
-    const [notes, set] = useState<Note[]>(initNotes)
-    const head = useRef<number>(-1)
-    const foot = useRef<number>(-1)
-    const setNotes = useCallback((input:null|Note|Note[], id=null)=>{
-        const arr = input ? input instanceof Array ? input : [input] : []
-        const diff = arr.filter(c=>notes.every(p=>p.id!==c.id))
-        foot.current = (id===0?notes:arr).slice(-1)[0].id
+export const useNotes:UseNotes = (initNotes=[]) => { //TODO URL=''
+    const [notes, set] = useState<NN>(initNotes)
+    const setNotes = useCallback((i=-1, arr=[{ja_text:"HI"}])=>{
+        const diff = arr || []
     //  TODO if (mode==='tail') animateScroll.scrollToBottom();
-        return (id && id>0)
-          ? ( notes[id].children = [...(notes[id].children||[]), ...arr] )
-          : set( pre=>(id===null) ? arr
-                 :[...(id===-1 ? diff : []), ...pre,
-                   ...(id=== 0 ? diff : []),] )
+        if (i<0 || !notes)
+            return set(pre=>[...(pre?pre:[]),...(diff?diff:[])])
+        notes[i].children = [...(notes[i].children||[]), ...(arr?arr:[])]
     }, [notes])
-    const deleteNotes = useCallback((id:number)=>{
-        if ( id===head.current ) return
-        set(pre=>pre.filter(p=>p.id!==id))
-    }, [])
-    return [notes, setNotes, deleteNotes]
+//  const delNotes = useCallback((i:number)=>set(pre=>pre.filter(p=>p.id!==i)), [])
+//  console.log(`Render useNotes notes:`,notes);
+    return [notes, setNotes, ]
 }
 
 /*Examples
@@ -65,7 +37,9 @@ const App = () => {
  )
 }
 */
-/*
+
+
+/* PREVIOUS
 export const useNotes = ({initNotes=[],isHome=false}) => {
     const [notes, set] = useState<Note[]>(initNotes)
     const head = useRef<number>(-1)

@@ -6,7 +6,7 @@
     <img alt="demos passing" src="https://img.shields.io/badge/demos-👌-red.svg"/>
     <br>
     <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.3.0-green.svg"/>
+    <img alt="npm package" src="https://img.shields.io/badge/npm_package-0.3.1-green.svg"/>
 </p>
 
 <hr>
@@ -20,6 +20,12 @@
 # Demo
 - ~[TSEI.JP/home](https://tsei.jp/)~COMING SOON
 - ~[TSEI.JP/note](https://tsei.jp/note)~COMING SOON
+- [TSEI.JP/mdmd](https://tsei.jp/mdmd)
+
+# Docs
+- ~[@tsei/core](https://tsei.jp/core/docs)~COMING SOON
+- ~[@tsei/mdmd](https://tsei.jp/mdmd/docs)~COMING SOON
+- ~[useGrid   ](https://tsei.jp/hook/use-grid/docs)~COMING SOON
 
 # Install via npm
 - create your project - `create-react-app myproject`
@@ -33,28 +39,10 @@ hooks | what?
 useGrid  | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
 useUser  | basic function of account authentication using cookies
 useNotes | manage data stored in Notes  
+
 # Simple example
 
-__containers__
-
-```typescript
-const App = () => <>
-    <Sides>
-        <>Home</>
-        <>Hook</>
-        <>Note</>
-    </Sides>
-    <Trans>
-        <>JA</>
-        <>🌛</>
-        <>👶</>
-    </Trans>
-</>
-```
-
-<hr>
-
-__containers__
+__CONTAINERS__
 
 ```typescript
 const App = () => <>
@@ -69,11 +57,30 @@ const App = () => <>
             <>card➋</>
         </>
     </Notes>
+<>
+```
+
+<hr>
+
+__NAVIGATORS_
+
+```typescript
+const App = () => <>
+    <Sides>
+        <>Home</>
+        <>Hook</>
+        <>Note</>
+    </Sides>
+    <Trans>
+        <>JA</>
+        <>🌛</>
+        <>👶</>
+    </Trans>
     <Pills>
         <>
             <>o‍</>
             <>x</>
         </>
     </Pills>
-<>
+</>
 ```

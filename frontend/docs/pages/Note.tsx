@@ -1,26 +1,27 @@
 import React, {FC, useState, useCallback, useMemo} from 'react'
 import { Card, Foot, Head, Icon } from '../../src/components'
 import { Modal, Notes, Pills, Sides, Trans } from '../../src/containers'
-import { useUser } from '../../src/hooks'
+import { useUser, useNotes } from '../../src/hooks'
 import { useGrid } from 'use-grid'
-import {MDBInput, MDBBtn} from 'mdbreact'
+import { MDBInput, MDBBtn } from 'mdbreact'
+//import { Mdmd } from '@tsei/mdmd'
 
 export const Note :FC = () => {
-    // ******************** for manage ******************** //
+    // ******************** FOR MANAGE ******************** //
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:false, lg:false})
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5  })
-    // ******************** for Signin ******************** //
-    const login = useCallback(()=>{
-        //setSign(false)
-        return {username:"",authtoken:""}
-    }, [])
-    const [sign, setSign] = useState<boolean>(true)
+    // ******************** FOR SIGNIN ******************** //
+    const login = useCallback(()=>({username:"",authtoken:""}),[]) //TODO
+    const [sign, setSign] = useState<boolean>(false)
     const [inup, setINUP] = useState<string[]>(['IN','UP'])
     const [user, setUser] = useUser(()=>login(), [login])
     const [cred, setCred] = useState({username:user?.username as string||'',password:'',email:''})
     const onChange = useCallback(({target})=>setCred(p=>({...p,[target.name]:target.value})),[])
-    // ******************** for Render ******************** //
+    // ******************** FOR FETCH ******************** //
+    const [notes, setNotes] = useNotes([{ ja_text:'hello', children:[{ja_text:'im child'}] }])
+    // const ref = useVisible(()=>{return ()=>null}, [])
+    // ******************** FOR RENDER ******************** //
     const styles = useMemo<React.CSSProperties[]>(()=>[
       { background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`,},
       { background:dark?"#212121":"#fff",color:dark?"#818181":"#000",padding:size/2,},
@@ -31,22 +32,18 @@ export const Note :FC = () => {
     <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*100}}>
         <Head size={size}>Note</Head>
         <Foot size={size}>ⓒtsei</Foot>
-        {sign?"open":"close"}
-        <Notes {...{size}}>
+        <Notes {...{size}}
+            right={(<Icon fa="plus"   size={size*2} style={styles[3]} onOpen={()=>null}/>)}
+            left ={(<Icon fa="comment"size={size*2} style={styles[3]} onOpen={()=>null}/>)}>
+        {(notes||[]).map((note,key)=>
             <>
-                <Card {...{size,style:styles[1]}}>➊</Card>
-                <Card {...{size,style:styles[1]}}>➊の➋</Card>
+                <Card {...{key,size,style:styles[1]}}>{note.ja_text}</Card>
+                {(note.children||[]).map((child,i) =>
+                    <Card {...{key:i,size,style:styles[1]}}>{child.ja_text}</Card>)}
             </>
-            <>
-                <Card {...{size,style:styles[1]}}>➋</Card>
-                <>
-                    <Card {...{size,style:styles[1]}}>➋の➊</Card>
-                    <Card {...{size,style:styles[1]}}>➋の➋</Card>
-                </>
-            </>
-            <Card {...{size,style:styles[1]}}>➌</Card>
+        )}
         </Notes>
-        <Icon size={size} fa="plus" style={styles[3]} />
+        <Icon size={size*2} fa="plus" style={styles[3]} onOpen={setNotes}/>
         {/******************** Modals ********************/}
         <Modal {...{size,open:sign,style:styles[0],onClose:()=>setSign(false)}}>
             <Card {...{size,style:styles[1]}}>
