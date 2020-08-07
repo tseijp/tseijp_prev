@@ -59,7 +59,7 @@ export const Notes:FC<NotesProps> = ({
             : child
     })
     useEffect(()=>{ console.log("\tNote useEffect"); setPosition(); set(getG({})) }, [setPosition, set, getG] )
-    !depth&&console.log(`Render Notes:${depth} height:${height} length:${length} order:`,order.current);
+    //!depth&&console.log(`Render Notes:${depth} height:${height} length:${length} order:`,order.current);
     return (
         <div ref={containerRef} style={{...styles[0]}}>
             {springs.map( ({x,y,scale}, key) =>

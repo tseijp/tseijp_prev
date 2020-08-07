@@ -63,7 +63,7 @@ const App = () => <>
 
 <hr>
 
-__NAVIGATORS_
+__NAVIGATORS__
 
 ```typescript
 const App = () => <>

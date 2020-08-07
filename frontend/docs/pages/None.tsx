@@ -2,9 +2,10 @@ import React, {FC, Suspense, useState, useMemo} from 'react'
 //import { Card, Foot, Head } from '../../src/components'
 import { /*Modal, Pills, */Sides, Trans } from '../../src/containers'
 import { useGrid } from 'use-grid'
-import { Kinect } from '../meshs'
 import { Canvas } from 'react-three-fiber'
+import { Helmet } from 'react-helmet-async';
 import { OrbitControls, StandardEffects } from 'drei'
+import { Kinect } from '../meshs'
 import * as THREE from 'three'
 
 export const None :FC = () => {
@@ -19,6 +20,10 @@ export const None :FC = () => {
     ], [size, dark])
     return (
         <div style={{...styles[0]}}>
+            <Helmet>
+                <title>404 NOT FOUND</title>
+                <link rel="canonical" href="https://tsei.jp/" />
+            </Helmet>
             <div style={{position:"fixed",top:0,left:0,width:'100%',height:'100%'}}>
                 <Canvas gl={{ alpha: false, antialias: false, logarithmicDepthBuffer: true }}
                         camera={{ position:[0,0,500], far:2000 }}

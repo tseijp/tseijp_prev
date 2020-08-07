@@ -7,12 +7,11 @@ export const useNotes:UseNotes = (initNotes=[]) => { //TODO URL=''
         const diff = arr || []
     //  TODO if (mode==='tail') animateScroll.scrollToBottom();
         if (i<0 || !notes)
-            return set(pre=>[...(pre?pre:[]),...(diff?diff:[])])
+            return set(pre=>[...(pre?pre:[]),...diff])
         notes[i].children = [...(notes[i].children||[]), ...(arr?arr:[])]
     }, [notes])
-//  const delNotes = useCallback((i:number)=>set(pre=>pre.filter(p=>p.id!==i)), [])
 //  console.log(`Render useNotes notes:`,notes);
-    return [notes, setNotes, ]
+    return [ notes, setNotes ]
 }
 
 /*Examples

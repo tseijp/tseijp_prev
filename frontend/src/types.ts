@@ -12,6 +12,7 @@ export interface BindsProps extends BasedProps{bind?:any,spring?:any,}
 export interface ModalProps extends BasedProps{open?:boolean}
 export interface NotesProps extends BasedProps{grandren?:any,right?:RN,left?:RN,depth?:number}
 /// ************************* 👌For Hooks👌 ************************* ///
+// Note //
 export type NoteElement = {
     ja_text?:string, posted_user?:string, note_id?:number, isAuthor ?: boolean,
     en_text?:string, posted_time?:number,      id?:number, isAdmin  ?: boolean,
@@ -22,13 +23,36 @@ export type NoteNode =
   | []
   | null
   | undefined
-export type User<T=object|string> =
-  | { username:T, authtoken:T }
-  | null
-export type UseUser<T=User> = (
-    getUser:()=>T|void, dependencies?:any[]
-) => [ T, ()=>void ]
-//export type SetNotes<T=NoteNode> = (i?:number,arr?:T)=>any
 export type UseNotes<T=NoteNode> = (
     initNotes:T
 ) => [ T, (i?:number,arr?:T)=>any]
+// User //
+export type UserCred<T=string> = {username:T,password:T,email?:string}
+export type User<T=object|string> = {
+    username :T, status:string,
+    authtoken:T, cred  :UserCred,
+    input ?: {[key:string]:{
+        value:string, name:string, type:string, label:string,
+        error?:"wrong", success?:"right", autoComplete?:"on",
+        group:boolean, validate:boolean,
+        onChange:(e:any)=>void,
+    }}
+}
+
+export interface UseUserHandler {
+    [key:string]:any,
+    onSign   ?:null|(()=>void),
+    onSignin ?:null|(()=>void),
+    onSignout?:null|(()=>void),
+}
+export interface UseUserConfig<T=User> {
+    [key:string]:any,
+    url    ?:string,
+    keys   ?:string[],
+    initUser   ?:T
+}
+export interface SetUserHandler {
+    (
+        url:string, cred:UserCred
+    ):void|Promise<void|{username:string, authtoken:string}>
+}

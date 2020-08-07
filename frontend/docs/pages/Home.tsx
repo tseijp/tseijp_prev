@@ -1,6 +1,7 @@
 import React, {FC, Suspense, useState, useMemo} from 'react'
 import { Sides, Trans } from '../../src/containers'
 import { useGrid } from 'use-grid'
+import { Helmet } from 'react-helmet-async';
 import { OrbitControls, StandardEffects } from 'drei'
 import * as THREE from 'three'
 
@@ -44,6 +45,10 @@ export const Home :FC = () => {
             <div onClick={()=>setDark( (p:any)=>({md:p.lg,lg:p.md}) )}>{dark?'🌛':'🌞'}</div>
             <div onClick={()=>setSize( (p:any)=>({md:p.lg,lg:p.md}) )}>{size<75?'👶':'👨'}</div>
         </Trans>
+        <Helmet>
+            <title>TSEI.jp</title>
+            <link rel="canonical" href="https://tsei.jp/" />
+        </Helmet>
     </div>
     )
 }
