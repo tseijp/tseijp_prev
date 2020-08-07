@@ -5,8 +5,8 @@ import { Modal, Notes, Pills, Sides, Trans } from '../../src/containers'
 import { useUser, useNotes } from '../../src/hooks'
 import { useGrid } from 'use-grid'
 import { MDBInput, MDBBtn } from 'mdbreact'
+import {fetcher, signin} from '../utils'
 //import { Mdmd } from '@tsei/mdmd'
-import {signin} from '../utils'
 
 export const Note :FC = () => {
     // ******************** FOR MANAGE ******************** //
@@ -14,11 +14,12 @@ export const Note :FC = () => {
     const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     // ******************** FOR SIGNIN ******************** //
-    const [sign, setSign] = useState<boolean>(true)
+    const [sign, setSign] = useState<boolean>(false)
     const [user, setUser] = useUser({onSign:()=>setSign(false)})
-    const url = useMemo(()=>`${"http://localhost:8000"}/${user.status==="IN"?"auth/":"api/user/"}`,[user])
+    const host = window.location.hostname==="localhost"?"http://localhost:8000":"https://tsei.jp"
+    const url  = `${host}/${user.status==="IN"?"auth/":"api/user/"}`
     // ******************** FOR FETCH ******************** //
-    const [notes, setNotes] = useNotes([{ ja_text:'hello', children:[{ja_text:'im child'}] }])
+    const [notes, ] = useNotes(`${host}/api/note/`, fetcher)
     // const ref = useVisible(()=>{return ()=>null}, []) //TODO
     // ******************** FOR RENDER ******************** //
     const styles = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
@@ -35,16 +36,20 @@ export const Note :FC = () => {
         </Helmet>
         <Head {...{dark,size}}>Note</Head>
         <Foot {...{dark,size}}>ⓒtsei</Foot>
-        <Notes {...{size}}
-            right={(<Icon fa="plus"   size={size} style={styles[1]} onOpen={()=>null}/>)}
-            left ={(<Icon fa="comment"size={size} style={styles[1]} onOpen={()=>null}/>)}>
-        {(notes||[]).map((note,key)=><Fragment key={key}>
-            <Card {...{key,dark,size}}>{note.ja_text}</Card>
-            {(note.children||[]).map((child,i) =>
-                <Card {...{key:i,dark,size}}>{child.ja_text}</Card>)}
-        </Fragment> )}
-        </Notes>
+        { notes instanceof Array
+          ? <Notes {...{size}}
+                right={(<Icon fa="plus"   size={size} style={styles[1]} onOpen={()=>null}/>)}
+                left ={(<Icon fa="comment"size={size} style={styles[1]} onOpen={()=>null}/>)}>
+            {(notes||[]).map((note:any,key:number)=><Fragment key={key}>
+                <Card {...{key,dark,size}}>{note?.ja_text}</Card>
+                {(note.children||[]).map((child:any,i:number) =>
+                    <Card {...{key:i,dark,size}}>{child?.ja_text}</Card>)}
+            </Fragment> )}
+            </Notes>
+          : <h1>Loading</h1>}
+        {/*// TODO 08072020
         <Icon size={size*2} fa="plus" style={styles[1]} onOpen={setNotes}/>
+        */}
         {/******************** Modals ********************/}
         <Modal {...{dark,size,open:sign,onClose:()=>setSign(false)}}>
             <Card {...{dark,size}}>

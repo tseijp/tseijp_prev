@@ -1,4 +1,5 @@
-import {ReactChild as RN, CSSProperties} from 'react'
+import { ReactChild as RN, CSSProperties } from 'react'
+import { AxiosResponse } from 'axios'
 /// ************************* 🌌For Containers🌌 ************************* ///
 export interface BasedProps {
     [key:string]:any,
@@ -11,22 +12,30 @@ export interface BasedProps {
 export interface BindsProps extends BasedProps{bind?:any,spring?:any,}
 export interface ModalProps extends BasedProps{open?:boolean}
 export interface NotesProps extends BasedProps{grandren?:any,right?:RN,left?:RN,depth?:number}
-/// ************************* 👌For Hooks👌 ************************* ///
-// Note //
+
+/// ************************* 👌For useNotes ************************* ///
 export type NoteElement = {
     ja_text?:string, posted_user?:string, note_id?:number, isAuthor ?: boolean,
     en_text?:string, posted_time?:number,      id?:number, isAdmin  ?: boolean,
-    children ?: NoteNode
+    children ?: NoteNode, [key:string]:any
 }
 export type NoteNode =
   | NoteElement[]
   | []
   | null
   | undefined
-export type UseNotes<T=NoteNode> = (
-    initNotes:T
-) => [ T, (i?:number,arr?:T)=>any]
-// User //
+
+export interface UseNoteFetcher<T=NoteNode> {
+    (
+        url:string, headers?:any
+    ) : Promise<AxiosResponse<NoteNode>>
+}
+
+export type SetNotes<T=NoteNode> = ( // TODO 08072020
+    i:number, arr?:T
+) => void
+
+/// ************************* 👌For useUser👌 ************************* ///
 export type UserCred<T=string> = {username:T,password:T,email?:string}
 export type User<T=object|string> = {
     username :T, status:string,
@@ -38,7 +47,6 @@ export type User<T=object|string> = {
         onChange:(e:any)=>void,
     }}
 }
-
 export interface UseUserHandler {
     [key:string]:any,
     onSign   ?:null|(()=>void),
@@ -46,13 +54,13 @@ export interface UseUserHandler {
     onSignout?:null|(()=>void),
 }
 export interface UseUserConfig<T=User> {
-    [key:string]:any,
-    url    ?:string,
-    keys   ?:string[],
-    initUser   ?:T
+    [key:string]:any  ,
+    url     ?:string  ,
+    keys    ?:string[],
+    initUser?:T
 }
 export interface SetUserHandler {
     (
-        url:string, cred:UserCred
-    ):void|Promise<void|{username:string, authtoken:string}>
+        url:string, cred:UserCred, headers?:any
+    ) : void|Promise<void|{username:string, authtoken:string}>
 }
