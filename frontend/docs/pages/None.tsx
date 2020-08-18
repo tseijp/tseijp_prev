@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import { OrbitControls, StandardEffects } from 'drei'
 import { Kinect } from '../meshs'
 import * as THREE from 'three'
-
 export const None :FC = () => {
     /* state */
     const url = '/static/kinect.mp4'

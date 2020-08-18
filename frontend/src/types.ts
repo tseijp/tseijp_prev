@@ -1,5 +1,8 @@
 import { ReactChild as RN, CSSProperties } from 'react'
 import { AxiosResponse } from 'axios'
+export type BasicProps<T>  = (()=>T) | T
+export type BasicState<T>  = ((pre:T)=>T) | T
+export type BasicAction<T> = (fn:BasicState<T>) => void
 /// ************************* 🌌For Containers🌌 ************************* ///
 export interface BasedProps {
     [key:string]:any,
@@ -24,17 +27,25 @@ export type NoteNode =
   | []
   | null
   | undefined
-
 export interface UseNoteFetcher<T=NoteNode> {
     (
         url:string, headers?:any
-    ) : Promise<AxiosResponse<NoteNode>>
+    ) : Promise<AxiosResponse<T>>
 }
-
-export type SetNotes<T=NoteNode> = ( // TODO 08072020
-    i:number, arr?:T
-) => void
-
+export type SetNotes<T=NoteNode> = ( i:number, arr?:T ) => void // TODO 08072020
+/// ************************* 👌For usePages ************************* ///
+export interface PagesProps {
+    url:string,
+    [key:string]:any
+}
+export interface PagesType extends PagesProps {
+    bind : null | {
+        onClick:void
+    }
+}
+export type UsePagesProps  = BasicProps<PagesType>
+export type UsePagesState  = BasicState<PagesType>
+export type UsePagesAction = BasicAction<PagesType>
 /// ************************* 👌For useUser👌 ************************* ///
 export type UserCred<T=string> = {username:T,password:T,email?:string}
 export type User<T=object|string> = {

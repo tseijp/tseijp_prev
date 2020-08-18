@@ -8,9 +8,9 @@ export const Card :FC<BasedProps> = ({
     const styles = useMemo<React.CSSProperties[]>(()=>[
           { boxShadow:"0px 1px 50px rgba(0,0,0,0.2)",//"0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%)"}
             minHeight:width, width, maxWidth:"95vw", margin:"auto auto",
-            borderRadius:fontSize/2, fontSize,
-            background:dark?"#212121":"#fff",
-             color:color||dark?"#818181":"#000",padding:size/2,...style},
+            borderRadius:fontSize/2, fontSize,padding:size/2,
+            background:dark?"#212121":"#fff",overflow:"hidden",
+            color:color||dark?"#818181":"#000",...style},
     ], [dark, color, size, style, fontSize, width])
     return <div {...{style:styles[0], children}} />
 }

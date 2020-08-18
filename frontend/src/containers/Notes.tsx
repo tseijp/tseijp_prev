@@ -30,9 +30,10 @@ export const Notes:FC<NotesProps> = ({
     }, [])
     const [springs, set] = useSprings(length, getG({}))
     const bind = useGesture({
-        onDrag:({last,down,args:[i],movement:[mx,my],vxvy:[vx,vy]}) => {
-        //  cancel,startTime,timeStamp
-        //  if(timeStamp-startTime<100) cancel && cancel()
+        onDrag:({
+          last,down,args:[i],movement:[mx,my],vxvy:[vx,vy],cancel,startTime,timeStamp
+        }) => {//  cancel,startTime,timeStamp
+            if(isOpen[i]&&timeStamp-startTime<1000) cancel && cancel()
             const pre = order.current.indexOf(i)
             const row = clamp( Math.round(pre+my/width), 0, length-1 )
             const arr = swap(order.current, pre, row)

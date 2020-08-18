@@ -24,6 +24,6 @@ export const signin = async (
         .then((res:any) => {
             if (res.status>201 || !res.data.token)
                 throw new Error('Bad Request')
-            return {username:cred?.username, authtoken:res?.data?.token}
+            return {username:cred.username, authtoken:res.data.token}
     })
 }

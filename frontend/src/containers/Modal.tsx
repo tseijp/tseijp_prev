@@ -9,6 +9,7 @@ export const Modal:FC<ModalProps> = ({
     }) => {
     const width = useMemo(()=>500 * size,[size])
     const [spring, set] = useSpring<any>(()=>({x:0,y:-width,scale:0}))
+    useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     const close=useCallback( (vx=0,vy=0) => {
         set({x:vx*width, y:(vy-1)*width, scale:0})
         onClose && setTimeout(()=>onClose(), vx**2+vy**2)
@@ -18,17 +19,18 @@ export const Modal:FC<ModalProps> = ({
         onDrag : ({last,down,vxvy:[vx,vy],movement:[mx,my],cancel}) => {
             if ((my<-width*.5||width*.5<my) && cancel) cancel()
             if (!last) return set({x:down?mx:0,y:down?my:0})
-            return (mx**2>width**2/4||vx**2+vy**2>10) ? close(vx,vy) : set({x:0,y:0,scale:1})
+            return (mx**2>width**2/4||vx**2+vy**2>10)
+                ? close(vx,vy)
+                : set({x:0,y:0,scale:1})
         },
     })
     const root = useMemo<HTMLElement|null>(()=>document.getElementById('root'),[])
     const styles = useMemo<React.CSSProperties[]>(()=>[
-          { display:"flex",justifyContent:"center",alignItems:"center",top:0,left:0,transition:"1s",
-            position:"fixed",width:"100%",height:"100%",zIndex:200,
-            color:color||dark?"#212121":"000",
-            background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`,...style},
+          { left:0, width:"100%", display:"flex",justifyContent:"center",
+             top:0,height:"100%",position:"fixed",   alignItems:"center",
+            transition:"1s", color:color||dark?"#212121":"#000",
+            zIndex:200,background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`, ...style},
         ], [dark, color, style])
-    useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     return open ? createPortal(
         <div style={styles[0]} onClick={()=>onClose&&onClose()}>
             <a.div style={{position:"relative",...spring}} {...bind()}

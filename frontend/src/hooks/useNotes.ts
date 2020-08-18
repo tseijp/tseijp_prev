@@ -3,14 +3,14 @@ import { NoteNode, UseNoteFetcher } from '../types'
 //import useSWR from 'swr'
 //import { AxiosResponse } from 'axios'
 export const useNotes = (
-    url:string, fetcher:UseNoteFetcher
+    url:string, initialFetcher:UseNoteFetcher
 ) => {
     const [data, setData] = useState<NoteNode>(null)
     useEffect(()=>{
-        fetcher && fetcher(url).then((res:any)=>setData(res))
-    }, [url, fetcher])
-    const setNotes = useCallback( (i=-1, /*arr=[{ja_text:"HI"}]*/) => {
-        return //const diff = arr || []
+        initialFetcher && initialFetcher(url).then((res:any)=>setData(res))
+    }, [url, initialFetcher])
+
+    const setNotes = useCallback( (i=-1, updateFetcher:UseNoteFetcher) => {
     //  TODO if (mode==='tail') animateScroll.scrollToBottom();
         //if (i<0 || !data)
         //    return set(pre=>[...(pre?pre:[]),...diff])
