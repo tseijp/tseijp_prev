@@ -1,8 +1,8 @@
 import { useCallback, useState, useMemo} from 'react'
-//import axios from 'axios';
-//import {useCookie} from './useCookie';
 import {User,UseUserHandler, UseUserConfig,SetUserHandler} from '../types'
 import {useCookies} from 'react-cookie'
+//import axios from 'axios';
+//import {useCookie} from './useCookie';
 export const useUser = (
     { onSign,onSignin,onSignout,onError}:UseUserHandler={
       onSign:null,onSignin:null,onSignout:null,onError:null

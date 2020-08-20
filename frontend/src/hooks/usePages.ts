@@ -1,16 +1,19 @@
 import {useState, useCallback, useRef} from 'react'
-import {PagesProps, UsePagesProps, UsePagesAction} from '../types'
+import {PagesType, UsePagesProps, UsePagesAction} from '../types'
 
-export function cP2P (props:PagesProps) : PagesProps {
-    return props.map((prop:any)=>({ ...prop,
-        bind : (query="")=>!prop?.url ? null : ({
+export function cP2P (props:PagesType) : PagesType {
+    const position = window.location.pathname.split('/').filter(v=>v)
+    return props.map((prop:any)=>({
+        active : prop.url===position[0],
+        bind : (query:string="")=>!prop?.url ? null : {
             onClick : ()=>window.open(prop.url+query,"blank")
-        })
+        },
+        ...prop
     }))
 }
 export const usePages = (
-    props:UsePagesProps
-) : [PagesProps, UsePagesAction]=> {
+    props:UsePagesProps,
+) : [PagesType, UsePagesAction]=> {
     if (typeof props==="function")
         props = props()
     const [pages, set] = useState( cP2P(props) )

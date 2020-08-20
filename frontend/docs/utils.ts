@@ -1,11 +1,13 @@
 import axios  from 'axios'
-import {UserCred} from '../src'
+import {UserCred, normalizeURL} from '../src'
 //const url = window.location.origin.match('localhost')?"http://localhost:8000":"https://tsei.jp"
 //const headers = {'Content-Type':'application/json'}
 export const fetcher = async (
-    url:string,
+    url:string|string[],
     headers:any={'Content-Type':'application/json'}
 ) =>  {
+    if (url instanceof Array)
+        url = normalizeURL(...url)
     return axios
         .get(url, headers)
         .then(res=>{
@@ -16,9 +18,12 @@ export const fetcher = async (
 }
 
 export const signin = async (
-    url:string,cred:UserCred,
+    url:string|string[],
+    cred:UserCred,
     headers:any={'Content-Type':'application/json'}
 )=>{
+    if (url instanceof Array)
+        url = normalizeURL(...url)
     return axios
         .post(url, cred, {headers})
         .then((res:any) => {

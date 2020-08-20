@@ -1,4 +1,4 @@
-import React, {FC, Fragment, useState, useMemo, useCallback} from 'react'
+import React, {FC, Fragment, useState, useMemo} from 'react'
 import { Helmet } from 'react-helmet-async';
 import { useGrid } from 'use-grid'
 import { Mdmd } from '@tsei/mdmd'
@@ -16,10 +16,10 @@ export const Note :FC = () => {
     // ******************** FOR SIGNIN ******************** //
     const [sign, setSign] = useState<boolean>(false)
     const [user, setUser] = useUser({onSign:()=>setSign(false)})
-    const host = window.location.hostname==="localhost"?"http://localhost:8000":"https://tsei.jp"
-    const url  = `${host}/${user.status==="IN"?"auth/":"api/user/"}`
     // ******************** FOR FETCH ******************** //
-    const [notes, ] = useNotes(`${host}/api/note/`, fetcher)
+    const host = window.location.hostname==="localhost"?"http://localhost:8000":"https://tsei.jp"
+    const home = window.location.pathname.split('/').filter(v=>v).length===1
+    const [notes, setNotes] = useNotes([host,`api`,window.location.pathname, "/"],fetcher)
     // ******************** FOR RENDER ******************** //
     const styles = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
       { position:"absolute",transform:"translate(30%,-30%)"},
@@ -28,23 +28,30 @@ export const Note :FC = () => {
     return (
         <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100vw",padding:size*100}}>
             <Helmet>
-                <title>{notes instanceof Array?"note":"Loading..."}</title>
+                <title>{notes?"note":"Loading..."}</title>
                 <meta charSet="utf-8" />
                 <meta name="Hatena::Bookmark" content="nocomment" />
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
-            <Head {...{dark,size}}>Note</Head>
-            <Foot {...{dark,size}}>ⓒtsei</Foot>
-            { notes instanceof Array
+            <Head {...{dark,size}} onClick={()=>{
+                setNotes([host,"api","note"])
+                window.history.pushState('','',`/note/`)
+            }}>Note</Head>
+            { notes && notes instanceof Array
               ? <Notes size={false?size:1}
                     right={(<Icon fa="plus"   size={size} style={styles[1]} onOpen={()=>null}/>)}
                     left ={(<Icon fa="comment"size={size} style={styles[1]} onOpen={()=>null}/>)}>
-                {(notes||[]).map((note:any,key:number)=><Fragment key={key}>
+                {notes.map(({id,ja_text,en_text},key) => <Fragment key={key}>
                     <Card {...{key,dark,size:false?size:1}}
-                        style={{...(false?{}:{height:500}),fontSize:"1.2rem"}}>
-                        <Mdmd source={note[`${lang}_text`]}/>
+                        onClick={home?()=>{
+                            setNotes((p:any)=>[p,id,"/"])
+                            window.history.pushState('','',`/note/${id}/`)
+                        }:null}
+                        style={{...(home?{height:500}:{}),fontSize:"1.2rem"}}>
+                        <Mdmd source={lang==="ja"?ja_text:en_text}
+                            color={dark?"dark":"elegant"}/>
                     </Card>
-                    {/*(note.children||[]).map((child:any,i:number) =>
+                    {/*!home && (note.children||[]).map((child:any,i:number) =>
                     <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>
                         <Mdmd source={child[`${lang}_text`]}/>
                     </Card>)*/}
@@ -63,8 +70,10 @@ export const Note :FC = () => {
                     <MDBInput {...user?.input?.username} icon="user"/>
                     <MDBInput {...user?.input?.password} icon="lock"/> {user.status==="UP"&&
                     <MDBInput {...user?.input?.email} icon="envelope"/>}</>}
-                    <MDBBtn onClick={()=>setUser((cred:any)=>signin(url,cred))} color="elegant"
-                        style={{width:"100%",borderRadus:size*50}}>
+                    <MDBBtn color="elegant" style={{width:"100%",borderRadus:size*50}}
+                        onClick={()=>setUser((cred:any)=>signin([
+                            host,user.status==="IN"?"auth/":"api/user/"
+                        ],cred))}>
                         {user.authtoken?"Signout":"Get!"}</MDBBtn>
                 </Card>
             </Modal>

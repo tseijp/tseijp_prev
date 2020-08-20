@@ -5,7 +5,7 @@ import { useGesture } from 'react-use-gesture'
 
 export const Icon :FC<BasedProps> = ({
     fa="",dark=false,size=1,onOpen=null, //onClose=null,
-    children, className='', style={}, color='',
+    children, className='', style={}, color='', ...props
 }) => {
     className = className + fa?` fas fa-${fa}`:""
     const [{fontSize},_set] = useSpring(()=>({fontSize:size*50}))
@@ -26,6 +26,8 @@ export const Icon :FC<BasedProps> = ({
             color:color||dark?"#818181":"#fff", ...style },
     ], [color, dark,style] )
     return (
-        <a.div {...{className,children,style:{fontSize,borderRadius:fontSize,width:fontSize,height:fontSize,...spring, ...styles[0]}}} {...bind()} />
+        <a.div {...bind()} {...props} {...{className,children}}
+            style={{ ...spring, fontSize, borderRadius:fontSize,
+                     ...styles[0], width:fontSize, height:fontSize}}  />
     )
 }

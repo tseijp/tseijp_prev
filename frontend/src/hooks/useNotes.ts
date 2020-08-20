@@ -1,24 +1,49 @@
-import { useEffect, useCallback, useState } from 'react'
-import { NoteNode, UseNoteFetcher } from '../types'
+import { useEffect, useCallback, useState, useRef } from 'react'
+import { NoteURL, NoteNode, NoteFetcher, BasicProps, BasicState} from '../types'
 //import useSWR from 'swr'
 //import { AxiosResponse } from 'axios'
+import {normalizeURL} from '../utils'
 export const useNotes = (
-    url:string, initialFetcher:UseNoteFetcher
-) => {
-    const [data, setData] = useState<NoteNode>(null)
+    initURL:BasicProps<NoteURL>,//InitNoteURL,
+    initFetcher:NoteFetcher<NoteNode>//InitNoteFetcher
+) : [NoteNode, (
+        url:BasicState<NoteURL>,
+        fetcher?:NoteFetcher<NoteNode>|null
+    )=>void] => {
+    if (typeof initURL==="function")
+        initURL = initURL()
+    if (initURL instanceof Array)
+        initURL = normalizeURL(...initURL)
+    const [note, set] = useState<NoteNode>(null)
+    const urlRef = useRef<string>(initURL)
+    const fetcherRef = useRef(initFetcher)
     useEffect(()=>{
-        initialFetcher && initialFetcher(url).then((res:any)=>setData(res))
-    }, [url, initialFetcher])
-
-    const setNotes = useCallback( (i=-1, updateFetcher:UseNoteFetcher) => {
-    //  TODO if (mode==='tail') animateScroll.scrollToBottom();
-        //if (i<0 || !data)
-        //    return set(pre=>[...(pre?pre:[]),...diff])
-        //data[i].children = [...(data[i].children||[]), ...(arr?arr:[])]
+        initFetcher(initURL as string).then((res:any)=>set(res))
+    }, [initFetcher,initURL] )
+    // ************************* 📋 SetNotes 📋 ************************* //
+    // * setNotes("/note", fetcher)     => refresh notes data of url
+    // * setNotes(p=>[p,"32"], fetcher) => add note data of url
+    // ************************* ************** ************************* //
+    const setNotes = useCallback( (
+        updateURL:BasicState<NoteURL>,//UpdateNoteURL,
+        updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
+    ) : void => {
+        if (typeof updateURL==="function")
+            updateURL = updateURL(urlRef.current)
+        if (updateURL instanceof Array)
+            updateURL = normalizeURL(...updateURL)
+        if (updateFetcher===null)
+            updateFetcher = fetcherRef.current
+        else
+            fetcherRef.current = updateFetcher
+        updateFetcher(updateURL as string).then((res:any) => {
+            if (updateURL===urlRef.current)
+                return set(p=>[...(p||[]), ...(res||[])])
+            set(res||[])
+            urlRef.current = updateURL as string
+        })
     }, [])
-//  console.log(`Render useNotes data:`,data);
-    console.log(data);
-    return [ data||null, setNotes]
+    return [ note, setNotes]
 }
 
 /*Examples

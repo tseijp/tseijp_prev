@@ -1,6 +1,8 @@
 import React, {FC, Children, useEffect, useMemo} from 'react'
 import {useSpring, animated as a} from 'react-spring'
-export const Foot :FC<any> = ({children, size=1, style={}}) => {
+export const Foot :FC<any> = ({
+    children, size=1, style={}, ...props
+}) => {
     const [{fontSize}, set] = useSpring(()=>({fontSize:size*50}))
     useEffect(()=>{set({fontSize:size*50})}, [size,set])
     const styles = useMemo<React.CSSProperties[]>(()=>[
@@ -9,7 +11,7 @@ export const Foot :FC<any> = ({children, size=1, style={}}) => {
       { position:"relative", fontSize, textAlign:"center"},
   ], [fontSize, style])
     return (
-        <a.div style={{...styles[0],
+        <a.div {...props} style={{...styles[0],
             borderRadius:fontSize.to(v=>`${v/2}px ${v/2}px 0px 0px`),
             padding     :fontSize.to(v=>`0px ${v}px ${v/2}px ${v}px`),}}>
             {Children.map(children, (child)=>

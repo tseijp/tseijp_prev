@@ -6,8 +6,8 @@ interface CodeProps {
     code?:string, language?:string, inline?:boolean, dark?:boolean
 }
 export const Code:FC<CodeProps> = ({
-        code='', language="javascript", inline=false, dark=false, //children,
-    }) => {
+    code='', language="javascript", inline=false, dark=false, ...props//children,
+}) => {
     const onDoubleClick = useCallback((_:any)=>navigator.clipboard.writeText(code),[code])
     const customStyle = useMemo(()=>{
         const display = inline?"inline-block":"fixed"
@@ -15,7 +15,7 @@ export const Code:FC<CodeProps> = ({
         return {position:'relative',display,...inlineStyle}
     },[inline])
     return (
-        <Light PreTag={inline?"span":"pre"} style={dark?atomOneDark:atomOneLight}
+        <Light {...props} PreTag={inline?"span":"pre"} style={dark?atomOneDark:atomOneLight}
             {...{customStyle, onDoubleClick, language}}
             useInlineStyles={true} showLineNumbers={!inline}>
             {code}</Light>
