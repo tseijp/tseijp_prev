@@ -3,7 +3,8 @@ import os.path as osp
 # Build paths inside the project like this: osp.join(BASE_DIR, ...)
 BASE_DIR = osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))
 # Application definition
-INSTALLED_APPS = ['django.contrib.%s'%s for s in ['admin','auth','contenttypes','sessions','messages','staticfiles']]
+INSTALLED_APPS = ['django.contrib.%s'%s for s in [
+    'admin','auth','contenttypes','sessions','messages','staticfiles']]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -14,7 +15,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',]
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [osp.normpath(osp.join(BASE_DIR, "frontend")), ],
+    'DIRS': [osp.normpath(BASE_DIR), ],
     'APP_DIRS': True,
     'OPTIONS': {'context_processors': [
         'django.template.context_processors.debug',
@@ -38,12 +39,13 @@ USE_TZ    = True
 STATIC_URL = 'static/'
 STATIC_ROOT = osp.join(BASE_DIR, "static/")
 STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s"%s) for s in [
-    'frontend/public/static/',
     'frontend/build/static/',
-    'frontend/mdmd/build/static/',
-    'frontend/colo/build/static/',
-    'frontend/use-amazon/build/static',
-    ]]
+    'frontend/public/static/',
+    'mdmd/build/static/',
+    'colo/build/static/',
+    'hook/use-grid/build/static',
+    'hook/use-amazon/build/static',
+]]
 ###################### my changed #############################
 ###  sosial auth signup with google
 ###  [ref](https://qiita.com/moi1990sk/items/a849fca7acb29db95508)
@@ -56,7 +58,7 @@ AUTHENTICATION_BACKENDS = (
  'social_core.backends.google.GoogleOpenId',     # for Google authentication
  'social_core.backends.google.GoogleOAuth2',     # for Google authentication
  'social_core.backends.github.GithubOAuth2',     # for Github authentication
- #'social_core.backends.facebook.FacebookOAuth2', # for Facebook authentication
+#'social_core.backends.facebook.FacebookOAuth2', # for Facebook authentication
  'django.contrib.auth.backends.ModelBackend',
 )
 LOGIN_URL           = 'login'
