@@ -1,0 +1,25 @@
+
+<div class="fixed-bottom container options hidden-xs" style="bottom:25px">
+{% for b,c in content.items %}
+<div class="option{{c.active}}" style="--optionBackground:url({{c.cloud}});">
+    <!--div class="shadow">{{c.shadow}}</div-->
+    <div class="label">
+    <div class="icon"><i class="{{c.icon}}" style="font-size:25px"></i></div>
+    <div class="info">
+    <div class="container">
+    <div class="row">
+        <div class="col text-left">
+            <div class="main"><a href="{% url c.url %}"style="color:white">{{b}}</a></div>
+        </div>
+        {% for k,v in c.main.items %}
+        <div class="col text-center" onclick="{% if v.f %}{{v.f}}(){% endif %}">
+            <div class="main"><i class="{{v.i}}"></i></div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
+{% endfor %}
+</div>

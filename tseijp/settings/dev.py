@@ -6,6 +6,7 @@ MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware',]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'http://192.168.0.112:3000'
 )
 
 

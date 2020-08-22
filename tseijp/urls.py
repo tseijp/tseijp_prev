@@ -12,26 +12,29 @@ handler500 = my_customized_server_error
 
 ### my created
 from backend.views import UserViewSet, NoteViewSet#, TagsViewSet
-from backend.dev.init import note_init
+
+from backend.dev.init import register_notes
 router = routers.SimpleRouter()
 router.register('note', NoteViewSet)
 router.register('user', UserViewSet, basename="user")
 #router.register('tags', TagsViewSet)
 
-def note(request): return render(request, 'build/index.html')
-def mdmd(request): return render(request, 'mdmd/build/index.html')
-def colo(request): return render(request, 'colo/build/index.html')
+def note      (request):return render(request, 'frontend/build/index.html')
+def mdmd      (request):return render(request, 'mdmd/build/index.html')
+def colo      (request):return render(request, 'colo/build/index.html')
+def use_grid  (request):return render(request, 'use-grid/build/index.html')
 def use_amazon(request):return render(request, 'use-amazon/build/index.html')
 urlpatterns = [
     path('admin/', admin.site.urls     ),
     path('auth/' , obtain_auth_token   ),
     path('api/'  , include(router.urls)),
-#    path('note_init', note_init),
+    path('register_notes', register_notes),
     # views
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     re_path('mdmd', mdmd, name='mdmd'),
     re_path('colo', colo, name='colo'),
-    re_path('useamazon', use_amazon, name='use_amazon'),
+    re_path('hook/use-grid'  , use_grid  , name='use_grid'),
+    re_path('hook/use-amazon', use_amazon, name='use_amazon'),
     re_path(''    , note, name='home'),
     #re_path(r'^$' , note),
     #re_path(r'^(?:.*)/?$', note)
