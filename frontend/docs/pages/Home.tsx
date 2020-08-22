@@ -11,14 +11,15 @@ import { Model, Swarm } from "../meshs"
 export const Home :FC = () => {
     /* state */
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
-    const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
-    const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
+    const [dark, setDark] = useGrid<boolean>({md:true, lg:false})
+    const [size, setSize] = useGrid<number> ({md:1   , lg:1.5  })
+    const [count] = useGrid<number>({xs:25, md:50, lg:100})
     const styles = useMemo<React.CSSProperties[]>(()=>[
       { position:"relative", transition:"1s", minHeight:"100vw", padding:size*2 },
       { padding:`${size}px`, color:dark?"#818181":"#000",background:dark?"#212121":"#fff" },
     ], [size, dark])
     return (
-    <div style={{...styles[0],background:dark?"#000":"#fff"}}>
+    <div style={{...styles[0],background:dark?"#000":"#fff",minHeight:"100%"}}>
         <Canvas
             gl={{antialias:false, logarithmicDepthBuffer:true}}
             pixelRatio={window.devicePixelRatio}
@@ -29,7 +30,7 @@ export const Home :FC = () => {
             <hemisphereLight intensity={0.68} position={[0, 50, 0]} />
             <directionalLight position={[-8, 12, 8]} castShadow />
             <Suspense fallback={null}>
-                <Model {...{dark,size}}/>
+                <Model {...{dark,size,count}}/>
                 <StandardEffects />
                 <Swarm {...{dark,size}}/>
             </Suspense>

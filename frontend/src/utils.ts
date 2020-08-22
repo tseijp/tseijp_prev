@@ -12,7 +12,7 @@ export const swap=(arr:number[],ind:number,row:number) => {
     Array.prototype.concat.apply([],
         url.map(u=>u.match("http")?u:u.split('/').filter(v=>v))
     ).join('/')+"/"*/
-export function normalizeURL (...strArray:string[]) {
+export function normURL (...strArray:string[]) {
     var resultArray = [];
     if (strArray.length === 0)
         return ''
@@ -33,10 +33,13 @@ export function normalizeURL (...strArray:string[]) {
         if (component === '')
             continue;
         if (i > 0)
+            //eslint-disable-next-line
             component = component.replace(/^[\/]+/, '');
         if (i < strArray.length - 1)
+            //eslint-disable-next-line
             component = component.replace(/[\/]+$/, '');
         else
+            //eslint-disable-next-line
             component = component.replace(/[\/]+$/, '/');
         resultArray.push(component);
     }

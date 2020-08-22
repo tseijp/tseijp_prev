@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useRef } from 'react'
 import { NoteURL, NoteNode, NoteFetcher, BasicProps, BasicState} from '../types'
 //import useSWR from 'swr'
 //import { AxiosResponse } from 'axios'
-import {normalizeURL} from '../utils'
+import {normURL} from '../utils'
 export const useNotes = (
     initURL:BasicProps<NoteURL>,//InitNoteURL,
     initFetcher:NoteFetcher<NoteNode>//InitNoteFetcher
@@ -13,17 +13,21 @@ export const useNotes = (
     if (typeof initURL==="function")
         initURL = initURL()
     if (initURL instanceof Array)
-        initURL = normalizeURL(...initURL)
+        initURL = normURL(...initURL)
     const [note, set] = useState<NoteNode>(null)
     const urlRef = useRef<string>(initURL)
     const fetcherRef = useRef(initFetcher)
     useEffect(()=>{
         initFetcher(initURL as string).then((res:any)=>set(res))
     }, [initFetcher,initURL] )
-    // ************************* 📋 SetNotes 📋 ************************* //
-    // * setNotes("/note", fetcher)     => refresh notes data of url
-    // * setNotes(p=>[p,"32"], fetcher) => add note data of url
-    // ************************* ************** ************************* //
+    //  ************************* 📋 SetNotes 📋 *************************  //
+    //  * setNotes("/api/note", fetcher) => refresh notes data of url
+    //  * setNotes(p=>[p,"32"], fetcher) => add note data of url
+    //  *   * from    |to /note |to /note/x|
+    //  *   * :-------|:--------|:---------|
+    //  *   * /note   | add     | init     |
+    //  *   * /note/x | init    | add      |
+    //  ************************* ************** *************************  //
     const setNotes = useCallback( (
         updateURL:BasicState<NoteURL>,//UpdateNoteURL,
         updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
@@ -31,16 +35,15 @@ export const useNotes = (
         if (typeof updateURL==="function")
             updateURL = updateURL(urlRef.current)
         if (updateURL instanceof Array)
-            updateURL = normalizeURL(...updateURL)
+            updateURL = normURL(...updateURL)
         if (updateFetcher===null)
             updateFetcher = fetcherRef.current
         else
             fetcherRef.current = updateFetcher
         updateFetcher(updateURL as string).then((res:any) => {
-            if (updateURL===urlRef.current)
-                return set(p=>[...(p||[]), ...(res||[])])
-            set(res||[])
-            urlRef.current = updateURL as string
+            if (updateURL!==urlRef.current)
+                return (set(res||[]), urlRef.current=updateURL as string)
+            set(p=>[...(p||[]), ...(res||[])])
         })
     }, [])
     return [ note, setNotes]

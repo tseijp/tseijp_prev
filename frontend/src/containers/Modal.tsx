@@ -34,7 +34,7 @@ export const Modal:FC<ModalProps> = ({
     return open ? createPortal(
         <div style={styles[0]} onClick={()=>onClose&&onClose()}>
             <a.div style={{position:"relative",...spring}} {...bind()}
-                onClick={(e:any)=>e.stopPropagation()}>
+                onClick={e=>e.stopPropagation()}>
                 {children}
             </a.div>
         </div>

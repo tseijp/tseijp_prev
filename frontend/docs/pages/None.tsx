@@ -11,7 +11,7 @@ export const None :FC = () => {
     /* state */
     const url = '/static/kinect.mp4'
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
-    const [dark, setDark] = useGrid<boolean>({md:false, lg:true})
+    const [dark, setDark] = useGrid<boolean>({md:true, lg:false})
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     const styles = useMemo<React.CSSProperties[]>(()=>[
       { position:"relative", height:"100vw", padding:size*2, background:dark?"#000":"#fff"},

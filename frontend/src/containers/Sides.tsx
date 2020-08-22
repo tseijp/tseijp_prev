@@ -45,7 +45,7 @@ export const SidesItem :FC<BindsProps> = ({children, size=1, /*spring, width*/})
     return <a.div {...{children, style}} />
 }
 
-export const Sides : FC<BasedProps> = ({children, width=500, size=1, onOpen=()=>null}={}) => {
+export const Sides : FC<BasedProps> = ({children, width=window.innerWidth/2, size=1, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring<any>( () => ({x:0,y:0,scale:1}) )

@@ -1,10 +1,41 @@
+from .notes import notes
 from django.http import HttpResponseRedirect
 from backend.models import NoteModel
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .note import note
+def create(note, user, id, parent):
+    obj = NoteModel.objects.create(pk=id)
+    obj.id = id
+    obj.ja_text = note
+    obj.en_text = note
+    obj.posted_user = user
+    if (parent!=id):
+        obj.note_object = NoteModel.objects.get(id=parent)
+    obj.save()
+    print('%s%s\t%s'%(''
+        if parent==id
+        else '\t%s-'%parent,
+        id, '%s ...'%(note[:10].replace('\n','\t'))
+    ))
 
-def register_note(id, note, user):
+@login_required
+def register_notes(request):
+    NoteModel.objects.all().delete()
+    user = request.user
+    id = 0
+    parent = id
+    for note in notes:
+        if (note):
+            create(note, user, id, parent)
+            id += 1
+        else:
+            parent = id
+    return HttpResponseRedirect('/')
+
+# """"""""""""""""""""""""" PREV """"""""""""""""""""""""" #
+'''
+def create(id, note, user):
     objs = NoteModel.objects
     obj = objs.create()
     obj.posted_user = user
@@ -21,10 +52,11 @@ def register_note(id, note, user):
         return id
 
 @login_required
-def note_init(request):
+def register_note(request):
     NoteModel.objects.all().delete()
     user = request.user
     id = None
     for n in note:
         id = register_note(id, n, user)
     return HttpResponseRedirect('/')
+'''

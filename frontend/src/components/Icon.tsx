@@ -5,7 +5,7 @@ import { useGesture } from 'react-use-gesture'
 
 export const Icon :FC<BasedProps> = ({
     fa="",dark=false,size=1,onOpen=null, //onClose=null,
-    children, className='', style={}, color='', ...props
+    children,className='',style={},color='',...props
 }) => {
     className = className + fa?` fas fa-${fa}`:""
     const [{fontSize},_set] = useSpring(()=>({fontSize:size*50}))

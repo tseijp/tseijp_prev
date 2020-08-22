@@ -4,11 +4,12 @@ import { useGesture, } from 'react-use-gesture'
 import { clamp, swap } from '../utils'
 import { NotesProps } from '../types'
 export const Notes:FC<NotesProps> = ({
-       grandren=null, right=null, left=null, depth=0,
-       children, size=1, style={},...props
+        initOrder=null,
+        grandren=null, right=null, left=null, depth=0,
+        children, size=1, style={},...props
    }) => {
     const [width,fontSize] = useMemo(()=>[size*500,size*50],[size])
-    const length = (children as any)?.length || 1
+    const length = useMemo(()=>(children as any)?.length || 1, [children])
     const [height, setHeight] = useState<number>(width*length) //TODO height
     const [isOpen, setIsOpen] = useState<boolean[]>(Array(length).fill(false))
     const containerRef= useRef<HTMLDivElement|null>(null)
@@ -16,10 +17,10 @@ export const Notes:FC<NotesProps> = ({
     const setPosition = useCallback(() => {
         const childs  = Array.from(containerRef?.current?.children||[])
         childHeight.current = [...childs].map((c:any)=>c.clientHeight)
-        setHeight(childHeight.current.reduce((a,b)=>a+b) || width*length)
-    }, [width, length])
-    /*------------------------- ➊ React Springs -------------------------*/
-    const order = useRef<number[]>([...Array(length)].map((_:any,i:number)=>i))
+        children && setHeight(childHeight.current.reduce((a,b)=>a+b) || width*length)
+    }, [width, length, children])
+    //  *************************  ➊ React Springs  *************************  //
+    const order = useRef<number[]>(initOrder||[...Array(length)].map((_:any,i:number)=>i))
     useEffect(()=>{order.current = [...order.current, length]}, [length])
     const getY =({pre=0,arr=order.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
     const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:order.current.indexOf(j)}),scale:j===i?s:1})
@@ -45,7 +46,7 @@ export const Notes:FC<NotesProps> = ({
             setTimeout(()=>{setPosition();set(getF({i,x:op?x:0,s:op?.9:1}))},1)
         }
     })
-    /* ------------------------- ➋ Child Render -------------------------*/
+    //  *************************  ➋ Child Render  *************************  //
     const styles = useMemo<CSSProperties[]>( () => [
         {width,position:"relative",margin:`auto`,...style,height     /*DEV*/,background:"rgba(100,0,0,0.5)"},
         {width,position:"relative",marginTop:fontSize,minHeight:width/*DEV*/,background:"rgba(0,100,0,0.5)"},
@@ -59,7 +60,7 @@ export const Notes:FC<NotesProps> = ({
                 <Notes {...{...props, depth:depth+1,children:grand.slice(1)}}/> )})
             : child
     })
-    useEffect(()=>{ console.log("\tNote useEffect"); setPosition(); set(getG({})) }, [setPosition, set, getG] )
+    useEffect(()=>{ setPosition(); set(getG({})) }, [setPosition, set, getG] )
     //!depth&&console.log(`Render Notes:${depth} height:${height} length:${length} order:`,order.current);
     return (
         <div ref={containerRef} style={{...styles[0]}}>

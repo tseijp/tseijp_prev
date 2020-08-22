@@ -6,7 +6,7 @@ import { useGrid } from 'use-grid'
 export const Hook :FC = () => {
     /* state */
     //const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
-    const [dark, ] = useGrid<boolean>({md:false, lg:true})
+    const [dark, ] = useGrid<boolean>({md:true, lg:false})
     //const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
     return (
     <div style={{background:dark?"#000":"#fff"}}>
