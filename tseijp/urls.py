@@ -31,7 +31,7 @@ urlpatterns = [
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
     re_path('mdmd', mdmd, name='mdmd'),
     re_path('colo', colo, name='colo'),
-    re_path('useamazon', use_amazon, name='use_amazon'),
+    re_path('hook/use-amazon', use_amazon, name='use_amazon'),
     re_path(''    , note, name='home'),
     #re_path(r'^$' , note),
     #re_path(r'^(?:.*)/?$', note)
