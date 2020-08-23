@@ -1,6 +1,6 @@
 from .notes import notes
 from django.http import HttpResponseRedirect
-from backend.models import NoteModel
+from back.models import NoteModel
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 

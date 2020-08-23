@@ -24,18 +24,21 @@ def printqr():
         pass
 
 #  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
-def start(*args):
-    proc = sub.Popen([*args,'runserver','0.0.0.0:8000'],shell=True,cwd=".")
+def run (*args):
+    sub.run([*args,'runserver','0.0.0.0:8000'],shell=True,cwd=".")
     sub.run("start http://localhost:8000".split(), shell=True, cwd='.')
+
+def start(*args):
+    proc = sub.Popen("npm start".split(),shell=True,cwd='./core')
     printqr()
-    sub.run("npm start".split(), shell=True, cwd='./frontend')
+    run(*args)
     proc.close()
 
 def static(*args):
     sub.run([*args,*'collectstatic -c --noinput'.split()], shell=True)
 
 def update(*args):
-    sub.run("npm run build --prefix frontend".split(), shell=True, cwd='.')
+    sub.run("npm run build --prefix core".split(), shell=True, cwd='.')
     static(*args)
 
 def fetch(*args):
@@ -55,6 +58,8 @@ async def init(*args):
 def main():
     # """""""""" FOR MANAGE """""""""" #
     args = [sys.executable, sys.argv[0]]
+    if (sys.argv[-1]=="run"):
+        return run(*args)
     if (sys.argv[-1]=="start"):
         return start(*args)
     if (sys.argv[-1]=="static"):

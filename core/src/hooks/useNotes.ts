@@ -43,7 +43,10 @@ export const useNotes = (
         updateFetcher(updateURL as string).then((res:any) => {
             if (updateURL!==urlRef.current)
                 return (set(res||[]), urlRef.current=updateURL as string)
-            set(p=>[...(p||[]), ...(res||[])])
+            set(pre=>{
+                const diff = (pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id))
+                return [...(diff||[]), ...(res||[])]
+            })
         })
     }, [])
     return [ note, setNotes]
