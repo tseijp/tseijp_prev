@@ -4,10 +4,10 @@ import { useGesture, } from 'react-use-gesture'
 import { clamp, swap } from '../utils'
 import { NotesProps } from '../types'
 export const Notes:FC<NotesProps> = ({
-        initOrder=null,
-        grandren=null, right=null, left=null, depth=0,
-        children, size=1, style={},...props
-   }) => {
+    initOrder=null,
+    grandren=null, right=null, left=null, depth=0,
+    children, size=1, style={},...props
+}) => {
     const [width,fontSize] = useMemo(()=>[size*500,size*50],[size])
     const length = useMemo(()=>(children as any)?.length || 1, [children])
     const [height, setHeight] = useState<number>(width*length) //TODO height
@@ -20,7 +20,7 @@ export const Notes:FC<NotesProps> = ({
         children && setHeight(childHeight.current.reduce((a,b)=>a+b) || width*length)
     }, [width, length, children])
     //  *************************  ➊ React Springs  *************************  //
-    const order = useRef<number[]>(initOrder||[...Array(length)].map((_:any,i:number)=>i))
+    const order = useRef<number[]>(initOrder||[...Array(length)].map((_,i:number)=>i))
     useEffect(()=>{order.current = [...order.current, length]}, [length])
     const getY =({pre=0,arr=order.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
     const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:order.current.indexOf(j)}),scale:j===i?s:1})
@@ -34,7 +34,7 @@ export const Notes:FC<NotesProps> = ({
         onDrag:({
           last,down,args:[i],movement:[mx,my],vxvy:[vx,vy],cancel,startTime,timeStamp
         }) => {//  cancel,startTime,timeStamp
-            if(isOpen[i]&&timeStamp-startTime<1000) cancel && cancel()
+            if(!isOpen[i] && cancel && timeStamp-startTime<1000) cancel()
             const pre = order.current.indexOf(i)
             const row = clamp( Math.round(pre+my/width), 0, length-1 )
             const arr = swap(order.current, pre, row)
@@ -42,18 +42,18 @@ export const Notes:FC<NotesProps> = ({
             if(!last) return set( getG({i,arr,pre,mx,my,down}) )
             const x = (mx<0?-1:1) * fontSize// * 2 // window.innerWidth/2 -
             setIsOpen(p=>[...Object.assign([],{[i]:!p[i]})])
-            const op = (mx**2<.1||x**2/2<mx**2||vx**2+vy**2>1) ? !isOpen[i] : isOpen[i]
+            const op = (mx**2<.1||x**2<mx**2*2||vx**2+vy**2>1) ? !isOpen[i] : isOpen[i]
             setTimeout(()=>{setPosition();set(getF({i,x:op?x:0,s:op?.9:1}))},1)
         }
     })
     //  *************************  ➋ Child Render  *************************  //
     const styles = useMemo<CSSProperties[]>( () => [
-        {width,position:"relative",margin:`auto`,...style,height     /*DEV*/,background:"rgba(100,0,0,0.5)"},
-        {width,position:"relative",marginTop:fontSize,minHeight:width/*DEV*/,background:"rgba(0,100,0,0.5)"},
-        {position:"absolute",top:0,left:0,right:0 ,margin:"auto"     /*DEV*/,background:"rgba(0,0,100,0.5)"},
-        {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",fontSize},
+        {width:`min(95vw,${width}px)`,position:"relative",margin:`auto`,...style,height     },//*DEV*/,background:"rgba(100,0,0,0.5)"},
+        {width:`min(95vw,${width}px)`,position:"relative",marginTop:fontSize,minHeight:width},//*DEV*/,background:"rgba(0,100,0,0.5)"},
+        {position:"absolute",top:0,left:0,right:0 ,margin:"auto"                            },//*DEV*/,background:"rgba(0,0,100,0.5)"},
+        {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",fontSize },
     ], [width,height,fontSize,style] )
-    children = Children.map(children, (child) => { //toArray(children)
+    children = Children.map(children, (child) => {
         const grand = Children.toArray((child as any)?.props?.children) || []//count(child.props.children) || 0
         return (grand.length>1 && depth===0) // TODO for depth > 0
             ? React.cloneElement(child as any, {children:grand[0], grandren:(

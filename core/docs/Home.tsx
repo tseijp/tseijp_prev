@@ -1,12 +1,12 @@
 import React, {FC, Suspense, useState, useMemo} from 'react'
-import { Sides, Trans } from '../../src/containers'
+import { Sides, Trans } from '../src/containers'
 import { useGrid } from 'use-grid'
 import { Helmet } from 'react-helmet-async';
 import { OrbitControls, StandardEffects } from 'drei'
 import * as THREE from 'three'
 
 import { Canvas } from "react-three-fiber"
-import { Model, Swarm } from "../meshs"
+import { Model, Swarm } from "./meshs"
 
 export const Home :FC = () => {
     /* state */

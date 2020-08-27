@@ -1,4 +1,8 @@
-export const clamp = (x:number, min=0, max=1) :number  => (x<min)?min:(x>max)?max:x
+import {NoteURL, BasicProps, BasicState} from './types'
+
+export const clamp = (
+    x:number, min=0, max=1
+) :number  => (x<min)?min:(x>max)?max:x
 
 export const swap=(arr:number[],ind:number,row:number) => {
     const ret = [...arr.slice(0, ind), ...arr.slice(ind+1, arr.length)]
@@ -12,7 +16,20 @@ export const swap=(arr:number[],ind:number,row:number) => {
     Array.prototype.concat.apply([],
         url.map(u=>u.match("http")?u:u.split('/').filter(v=>v))
     ).join('/')+"/"*/
-export function normURL (...strArray:string[]) {
+export function normURL (
+    url: BasicProps<NoteURL> | BasicState<NoteURL>,
+    ref:{current:string|null}={current:null}
+) : string {
+    if (typeof url==="string")
+        return url
+    if (typeof url==="function")
+        return ref.current ? url(ref.current) : (url as any)()
+    if (url instanceof Array)
+        return joinURL(...url)
+    return ''
+}
+
+export function joinURL (...strArray:string[]) : string {
     var resultArray = [];
     if (strArray.length === 0)
         return ''

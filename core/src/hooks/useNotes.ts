@@ -4,77 +4,52 @@ import { NoteURL, NoteNode, NoteFetcher, BasicProps, BasicState} from '../types'
 //import { AxiosResponse } from 'axios'
 import {normURL} from '../utils'
 export const useNotes = (
-    initURL:BasicProps<NoteURL>,//InitNoteURL,
-    initFetcher:NoteFetcher<NoteNode>//InitNoteFetcher
-) : [NoteNode, (
+    initURL:BasicProps<NoteURL>,
+    initFetcher:NoteFetcher<NoteNode>
+) : [ NoteNode, (
         url:BasicState<NoteURL>,
         fetcher?:NoteFetcher<NoteNode>|null
-    )=>void] => {
-    if (typeof initURL==="function")
-        initURL = initURL()
-    if (initURL instanceof Array)
-        initURL = normURL(...initURL)
-    const [note, set] = useState<NoteNode>(null)
-    const urlRef = useRef<string>(initURL)
+    ) => void
+] => {
+    const urlRef = useRef<string>(normURL(initURL))
+    const isFetching = useRef(false)
     const fetcherRef = useRef(initFetcher)
-    useEffect(()=>{
-        initFetcher(initURL as string).then((res:any)=>set(res))
-    }, [initFetcher,initURL] )
+    const [note, set] = useState<NoteNode>(null) //TODO useSWR(urlRef.current,isFetching)
+    useEffect(() => {fetcherRef.current(urlRef.current).then((r:any)=>set(r))}, [])
     //  ************************* 📋 SetNotes 📋 *************************  //
-    //  * setNotes("/api/note", fetcher) => refresh notes data of url
-    //  * setNotes(p=>[p,"32"], fetcher) => add note data of url
-    //  *   * from    |to /note |to /note/x|
-    //  *   * :-------|:--------|:---------|
-    //  *   * /note   | add     | init     |
-    //  *   * /note/x | init    | add      |
+    //  * setNotes("/api/note", fetcher) => refresh notes data from url
+    //  * setNotes(p=>[p,"32"], fetcher) => add note data from url
     //  ************************* ************** *************************  //
-    const setNotes = useCallback( (
+    const setNotes = useCallback((
         updateURL:BasicState<NoteURL>,//UpdateNoteURL,
         updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
     ) : void => {
-        if (typeof updateURL==="function")
-            updateURL = updateURL(urlRef.current)
-        if (updateURL instanceof Array)
-            updateURL = normURL(...updateURL)
+        // ********** FOR DoS ********** //
+        console.log(`\tsetNotes ${isFetching.current?"not ":""}run`)
+        if (isFetching.current)
+            return
+        isFetching.current = true
+        // ********** FOR REF ********** //
         if (updateFetcher===null)
             updateFetcher = fetcherRef.current
         else
             fetcherRef.current = updateFetcher
-        updateFetcher(updateURL as string).then((res:any) => {
-            if (updateURL!==urlRef.current)
-                return (set(res||[]), urlRef.current=updateURL as string)
-            set(pre=>{
-                const diff = (pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id))
-                return [...(diff||[]), ...(res||[])]
-            })
+        // ********** FOR FETCHING ********** //
+        // * ERROR if set("note/") in note/90 //
+        updateURL = normURL(updateURL, urlRef)
+        console.log(`\t${urlRef.current} to\n\t${updateURL}`)
+        updateFetcher(updateURL).then((res:any) => {
+            set(/*pre =>  updateURL===urlRef.current
+                ? [...(pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id)), ...res]
+                : */res
+            )
+            console.log(res||"None");
+            urlRef.current = updateURL as string
+            setTimeout(()=>(isFetching.current=false), 1000)
         })
     }, [])
     return [ note, setNotes]
 }
-
-/*Examples
-set(i) : add new child note to this
-del(i) : del this note and children note
-
-const App = () => {
-    const [data, set, del] = useNotes(data)
-    return (
-        <Notes {...{size,width}}
-            left={(i)=><i onClick={()=>set(i)}/>}
-            right={(i)=><i onClick={()=>del(i)}/>} >
-            {data.map((note,i)=>
-                <div>
-                    <div>{note}</div>
-                    {note.isAuthor && <input value={note} />}
-                    note.children.map((child,i)=>{
-                        <div key={i}>child</div>
-                    })
-                </div>)}
-        </Notes>
- )
-}
-*/
-
 
 /* PREVIOUS
 export const useNotes = ({initNotes=[],isHome=false}) => {

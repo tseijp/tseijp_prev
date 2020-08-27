@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { unregister } from './serviceWorker';
 import { HelmetProvider } from 'react-helmet-async';
-import { Home, Hook, None, Note } from './pages';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { Home } from './Home';
+import { Hook } from './Hook';
+import { None } from './None';
+import { Note } from './Note';
 
 import './styles.css'
 import '@fortawesome/fontawesome-free/css/all.min.css';

@@ -1,5 +1,5 @@
 import axios  from 'axios'
-import {UserCred, normURL} from '../src'
+import {UserCred, joinURL} from '../src'
 //const url = window.location.origin.match('localhost')?"http://localhost:8000":"https://tsei.jp"
 //const headers = {'Content-Type':'application/json'}
 export const fetcher = async (
@@ -7,7 +7,7 @@ export const fetcher = async (
     headers:any={'Content-Type':'application/json'}
 ) =>  {
     if (url instanceof Array)
-        url = normURL(...url)
+        url = joinURL(...url)
     return axios
         .get(url, headers)
         .then(res=>{
@@ -23,7 +23,7 @@ export const signin = async (
     headers:any={'Content-Type':'application/json'}
 )=>{
     if (url instanceof Array)
-        url = normURL(...url)
+        url = joinURL(...url)
     return axios
         .post(url, cred, {headers})
         .then((res:any) => {

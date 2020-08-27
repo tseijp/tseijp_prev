@@ -1,4 +1,4 @@
-import { ReactChild as RN, CSSProperties } from 'react'
+import { ReactChild as RC, CSSProperties } from 'react'
 import { AxiosResponse } from 'axios'
 export type BasicProps<T>  = (()=>T) | T
 export type BasicState<T>  = ((pre:T)=>T) | T
@@ -14,7 +14,7 @@ export interface BasedProps {
 }
 export interface BindsProps extends BasedProps{bind?:any,spring?:any,}
 export interface ModalProps extends BasedProps{open?:boolean}
-export interface NotesProps extends BasedProps{grandren?:any,right?:RN,left?:RN,depth?:number}
+export interface NotesProps extends BasedProps{grandren?:any,right?:RC,left?:RC,depth?:number}
 
 // ************************* 👌 For useNotes 👌 ************************* //
 export type NoteElement = {

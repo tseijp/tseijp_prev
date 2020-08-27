@@ -1,11 +1,11 @@
 import React, {FC, Suspense, useState, useMemo} from 'react'
-//import { Card, Foot, Head } from '../../src/components'
-import { /*Modal, Pills, */Sides, Trans } from '../../src/containers'
+//import { Card, Foot, Head } from '../src/components'
+import { /*Modal, Pills, */Sides, Trans } from '../src/containers'
 import { useGrid } from 'use-grid'
 import { Canvas } from 'react-three-fiber'
 import { Helmet } from 'react-helmet-async';
 import { OrbitControls, StandardEffects } from 'drei'
-import { Kinect } from '../meshs'
+import { Kinect } from './meshs'
 import * as THREE from 'three'
 export const None :FC = () => {
     /* state */

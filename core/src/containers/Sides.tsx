@@ -1,8 +1,8 @@
-import React, {FC,CSSProperties,useCallback,useRef} from 'react';
+import React, {FC,CSSProperties,useCallback,useMemo,useRef} from 'react';
 import { useSpring, animated as a, config } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 import { BindsProps, BasedProps } from'../types'
-
+import { Icon } from '../components'
 
 export const SidesArea :FC<BindsProps> = ({spring, bind, size=1}) => {
     const width = spring.x.to((x:number)=>x>1?"100%":`${size*50/2}px`)
@@ -14,35 +14,35 @@ export const SidesArea :FC<BindsProps> = ({spring, bind, size=1}) => {
     return <a.div style={{...style,width,background}} {...bind()} />
 }
 
-export const SidesToggle : FC<BindsProps> = ({spring, bind, size=1}) => {
-    const style = { position:"fixed",fontSize:size*50,width:size*50,
-                    color:"#212121",transform:`translate(-50%,-50%)`,textAlign:"center",
-                    userSelect:"none",} as CSSProperties
-    return (
-        <a.div {...bind()} style={{top:size*50,left:size*50,position:"absolute",...spring}}>
-            <i className={`fas fa-${"align-left"}`} style={style}/>
-        </a.div>
-    )
-}
-
 export const SidesContainer : FC<BindsProps> = ({size=1, spring, children}) => {
-    const margin = `${50*size}px 0px 0px 0px`
-    const width = spring.x.to((x:number)=>x > 0 ? x : 0)
-    const style = { position:"fixed",top:"2%",left:0,zIndex:1,overflow:"hidden",
-                    borderRadius:`0px ${50*size}px ${50*size}px 0px`,
-                    height:`96%`, backgroundColor:"#212121",} as CSSProperties
+    const styles = useMemo<CSSProperties[]>(()=>[
+      { margin:`${50*size}px 0px 0px 0px`, position:"absolute",},
+      { position:"fixed",top:"2%",left:0,zIndex:1,overflow:"hidden",
+        borderRadius:`0px ${50*size}px ${50*size}px 0px`,
+        height:`96%`, backgroundColor:"#212121" }
+    ], [size])
     return (
-        <a.div style={{...style,width}}>
-            <div style={{position:"absolute",margin}}>{children}</div>
+        <a.div style={{...styles[1],width:spring.x.interpolate((x:number)=>x>0?x:0)}}>
+            <div style={styles[0]}>{children}</div>
         </a.div>
     )
 }
 
-export const SidesItem :FC<BindsProps> = ({children, size=1, /*spring, width*/}) => { // TODO1701
+export const SidesIcon : FC<BindsProps> = ({spring, bind, circ=false, size=1}) => {
+    return (
+        <a.div {...bind()} style={{
+            position:"absolute",top:size*50,left:size*50,
+            transform:`translate(-50%,-50%)`,...spring}}>
+            <Icon fa="align-left" {...{circ,size}} />
+        </a.div>
+    )
+}
+
+export const SidesItem :FC<BindsProps> = ({children, size=1}) => { // TODO1701
     //const x = spring.x.to( (x:number) => (x-width) ) // TODO1701
-    const style = { padding:"10px 10px 10px 32px",color:"#818181",
-                    display:"block",transition:"0.75s",fontSize:50*size, }//x, y:spring.y}
-    return <a.div {...{children, style}} />
+    return <a.div {...{children, style:{
+        padding:"10px 10px 10px 32px",color:"#818181",
+        display:"block",transition:"0.75s",fontSize:50*size}}} />
 }
 
 export const Sides : FC<BasedProps> = ({children, width=window.innerWidth/2, size=1, onOpen=()=>null}={}) => {
@@ -62,11 +62,11 @@ export const Sides : FC<BasedProps> = ({children, width=window.innerWidth/2, siz
     })
     return (
         <div style={{position:"fixed", top:0,left:0,zIndex:100}}>
-            <SidesToggle {...{size, spring, bind, }} />
-            <SidesArea   {...{size, spring, bind, }} />
+            <SidesIcon   {...{size, spring, bind, }} />
+            <SidesArea     {...{size, spring, bind, }} />
             <SidesContainer{...{size, spring, bind, }}>
             {React.Children.map(children, ((child, key:number)=>
-                <SidesItem {...{size, spring, width, key}}>{child}</SidesItem>
+                <SidesItem {...{size, key}}>{child}</SidesItem>
             ))}
             </SidesContainer>
         </div>

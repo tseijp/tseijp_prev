@@ -1,64 +1,71 @@
-import React, {FC, Fragment, useState, useMemo} from 'react'
+import React, {FC, useState, useCallback, useMemo} from 'react'
 import { Helmet } from 'react-helmet-async';
-import { useGrid } from 'use-grid'
-import { Mdmd } from '@tsei/mdmd'
 import { MDBInput, MDBBtn } from 'mdbreact'
-import { Modal, Notes, Pills, Sides, Trans } from '../../src/containers'
-import { Card, Grow, Head, Icon } from '../../src/components'
-import { useUser, useNotes } from '../../src/hooks'
-import { fetcher , signin } from '../utils'
+import { Mdmd } from '@tsei/mdmd'
+import { useGrid } from 'use-grid'
+import { fetcher , signin } from './utils'
+import { useUser, useNotes } from '../src/hooks'
+import { Card, Grow, Head, Icon } from '../src/components'
+import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
 
 export const Note :FC = () => {
-    // ******************** FOR MANAGE ******************** //
-    const [lang, setLang] = useState<string>(window.navigator.language||'ja')
-    const [dark, setDark] = useGrid <boolean>({md:true, lg:false})
-    const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
     // ******************** FOR SIGNIN ******************** //
     const [sign, setSign] = useState<boolean>(false)
     const [user, setUser] = useUser({onSign:()=>setSign(false)})
     // ******************** FOR FETCH ******************** //
-    const host = window.location.hostname==="tsei"?"https://tsei.jp":"http://localhost:8000"
+    // const [pages, setPages] = usePages([]) // TODO : This Handle host and home
+    const host = window.location.hostname==="tsei.jp"?"https://tsei.jp":"http://localhost:8000"
     const home = window.location.pathname.split('/').filter(v=>v).length===1
     const [notes, setNotes] = useNotes([host,`api`,window.location.pathname, "/"],fetcher)
+    // ******************** FOR DESIGN ******************** //
+    const [lang, setLang] = useState<string>(window.navigator.language||'ja') // TODO:pages.language
+    const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:pages.dark or not
+    const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
     // ******************** FOR RENDER ******************** //
     const styles = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
       { position:"absolute",transform:"translate(30%,-30%)" },
-      { position:"relative",transform:"translate(-50%)",left:"50%" },
-    ], [])
+      { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50},
+    ], [size])
+    const onClick = useCallback(()=>{
+        setNotes([host,"api/note/"])
+        window.history.pushState('','',`/note/`)
+    }, [host, setNotes])
+    console.log(`Render Note Page`)
     return (
-        <div style={{background:dark?"#000":"#f1f1f1",position:"relative",minHeight:"100%",padding:size*100}}>
+        <div style={{position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%"}}>
             <Helmet>
                 <title>{notes?"note":"Loading..."}</title>
                 <meta charSet="utf-8" />
                 <meta name="Hatena::Bookmark" content="nocomment" />
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
-            <Head {...{dark,size}} onClick={()=>{
-                setNotes([host,"api","note","/"])
-                window.history.pushState('','',`/note/`)
-            }}>Note</Head>
+            <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
             { notes && notes instanceof Array
-              ? <Notes size={false?size:1}
-                    right={(<Icon fa="plus"   size={size} style={styles[1]} onOpen={()=>null}/>)}
-                    left ={(<Icon fa="comment"size={size} style={styles[1]} onOpen={()=>null}/>)}>
-                {notes.map(({id,ja_text,en_text},key) => <Fragment key={`${id}${home?'':key}`}>
-                    <Card {...{dark,size:false?size:1}}
-                        onClick={home?()=>{
-                            setNotes((p:any)=>[p,id,"/"])
-                            window.history.pushState('','',`/note/${id}/`)
-                        }:null}
-                        style={{...(home?{height:500}:{}),fontSize:"1.2rem"}}>
-                        <Mdmd source={lang==="ja"?ja_text:en_text}
-                            color={dark?"dark":"elegant"}/>
-                    </Card>
-                    {/*!home && (note.children||[]).map((child:any,i:number) =>
-                    <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>
-                        <Mdmd source={child[`${lang}_text`]}/>
-                    </Card>)*/}
-                </Fragment> )}
+              ? <Notes size={home?1:size} right={home?undefined:(
+                    <Icon fa="home" {...{size,onClick,style:styles[1]}}/>
+                )} left={home?undefined:(
+                    <Icon fa="comment" {...{size,onClick,style:styles[1]}}/>
+                )}>
+                {notes.map(({id,ja_text,en_text},key) =>
+                    <div key={`${id}${home?'':key}`}>
+                        <Card {...{dark,size:home?1:size}}
+                            onClick={home?()=>{
+                                setNotes([host,`api/note/${id}/`])
+                                window.history.pushState('','',`/note/${id}/`)
+                            }:null}
+                            style={{...(home?{height:500}:{}),fontSize:"1.2rem"}}>
+                            <div>{id}-{home?'':key}</div>
+                            <Mdmd source={lang==="ja"?ja_text:en_text}
+                                color={dark?"dark":"elegant"}/>
+                        </Card>
+                        {/*!home && (note.children||[]).map((child:any,i:number) =>
+                        <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>
+                            <Mdmd source={child[`${lang}_text`]}/>
+                        </Card>)*/}
+                    </div> )}
                 </Notes>
               : <Grow />}
-            {/* TODO <Icon size={size*2} fa="plus" style={styles[1]} onOpen={setNotes}/> */}
+            { notes && <Icon size={size} fa="plus" style={styles[1]}/> }
             {/******************** Modals ********************/}
             <Modal {...{dark,size,open:sign,onClose:()=>setSign(false)}}>
                 <Card {...{dark,size}}>
