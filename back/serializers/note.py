@@ -1,19 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from .models import NoteModel, TagsModel, LikeModel
-
-# [ref](https://stackoverflow.com/questions/55766159/how-to-receive-username-with-token-by-django-rest-authetication)
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username',)
-
-class MyCustomTokenSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    class Meta:
-        model = Token
-        fields = ('key', 'user')
+from back.models import NoteModel, TagsModel, LikeModel
+from .user import UserSerializer
 
 class TagsSerializer(serializers.ModelSerializer):
     class Meta:
