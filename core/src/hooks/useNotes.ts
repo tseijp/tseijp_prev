@@ -25,7 +25,6 @@ export const useNotes = (
         updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
     ) : void => {
         // ********** FOR DoS ********** //
-        console.log(`\tsetNotes ${isFetching.current?"not ":""}run`)
         if (isFetching.current)
             return
         isFetching.current = true
@@ -37,13 +36,11 @@ export const useNotes = (
         // ********** FOR FETCHING ********** //
         // * ERROR if set("note/") in note/90 //
         updateURL = normURL(updateURL, urlRef)
-        console.log(`\t${urlRef.current} to\n\t${updateURL}`)
         updateFetcher(updateURL).then((res:any) => {
             set(/*pre =>  updateURL===urlRef.current
                 ? [...(pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id)), ...res]
                 : */res
             )
-            console.log(res||"None");
             urlRef.current = updateURL as string
             setTimeout(()=>(isFetching.current=false), 1000)
         })

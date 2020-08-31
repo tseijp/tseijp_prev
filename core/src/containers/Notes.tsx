@@ -12,8 +12,8 @@ export const Notes:FC<NotesProps> = ({
     const length = useMemo(()=>(children as any)?.length || 1, [children])
     const [height, setHeight] = useState<number>(width*length) //TODO height
     const [isOpen, setIsOpen] = useState<boolean[]>(Array(length).fill(false))
-    const containerRef= useRef<HTMLDivElement|null>(null)
     const childHeight = useRef( Array(length).fill(width) )
+    const containerRef= useRef<HTMLDivElement|null>(null)
     const setPosition = useCallback(() => {
         const childs  = Array.from(containerRef?.current?.children||[])
         childHeight.current = [...childs].map((c:any)=>c.clientHeight)
@@ -21,7 +21,7 @@ export const Notes:FC<NotesProps> = ({
     }, [width, length, children])
     //  *************************  ➊ React Springs  *************************  //
     const order = useRef<number[]>(initOrder||[...Array(length)].map((_,i:number)=>i))
-    useEffect(()=>{order.current = [...order.current, length]}, [length])
+    useEffect(()=>{order.current = initOrder||[...Array(length)].map((_,i:number)=>i)}, [initOrder,length])
     const getY =({pre=0,arr=order.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
     const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:order.current.indexOf(j)}),scale:j===i?s:1})
     const getG = useCallback(({i=-1,arr=order.current,pre=-1,mx=0,my=0,down=false}) => {

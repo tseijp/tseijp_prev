@@ -4,8 +4,8 @@ import { MDBInput, MDBBtn } from 'mdbreact'
 import { Mdmd } from '@tsei/mdmd'
 import { useGrid } from 'use-grid'
 import { fetcher , signin } from './utils'
-import { useUser, useNotes } from '../src/hooks'
 import { Card, Grow, Head, Icon } from '../src/components'
+import { useNotes, usePages, useUser } from '../src/hooks'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
 
 export const Note :FC = () => {
@@ -13,9 +13,11 @@ export const Note :FC = () => {
     const [sign, setSign] = useState<boolean>(false)
     const [user, setUser] = useUser({onSign:()=>setSign(false)})
     // ******************** FOR FETCH ******************** //
-    // const [pages, setPages] = usePages([]) // TODO : This Handle host and home
+    const [pages, setPages] = usePages({
+        home:({id}:any)=>!id,pathname:({id}:any)=>[`/note/${id||''}`,`/api/note/${id||''}`],id:null,
+        ...(window.location.hostname==="localhost"?{hostname:"localhost",portname:["3000","8000"]}:{})
+    })
     const host = window.location.hostname==="tsei.jp"?"https://tsei.jp":"http://localhost:8000"
-    const home = window.location.pathname.split('/').filter(v=>v).length===1
     const [notes, setNotes] = useNotes([host,`api`,window.location.pathname, "/"],fetcher)
     // ******************** FOR DESIGN ******************** //
     const [lang, setLang] = useState<string>(window.navigator.language||'ja') // TODO:pages.language
@@ -27,7 +29,8 @@ export const Note :FC = () => {
       { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50},
     ], [size])
     const onClick = useCallback(()=>{
-        setNotes([host,"api/note/"])
+        setNotes(pre=>[host,"api/note/"])
+        setPages({id:null})
         window.history.pushState('','',`/note/`)
     }, [host, setNotes])
     console.log(`Render Note Page`)
@@ -40,23 +43,25 @@ export const Note :FC = () => {
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
             <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
+            <p>{pages.hostname||''}</p>
             { notes && notes instanceof Array
-              ? <Notes size={home?1:size} right={home?undefined:(
+              ? <Notes size={pages.home?1:size} right={pages.home?undefined:(
                     <Icon fa="home" {...{size,onClick,style:styles[1]}}/>
-                )} left={home?undefined:(
+                )} left={pages.home?undefined:(
                     <Icon fa="comment" {...{size,onClick,style:styles[1]}}/>
                 )}>
                 {notes.map(({id,ja_text,en_text},key) =>
-                    <div key={`${id}${home?'':key}`}>
-                        <Card {...{dark,size:home?1:size}}
-                            onClick={home?()=>{
+                    <div key={`${id}${pages.home?'':key}`}>
+                        <Card {...{dark,size:pages.home?1:size}}
+                            onClick={pages.home?()=>{
                                 setNotes([host,`api/note/${id}/`])
+                                setPages({id})
                                 window.history.pushState('','',`/note/${id}/`)
                             }:null}
-                            style={{...(home?{height:500}:{}),fontSize:"1.2rem"}}>
-                            <div>{id}-{home?'':key}</div>
-                            <Mdmd source={lang==="ja"?ja_text:en_text}
-                                color={dark?"dark":"elegant"}/>
+                            style={{...(pages.home?{height:500}:{}),fontSize:"1.2rem"}}>
+                            <div>{id}-{pages.home?'':key}</div>
+                            <Mdmd color={dark?"dark":"elegant"}
+                                source={lang==="ja"?ja_text:en_text}/>
                         </Card>
                         {/*!home && (note.children||[]).map((child:any,i:number) =>
                         <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>

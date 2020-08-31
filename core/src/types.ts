@@ -33,21 +33,22 @@ export type NoteFetcher<T=NoteNode> = {
     ) : Promise<AxiosResponse<T>>
 }
 // ************************* 👌 For usePages 👌 ************************* //
-export type PagesType = {
+export type RefedPages<T=any> = T    |((p:Pages)=>T)
+export type MultiPages<T=any> = T|T[]|((p:Pages)=>T|T[])
+export type Pages = {
     [key:string]:any,
-    url  : string,
-    bind?: (q?:string)=>(null | {
-        onClick?:void
-    })
-}[]
-export type UsePagesProps  = BasicProps<PagesType>
-export type UsePagesState  = BasicState<PagesType>
-export type UsePagesAction = BasicAction<PagesType>
+    home    ?:RefedPages<boolean>,// is now home or not
+    auth    ?:RefedPages<boolean>,// is user is login or not
+    protocol?:MultiPages<string|null>,// e.g. "https:"
+    hostname?:MultiPages<string|null>,// e.g. "localhost"
+    portname?:MultiPages<string|null>,// e.g. "3000"   or ["3000"(npm), "8000"(django)]
+    pathname?:MultiPages<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
+}
 // ************************* 👌 For useUser 👌 ************************* //
-export type UserCred<T=string> = {username:T,password:T,email?:string}
+export type UserCredit<T=string> = {username:T,password:T,email?:string}
 export type User<T=object|string> = {
     username :T, status:string,
-    authtoken:T, cred  :UserCred,
+    authtoken:T, credit:UserCredit,
     input ?: {[key:string]:{
         value:string, name:string, type:string, label:string,
         error?:"wrong", success?:"right", autoComplete?:"on",
@@ -55,20 +56,20 @@ export type User<T=object|string> = {
         onChange:(e:any)=>void,
     }}
 }
-export interface UseUserHandler {
+export interface UserProps {
     [key:string]:any,
     onSign   ?:null|(()=>void),
     onSignin ?:null|(()=>void),
     onSignout?:null|(()=>void),
 }
-export interface UseUserConfig<T=User> {
+export interface UserConfig<T=User> {
     [key:string]:any  ,
     url     ?:string  ,
     keys    ?:string[],
     initUser?:T
 }
-export interface SetUserHandler {
+export interface UserHandler {
     (
-        url:string, cred:UserCred, headers?:any
+        url:string, credit:UserCredit, headers?:any
     ) : void|Promise<void|{username:string, authtoken:string}>
 }

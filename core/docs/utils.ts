@@ -1,5 +1,5 @@
 import axios  from 'axios'
-import {UserCred, joinURL} from '../src'
+import {UserCredit, joinURL} from '../src'
 //const url = window.location.origin.match('localhost')?"http://localhost:8000":"https://tsei.jp"
 //const headers = {'Content-Type':'application/json'}
 export const fetcher = async (
@@ -19,7 +19,7 @@ export const fetcher = async (
 
 export const signin = async (
     url:string|string[],
-    cred:UserCred,
+    cred:UserCredit,
     headers:any={'Content-Type':'application/json'}
 )=>{
     if (url instanceof Array)

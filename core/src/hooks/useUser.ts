@@ -1,55 +1,62 @@
 import { useCallback, useState, useMemo} from 'react'
-import {User,UseUserHandler, UseUserConfig,SetUserHandler} from '../types'
+import {User,UserProps,UserHandler,UserConfig,} from '../types'
 import {useCookies} from 'react-cookie'
 //import axios from 'axios';
 //import {useCookie} from './useCookie';
+
+// TODO : from usePages : add following keys
+//userlang?:string|null,// e.g. ja, en
+//username?:string|null,// e.g. tseijp
+// default
+//userlang:window.navigator.language||null, TODO to useUser
+//username:null,
+
 export const useUser = (
-    { onSign,onSignin,onSignout,onError}:UseUserHandler={
-      onSign:null,onSignin:null,onSignout:null,onError:null
-    },
-    config:UseUserConfig={url:'', keys:['username','authtoken']}
-) : [User, (fn?:SetUserHandler)=>void] => {
-    const [cookies, set, rm] = useCookies(config.keys)
+    props :UserProps={},
+    config:UserConfig={url:'', keys:['username','authtoken']} // TODO to config.keys.map
+):[ User, (fn?:UserHandler)=>void ] => {
+    const [cookies, setCookies, rm] = useCookies(config.keys)
     const [inup, setINUP] = useState(cookies.username?'IN':'UP')
-    const [cred, setCred] = useState({username:cookies.username as string||'',password:'',email:''})
-    const setUser = useCallback((fn=null)=> {
+    const [credit, setCred] = useState({username:cookies.username as string||'',password:'',email:''})
+    const setUser = useCallback((fn=null) => {
+        const {onSign=null,onSignin=null,onSignout=null,onError=null} = props
         if (!fn) return setINUP(p=>p!=="IN"?"IN":"UP")
         return cookies.authtoken
           ? (rm('authtoken',{path:'/'}), onSign&&onSign(), onSignout&&onSignout())
-          : fn && fn(cred)
+          : fn && fn(credit)
         .then((user:{username:string,authtoken:string})=>{
-            if(!user.username||!user.authtoken)
+            if (!user.username || !user.authtoken)
                 throw new Error()
-            onSign && onSign()
-            onSignin && onSignin()
-            set("username", user.username ,{path:'/'}) // TODO to config.keys.map
-            set("authtoken",user.authtoken,{path:'/'})
+            onSign   && onSign()  ; setCookies("username", user.username ,{path:'/'});
+            onSignin && onSignin(); setCookies("authtoken",user.authtoken,{path:'/'});
         })
         .catch((_:any)=>onError&&onError())
-    }, [cookies, set, rm, cred, onSign,onSignin,onSignout,onError] )
-    const onChange = useCallback(({target={name:'',value:''}}) => {
+    }, [cookies,setCookies,rm,credit,props] )
+    const onChange = useCallback(({target={name:'',value:''}}) =>
         setCred(p=>({...p, [target.name]:target.value||''}))
-    }, [])
-    //(({target})=>setCred(p=>({...p,[target.name]:target.value})),[])
+    , [])
     const input = useMemo(()=>{
-        return Object.assign({},...['username','password','email'].map(name=>({[name]:{
-            value:(cred as any)[name], name,
-            type:name==="username"?"text":name,
-            label:`Type your ${name}`,
-            ...(name==="password"?{autoComplete:"on" }:{error:"wrong",success:"right"}),
-            group:true, validate:true, onChange,
+        return Object.assign({},
+            ...['username','password','email'].map(name => ({[name]:{
+                ...(name==="password"
+                     ? {autoComplete:"on" }
+                     : {error:"wrong",success:"right"}),
+                value:(credit as any)[name], name, onChange,
+                type :name==="username"?"text":name,
+                label:`Type your ${name}`,
+                group:true, validate:true,
         }})))
-    }, [cred, onChange])
-    return useMemo(()=>[{
+    }, [credit, onChange])
+    return useMemo(() => [{
         username :cookies.cookies  ||'',
         authtoken:cookies.authtoken||'',
-        cred, input, status:cookies.authtoken?"OUT":inup
-    }, setUser], [cookies, cred, input, inup, setUser])
+        credit, input, status:cookies.authtoken?"OUT":inup
+    }, setUser], [cookies, credit, input, inup, setUser])
 }
 /* Example
 const App = ({login, host='https://'}) => {
-    const [cred, setCred] = useState({username:'',password:'',email:''})
-    const [user, set] = useUser(()=>login(host,cred), [login,host,cred])
+    const [credit, setCred] = useState({username:'',password:'',email:''})
+    const [user, set] = useUser(()=>login(host,credit), [login,host,credit])
     return user ? (
         <>
             <h1>Hello ! {user.username} ></h1>
@@ -66,11 +73,11 @@ const App = ({login, host='https://'}) => {
 }
  */
 /* REFv
-   <MDBInput value={cred.username} onChange={onChange} name="username" type="text"
+   <MDBInput value={credit.username} onChange={onChange} name="username" type="text"
        label="Type your username" icon="user" group validate error="wrong" success="right"/>
-   <MDBInput value={cred.password} onChange={onChange} name="password" type="password"
+   <MDBInput value={credit.password} onChange={onChange} name="password" type="password"
        label="Type your password" icon="lock" group validate autoComplete="on" />
    {inup[0]==="UP" &&
-   <MDBInput value={cred.email} onChange={onChange} name="email" type="email"
+   <MDBInput value={credit.email} onChange={onChange} name="email" type="email"
        label="Type your email" icon="envelope" group validate error="wrong" success="right"/> }
 */
