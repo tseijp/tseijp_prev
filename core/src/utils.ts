@@ -7,41 +7,33 @@ export const swap=(arr:number[],ind:number,row:number) => {
 }
 
 // ************************* 👌 use-pages 👌 ************************* //
-// ************************* *************** ************************* //
 export const defaultPages:Pages = {
-    home    :false,
-    auth    :false,
     protocol:window.location.protocol||null,
     hostname:window.location.hostname||null,
     portname:window.location.port    ||null,
     pathname:window.location.pathname||null,
 }
-export const joinPages = (
-    {protocol,hostname,portname,pathname}:Pages
-):string|string[]|null => {
-    if ( [hostname,portname,pathname].some(v=>v===null) )
-        return null
-    if ( [hostname,portname,pathname].every(v=>typeof v==="string") )
-        return joinURL(`${protocol}//${hostname}${portname?`:${portname}`:''}/`,pathname as string)
-    const maxLength = [protocol,hostname,portname,pathname]
-        .map(v=>v instanceof Array?v.length:1).reduce((a,b)=>a>b?a:b)
-    const geti =(i=0,n:any)=>n instanceof Array?(i>n.length?n[n.length-1]:n[i]):n
+export const joinPages = (pages:Pages):string|string[]|null => {
+    const {protocol,hostname,portname,pathname} = pages;
+    const arr = [protocol,hostname,portname,pathname]
+    const getp =(port:any)=>port?`:${port}`:""
+    const geti =(i=0,n:any)=>n instanceof Array?(i<n.length?n[i]:n[n.length-1]):n
+    if ( arr.every(v=>typeof v==="string") )
+        return joinURL(`${protocol}//${hostname}${getp(portname)}/`,pathname as string)
+    const maxLength = arr.map(v=>v instanceof Array?v.length:1).reduce((a,b)=>a>b?a:b)
     return [...Array(maxLength)].map((_,i) =>
-        joinURL(`${geti(i,protocol)}//${(geti(i,hostname))}:${geti(i,portname)}/`,geti(i,pathname))
+        joinURL( `${geti(i,protocol)}//${geti(i,hostname)
+            }${getp(geti(i,portname))}/`,geti(i,pathname) )
     ) as string[]
 }
-export const normPages = (init:Pages, prev:Pages|null=null) => {
-    const state = {...(prev||defaultPages), ...init}
-    const fns = Object.entries(init).map(([key,val])=>{
-        if (typeof val==="function")
-            return [key, val]
-        state[key] = val
-        return null
-    })
-    fns.filter(v=>v).forEach( ([key,val]:any) => (state[key]=val(state)) )
+export const normPages = (pages:Pages|null=null) => {
+    const state = {...(pages||defaultPages)} as Pages
+    Object.entries(state).sort(([_,val]) => typeof val==="function"?1:-1)
+    .forEach(([key,val]:any) => (state[key]=typeof val==="function"?val(state):val))
     state["url"] = joinPages(state)
     return state
 }
+
 // ************************* 🍡 join-url 🍡 ************************* //
 // * This function is fork of join-url/urljoin
 // * Code : https://github.com/jfromaniello/url-join/blob/master/lib/url-join.js
@@ -63,7 +55,7 @@ export function joinURL (...strArray:string[]) : string {
         if (typeof component === 'number')
             component = String(component)
         if (typeof component !== 'string')
-            throw new TypeError('Url must be a string. Received ' + component);
+            throw new TypeError('url must be a string. Received ' + component);
         if (component === '')
             continue;
         if (i > 0)

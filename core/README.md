@@ -38,7 +38,8 @@ hooks | what?
 :-----|:-----  
 useGrid  | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
 useUser  | basic function of account authentication using cookies
-useNotes | manage data stored in Notes  
+usePages | manage page transitions and restful api urls
+useNotes | manage notes data 
 
 # Simple example
 

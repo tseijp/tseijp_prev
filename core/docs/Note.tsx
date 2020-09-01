@@ -9,35 +9,32 @@ import { useNotes, usePages, useUser } from '../src/hooks'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
 
 export const Note :FC = () => {
-    // ******************** FOR SIGNIN ******************** //
-    const [sign, setSign] = useState<boolean>(false)
-    const [user, setUser] = useUser({onSign:()=>setSign(false)})
-    // ******************** FOR FETCH ******************** //
+    // ******************** FOR PAGES ******************** //
     const [pages, setPages] = usePages({
-        home:({id}:any)=>!id,pathname:({id}:any)=>[`/note/${id||''}`,`/api/note/${id||''}`,''],
-        id:window.location.pathname.split('/')[2]||null,
-        ...(window.location.hostname==="localhost"?{hostname:"localhost",portname:["3000","8000","8000"]}:{})
-    })//const host = window.location.hostname==="tsei.jp"?"https://tsei.jp":"http://localhost:8000"
-    const [notes, setNotes] = useNotes(pages.url[1],fetcher)
+        id: window.location.pathname.split('/')[2]||null,
+        ...(window.location.hostname==="localhost"?{portname:["3000","8000"]}:{}),
+        home:({id}:any)=>!id,pathname:({id}:any) =>
+           [    `/note/${id?id+'/':''}`,
+            `/api/note/${id?id+'/':''}`, ''],
+    })
+    // ******************** FOR FETCH ******************** //
+    const [notes, setNotes] = useNotes(pages.url[1], fetcher)
+    const [sign, setSign] = useState(false)
+    const [user, setUser] = useUser({onSign:()=>setSign(false)})
     // ******************** FOR DESIGN ******************** //
-    const [lang, setLang] = useState<string>(window.navigator.language||'ja') // TODO:pages.language
+    const [lang, setLang] = useState<string> (window.navigator.language||'ja')// TODO:pages.language
     const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:pages.dark or not
     const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
     // ******************** FOR RENDER ******************** //
+    const onClick = useCallback(()=>setPages({id:null}), [setPages])
     const styles = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
       { position:"absolute",transform:"translate(30%,-30%)" },
       { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50},
     ], [size])
     React.useEffect(()=>{
         setNotes(pages.url[1]);
-        console.log(`\tuseEffect Note from:${pages.url[1]}`)//DEV
-    }, [pages.url, setNotes])
-    const onClick = useCallback(()=>{
-        //setNotes([host,"api/note/"])
-        setPages({id:null})
-        window.history.pushState('','',`/note/`)
-    }, [setPages])
-    console.log(`Render Note id:${pages.id}`)
+        window.history.pushState('','', (pages.pathname as any)[0]||'')
+    }, [pages, setNotes])
     return (
         <div style={{position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%"}}>
             <Helmet>
@@ -47,32 +44,18 @@ export const Note :FC = () => {
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
             <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
-            {(pages.url instanceof Array?pages.url:[pages.url]).map((u)=>
-                <h3 key={u}>{u}</h3>
-            )}
             { notes && notes instanceof Array
-              ? <Notes size={pages.home?1:size} right={pages.home?undefined:(
-                    <Icon fa="home" {...{size,onClick,style:styles[1]}}/>
-                )} left={pages.home?undefined:(
-                    <Icon fa="comment" {...{size,onClick,style:styles[1]}}/>
-                )}>
+              ? <Notes size={pages.home?1:size}
+                    left={pages.home?undefined:(<Icon fa="comment"{...{size,onClick,style:styles[1]}}/>)}
+                   right={pages.home?undefined:(<Icon fa="home"   {...{size,onClick,style:styles[1]}}/>)}>
                 {notes.map(({id,ja_text,en_text},key) =>
                     <div key={`${id}${pages.home?'':key}`}>
                         <Card {...{dark,size:pages.home?1:size}}
-                            onClick={pages.home?()=>{
-                                //setNotes([host,`api/note/${id}/`])
-                                setPages({id})
-                                window.history.pushState('','',`/note/${id}/`)
-                            }:null}
+                            onClick={pages.home?()=>setPages({id}):null}
                             style={{...(pages.home?{height:500}:{}),fontSize:"1.2rem"}}>
-                            <div>{id}-{pages.home?'':key}</div>
                             <Mdmd color={dark?"dark":"elegant"}
                                 source={lang==="ja"?ja_text:en_text}/>
                         </Card>
-                        {/*!home && (note.children||[]).map((child:any,i:number) =>
-                        <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>
-                            <Mdmd source={child[`${lang}_text`]}/>
-                        </Card>)*/}
                     </div> )}
                 </Notes>
               : <Grow />}
@@ -83,16 +66,18 @@ export const Note :FC = () => {
                     <Icon fa="times" {...{size,style:styles[0]}} onOpen={()=>setSign(false)}/>
                     <Head {...{dark,size}}>SIGN {user.status}
                         <Icon fa="exchange-alt" {...{dark,size}}
-                          size={size} onOpen={()=>setUser()}/></Head>
+                          size={size} onOpen={()=>setUser()}/>
+                         </Head>
                     {!user?.authtoken && <>
-                    <MDBInput {...user?.input?.username} icon="user"/>
-                    <MDBInput {...user?.input?.password} icon="lock"/> {user.status==="UP"&&
-                    <MDBInput {...user?.input?.email} icon="envelope"/>}</>}
+                        <MDBInput {...user?.input?.username} icon="user"/>
+                        <MDBInput {...user?.input?.password} icon="lock"/> {user.status==="UP"&&
+                        <MDBInput {...user?.input?.email} icon="envelope"/>}
+                    </>}
                     <MDBBtn color="elegant" style={{width:"100%",borderRadus:size*50}}
                         onClick={()=>setUser((cred:any)=>signin([
                             pages.url[3],user.status==="IN"?"auth/":"api/user/"
-                        ],cred))}>
-                        {user.authtoken?"Signout":"Get!"}</MDBBtn>
+                        ],cred))}>{ user.authtoken?"Signout":"Get!" }
+                    </MDBBtn>
                 </Card>
             </Modal>
             {/******************** FANTASTIC UI ********************/}
@@ -116,3 +101,9 @@ export const Note :FC = () => {
         </div>
     )
 }
+
+// TODO : make in last of note
+// !home && (note.children||[]).map((child:any,i:number) =>
+//     <Card {...{key:i,dark,size,style:{fontSize:"1.2rem"}}}>
+//         <Mdmd source={child[`${lang}_text`]}/>
+//     </Card>)

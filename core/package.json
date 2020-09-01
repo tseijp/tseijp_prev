@@ -1,7 +1,7 @@
 {
   "name": "@tsei/core",
   "homepage": "/",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "module": "index.js",
   "types": "index.d.ts",
   "main": "index.cjs.js",
@@ -72,12 +72,12 @@
     "cross-env": "^7.0.2",
     "drei": "0.0.67",
     "fs": "0.0.1-security",
-    "jest": "^26.4.2",
+    "jest": "^24.9.0",
     "react-app-rewired": "^2.1.6",
     "react-helmet-async": "^1.0.6",
     "react-scripts": "3.4.1",
     "rollup": "^2.23.0",
-    "ts-jest": "^26.3.0",
+    "ts-jest": "^24.3.0",
     "typescript": "^3.8.3"
   }
 }

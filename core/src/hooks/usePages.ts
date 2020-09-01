@@ -1,44 +1,34 @@
 // # usePages API Options : This is a hook to record the URL of the Restfl API
 //     `const [pages, set] = usePages(host, config)`
 //      host:string is host url e.g. "tsei.jp" or ["tsei.jp"]
-// ## Configs
-//     TODO
 // ## Return Values
-//     export type Pages = {
-//         home    ?:boolean     ,// is now home or not
-//         auth    ?:boolean     ,// is user is login or not
-//         dark    ?:boolean     ,// is user device is dark mode
-//         cursor  ?:number|null ,// is last fetched id
-//         hosturl ?:string|null ,// e.g. "http://localhost:8000"
-//         userlang?:string|null ,// e.g. ja, en
-//         username?:string|null ,// e.g. tseijp
-//     }
-//     setPages = ( URL : string e.g. `/note/` ) => {
+//     pages    : Pages
+//     setPages : ( URL : string e.g. `/note/` ) => {
 //         set : cursor, hosturl, username, userlang
 //         run : window.history.pushState('','',URL)
 //     }
 
 import {useState, useCallback, useRef} from 'react'
 import {Pages, BasicProps, BasicState, BasicAction} from '../types'
-import {normPages} from '../utils'
+import {normPages, defaultPages} from '../utils'
 export const usePages = (
-    initProps:BasicProps<Pages>={},
+    props:BasicProps<Pages>={},
 ) : [Pages, BasicAction<Pages>] => {
-    if (typeof initProps==="function")
-        initProps = initProps()
-    const pagesRef = useRef<Pages>(normPages(initProps))
-    const [pages, set] = useState<Pages>(pagesRef.current)
+    if (typeof props==="function")
+        props = props()
+    const pagesRef = useRef<Pages>({...defaultPages, ...props})
+    const [pages, set] = useState<Pages>(normPages(pagesRef.current))
     //  ************************* setPages *************************  //
-    const setPages = useCallback((initState:BasicState<Pages>) => {
-        if (typeof initState==="function")
-            initState = initState(pagesRef.current)
-        const state = normPages(initState, pagesRef.current)
-        set(state)
-        //console.log("\n\t\t~~setPages~~\n", initState, state)
-        if ( typeof state.pathname==="string" && state.pathname!==pagesRef.current.pathname)
-            window.history.pushState('','', state.pathname)
-        pagesRef.current = state
+    const setPages = useCallback((state:BasicState<Pages>) => {
+        if (typeof state==="function")
+            state = state(pagesRef.current)
+        pagesRef.current = {...pagesRef.current, ...state}
+        set(normPages(pagesRef.current))
+        const {onChange=null} = pagesRef.current
+        onChange && onChange(pagesRef.current)
+        //console.log("\n\t\t~~setPages~~\n", state, state)
     }, [set])
+    //console.log(`\tusePages`)
     return [pages, setPages]
 }
 

@@ -37,13 +37,13 @@ export type RefedPages<T=any> = T    |((p:Pages)=>T)
 export type MultiPages<T=any> = T|T[]|((p:Pages)=>T|T[])
 export type Pages = {
     [key:string]:any,
-    home    ?:RefedPages<boolean>,// is now home or not
-    auth    ?:RefedPages<boolean>,// is user is login or not
+//  url     ?:MultiPages<string|null>,// e.g. null or ["http://localhost:3000/"]
+//  home    ?:RefedPages<boolean>,// is now home or not
+//  auth    ?:RefedPages<boolean>,// is user is login or not
     protocol?:MultiPages<string|null>,// e.g. "https:"
     hostname?:MultiPages<string|null>,// e.g. "localhost"
     portname?:MultiPages<string|null>,// e.g. "3000"   or ["3000"(npm), "8000"(django)]
     pathname?:MultiPages<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
-//    url     ?:MultiPages<string|null>,// e.g. null or ["http://localhost:3000/"]
 }
 // ************************* 👌 For useUser 👌 ************************* //
 export type UserCredit<T=string> = {username:T,password:T,email?:string}
