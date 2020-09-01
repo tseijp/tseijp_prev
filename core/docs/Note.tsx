@@ -14,11 +14,11 @@ export const Note :FC = () => {
     const [user, setUser] = useUser({onSign:()=>setSign(false)})
     // ******************** FOR FETCH ******************** //
     const [pages, setPages] = usePages({
-        home:({id}:any)=>!id,pathname:({id}:any)=>[`/note/${id||''}`,`/api/note/${id||''}`],id:null,
-        ...(window.location.hostname==="localhost"?{hostname:"localhost",portname:["3000","8000"]}:{})
-    })
-    const host = window.location.hostname==="tsei.jp"?"https://tsei.jp":"http://localhost:8000"
-    const [notes, setNotes] = useNotes([host,`api`,window.location.pathname, "/"],fetcher)
+        home:({id}:any)=>!id,pathname:({id}:any)=>[`/note/${id||''}`,`/api/note/${id||''}`,''],
+        id:window.location.pathname.split('/')[2]||null,
+        ...(window.location.hostname==="localhost"?{hostname:"localhost",portname:["3000","8000","8000"]}:{})
+    })//const host = window.location.hostname==="tsei.jp"?"https://tsei.jp":"http://localhost:8000"
+    const [notes, setNotes] = useNotes(pages.url[1],fetcher)
     // ******************** FOR DESIGN ******************** //
     const [lang, setLang] = useState<string>(window.navigator.language||'ja') // TODO:pages.language
     const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:pages.dark or not
@@ -28,12 +28,16 @@ export const Note :FC = () => {
       { position:"absolute",transform:"translate(30%,-30%)" },
       { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50},
     ], [size])
+    React.useEffect(()=>{
+        setNotes(pages.url[1]);
+        console.log(`\tuseEffect Note from:${pages.url[1]}`)//DEV
+    }, [pages.url, setNotes])
     const onClick = useCallback(()=>{
-        setNotes(pre=>[host,"api/note/"])
+        //setNotes([host,"api/note/"])
         setPages({id:null})
         window.history.pushState('','',`/note/`)
-    }, [host, setNotes])
-    console.log(`Render Note Page`)
+    }, [setPages])
+    console.log(`Render Note id:${pages.id}`)
     return (
         <div style={{position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%"}}>
             <Helmet>
@@ -43,7 +47,9 @@ export const Note :FC = () => {
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
             <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
-            <p>{pages.hostname||''}</p>
+            {(pages.url instanceof Array?pages.url:[pages.url]).map((u)=>
+                <h3 key={u}>{u}</h3>
+            )}
             { notes && notes instanceof Array
               ? <Notes size={pages.home?1:size} right={pages.home?undefined:(
                     <Icon fa="home" {...{size,onClick,style:styles[1]}}/>
@@ -54,7 +60,7 @@ export const Note :FC = () => {
                     <div key={`${id}${pages.home?'':key}`}>
                         <Card {...{dark,size:pages.home?1:size}}
                             onClick={pages.home?()=>{
-                                setNotes([host,`api/note/${id}/`])
+                                //setNotes([host,`api/note/${id}/`])
                                 setPages({id})
                                 window.history.pushState('','',`/note/${id}/`)
                             }:null}
@@ -84,7 +90,7 @@ export const Note :FC = () => {
                     <MDBInput {...user?.input?.email} icon="envelope"/>}</>}
                     <MDBBtn color="elegant" style={{width:"100%",borderRadus:size*50}}
                         onClick={()=>setUser((cred:any)=>signin([
-                            host,user.status==="IN"?"auth/":"api/user/"
+                            pages.url[3],user.status==="IN"?"auth/":"api/user/"
                         ],cred))}>
                         {user.authtoken?"Signout":"Get!"}</MDBBtn>
                 </Card>

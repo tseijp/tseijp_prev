@@ -34,12 +34,10 @@ export const usePages = (
             initState = initState(pagesRef.current)
         const state = normPages(initState, pagesRef.current)
         set(state)
+        //console.log("\n\t\t~~setPages~~\n", initState, state)
+        if ( typeof state.pathname==="string" && state.pathname!==pagesRef.current.pathname)
+            window.history.pushState('','', state.pathname)
         pagesRef.current = state
-        /* TODO : DEV : change histry
-        const {hostname, pathname} = state;
-        if ( hostname&&hostname!==pagesRef.current.hostname ||
-             pathname&&pathname!==pagesRef.current.pathname )
-            window.history.pushState('','', joinURL(hostname||'',pathname||'') ) */
     }, [set])
     return [pages, setPages]
 }

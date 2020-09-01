@@ -43,6 +43,7 @@ export type Pages = {
     hostname?:MultiPages<string|null>,// e.g. "localhost"
     portname?:MultiPages<string|null>,// e.g. "3000"   or ["3000"(npm), "8000"(django)]
     pathname?:MultiPages<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
+//    url     ?:MultiPages<string|null>,// e.g. null or ["http://localhost:3000/"]
 }
 // ************************* 👌 For useUser 👌 ************************* //
 export type UserCredit<T=string> = {username:T,password:T,email?:string}
