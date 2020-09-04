@@ -1,4 +1,4 @@
-import {clamp,swap,defaultPages,joinPages,normPages,joinURL,normURL} from '../src/utils'
+import {clamp,swap,defaultPages,joinPages,normPages,joinURL} from '../src/utils'
 import {Pages} from '../src/types'
 //import { mocked } from 'ts-jest/utils'
 //jest.mock('./utilsStore')
@@ -45,36 +45,64 @@ describe('*************** FOR USEPAGES ***************', () => {
     })
     describe('normPages', () => {
         const base = (i:number|null=null):Pages => ({
-            home:({id}:any)=>!id, id:i,
+            home:({id}:any)=>!id, id:i, search:"",
             protocol:"http://"  , portname:["8000","3000"],
             hostname:"localhost", pathname:({id}:any) =>
                [`/api/note/${id?id+'/':''}`,
                     `/note/${id?id+'/':''}`,]
         })
-        expect( normPages({...base()}) )
-            .toStrictEqual({...base(), home:true,
-            pathname:["/api/note/", "/note/"],
-            url:["http://localhost:8000/api/note/",
-                 "http://localhost:3000/note/"]
+        describe('base', () => {
+            expect( normPages({...base()}) )
+               .toStrictEqual({...base(), home:true,
+                pathname:["/api/note/", "/note/"],
+                url:[new URL("http://localhost:8000/api/note/"),
+                     new URL("http://localhost:3000/note/")]
+            })
+            expect( normPages({...base(90)}) )
+               .toStrictEqual({...base(90), home:false,
+                pathname:["/api/note/90/", "/note/90/"],
+                url:[new URL("http://localhost:8000/api/note/90/"),
+                     new URL("http://localhost:3000/note/90/")]
+            })
         })
-        expect( normPages({...base(90)}) )
-            .toStrictEqual({...base(90), home:false,
-            pathname:["/api/note/90/", "/note/90/"],
-            url:["http://localhost:8000/api/note/90/",
-                 "http://localhost:3000/note/90/"]
+        const search =({c}:any)=>[c?`?c=${c}`:"", ""]
+        describe('search', () => {
+            expect( normPages({...base(),c:25,search}) )
+             .toStrictEqual({...base(),c:25,search:[`?c=25`,""],home:true,
+                pathname:["/api/note/", "/note/"],
+                url:[new URL("http://localhost:8000/api/note?c=25"),
+                     new URL("http://localhost:3000/note/")]
+            })
         })
     })
+
 })
 describe('*************** FOR JOIN URL ***************', () => {
     const host = 'http://localhost:3000'
-    test('joinURL', () => {
-        expect(joinURL(`${host}/`,'note','3','/')).toBe(`${host}/note/3/`)
-        expect(joinURL(host,'/note/','/tseijp/')).toBe(`${host}/note/tseijp/`)
+    describe('joinURL', () => {
+        test('basic', () => {
+            expect(joinURL(`${host}/`,'note','3','/')).toBe(`${host}/note/3/`)
+            expect(joinURL(host,'/note/','/tseijp/')).toBe(`${host}/note/tseijp/`)
+        })
+        test('none', () => {
+            expect(joinURL(host,'note/','','/')).toBe(`${host}/note/`)
+            expect(joinURL(host,'note','','/','')).toBe(`${host}/note/`)
+        })
+        test('escape', () => {
+            expect(joinURL(host,'note/','?q=note')).toBe(`${host}/note?q=note`)
+            expect(joinURL(host,'note/','#TOC')).toBe(`${host}/note#TOC`)
+        })
     })
-    test('normURL', () => {
-        expect(normURL(`${host}/note`)).toBe(`${host}/note`)
-        expect(normURL((p)=>`${p}/note`, {current:`${host}`})).toBe(`${host}/note`)
-        expect(normURL([`${host}/`,'note','3','/'])).toBe(`${host}/note/3/`)
-        expect(normURL([host,'/note/','/tseijp/'])).toBe(`${host}/note/tseijp/`)
+    /* NOT USING
+    describe('normURL', () => {
+        test('basic', () => {
+            expect(normURL(`${host}/note`)).toBe(`${host}/note`)
+            expect(normURL((p)=>`${p}/note`, {current:`${host}`})).toBe(`${host}/note`)
+        })
+        test('array', () => {
+            expect(normURL([`${host}/`,'note','3','/'])).toBe(`${host}/note/3/`)
+            expect(normURL([host,'/note/','/tseijp/'])).toBe(`${host}/note/tseijp/`)
+        })
     })
+    */
 })

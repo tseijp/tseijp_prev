@@ -4,7 +4,6 @@ import { unregister } from './serviceWorker';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { Home } from './Home';
-import { Hook } from './Hook';
 import { None } from './None';
 import { Note } from './Note';
 
@@ -18,7 +17,6 @@ const App = (
         <BrowserRouter>
             <Switch>
                 <Route path="/"     component={Home} exact/>
-                <Route path="/hook" component={Hook} exact/>
                 <Route path="/note" component={Note}/>
                 <Route path='/none' component={None}/>
                 <Redirect to='/none' />

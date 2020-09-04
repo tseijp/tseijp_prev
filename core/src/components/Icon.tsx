@@ -38,5 +38,5 @@ export const Icon :FC<BasedProps> = ({
                 ].join(' ')),
             ...styles[0]}}
            {...{children,className:className+fa?` fas fa-${fa}`:""}}
-           {...props} {...bind()}  />
+           {...bind()} {...props} />
 }

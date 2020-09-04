@@ -1,30 +1,51 @@
-// # usePages API Options : This is a hook to record the URL of the Restfl API
-//     `const [pages, set] = usePages(host, config)`
-//      host:string is host url e.g. "tsei.jp" or ["tsei.jp"]
-// ## Return Values
-//     pages    : Pages
-//     setPages : ( URL : string e.g. `/note/` ) => {
-//         set : cursor, hosturl, username, userlang
-//         run : window.history.pushState('','',URL)
-//     }
+/*** ************************* USE PAGES *************************
+  * This is a hook to record the URL of the Restfl API
+  *   - `const [pages, set] = usePages({id:null,home:({id})=>!id}, config)`
+  *   - `const onClick=()=>set({id:90}, config)`
+  *   - ```
+  *     {Page, id:null}  <=data=> (DB1 : URL1 by id), (DB2 : URL2 by id)
+  *          | change id
+  *          |  => change URLs by id (e.g. /api to /api/90)
+  *          v  => change user state (e.g. home:true to home:false)
+  *     {New Page, id:90}
+  *     ```
+  * # ***** usePages API Configs *****
+  * ## Props Values
+  *   - `const _ = usePages(@initPages, @config)`
+  *   - @initPages = {
+  *         @protocol?:MultiPages<string|null>, e.g. "https:"
+  *         @hostname?:MultiPages<string|null>, e.g. "localhost"
+  *         @portname?:MultiPages<string|null>, e.g. "3000"   or ["3000"(npm), "8000"(django)]
+  *         @pathname?:MultiPages<string|null>, e.g. "/note/" or ["/note/", "/api/note/"]
+  *         @search  ?:MultiPages<string|null>, e.g. "/note/" or ["/note/", "/api/note/"]
+  *   - @config = {TODO}
+  *   - type MultiPages<T=any> = T|T[]|((p:Pages)=>T|T[])
+  * ## Return Values
+  *   - @pages : {...@initPages(as T|T[]),
+  *         @url ?: from initPages parameters   e.g. "http..." or ["http...", ...more]
+  *         @XXX ?: any value you set when init e.g. @home:true
+  *   - @set   : (args) => void ( setState )
+ *** ************************* ********* *************************/
 
 import {useState, useCallback, useRef} from 'react'
-import {Pages, BasicProps, BasicState, BasicAction} from '../types'
-import {normPages, defaultPages} from '../utils'
-export const usePages = (
-    props:BasicProps<Pages>={},
-) : [Pages, BasicAction<Pages>] => {
+import {Pages, PagesConfig as Config, BasicProps, BasicState, BasicAction} from '../types'
+import {defaultPages, defaultPagesConfig as defaultConfig, normPages} from '../utils'
+export const usePages = <T=any>(
+    props :BasicProps<Pages<T>>={},
+    config:Config<T>={},
+) : [Pages<T>, BasicAction<Pages<T>>] => {
     if (typeof props==="function")
         props = props()
-    const pagesRef = useRef<Pages>({...defaultPages, ...props})
-    const [pages, set] = useState<Pages>(normPages(pagesRef.current))
+    const pagesRef    = useRef <Pages <T>>({...defaultPages , ...props })
+    const configRef   = useRef <Config<T>>({...defaultConfig, ...config})
+    const [pages,set] = useState<Pages<T>>( normPages(pagesRef.current) )
     //  ************************* setPages *************************  //
-    const setPages = useCallback((state:BasicState<Pages>) => {
+    const setPages = useCallback((state:BasicState<Pages<T>>) => {
         if (typeof state==="function")
             state = state(pagesRef.current)
         pagesRef.current = {...pagesRef.current, ...state}
         set(normPages(pagesRef.current))
-        const {onChange=null} = pagesRef.current
+        const {onChange=null} = configRef.current;
         onChange && onChange(pagesRef.current)
         //console.log("\n\t\t~~setPages~~\n", state, state)
     }, [set])

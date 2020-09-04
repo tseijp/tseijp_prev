@@ -18,9 +18,9 @@ export interface NotesProps extends BasedProps{grandren?:any,right?:RC,left?:RC,
 
 // ************************* 👌 For useNotes 👌 ************************* //
 export type NoteElement = {
-    ja_text?:string, posted_user?:string, note_id?:number, isAuthor ?: boolean,
-    en_text?:string, posted_time?:number,      id?:number, isAdmin  ?: boolean,
-    children ?: NoteNode, [key:string]:any
+    ja_text ?:string, posted_user?:string, note_id?:number, isAuthor ?: boolean,
+    en_text ?:string, posted_time?:number,      id?:number, isAdmin  ?: boolean,
+    children?:NoteNode, [key:string]:any
 }
 export type NoteNode =
   | NoteElement[]
@@ -33,17 +33,29 @@ export type NoteFetcher<T=NoteNode> = {
     ) : Promise<AxiosResponse<T>>
 }
 // ************************* 👌 For usePages 👌 ************************* //
+export interface URL {
+    hash: string; hostname: string; search: string;
+    host: string; username: string; protocol: string;
+    href: string; password: string; toString(): string;
+    port: string; pathname: string; readonly origin: string;
+}
 export type RefedPages<T=any> = T    |((p:Pages)=>T)
 export type MultiPages<T=any> = T|T[]|((p:Pages)=>T|T[])
-export type Pages = {
+export interface PagesConfig<T=any> {
     [key:string]:any,
-//  url     ?:MultiPages<string|null>,// e.g. null or ["http://localhost:3000/"]
-//  home    ?:RefedPages<boolean>,// is now home or not
-//  auth    ?:RefedPages<boolean>,// is user is login or not
+    onChange?:null|((p:Pages<T>)=>void),
+}
+export interface Pages<T=any> extends PagesConfig{ // (TODO : how T spread in Pages)
+    [key:string]:any,
+//  config  ?:PagesConfig<T>|null,
+//  ...T (TODO : how T spread in Pages)
     protocol?:MultiPages<string|null>,// e.g. "https:"
     hostname?:MultiPages<string|null>,// e.g. "localhost"
     portname?:MultiPages<string|null>,// e.g. "3000"   or ["3000"(npm), "8000"(django)]
     pathname?:MultiPages<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
+    search  ?:MultiPages<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
+    url     ?:URL|URL[]        ,// e.g. null or ["http://localhost:3000/"]
+//    id      ?:string|number|null
 }
 // ************************* 👌 For useUser 👌 ************************* //
 export type UserCredit<T=string> = {username:T,password:T,email?:string}

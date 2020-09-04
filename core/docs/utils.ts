@@ -10,7 +10,7 @@ export const fetcher = async (
         url = joinURL(...url)
     return axios
         .get(url, headers)
-        .then(res=>{
+        .then(res => {
             if(!res || res.status!==200)
                 throw new Error('Bad Request')
             return res.data
@@ -21,7 +21,7 @@ export const signin = async (
     url:string|string[],
     cred:UserCredit,
     headers:any={'Content-Type':'application/json'}
-)=>{
+) => {
     if (url instanceof Array)
         url = joinURL(...url)
     return axios

@@ -4,7 +4,7 @@ import { useGesture, } from 'react-use-gesture'
 import { clamp, swap } from '../utils'
 import { NotesProps } from '../types'
 export const Notes:FC<NotesProps> = ({
-    initOrder=null,
+    order=null,
     grandren=null, right=null, left=null, depth=0,
     children, size=1, style={},...props
 }) => {
@@ -20,11 +20,11 @@ export const Notes:FC<NotesProps> = ({
         children && setHeight(childHeight.current.reduce((a,b)=>a+b) || width*length)
     }, [width, length, children])
     //  *************************  ➊ React Springs  *************************  //
-    const order = useRef<number[]>(initOrder||[...Array(length)].map((_,i:number)=>i))
-    useEffect(()=>{order.current = initOrder||[...Array(length)].map((_,i:number)=>i)}, [initOrder,length])
-    const getY =({pre=0,arr=order.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
-    const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:order.current.indexOf(j)}),scale:j===i?s:1})
-    const getG = useCallback(({i=-1,arr=order.current,pre=-1,mx=0,my=0,down=false}) => {
+    const orderRef = useRef<number[]>(order||[...Array(length)].map((_,i:number)=>i))
+    useEffect(()=>{orderRef.current = order||[...Array(length)].map((_,i:number)=>i)}, [order,length])
+    const getY =({pre=0,arr=orderRef.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
+    const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
+    const getG = useCallback(({i=-1,arr=orderRef.current,pre=-1,mx=0,my=0,down=false}) => {
         return (j:number) => (down&&j===i)
             ? {scale:0.9, x:mx, y:getY({pre})+my}
             : {scale:1.0, x:0 , y:getY({pre:arr.indexOf(j),arr})}
@@ -35,10 +35,10 @@ export const Notes:FC<NotesProps> = ({
           last,down,args:[i],movement:[mx,my],vxvy:[vx,vy],cancel,startTime,timeStamp
         }) => {//  cancel,startTime,timeStamp
             if(!isOpen[i] && cancel && timeStamp-startTime<1000) cancel()
-            const pre = order.current.indexOf(i)
+            const pre = orderRef.current.indexOf(i)
             const row = clamp( Math.round(pre+my/width), 0, length-1 )
-            const arr = swap(order.current, pre, row)
-            if(!down) order.current = arr // TODO ?
+            const arr = swap(orderRef.current, pre, row)
+            if(!down) orderRef.current = arr // TODO ?
             if(!last) return set( getG({i,arr,pre,mx,my,down}) )
             const x = (mx<0?-1:1) * fontSize// * 2 // window.innerWidth/2 -
             setIsOpen(p=>[...Object.assign([],{[i]:!p[i]})])
@@ -61,7 +61,7 @@ export const Notes:FC<NotesProps> = ({
             : child
     })
     useEffect(()=>{ setPosition(); set(getG({})) }, [setPosition, set, getG] )
-    //!depth&&console.log(`Render Notes:${depth} height:${height} length:${length} order:`,order.current);
+    //!depth&&console.log(`Render Notes:${depth} height:${height} length:${length} orderRef:`,orderRef.current);
     return (
         <div ref={containerRef} style={{...styles[0]}}>
             {springs.map( ({x,y,scale}, key) =>
