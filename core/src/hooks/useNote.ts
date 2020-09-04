@@ -3,7 +3,7 @@ import { NoteURL, NoteNode, NoteFetcher, BasicProps, BasicState} from '../types'
 //import useSWR from 'swr'
 //import { AxiosResponse } from 'axios'
 import {joinURL} from '../utils'
-export const useNotes = (
+export const useNote = (
     initURL:BasicProps<NoteURL>,
     initFetcher:NoteFetcher<NoteNode>
 ) : [ NoteNode, (
@@ -20,11 +20,11 @@ export const useNotes = (
     const isFetching = useRef(false)
     const [note,set] = useState<NoteNode>(null) // TODO useSWR(urlRef.current,isFetching)
     useEffect(() => {fetcherRef.current(urlRef.current).then((r:any)=>set(r))}, [])
-    //  ************************* 📋 SetNotes 📋 *************************  //
-    //  * setNotes("/api/note", fetcher) => refresh notes data from url
-    //  * setNotes(p=>[p,"32"], fetcher) => add note data from url
+    //  ************************* 📋 SetNote 📋 *************************  //
+    //  * setNote("/api/note", fetcher) => refresh note data from url
+    //  * setNote(p=>[p,"32"], fetcher) => add note data from url
     //  ************************* ************** *************************  //
-    const setNotes = useCallback((
+    const setNote = useCallback((
         updateURL:BasicState<NoteURL>,
         updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
     ) : void => {
@@ -36,31 +36,31 @@ export const useNotes = (
             updateURL = updateURL(urlRef.current)
         if (updateURL instanceof Array)
             updateURL = joinURL(...updateURL)
+        //const preURL = urlRef.current
+        urlRef.current = updateURL
         if (updateFetcher===null)
             updateFetcher = fetcherRef.current
         else
             fetcherRef.current = updateFetcher
-        const preURL = urlRef.current
-        urlRef.current = updateURL
         // ********** FOR FETCHING ********** //
         updateFetcher(updateURL).then((res:any) => {
-            set(pre =>  {
-                return urlRef.current.split('?')[0]===preURL.split('?')[0]
-                    ? [...(pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id)), ...res]
-                    : res
-            })
+            set(/*pre => urlRef.current.split('?')[0]===preURL.split('?')[0]
+                  ? [...(pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id)),...res]
+                  : */res
+                 // TOCO DEV
+            )
             setTimeout(() => (isFetching.current = false), 1000)
         })
     }, [])
-    return [ note, setNotes]
+    return [ note, setNote]
 }
 
 /* PREVIOUS
-export const useNotes = ({initNotes=[],isHome=false}) => {
-    const [data, set] = useState<Note[]>(initNotes)
+export const useNote = ({initNote=[],isHome=false}) => {
+    const [data, set] = useState<Note[]>(initNote)
     const head = useRef<number>(-1)
     const foot = useRef<number>(-1)
-    const setNotes = useCallback((input:Note[],mode='init')=>{
+    const setNote = useCallback((input:Note[],mode='init')=>{
         const diff = input.filter(c=>data.every(p=>p.id!==c.id))
         foot.current = isHome? -1 : (mode==='head'?data:input).slice(-1)[0].id
         set( pre => (mode==='init')? input
@@ -68,10 +68,10 @@ export const useNotes = ({initNotes=[],isHome=false}) => {
                  ...(mode==='tail' ? diff : []),       ] )
         // TODO if (mode==='tail') animateScroll.scrollToBottom();
     }, [data])
-    const deleteNotes = useCallback((id:number)=>{
+    const deleteNote = useCallback((id:number)=>{
         if ( id===head.current ) return
         set(pre=>pre.filter(p=>p.id!==id))
     }, [])
-    return [data, setNotes, deleteNotes]
+    return [data, setNote, deleteNote]
 }
 */
