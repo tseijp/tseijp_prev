@@ -20,7 +20,7 @@ def create(note, user, id, parent):
     ))
 
 @login_required
-def register_notes(request):
+def register(request):
     NoteModel.objects.all().delete()
     user = request.user
     id = 0

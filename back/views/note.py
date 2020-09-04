@@ -3,55 +3,71 @@ from back.models      import NoteModel
 from back.paginations import NotePagination
 from back.serializers import NoteSerializer
 # """"""""""""""" REST """"""""""""""" #
-from rest_framework import viewsets, mixins, status as STATUS
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import TokenAuthentication
 
 # """"""""""""""""""""""""" FOR NOTE """"""""""""""""""""""""" #
-class NoteViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
-):
-    queryset = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
-    serializer_class = (NoteSerializer)
-    authentication_classes = (TokenAuthentication, )
+class NoteViewSet(GenericViewSet):
+    queryset = NoteModel.objects.all()
+    serializer_class = NoteSerializer
+    pagination_class = NotePagination
     permission_classes = (AllowAny, )
-    # """"""""""""""" FOR GET TO /note/ """"""""""""""" #
-    def list(self, request):
-        objs = NoteModel.objects.filter(note_object__isnull=True).order_by('-id')
-        data = NoteSerializer(objs, many=True, request_user=request.user)
-        return Response(data.data, status=STATUS.HTTP_200_OK)
-    # """"""""""""""" FOR GET TO /note/xxx/ """"""""""""""" #
+    authentication_classes = (TokenAuthentication, )
+    # """"""""""""""" """"""""" """"""""""""""" #
+    # """"""""""""""" ORVERRIDE """"""""""""""" #
+    # """"""""""""""" """"""""" """"""""""""""" #
+    def get_paginated_response(self, data, request=None):
+        assert self.paginator is not None
+        return Response({
+            'isAuth'  : "HI", # TODO,
+            'next'    : self.paginator.get_next_link()     if data else None,
+            'previous': self.paginator.get_previous_link() if data else None,
+            'results' : data if data else "Page Not found.",
+        }, status = 404 if data is None else 200)
+    # """"""""""""""" FOR GET TO /api/note/ """"""""""""""" #
+    def list(self, request, *args, **kwargs):
+        page = self.paginate_queryset( self\
+                   .filter_queryset( self.get_queryset() )
+                   .filter(note_object__isnull=True) )
+        if page is None:
+            return self.get_paginated_response(None,  request=request)
+        data = self.get_serializer(page, many=True,   request=request)
+        return self.get_paginated_response(data.data, request=request)
+    # """"""""""""""" FOR GET TO /api/note/xxx/ """"""""""""""" #
     def retrieve(self, request, pk):
+        objs = self.filter_queryset(self.get_queryset())
         if str(pk).isdecimal():
             reps = self.get_object().get_children_id()
-            objs = NoteModel.objects.filter(id__in=reps).order_by('id')
+            retr = objs.filter(id__in=reps)
         else:
-            user = User.objects.filter(username=pk)
-            objs = NoteModel.objects.filter(posted_user=user[0])\
-                    .filter(note_object__isnull=True).order_by('-id') if user else None
-        if not objs:
-            return Response("Not found", status=STATUS.HTTP_404_NOT_FOUND)
-        data = NoteSerializer(objs, many=True, request_user=request.user)
-        return Response(data.data, status=STATUS.HTTP_200_OK)
+            user = User.objects.filter(username=pk) or [None]
+            retr = objs.filter(posted_user=user[0], note_object__isnull=True)
+        page = self.paginate_queryset(retr) if retr else None
+        if not page:
+            return self.get_paginated_response(None , request=request)
+        data = self.serializer_class(page, many=True, request=request)
+        return self.get_paginated_response(data.data, request=request)
+
+    ''' TODO : DEV (yyy(now ajax) to tags, like, note )
+        WHEN : 9-1 ~ 9-2
     # """"""""""""""" FOR POST TO /note/ """"""""""""""" #
     def create(self, request):
         if request.user:
             res = self.post_note(request.data, request.user)
         if res:
-            return Response(res, status=STATUS.HTTP_201_CREATED)
-        return Response({"error": "not exist"}, status=STATUS.HTTP_404_NOT_FOUND)
-    # """"""""""""""" FOR POST TO /note/2/ajax/ """"""""""""""" #
+            return Response(res, status=201)
+        return Response({"error": "not exist"}, status=404)
+
+    # """"""""""""""" FOR POST TO /api/note/xxx/yyy/ """"""""""""""" #
     @action(detail=True, methods=['POST'])
     def ajax(self, request, pk):
         if not request.user:
-            return Response({"error": "not exist"}, status=STATUS.HTTP_404_NOT_FOUND)
-        note = NoteModel.objects.get(id=pk)
+            return Response({"error": "not exist"}, status=404)
+        note = self.queryset.get(id=pk)
         req  = dict(data=request.data, user=request.user, note=note)
         res0  = {'message':'not working in ajax (%s)'%pk}
         res1 = self.post_note(**req)
@@ -59,8 +75,7 @@ class NoteViewSet(
         res3 = self.post_tags(**req)
         res3 = self.delete_note(**req)
         res  = [r for r in [res0,res1,res2,res3] if r is not None][-1]
-        return Response(res, status=STATUS.HTTP_201_CREATED)
-    '''
+        return Response(res, status=201)
     # """"""""""""""" POST """"""""""""""" #
     def post_note(self, data, user, note=None):
         fields = ['ja_text', 'en_text', 'note_object', 'order_back']
