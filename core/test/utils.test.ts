@@ -1,5 +1,5 @@
-import {clamp,swap,defaultPages,joinPages,normPages,joinURL} from '../src/utils'
-import {Pages} from '../src/types'
+import {clamp,swap,defaultPage,joinPage,normPage,equalPathname,joinURL} from '../src/utils'
+import {Page} from '../src/types'
 //import { mocked } from 'ts-jest/utils'
 //jest.mock('./utilsStore')
 describe('*************** FOR BASIC ***************', () => {
@@ -13,28 +13,37 @@ describe('*************** FOR BASIC ***************', () => {
         expect(swap([0,1,2,3,4],2,3)).toStrictEqual([0,1,3,2,4]);
         expect(swap([0,1,2,3,4],4,1)).toStrictEqual([0,4,1,2,3]);
     });
+    const local = "http://localhost"
+    test('equalPathname', () => {
+        expect(equalPathname(local, local+"/")).toBe(true)
+        expect(equalPathname(local, local+"/api")).toBe(false)
+        expect(equalPathname(local+"/api", local+"/api/")).toBe(true)
+        expect(equalPathname(local+"/api", local+"/api/v2")).toBe(false)
+        expect(equalPathname(local+"?q=0", local+"/?q=1")).toBe(true)
+        expect(equalPathname(local+"?q=0", local+"?q=1/")).toBe(true)
+    })
 })
 describe('*************** FOR USEPAGES ***************', () => {
-    describe('joinPages', () => {
-        test('string', () => {
-            expect(joinPages({...defaultPages,
+    describe('joinPage', () => {
+        test('string'  , () => {
+            expect(joinPage({...defaultPage,
                 protocol:"http:"    , portname:"8000",
                 hostname:"localhost", pathname:"/api/note/3/"
             })).toBe("http://localhost:8000/api/note/3/")
-            expect(joinPages({...defaultPages,
+            expect(joinPage({...defaultPage,
                 protocol:"https:"   , portname:"3000"    ,
                 hostname:"localhost", pathname:"note/3/"
             })).toBe("https://localhost:3000/note/3/")
         })
         test('string[]', () => {
-            expect(joinPages({...defaultPages,
+            expect(joinPage({...defaultPage,
                 protocol:"http:"    , portname:["8000", "3000"],
                 hostname:"localhost", pathname:["/api/note/","note"],
             })).toStrictEqual([
                 "http://localhost:8000/api/note/",
                 "http://localhost:3000/note"
             ])
-            expect(joinPages({...defaultPages,
+            expect(joinPage({...defaultPage,
                 protocol:"https:"   , portname:null,
                 hostname:"tsei.jp"  , pathname:["api/note/3/","note/3"],
             })).toStrictEqual([
@@ -43,39 +52,32 @@ describe('*************** FOR USEPAGES ***************', () => {
             ])
         })
     })
-    describe('normPages', () => {
-        const base = (i:number|null=null):Pages => ({
-            home:({id}:any)=>!id, id:i, search:"",
+    describe('normPage', () => {
+        const pathname =  ({id}:any) =>
+           [`/api/note/${id?id+'/':''}`,
+                `/note/${id?id+'/':''}`,]
+        const base = (i:number|null=null) : Page => ({
+            ...defaultPage,
+            isHome :({id}:any)=>!id, id:i?`${i}`:"",
+            isLocal:true, search:"",
+            hostname:"localhost", pathname,
             protocol:"http://"  , portname:["8000","3000"],
-            hostname:"localhost", pathname:({id}:any) =>
-               [`/api/note/${id?id+'/':''}`,
-                    `/note/${id?id+'/':''}`,]
         })
         describe('base', () => {
-            expect( normPages({...base()}) )
-               .toStrictEqual({...base(), home:true,
+            expect( normPage(base()) )
+               .toStrictEqual({...base(), isHome:true,
                 pathname:["/api/note/", "/note/"],
-                url:[new URL("http://localhost:8000/api/note/"),
-                     new URL("http://localhost:3000/note/")]
+                urls:[new URL("http://localhost:8000/api/note/"),
+                      new URL("http://localhost:3000/note/")]
             })
-            expect( normPages({...base(90)}) )
-               .toStrictEqual({...base(90), home:false,
+            expect( normPage(base(90)) )
+              .toStrictEqual({...base(90), isHome:false,
                 pathname:["/api/note/90/", "/note/90/"],
-                url:[new URL("http://localhost:8000/api/note/90/"),
-                     new URL("http://localhost:3000/note/90/")]
-            })
-        })
-        const search =({c}:any)=>[c?`?c=${c}`:"", ""]
-        describe('search', () => {
-            expect( normPages({...base(),c:25,search}) )
-             .toStrictEqual({...base(),c:25,search:[`?c=25`,""],home:true,
-                pathname:["/api/note/", "/note/"],
-                url:[new URL("http://localhost:8000/api/note?c=25"),
-                     new URL("http://localhost:3000/note/")]
+                urls:[new URL("http://localhost:8000/api/note/90/"),
+                      new URL("http://localhost:3000/note/90/")]
             })
         })
     })
-
 })
 describe('*************** FOR JOIN URL ***************', () => {
     const host = 'http://localhost:3000'

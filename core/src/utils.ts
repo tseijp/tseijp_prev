@@ -1,25 +1,32 @@
-import {Page, PageConfig} from './types'
+import {Page, PageConfig, URLType} from './types'
 
 export const clamp = (x:number, min=0, max=1) :number  => (x<min)?min:(x>max)?max:x
 export const swap=(arr:number[],ind:number,row:number) => {
     const ret = [...arr.slice(0, ind), ...arr.slice(ind+1, arr.length)]
     return [...ret.slice(0, row), ...arr.slice(ind, ind+1), ...ret.slice(row)]
 }
-
+export const equalPathname = (...urls:(URLType|string)[]) =>
+    urls.map(u => typeof u==="string"? new URL(u) : u)
+        .map(u => joinURL(u.pathname, "/"))
+        .every((u, _, self) => u===self[0])
+export const typeOf    =(v:any,...ts:string[]):boolean=>!!ts.filter(t=>typeof v===t).length
+export const instanceOf=(v:any,...is:   any[]):boolean=>!!is.filter(i=>v instanceof i).length
 // ************************* 👌 use-page 👌 ************************* //
-export const defaultPage:Page = {
+export const defaultPage = {
     id      :window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===1)||"",
+    isHome  :window.location.pathname.split('/').filter(v=>v).length > 1,
     isLocal :window.location.hostname==="localhost",
     protocol:window.location.protocol||"",
     hostname:window.location.hostname||"",
     portname:window.location.port    ||"",
     pathname:window.location.pathname||"",
     search  :window.location.search  ||"",
+    urls    :[new URL(window.location.href)],
 }
 export const defaultPageConfig:PageConfig = {
-    onChange:null
+    onChange:null,
 }
-export const joinPage = (page:Page):string|string[] => {
+export const joinPage = <T={}>(page:Page<T>):string|string[] => {
     const {protocol,hostname,portname,pathname="",search=""} = page;
     const arr = [protocol,hostname,portname,pathname,search]
     const getp =(port:any)=>port?`:${port}`:""
@@ -32,17 +39,15 @@ export const joinPage = (page:Page):string|string[] => {
             }${getp(geti(i,portname))}/`,geti(i,pathname),geti(i,search) )
     ) as string[]
 }
-export const normPage = <T=any>(page:Page<T>|null=null) => {
-    const state = {...(page||defaultPage)} as Page
+export const normPage = <T extends {}={}>(page:Page<T>) => {
+    const state = {...page} as any//Page<T>
     Object.entries(state).sort(([_,val]) => typeof val==="function"?1:-1)
     .forEach(([key,val]:any) => (state[key]=typeof val==="function"?val(state):val))
-    const urls = joinPage(state)
-    state["url"] = urls instanceof Array
-      ? urls.map(u=>new URL(u))
-      : new URL(urls)
-    return state
+    const urls = joinPage<T>(state as Page<T>)
+    return {...state, urls:urls instanceof Array
+      ? urls.map((u:any) => typeof u==="string" ? new URL(u) : u) as URLType[]
+      : [typeof urls==="string" ? new URL(urls) : urls] as URLType[] } as Page<T>
 }
-
 // ************************* 🍡 join-url 🍡 ************************* //
 // * This function is fork of join-url/urljoin
 // * Code : https://github.com/jfromaniello/url-join/blob/master/lib/url-join.js

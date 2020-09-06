@@ -1,13 +1,13 @@
 import { useEffect, useCallback, useState, useRef } from 'react'
-import { NoteURL, NoteNode, NoteFetcher, BasicProps, BasicState} from '../types'
+import { NoteNode, NoteFetcher, NoteURL, URLType, BasicProps } from '../types'
+import { equalPathname, joinURL } from '../utils'
 //import useSWR from 'swr'
 //import { AxiosResponse } from 'axios'
-import {joinURL} from '../utils'
 export const useNote = (
     initURL:BasicProps<NoteURL>,
-    initFetcher:NoteFetcher<NoteNode>
+    initFetcher:NoteFetcher<NoteNode>,
 ) : [ NoteNode, (
-        url:BasicState<NoteURL>,
+        url:((pre:NoteNode)=>NoteURL)|NoteURL,
         fetcher?:NoteFetcher<NoteNode>|null
     ) => void
 ] => {
@@ -15,44 +15,66 @@ export const useNote = (
         initURL = initURL()
     if (initURL instanceof Array)
         initURL = joinURL(...initURL)
-    const urlRef     = useRef<string>(initURL)
+    if (typeof initURL === "string")
+        initURL = new URL(initURL)
+    const urlRef     = useRef<URLType>(initURL)
     const fetcherRef = useRef(initFetcher)
     const isFetching = useRef(false)
     const [note,set] = useState<NoteNode>(null) // TODO useSWR(urlRef.current,isFetching)
-    useEffect(() => {fetcherRef.current(urlRef.current).then((r:any)=>set(r))}, [])
+    useEffect(() => {console.log('\t\tinit useEffect in useNote')}, [])
+    useEffect(() => {
+        //isFetching.current = true
+        fetcherRef.current(urlRef.current).then((res:any) => {
+            set(pre => pre || res)
+            //setTimeout(() => (isFetching.current = false), 1000)
+        })
+    }, [])
     //  ************************* 📋 SetNote 📋 *************************  //
     //  * setNote("/api/note", fetcher) => refresh note data from url
-    //  * setNote(p=>[p,"32"], fetcher) => add note data from url
+    //  * setNote(p=>p.next  , fetcher) => add note data from url
     //  ************************* ************** *************************  //
     const setNote = useCallback((
-        updateURL:BasicState<NoteURL>,
+        updateURL:((pre:NoteNode)=>NoteURL)|NoteURL,
         updateFetcher:NoteFetcher<NoteNode>|null=null//UpdateNoteFetcher=null
     ) : void => {
         // ********** FOR REF ********** //
         if (isFetching.current)
             return
         isFetching.current = true
-        if (typeof updateURL === "function")
-            updateURL = updateURL(urlRef.current)
-        if (updateURL instanceof Array)
-            updateURL = joinURL(...updateURL)
-        //const preURL = urlRef.current
-        urlRef.current = updateURL
-        if (updateFetcher===null)
+        if (updateFetcher === null)
             updateFetcher = fetcherRef.current
         else
             fetcherRef.current = updateFetcher
+        if (typeof updateURL === "function")
+            updateURL = updateURL(note)
+        if (updateURL instanceof Array)
+            updateURL = joinURL(...updateURL)
+        if (typeof updateURL === "string")
+            updateURL = new URL(updateURL)
+        if (!updateURL || !updateFetcher)
+            return void (isFetching.current = false)
+        const preURL = urlRef.current
+        urlRef.current = updateURL
         // ********** FOR FETCHING ********** //
         updateFetcher(updateURL).then((res:any) => {
-            set(/*pre => urlRef.current.split('?')[0]===preURL.split('?')[0]
-                  ? [...(pre||[]).filter(p=>!res.find((r:any)=>r.id===p.id)),...res]
-                  : */res
-                 // TOCO DEV
-            )
+            console.log(`\t\t now fetting !!!`, res.results)
             setTimeout(() => (isFetching.current = false), 1000)
+            if (!res || !res.results)
+                return
+            set(pre => {
+                // pre && console.log(pre.next, res.next)
+                if (!equalPathname(preURL, urlRef.current))
+                    return res
+                const diff = pre
+                  ? (pre.results||[]).filter((p:any) =>
+                  ! (res.results||[]).find((r:any) => r.id===p.id)
+                ) : []
+                return {...res, results:[...diff, ...res.results]}
+            })
         })
-    }, [])
-    return [ note, setNote]
+    }, [note])
+    console.log(`\tuseNote run`)
+    return [note, setNote]
 }
 
 /* PREVIOUS

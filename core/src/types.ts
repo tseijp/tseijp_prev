@@ -3,91 +3,81 @@ import { AxiosResponse } from 'axios'
 export type BasicProps<T>  = (()=>T) | T
 export type BasicState<T>  = ((pre:T)=>T) | T
 export type BasicAction<T> = (fn:BasicState<T>) => void
+export type Merge<A,B> = {[K in keyof A]:K extends keyof B ? B[K] : A[K] } & B
 // ************************* 🌌 For Containers 🌌 ************************* //
-export interface BasedProps {
-    [key:string]:any,
-    dark?:boolean,
-    size?:number, //TODO to scale //width?:number, fontSize?:number,
-    onOpen ?:null|(()=>void),
-    onClose?:null|(()=>void),
-    className?:string,color?:string,style?:CSSProperties
-}
-export interface BindsProps extends BasedProps{bind?:any,spring?:any,}
-export interface ModalProps extends BasedProps{open?:boolean}
-export interface NotesProps extends BasedProps{grandren?:any,right?:RC,left?:RC,depth?:number}
+export type BasedProps<T extends {}={}> = Partial<T & {
+    [key:string]:any, style?:CSSProperties
+    dark:boolean, onOpen :null|(()=>void), className:string,
+    size:number , onClose:null|(()=>void), color:string,
+}>
+export type BindsProps = BasedProps<{bind?:any,spring?:any}>
+export type ModalProps = BasedProps<{open:boolean}>
+export type NotesProps = BasedProps<{grandren?:any,right?:RC,left?:RC,depth?:number}>
 
 // ************************* 👌 For useNote 👌 ************************* //
+export type URLType = {
+    hash: string; hostname: string; search    : string;
+    host: string; username: string; protocol  : string;
+    href: string; password: string; toString(): string;
+    port: string; pathname: string; readonly origin: string;
+}
 export type NoteElement = {
-    ja_text ?:string, posted_user?:string, note_id?:number, isAuthor ?: boolean,
-    en_text ?:string, posted_time?:number,      id?:number, isAdmin  ?: boolean,
-    children?:NoteNode, [key:string]:any
+    ja_text :string, author_name:string, note_id:number,
+    en_text :string, posted_time:number,      id:number,
+    is_author: boolean, [key:string]:any,
 }
 export type NoteNode = null | {
     [key:string]:any,
     next    :string|null,
     previous:string|null,
     results :NoteNode
-      | NoteElement[]
+      | Partial<NoteElement>[]
       | null
       | undefined
 }
-export type NoteURL = string | string[]
-export type NoteFetcher<T=NoteNode> = {
-    (
-        url:string, headers?:any
-    ) : Promise<AxiosResponse<T>>
-}
+export type NoteURL = URLType | string | string[]
+//export type NoteConfig<T=NoteNode> = {mode:boolean|(()=>boolean),noteType:T}
+export type NoteFetcher<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
 // ************************* 👌 For usePage 👌 ************************* //
-export interface URL {
-    hash: string; hostname: string; search: string;
-    host: string; username: string; protocol: string;
-    href: string; password: string; toString(): string;
-    port: string; pathname: string; readonly origin: string;
-}
-export type RefedPage<T=any> = T    |((p:Page<T>)=>T)
-export type MultiPage<T=any> = T|T[]|((p:Page<T>)=>T|T[])
-export interface PageConfig<T=any> {
+export type PageConfig<T={}> = Partial<{
     [key:string]:any,
-    onChange?:null|((p:Page<T>)=>void),
+    onChange:null|((p:Page<T>)=>void),
+}>
+export type DefaultPage<T> = { // (TODO extends PageConfig
+    [key:string]:any, config:PageConfig<T>|null, //TODO : DEV
+    id:string|number,search :string,urls    :URLType[]
+    isHome :boolean,protocol:string,hostname:string,
+    isLocal:boolean,portname:string,pathname:string,
 }
-//eslint-disable-next-line
-export interface Page<T extends {}={}> { // (TODO extends T
-//  config  ?:PageConfig<T>|null,
-    [key:string]:any,
-    protocol?:MultiPage<string|null>,// e.g. "https:"
-    hostname?:MultiPage<string|null>,// e.g. "localhost"
-    portname?:MultiPage<string|null>,// e.g. "3000"   or ["3000"(npm), "8000"(django)]
-    pathname?:MultiPage<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
-    search  ?:MultiPage<string|null>,// e.g. "/note/" or ["/note/", "/api/note/"]
-//  url      :URL|URL[]        ,// e.g. null or ["http://localhost:3000/"]
-//  id      ?:string
+export type MultiPage<T> = {
+    [K in keyof T] : null|T[K]
+  | ( (p:Page<T>) => null|T[K] )
 }
+export type Page<T extends {}={}> = Merge<DefaultPage<T>,MultiPage<T>>
+
 // ************************* 👌 For useUser 👌 ************************* //
-export type UserCredit<T=string> = {username:T,password:T,email?:string}
-export type User<T=object|string> = {
+export type UserCredit<T=string> = {username:T,password:T,email?:T}
+export type User<T=string> = {
     username :T, status:string,
     authtoken:T, credit:UserCredit,
-    input ?: {[key:string]:{
-        value:string, name:string, type:string, label:string,
-        error?:"wrong", success?:"right", autoComplete?:"on",
-        group:boolean, validate:boolean,
-        onChange:(e:any)=>void,
-    }}
+    input ?: {[key:string]:{ onChange:(e:any)=>void, autoComplete?:"on",
+        group   :boolean, value:string, name:string, error  ?:"wrong",
+        validate:boolean, label:string, type:string, success?:"right", }}
 }
-export interface UserProps {
+export type UserProps = Partial<{
     [key:string]:any,
-    onSign   ?:null|(()=>void),
-    onSignin ?:null|(()=>void),
-    onSignout?:null|(()=>void),
-}
-export interface UserConfig<T=User> {
+    onSign   :null|(()=>void),
+    onSignin :null|(()=>void),
+    onSignout:null|(()=>void),
+}>
+export type UserConfig<T=User> = Partial<{
     [key:string]:any  ,
-    url     ?:string  ,
-    keys    ?:string[],
-    initUser?:T
-}
-export interface UserHandler {
+    url     :string  ,
+    keys    :string[],
+    initUser:T
+}>
+export type UserHandler = {
     (
         url:string, credit:UserCredit, headers?:any
-    ) : void|Promise<void|{username:string, authtoken:string}>
+    ) : void | Promise<void|{username:string, authtoken:string}>
 }
