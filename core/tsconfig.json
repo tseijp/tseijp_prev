@@ -21,7 +21,7 @@
     "jsx": "react"
   },
   "include": [
-    "src",
-    "docs"
+    "page",
+    "src"
   ]
 }

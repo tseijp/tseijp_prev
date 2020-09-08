@@ -1,6 +1,7 @@
 build
 coverage
 docs
+page
 test
 node_modules
 public
