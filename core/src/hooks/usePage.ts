@@ -27,16 +27,16 @@
   *   - @set   : (args) => void ( setState )
  *** ************************* ********* *************************/
 
-import {useState, useCallback, useRef} from 'react'
+import {useEffect, useState, useCallback, useRef} from 'react'
 import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
 import {defaultPageConfig as defaultConf, defaultPage, normPage} from '../utils'
 export const usePage = <T=any>(
     props :BasicProps<Partial<Page<T>>>,//BasicProps<Page<T>>,
     config:BasicProps<Partial<Conf<T>>>={},
 ) : [Page<T>, BasicAction<Partial<Page<T>>>] => {
-    if ( typeof props==="function" )
+    if (typeof props==="function")
         props = props()
-    if ( typeof config==="function" )
+    if (typeof config==="function")
         config = config()
     const pageRef = useRef<Page<T>>({...defaultPage, ...props } as Page<T>)
     const confRef = useRef<Conf<T>>({...defaultConf, ...config} as Conf<T>)
@@ -47,10 +47,17 @@ export const usePage = <T=any>(
             state = state(pageRef.current as Partial<Page<T>>)
         pageRef.current = {...pageRef.current, ...state}
         set( normPage(pageRef.current) )
+    }, [set])
+    //  ************************* useEffect *************************  //
+    useEffect(() => {
         const {onChange=null} = confRef.current
         onChange && onChange(pageRef.current)
-    }, [set])
-    //console.log(`\tusePage`)
+        if (page && page.pathname)
+            window.history.pushState('','',
+                page.pathname instanceof Array
+                  ? page.pathname[0]||''
+                  : page.pathname   ||'')
+    }, [page])
     return [page, setPage]
 }
 

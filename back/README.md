@@ -31,6 +31,7 @@ __note in results from api/note/__
 Key|Description  
 :--|:----------  
 id          |primary key.
+note_id     |primary key of parent. 
 ja_text     |text data.
 en_text     |text data.
 is_author   |whether request user is author.

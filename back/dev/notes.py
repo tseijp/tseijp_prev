@@ -1,6 +1,6 @@
 notes = [
 # """"""""""""""""""""""""" TouchDesigner """"""""""""""""""""""""" #
-'''# TouchDesignerで動画生成
+"""# TouchDesignerで動画生成
 先日, 大学のオープンキャンパスでGANによる動画生成のデモ発表をしました．
 
 TouchDesigner使えばリアルタイムで実装できるかな...と思って使ってみました．
@@ -12,9 +12,9 @@ TouchDesigner使えばリアルタイムで実装できるかな...と思って�
   1. Pythonライブラリ（PyTorch等）を入れる.
 
 TouchDesignerを初めて数か月なのに, 何故かqiitaの記事に登録してました．qiitaも初めてです．あまり実用性ありそうなこと書けませんでした(;_;)
-''',
+""",
 
-'''## 重い処理の実行について
+"""## 重い処理の実行について
 TouchDesignerは  Pythonが中の処理にも使われており，他で重い処理をするとフリーズします．
 なので，サブプロセスとして処理をいくつかに分けます
 
@@ -36,16 +36,16 @@ subprocess.Popen(['python', 'util/td_utils.py',
                   '-d','%s'%project.folder,'-c',cmd,'-s','15'],
                   cwd=dir,shell=True)
 ```
-''',
+""",
 
-'''
+"""
 poseの動画から全身の動画をするベースCOMPです. 前処理が終わったら生成を開始します．
 生成が終わったら次の処理に通知させます．
 
 ![demo](https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855138/pose2vid.jpg)
-''',
+""",
 
-'''
+"""
 # TouchDeisngerでのPythonライブラリについて
 `venv`で`pip install` -> TouchDesinger内でPathを通す or `sys.path.append()`
 
@@ -58,15 +58,15 @@ condaで仮想環境 -> TouchDesignerの`site-packages`消す -> `mlink /d site-
   1. この方法が唯一PyTorchが動いたのですが，デモ当日にGPU周りで謎のエラーが出ました．
   (`libiomp5md.dll、libiomp5mmd.pdb libiompstubs5md.dll` を上書きしたら動きました)
   1. 結局最初からプロセスを分ければよかったなと反省してます．結論はまだ出てないですが，自分なりの考えをまとめました．
-''',
+""",
 
-'''
+"""
 左上が生成結果です．ボーン検出がうまくできてないので，うまく動画が生成できなかったです．（RealSenseとかを使ったほうが早いし安定してよかったかも）
 ![demo](https://res.cloudinary.com/dpimrj9cp/image/upload/v1575855510/output2.gif)
-''',
+""",
 
 0,# """"""""""""""""""""""""" AWS """"""""""""""""""""""""" #
-'''# Django in AWS and Nginx
+"""# Django in AWS and Nginx
 
 1. [ref]
 1.  [【20分でデプロイ】AWS EC2にDjango+PostgreSQL+Nginx環境を構築してササッと公開 - Qiita](https://qiita.com/tachibanayu24/items/b8d73cdfd4cbd42c5b1d)
@@ -81,9 +81,9 @@ condaで仮想環境 -> TouchDesignerの`site-packages`消す -> `mlink /d site-
 [Advent Calendar](https://qiita.com/advent-calendar/2019/touchdesigner)に参加したくて，でも初投稿は自分のサイトでしてみたかったので，結局別のサーバーでデプロイし直しました．（あと，夏の増税前に駆け込みで買ったドメインも供養しないとなと思ってました．）
 
 AWSがKyashというバーチャルVisaカードを使えたので使ってみました．下のサイト通りにしたらうまくいきました（特に最初のサイト凄い！20分！）．AWSで初めてデプロイしたので，作業中のメモをまとめました．
-''',
+""",
 
-'''## AWS EC2
+"""## AWS EC2
 最初間違えてUbuntuを選んでなくて気づくのに時間かかりました．．．(;__;)
 
 1. サービス(左上) -> EC2 -> インスタンス(左側)->インスタンスの管理画面へ
@@ -91,9 +91,9 @@ AWSがKyashというバーチャルVisaカードを使えたので使ってみ�
 1. インスタンスの状態がrunningかを確認
 1. `chmod 400 aws-ubuntu.pem`:パーミッションを変更->自分の`~/.ssh`ディレクトリとかに保管
 1. `ssh -i "~/.ssh/aws_ubuntu.pem" ubuntu@<ip address>`:ユーザー名はubuntu以外だとec2-userとか
-''',
+""",
 
-'''## Ubuntu env
+"""## Ubuntu env
 Ubuntuのユーザーを作成し，作ったユーザーでsshできるようにします．
 
 1. `sudo -i`
@@ -113,9 +113,9 @@ Ubuntuのユーザーを作成し，作ったユーザーでsshできるよう�
 1. `virtualenv <venv_name>`
 1. `source <venv_name>/bin/activate`
 1. `pip install django gunicorn psycopg2 psycopg2-binary Pillow`
-''',
+""",
 
-'''## PostgreSQL
+"""## PostgreSQL
 Herokuとかとだいたい同じです．
 
 1. `sudo -u postgres psql`
@@ -141,9 +141,9 @@ DATABASES = {
         'PORT': '',
 }}
 ```
-''',
+""",
 
-'''## AWS
+"""## AWS
 1. 左カラムから、セキュリティグループ -> セキュリティグループを作成
 1. 作成したものを右クリック -> ルールの作成 ->
     1. `カスタムTCP▽`,
@@ -154,9 +154,9 @@ DATABASES = {
 
 1. `python3 manage.py runserver 0.0.0.0:8000`
 1. `http://<your_ip>:8000`で確認->`deactivate`:venvぬける
-''',
+""",
 
-'''## gunicorn
+"""## gunicorn
 gunicornの設定をします．自分はアクセスログとエラーログをホームディレクトリに保存してます．gunicornの場所を間違えてはまったので気を付けてください．（venv使ったかで変わります）
 
 1. `sudo vi /etc/systemd/system/gunicorn.service`
@@ -179,9 +179,9 @@ ExecStart={{`which gunicorn` ででたpath. **/gunicornとか}}
 [Install]
 WantedBy=multi-user.target
 ```
-''',
+""",
 
-'''## nginx
+"""## nginx
 nginxの設定をします．一度したらあんまり触れないです．viを使います🔥
 
 1. `sudo vi /etc/nginx/sites-available/<PJ_NAME>`
@@ -204,9 +204,9 @@ server {
     }
 }
 ```
-''',
+""",
 
-'''## ec2
+"""## ec2
 1. セキュリティグループ -> セキュリティグループにタイプ: HTTPのルールを追加
 1. （インスタンス-> ネットワーキング -> セキュリティグループの変更->セキュリティグループ選択）←先ほどしてなかったら
 
@@ -214,9 +214,9 @@ server {
 1. サイドメニュー -> Elastic IPsからポチポチ
 1. Elastic IP アドレスの割り当て -> 割り当て
 1. Elastic IP アドレスの関連付け -> 関連付け
-''',
+""",
 
-'''## domain
+"""## domain
 ドメインとサーバーの繋げ方がいろいろあって混乱しますが，
 
 * [お名前.comでのドメイン取得とRoute 53との連携(お名前.comへのRoute 53DNS登録) - のぴぴのメモ](http://nopipi.hatenablog.com/entry/2019/01/03/132701)
@@ -233,9 +233,9 @@ server {
 1. 他のネームサーバを利用 -> ネームサーバに先ほどのNSの四つのvalue -> 設定
 1. `sudo vi /etc/nginx/sites-available/<PJ_NAME>` -> `server_name <your doman> <your Elastic IP>;`
 1. `vi <PJ_NAME>/<settings file>.py` -> `ALOWED_HOST=["<DOMAIN>","<Elastic IP>"]`
-''',
+""",
 
-'''## SSL
+"""## SSL
 HTTPSで繋がるように設定します．
 
 1. [certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)でUbuntuとNginx選択->コマンド上から実行
@@ -244,18 +244,18 @@ HTTPSで繋がるように設定します．
 1. `sudo certbot renew --post-hook "systemctl restart nginx"`:を試す
 1. `sudo vi /etc/cron.d/letsencrypt` -> `0 1 * * 1 sudo certbot renew --post-hook "systemctl restart nginx"`
 1. ec2 -> セキュリティグループ -> セキュリティグループにタイプ: HTTPSのルールを追加
-''',
+""",
 
 0,# """"""""""""""""""""""""" pip """"""""""""""""""""""""" #
-'''# pipenvで管理しなおす
+"""# pipenvで管理しなおす
 pipでインストールしたlibを消して，再びinstallしようと思う.
 PyTorchのバージョンを新しくしようとしたら，solサーバーのメモリが30GBを超えてて，datasetsやcheckpointsを消してからもう一度調べてみても22GBも使っていた．
 
 通常なら`pip freeze > instaled.txt`->`pip uninstall -r installed.txt`で
 使っていないlibやバージョンを消せるらしいが，普段--userオプションでインストールしており，一気に削除しようとするとPermission Errorで処理が止まってしまうので，Pythonでなんとかしようと思った．
-''',
+""",
 
-'''
+"""
 ```bash
 [***@sol ~]$ du -h -d 3 | sort -hr | head -25
 22G     .
@@ -284,9 +284,9 @@ PyTorchのバージョンを新しくしようとしたら，solサーバーの�
 281M    ./IED_HOME/notebook/y7_test_super_slomo
 206M    ./IED_HOME/.local/share
 ```
-''',
+""",
 
-'''
+"""
 pythonからpipを実行するために，次のような関数を定義しておく．
 
 ```python
@@ -306,9 +306,9 @@ def run(cmd):
             break
     return ''.join(buf)
 ```
-''',
+""",
 
-'''
+"""
 次に，現在のlibraryを取得し，配列を返す関数を用意する．
 
 ```python
@@ -335,9 +335,9 @@ pri:%s	now:%s	del:%s"%libs_len)
     _=[print("	del:",l) for l in del_libs ]
 
 ```
-''',
+""",
 
-'''
+"""
 結果を確認すると，ちょっとへったかも
 `pri:250,now:209`
 ```bash
@@ -370,9 +370,9 @@ iedでもcedと同様にためした．
 
 
 ```
-''',
+""",
 
-'''
+"""
 `.cache`削除したらすごいことになった（消していいのかよくわかってないです）
 ```bash
 8.5G    .
@@ -402,9 +402,9 @@ iedでもcedと同様にためした．
 45M     ./.torch/models
 
 ```
-''',
+""",
 
-'''
+"""
 # pipenvで環境構築
 sudoでない環境でvirtualenvだと 構文エラーかきょかがないといわれるので使えなかった．
 
@@ -416,10 +416,10 @@ sudoでない環境でvirtualenvだと 構文エラーかきょかがないと�
 1. `pip install numpy==1.17` 1.18だとエラー
 1. `pip install pillow==6.2.2` : 7.0だとエラー
 1. `pip install opencv-python scipy pytz`
-''',
+""",
 
 0,# """"""""""""""""""""""""" gan """"""""""""""""""""""""" #
-'''# few-shot-vid2vid
+"""# few-shot-vid2vid
 自分用のメモです．英弱なので，ざっくり読んで，重要そうな部分をひたすらgoogle先生に聞いて読んでます．
 GAN全く詳しくないので間違ってる箇所多いと思います．無断転載なので1割理解出来たら消します🔥
 
@@ -427,9 +427,9 @@ GAN全く詳しくないので間違ってる箇所多いと思います．無�
 * [arXiv](https://arxiv.org/abs/1910.12713)
 * [youtube](https://youtu.be/8AZBuyEuDqc)
 * [github](https://github.com/NVlabs/few-shot-vid2vid)
-''',
+""",
 
-'''# Introdunction
+"""# Introdunction
 1. vid2vid: 人間のポーズやマスクのセマンティックを入力ビデオとし，フォトリアルなビデオに変換するタスク．大きな制限がある．
   1.  生成したい人やシーンの多数の画像がトレーニングに必要
   1. トレーニングした人の動画のみ合成できる
@@ -442,9 +442,9 @@ GAN全く詳しくないので間違ってる箇所多いと思います．無�
 1. vid2vidがtrainデータと同じビデオのみ合成できるのに対し，このモデルでは,ビデオ合成メカニズムを動的に構成.
 1. サンプル画像を使用してネットワークの重みを生成するモジュールをトレーニング.
 1. 生成モジュールの学習を促進するため,the learning objective function(学習目的関数？)を慎重に設計する。
-''',
+""",
 
-'''## Related work
+"""## Related work
 ### GAN
 
 1. GANs [[13](https://arxiv.org/abs/1612.05424)]: few-shot vid2vid modelの基盤．ノイズ分布からサンプルを変換して出力
@@ -459,9 +459,9 @@ GAN全く詳しくないので間違ってる箇所多いと思います．無�
 1.  unconditional video synthesis models [54, 45, 51]:ランダムノイズから動画に変換
 2. future video prediction models [48, 24, 11, 34, 33, 63, 55, 56, 10, 53, 29, 27, 18, 28, 16, 40]:未来のビデオフレームを観察されたものに基づいて生成
 3. vid2vid models [57, 7, 12, 67]: semantic入力動画からフォトリアルな動画に変換．見えないドメイン（学習していないモデル）のビデオを合成できることが新規性.
-''',
+""",
 
-'''## Adaptive networks
+"""## Adaptive networks
 重みの一部が入力データに基づいて動的に計算されるnetworks. 通常のネットワークとは異なるinductive bias(誘導バイアス?)がある．
 
   1. sequence modeling [15],
@@ -486,9 +486,9 @@ $$x_t = F(x^{t-1}_{t-r}, s^t_{t-r}) = (1-m_t) \kentengCircle w_{t-1}(x_{t-1})+m_
 - $m_t = M_{	heta_M}(x^{t-1}_{t-r},s^t_{t-r})$ is  a soft occlution map
 - $w_{t-1} = W_	heta_W(x^{t-1}_{t-r},s^t_{t-r})$ is the optical flow warped version of the last generated images
 - $h_t=H_	heta_H(x^{t-1}_{t-r},s^t_{t-r})$ is the synthesized intermediate image
-''',
+""",
 
-'''
+"""
 # few shot vid2vid synthesis
 fewshot vid2vid model convert novel input semantic videos,  K-shot example image and semantic image ${e_1,e_2,...e_K},{S_{e_1},S_{e_2},...S_{e_K}}$.
 
@@ -499,18 +499,18 @@ we propose a network weight $	heta$ generation module $E$ for the image synthesi
 $$	heta_H = E(x_{t-1}^{t-	au}, s^t_{t-	au},{e_1,e_2,...e_K},{s_{e_1},s_{e_2}})$$
 
 few-shot vid2vid framework based on Wang et al. [57],], which is the state-of-the-art. for the vid2vid task .we adopt the SPADE generator [41]
-''',
+""",
 
 0,# """"""""""""""""""""""""" 500 """"""""""""""""""""""""" #
-'''# How to hack Django Server Error 500
+"""# How to hack Django Server Error 500
 Error文をSlackで送れたら簡単にServer Error 500を簡単に直せたので覚え書き．Errorが出るたびに悲しくなるので，ついでにエラー画面に猫のGIFを表示させた．
 
 * [ref]()
 * [Django Server Error (500)攻略法【2019 アドカレ】 - Qiita](https://qiita.com/yuu-eguci/items/a1e4b0a2f238d5ccc985)
 * [Pythonを使ってSlackに送信する方法 - Qiita](https://qiita.com/yoshitaku_jp/items/8a53272a0118e7604994)
-''',
+""",
 
-'''## Step1
+"""## Step1
 1. SlackでLogin後，[Incoming](https://slack.com/services/new/incoming-webhook)にアクセス -> チャンネルを選び，Webhook URLを控え，ポチポチ進む
 1. 適当なviews.pyに以下のように書く
 
@@ -545,9 +545,9 @@ def my_server_error(request, template_name='500.html'):
     message +=  random.choices(cat_iframes)[0]
     return HttpResponseServerError(message)
 ```
-''',
+""",
 
-'''
+"""
 # Step2
 Djangoのhandler500にカスタムしたものを上書きする．
 
@@ -557,10 +557,10 @@ from your_app_name.views import my_server_error
 from django.conf.urls import handler500
 handler500 = my_server_error
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" linux """"""""""""""""""""""""" #
-'''# Linux コマンドメモ
+"""# Linux コマンドメモ
 `export: Command not found.`がでてきて，また何か悪いことをしたのかと思って焦った．そもそもshellに種類があるらしい．
 
 1. setenv：csh系
@@ -571,9 +571,9 @@ tcshコマンドチートシート
 1. `set var1 = ham` -> シェル変数
 1. `setenv var2 egg` -> 環境変数
 1. `alias python python3` -> pythonで2系が出ないようにする
-''',
+""",
 
-'''## Shellについて
+"""## Shellについて
 - [ref]()
 - [初心者が調べた。shellとは](https://qiita.com/ycoda/items/87d23b818cb06ba1c348)
 - [シェル入門](http://webcache.googleusercontent.com/search?q=cache:RYdotdNX1RUJ:www-kn.sp.u-tokai.ac.jp/com/computer/shell/shell.html+&cd=7&hl=ja&ct=clnk&gl=jp)
@@ -587,18 +587,18 @@ tcshコマンドチートシート
 1. `echo $SHELL` -> tcshを使っていた
 1. `cat /etc/shells` -> 8つでてきた（screenやtmuxもあった）
 1. 'cat /etc/profile' -> 起動時に読み込まれるファイル
-''',
+""",
 
-'''## 環境変数について
+"""## 環境変数について
 ref
 1. [シェル変数と環境変数の違いをコマンドラインで確認する - Qiita](https://qiita.com/kure/items/f76d8242b97280a247a1)
 
 1. シェル変数：実行中のシェルだけで有効
 1. 環境変数：子プロセスでも有効
-''',
+""",
 
 0,# """"""""""""""""""""""""" datasets """"""""""""""""""""""""" #
-'''# auto download datasets
+"""# auto download datasets
 リモートサーバーからデータセットをwgetすると，`403 Forbidden`が出る．(`wget  <URL> -d`で確認すると，`You don't have permission to access <URL>といわれていた)．
 いつもはsshでデータを送っていたが，今回は600GBを超えていて(ローカルはあと5GBしかない...)どうにもできないので，直接いれたい．
 
@@ -610,9 +610,9 @@ requests.Sesssionの.iter_contentでメモリを分けてダウンロードし�
 - [ref]()
 -  [Requestsとtqdmでダウンロードの進捗を表示する - Narito Blog](https://narito.ninja/blog/detail/66/)
 - [Pythonのrequestsを利用してファイルダウンロードする方法 - Qiita](https://qiita.com/5zm/items/366f10fcde5d3435b417)
-''',
+""",
 
-'''次のような関数を定義しておく．
+"""次のような関数を定義しておく．
 ```python
 import requests, zipfile, os, sys, subprocess
 from tqdm import tqdm
@@ -634,9 +634,9 @@ def download_file(url, dir='./'):
         import traceback
         traceback.print_exc()
 ```
-''',
+""",
 
-'''
+"""
 unzipする．[torchnlp](https://pytorchnlp.readthedocs.io/en/latest/_modules/torchnlp/download.html)のコードを変えて利用する.
 ```python
 def unzip_file(url, dir='./'):
@@ -668,9 +668,9 @@ if \_\_name\_\_=="\_\_main\_\_":
     main()
 
 ```
-''',
+""",
 
-'''## 追記：dataloader
+"""## 追記：dataloader
 本来のnvidiaのコードとは異なるディレクトリ構成なので，dataloaderの構成を変えようと思ったら，そもそも画像データが入ったpathかで判別していた．
 
 ```python
@@ -692,9 +692,9 @@ def make_grouped_dataset(dir):
 ```
 
 一行にすると`[p for p in [[os.path.join(fn[0],f) for f in sorted(fn[2])if is_image_file(f)] for fn in sorted(os.walk(dir))]if len(p)>0]`
-''',
+""",
 
-'''
+"""
 importlibによって, dataset_nameからimportするclassを選択できる．
 ```python
 dataset_filename = "data." + dataset_name + "_dataset"
@@ -708,26 +708,26 @@ for name, cls in datasetlib.__dict__.items():
        and issubclass(cls, BaseDataset):
         dataset = cls
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" python """"""""""""""""""""""""" #
 
-'''# Python memo
+"""# Python memo
 他人のコードで見かけた不思議な書き方を少しずつメモしていく
 
 - `new_w = new_w // 4 * 4`：4で割り切れる数にできる．`//`は切り捨て除算の演算子．
 - `is_img = input_type=='img'`：論理値を一行で代入.
 - `a, b = b, a`：参照先を入れ替える`a,b = copy.copy(b), copy.copy(a)`も
-''',
+""",
 
-'''## opの関数一覧を取得
+"""## opの関数一覧を取得
 `obj = op('/project1/...')`でopを取得したあと，dir(obj)でメンバー一覧が見れるが，`inspect.getmembers(obj, inspect.ismethod)`でメソッド一覧が取得できない．obj.errorかobj.warningが呼ばれると強制停止するらしい．
 
 - `[s for s in dir(obj) if not s in ['error','warning'] and callable(eval('obj.%s'%s))]` : 呼び出し可能のリスト
-''',
+""",
 
 0,# """"""""""""""""""""""""" django """"""""""""""""""""""""" #
-'''# htmlとviews.pyだけでDjango
+"""# htmlとviews.pyだけでDjango
 Djangoばかり触っていたので，組み込みタグなしではwebページが作れないけど，Djangoは設定とか面倒なので，簡単にする方法を考えました．
 glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 
@@ -737,9 +737,9 @@ glsl1,2,3,4...と量産するアプリを例にコードをかきます．
 * `cd threejs`
 * `python manage.py startapp glsl1` : glsl2,3,4も同様に...
 * `INSTALLED_APPS+=['glsl%s'%s for s in [1,2,3,4]]` をthreejs/settings.py 最後に追加
-''',
+""",
 
-'''
+"""
 次に，下の様にディレクトリを作る(各appはviews.py以外消してok)
 ```bash
 C:.
@@ -767,9 +767,9 @@ for i, app in enumerate(['glsl%s'%s for s in [1,2,3,4]]):
             urlpatterns += [path(url, cls.as_view()]
 
 ```
-''',
+""",
 
-'''
+"""
 各appのviews.pyに次のViewを追加する
 ```python
 class FromDirView(TemplateView):
@@ -796,9 +796,9 @@ class FromDirView(TemplateView):
                 paths[page] = osp.join(fname[0], page+'.html')
         return paths
 ```
-''',
+""",
 
-'''
+"""
 FromDirViewで用いたmake_grouped_pagesは, urlの?p=で指定した名前と同じディレクトリがtemplatesディレクトリ内にあり，かつその内に同じ名前+.htmlファイルがある場合，そのhtmlファイルをtemplateに指定する.
 ospは`import os.path as osp`で略して利用している．
 settings.pyの変数は`from django.conf import settings`で取得できる
@@ -813,11 +813,11 @@ glsl1/test.htmlは次の様に追加しておく
   \<a href="?p={{p}}">{{p}} \</a>
 {% endfor %}
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" js """"""""""""""""""""""""" #
 
-'''# 開眼！Python vs JS
+"""# 開眼！Python vs JS
 
 * [ref]()
 * [# Python VS ES6 syntax comparison](https://gist.github.com/revolunet/537a3448cff850231a74)
@@ -852,9 +852,9 @@ JSの優れた演算子の使いかたと足りない関数の代用のメモで
   >
   >>`{...d, c, ...{d:0}}`
 * (`*`,`...`はshallow copyなので注意)
-''',
+""",
 
-'''# basic Python vs JS
+"""# basic Python vs JS
 * >>Python
   >
   >> JS
@@ -879,9 +879,9 @@ JSの優れた演算子の使いかたと足りない関数の代用のメモで
 * >> `bool = a==b`
   >
   >>  `bool=!a.map((v,i)=>v===b[i] ).includes(false)` 配列の一致(jsでは配列は===できない)
-''',
+""",
 
-'''
+"""
 # array Python vs JS
 * >>Python
   >
@@ -907,9 +907,9 @@ JSの優れた演算子の使いかたと足りない関数の代用のメモで
 * >> `[[k,v] for k,v in d.items()]`
   >
   >> `Object.keys(d).map((v,i)=>[v,Object.values(d)[i]])`
-''',
+""",
 
-'''
+"""
 # class-based vs functional
 class X extends React.Component{...}
   >
@@ -943,12 +943,12 @@ more
 * >> optimize via?     : `shouldCommponentUpdate`
   >
   >> `useMemo` and `useCallback`
-''',
+""",
 
 0,# """"""""""""""""""""""""" glsl """"""""""""""""""""""""" #
 
 
-'''# GLSL and THREE.js in React
+"""# GLSL and THREE.js in React
 THREE.jsはWebGLを用いて3D表現ができるライブラリで，GLSLファイルもビルドしてくれるのでとてもわくわくできます．
 （[トップページ](https://tsei.jp)にglslを利用してます．）
 従来のjsだと大規模なアプリになると予期しないことが多く起こるので，
@@ -962,9 +962,9 @@ classベースでは`componentDidMount`をうまく利用すればできる.）
 
 あと,THREE.jsはmountごとに再実行すると重くなるので，
 Reactのライフサイクルと関係ない変数には`useRef`を使うと再renderせずうまくいきます．
-''',
+""",
 
-'''
+"""
 useEffect内に初期処理をかき，一度だけ実行されるようにしてます．
 特に`WebGLRenderer`作成時にcanvasを指定させ，
 sceneとcameraには`useRef`を使うことであとから変更しても初期処理が再実行されないようにします．
@@ -991,17 +991,17 @@ const App = (props) => {
     return <canvas id="renderer" style={{position:"fixed",top:0,left:0}}/>
 }
 ```
-''',
+""",
 
-'''
+"""
 ### GLSLを利用する
 glslファイルを`fetch`でloadし，変数へsetしたとき, 二つ目の`useEffect`が実行します. （mount時と,各glslファイルがloadできたときの計三回実行される.）
 glslに渡す`uniforms`の値は`useRef`で後から変更しても再実行されないようにします．
-''',
+""",
 
 0,# """"""""""""""""""""""""" rollup """"""""""""""""""""""""" #
 
-'''# webpackとrollupでビルド
+"""# webpackとrollupでビルド
 - [ref]()
 - [create-react-appでフォルダ名(src)を変更する具体的な手順](https://freelance-jak.com/technology/react/2409/)
 - [create-react-app で作成したコードをrollupで整形する](https://qiita.com/kspotfujita/items/f3a50f613828170170ba)
@@ -1016,9 +1016,9 @@ glslに渡す`uniforms`の値は`useRef`で後から変更しても再実行さ�
 tsやcssなど追加で用いる場合は[rollup/plugins: 🍣](https://github.com/rollup/plugins)からプラグインを選んで使います．
 - `create-react-app {yourapp}` and `cd {yourapp}`
 - `npm i -D cross-env react-app-rewired rollup @rollup/plugin-babel @rollup/plugin-node-resolve @rollup/plugin-commonjs fs`
-''',
+""",
 
-'''
+"""
 次に`config-overrides.js`ファイルを追加します．(ウェブページを`src`から`docs`に変更する．`appSrc`を`src`から`.`にすると，`src`と`docs`の両方がつかえる．)
 ```javascript
 const fs = require('fs');
@@ -1035,9 +1035,9 @@ module.exports = {
     }
 }
 ```
-''',
+""",
 
-'''
+"""
 次に`package.json`を修正します．（ライブラリのコンパイルには`rollup`を用い，他は`react-app-rewired`を使う．）Typescriptの場合は，`tsconfig.json`の`include:[...]`のフォルダを修正します.
 ```json
 {
@@ -1055,9 +1055,9 @@ module.exports = {
   ~~省略~~
 }
 ```
-''',
+""",
 
-'''
+"""
 先程，`scripts`の`compile`で指定したファイルの`config-rollup.js`を追加します.
 （`json`や`glsl`をつかうなど，場合によってライブラリをインポートし，`plugins`に追加していく）
 ```javascript
@@ -1089,9 +1089,9 @@ function babelOption (useESModules) {
     }
 }
 ```
-''',
+""",
 
-'''
+"""
 ```javascript
 function targetTypings(out) {
   return {
@@ -1118,10 +1118,9 @@ export default [
     ] },
 ]
 ```
-''',
+""",
 
-'''
-# npmで公開
+"""# npmで公開
 
 - デモページができたら，`npm run build`
 - ライブラリができたら，`npm run compile`
@@ -1136,11 +1135,11 @@ node_modules
 public
 scripts
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" barcode """"""""""""""""""""""""" #
 
-'''# Reactでバーコード認識
+"""# Reactでバーコード認識
 
 - [ref]
 - [Quagga.js on react - CodeSandbox](https://codesandbox.io/s/quaggajs-on-react-eexx8)
@@ -1148,9 +1147,9 @@ scripts
 React上でブックカバーのバーコードから商品の画像を取得する[ライブラリ](https://github.com/tseijp/use-amazon)を公開しました．
 Webでカメラからバーコードを認識して探索結果の一覧を表示します．
 [デモ](https://tsei.jp/useamazon)で用いたコードは，[Github](https://github.com/tseijp/use-amazon/blob/master/src/components/Scanner.tsx)で公開してます．
-''',
+""",
 
-'''## スキャナーのサンプルコード
+"""## スキャナーのサンプルコード
 
 開始時に実行する関数`onStarted`と認識後に実行する関数`onDetected`は，親コンポーネントから`props`として入力します．
 (再Renderするといくつも開始してしまうので，これらの関数は`useRef`内で再定義させます.)
@@ -1175,9 +1174,9 @@ export function Scanner ({onStarted, onDetected}) {
     return <div id="interactive" className="viewport" style={{width:"100%",height:"100%"}}/>
 }
 ```
-''',
+""",
 
-'''## Quaggaの初期化と認識処理
+"""## Quaggaの初期化と認識処理
 カメラの起動は`Quagga.init()`を実行してから数秒間かかります．
 起動したかを`onStarted()`で親コンポーネントに伝え，カメラが開始してから表示させます．
 ```javascript
@@ -1204,9 +1203,9 @@ export function Scanner ({onStarted, onDetected}) {
         Quagga.onDetected((result) => onDetectedRef.current(result.codeResult.code))
     }, [])
 ```
-''',
+""",
 
-'''
+"""
 以上で，開始したときと認識したときに実行する`onStarted, onDetected`関数を定義すれば，
 `<Scanner {{...onStarted, onDetected}}/>`のように使用できます．
 
@@ -1220,19 +1219,19 @@ export function Scanner ({onStarted, onDetected}) {
   border-radius:2em 2em 0px;
 }
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" media """"""""""""""""""""""""" #
 
-'''# Reactでメディアクエリを使う
-css in jsだとメディアクエリ(`@media`)でのスタイルの場合分けができないので，
+"""# Reactでメディアクエリを使う
+css in jsではメディアクエリ(`@media`)でのスタイルの場合分けができないので，
 `styled`や`Radium`というライブラリを使ってましたが，
-Reactの新しいバージョンへの対応が遅かったり変なエラーが多かったり不便なので，
-代わりに自作hookの[ライブラリ](https://github.com/tseijp/use-grid)を公開しました．
+typescriptやReactの新しいバージョンへの対応が遅かったり変なエラーが多かったり不便なので，
+代わりとして，自作hookの[ライブラリ](https://github.com/tseijp/use-grid)を公開しました．
 [use-media](https://github.com/streamich/use-media)というリポジトリを参考にしています．
-''',
+""",
 
-'''## use-mediaについて
+"""## use-mediaについて
 入力した値をメディアクエリの文字列に変換して`useRef`の中に入れます．
 はじめに，メディアクエリの初期値`defaultMedia`と，css in js をcss
 （例えば`minWidth`から`min-width`）に直す`queryObjectToString`関数をインポートしています．
@@ -1254,9 +1253,9 @@ export function useMedia (rawQuery={}, defaultState=false) {
     return state
 }
 ```
-''',
+""",
 
-'''## use-gridについて
+"""## use-gridについて
 `const fontSize = useGrid({xs:"25px", md:"50px", xl:"75px"})`のように使うと，
 値の内容を画面のサイズに合わせてtレスポンシブに変化させられます．
 ```javascript
@@ -1265,20 +1264,20 @@ const useGrid = (props) => {
     const queries = useRef( qP2L(props) )
     const [state, set] = useState(queries.current[0][1])
     useEffect ( () => {
-        const medias = queries.current.map( ([query,value]) => {
-            const media = typeof window==="undefined"? mockMediaString:window.matchMedia(query)
-            const onChange =()=> Boolean(media.matches) && set(value)
-            state && (onChange(), media.addListener(onChange))
-            return {media, onChange}
+        const media = queries.current.map( ([query,value]) => {
+            const md = typeof window==="undefined"? mockMediaString:window.matchMedia(query)
+            const fn =()=> Boolean(md.matches) && set(value)
+            value && (fn(), md.addListener(fn))
+            return {md, fn}
         })
-        return () => medias.map( ({media,onChange}) => media.removeListener(onChange) )
+        return () => media.map( ({md,fn}) => md.removeListener(fn) )
     }, [] )
     return state
 }
 ```
-''',
+""",
 
-'''## queryObjectToStringについて
+"""## queryObjectToStringについて
 css in jsのオブジェクトからcssに変換する関数`queryObjectToString`を定義します．
 例えば，`{minWidth:500}`を`min-width:500`のように変換します．
 ```javascript
@@ -1287,15 +1286,16 @@ export function queryObjectToString (query) {
     const toS = ([key, val]) => {
         const feature = key.replace(/[A-Z]/g,s=>`-${s.toLowerCase()}`).toLowerCase();
         const isN = typeof val==='number' && /[height|width]$/.test(feature)
-        if (typeof val==='boolean') return `${val?'':'not '}${feature}`;
-        return `(${feature}: ${val}${isN?'px':''})`;
+        return (typeof val==='boolean')
+          ? `${val?'':'not '}${feature}`;
+          : `(${feature}: ${val}${isN?'px':''})`;
     }
     return Object.entries(query).map(toS).join(' and ');
 }
 ```
-''',
+""",
 
-'''## queryPropsToListについて
+"""## queryPropsToListについて
 "md"(medium)のような文字列からメディアクエリの文字列に変換する関数を定義します．
 例えば，`useGrid({xs:"ham",lg:"egg"})`内で実行される`qP2L([["xs","ham"],["lg","egg"]])`は，
 `[["(min-width:1px)and(max-width:969px)","ham"],["(min-width:970)","egg"]]`のように変換します．
@@ -1308,19 +1308,23 @@ export function queryPropsToList ( props ) {
         const grid = SIZE.map(s=>props.find(p=>p[0]===s)||null).filter((m)=>m!==null)
         const xsGr = (grid.length)? grid.find(g=>g[0]==="xs")?[]:[["xs",grid[0][1]]]: []
         const noGr = (grid.length)? props.filter(p=>!SIZE.find(s=>s===p[0]))        : props
-        return [...noGr, ...[...xsGr,...grid].map((g,i)=>[toS(g[0],i<grid.length-1?grid[i+1][0]:null), g[1]])]
+        return [...noGr, ...[...xsGr,...grid].map((g,i) => [
+            toS(g[0],i<grid.length-1?grid[i+1][0]:null), g[1]]) ]
     }
     return getMedia( props.map( ([key,val]) => [queryObjectToString(key),val] ) )
 }
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" props """"""""""""""""""""""""" #
-'''# 引数に代入すると便利
+"""# 引数に代入すると便利
 
+`useState`のような状態を扱う自作hookを作る際，値を更新するset関数が必要になりますが，
+前の状態を踏まえて値を更新するには，引数に関数を使うことがあります．
 Reactのpropsなど，引数代入することで型が特定されたりとコードが縮小できて便利です．
 （PythonやJSの変数で代入すると参照の他の所で値が変わってしまうので，安直に代入するのは危険です）
-たとえば，`useState`では初期値の計算が重い場合，関数を引数に指定させることで，毎回初期値の作成を防いでいます．
+たとえば，[useStateのソースコード](https://github.com/facebook/react/blob/c21c41ecfad46de0a718d059374e48d13cf08ced/packages/react-reconciler/src/ReactFiberHooks.js)
+をみると，`useState`では初期値の計算が重い場合，関数を引数に指定させることで，毎回初期値の作成を防いでいます．
 
 `const [rows, setRows] = useState(() => createRows(props.count));`
 
@@ -1336,9 +1340,9 @@ function mountState<S>(
    /*...*/
 }
 ```
-''',
+""",
 
-'''# Reactのchildrenに便利
+"""# Reactのchildrenに便利
 props.childrenでは子要素が二つ以上のときだけ配列になります．なので子要素がなかったり一つだったりするときは配列ではないので，
 `children.length`や`children.map`にエラーが出ます．例えば，次のように`children`を先に配列に直すと予期しないエラーを減らすことができたりできます．
 ```javascript
@@ -1348,11 +1352,12 @@ const App = ({children}) => {
     return children.filter(c=>c)         // エラー出ない！
 }
 ```
-''',
+""",
 
-'''# 再帰化させるのに便利
+"""# 再帰化させるのに便利
 孫要素に自身のコンポーネントを付与することで，自作した機能を子要素すべてに作用させることができます．
-次のようにchildrenを変更すれば，孫要素が複数のときだけ再帰的に機能を与えられます．（このRedsで囲むと，すべての子要素が赤くなります．）
+次のようにchildrenを変更すれば，孫要素が複数のときだけ再帰的に機能を与えられます．
+（以下の例では，Redsで囲んだすべての子要素が赤くなります．）
 
 ```
 import React, {Children, cloneElement} from 'react'
@@ -1369,74 +1374,335 @@ const Reds = ({children}) => {
     return <div {...{style, children}} />
 }}
 ```
-''',
+""",
 
 0,# """"""""""""""""""""""""" HOOKS """"""""""""""""""""""""" #
-'''# hookのゆかいななかま
+"""# hookのゆかいななかま
 Reactは簡単にいうと，処理と開発を最適化するための新しいエコシステムです．
-また，hookは関数ベースなので，特定の処理や要素をカプセル化できたりします．
-（DOMを直接触らないような）大体のjsコードはhookで使用でるので，使い方をまとめました．
-''',
+また，hookは関数ベースなので，処理をカプセル化しやすく，型システムとも相性がいいです．
+Reack未学者の方は，クラスベースでの古典的なReactの記法を優先しがちですが，
+実はいくつかの関数（useRef, useEffect）とReactの流れだけでマスターできます．
+前半では，DOMを直接触らない大体のjsコードをhookで使用する方法をまとめました．
+後半では，前半で使ったhookを使って，独自のhookを新たに作る方法をまとめました．
+""",
 
-'''## `useRef`
-外からjsxに参照すると, どんな要素の値をいじれる.（基本）
-React向けじゃないライブラリの変数はすべてこの中の初期値に入れる
-変化しても再renderさせたくないなって時に使える
+"""## useRefについて
+Reactでは，データは一方向（親から子）へ渡されて計算されるが，
+親から子のElementのrefに参照することで, 子の要素の値を外から参照したり操作できます．
+また，React向けでないライブラリの変数を入れることで，全体が再renderしても初期化されないようにできます．
+以下の例で➊では，指定した要素の値を参照するための基本的な使い方です．
+➋では，App全体が再renderしたときに再びインスタンス化されないように値を保持します．
+➌では，再renderしたときuseCallbackやChildrenのpropsを変化させず，子要素の再renderを防ぎます
 ```javascript
 import {useRef, useCallback} from 'react'
 const App = ({src="/static/test.png"}) => {
-    const ref = useRef(null)       // 通常のref
-    const obj = useRef(new Image())// 再renderしても初期化されない!
-    const err = useRef(false)      // 変化しても再renderしたくない!
+    const ref = useRef(null)       // ➊：通常のref
+    const obj = useRef(new Image())// ➋：再renderしても初期化されない!
+    const err = useRef(false)      // ➌：変化しても再renderしたくない!
     const onClick = useCallback(()=> err.current&&window.open(ref.current.src)),[])
     const onError = useCallback(()=>(err.current=true), [])
     return <img {...{src, ref, onClick, onLoad}} />
 }
 ```
-''',
+""",
 
-'''## `useEffect`
-- componentをrenderしたあとにする処理を入れる．
-- fetchなど時間がかかる処理を入れると，renderがスムーズになる．
-- React向けではないライブラリは，すべての処理をこの中の入れる．
-```Javascript
+"""## useEffectについて
+componentを生成し，Renderしたあとに実行する処理を入れます．
+例えば，fetchなど時間がかかる処理を入れることで，ほかの要素のrenderに影響を与えません．
+また，第二引数を空の配列にすることで，再renderしたときに再実行したくない重い処理を入れることができます
+React向けではない（DOMを直接触るような）ライブラリは，すべての処理をこの中の入れることで利用できます．
+```javascript
 const App = ({url="/static/README.md"}) => {
-    const [text, set] = useState('')
+    const [data, set] = useState('')
     useEffect(()=>{
         fetch(url).then(res=>set(res))
     }, [url])
-    return <span>{text}</span>
+    return data && <span>{data}</span>
 }
 ```
-''',
+### その他
+- `useState`：値が変化したら，再renderしてほしいような値に使う．(特に表示させる値)
+- `useSpring`：useStateの上位互換．ばねの力と加速度を計算して滑らかに遷移してくれる.
+- useMemo    : とりあえずすべての変数をこの中に入れておくと，高速化する．
+- useCallback: とりあえずすべての関数をこの中に入れておくと，高速化する．
+(実はほぼuseMemo内と同じなので，`useMemo(()=>()=>{...})`と使えば必要ない．)
+""",
 
-'''
-### `useState`
-- 値が変化したら，再renderしてほしいような値に使う．(特に表示させる値)
-- 何にでも使ってると，値をsetしたときに無駄に再rendeしたり再mountしてしまう．
+"""### 自作hookについて
+アプリの状態を保存するuseStateでは，前の値を参考に新たな値をsetするときは関数を引数に指定します．
+例として，デフォルト値`defaultPage = {...windows.location}, defauttConf`をimportし，
+window.locationの値から値を作するhookを作成します．
+事前に，新しい値に関数を指定できるように`BasicPropsとBasicStateを次のように設定します．`
+```javascriot
+export type BasicProps<T>  = (()=>T) | T
+export type BasicState<T>  = ((pre:T)=>T) | T
+export type BasicAction<T> = (fn:BasicState<T>) => void
+```
+引数の型が関数の場合を最初に除き，useRef内で値を補完することで，
+useStateのset(p=>p)の様に過去を参照するhoookを作成することができます．
+useRefにはデフォルト値と入力値をmergeして入力することで，多くの状態を同時に管理できます．
+""",
 
-### `useSpring` (`npm i use-spring`でいれる)
-- useStateの上位互換．値をsetしたときに滑らかに遷移して気持ちいいし，再renderしない.
-- (例えば0から100に) 値をsetしたときに，ばねの力と加速度を計算してゆっくり遷移してくれる．
+"""
+```javascript
+import {useState, useRef} from 'react'
+import {Page, Conf, BasicProps} from '../types'
+import {defaultConf, defaultPage, } from '../utils'
+export const usePage = <T=any>(
+    props :BasicProps<Partial<Page<T>>>,
+    config:BasicProps<Partial<Conf<T>>>={},
+) : [Page<T>, BasicAction<Partial<Page<T>>>] => {
+    if ( typeof props==="function" )
+        props = props()
+    if ( typeof config==="function" )
+        config = config()
+    const pageRef = useRef<Page<T>>({...defaultPage, ...props } as Page<T>)
+    const confRef = useRef<Conf<T>>({...defaultConf, ...config} as Conf<T>)
+    const [page,set] = useState<Page<T>>( normPage(pageRef.current) )
+    const setPage = useCallback((state:BasicState<Partial<Page<T>>>) => {
+        if (typeof state==="function")
+            state = state(pageRef.current as Partial<Page<T>>)
+        pageRef.current = {...pageRef.current, ...state}
+        set( normPage(pageRef.current) )
+    }, [set])
+    return [page, setPage]
+}
+```
+""",
 
-### パフォーマンス
-- useMemo    : とりあえずすべての変数をこの中に入れておくと，超高速化する．
-- useCallback : とりあえずすべての関数をこの中に入れておくと，超高速化する．
-''',
+
+0, # """"""""""""""""""""""""" Pagination """"""""""""""""""""""""" #
+"""# Paginationについて
+
+- [ref]
+- [generics](https://github.com/encode/django-rest-framework/blob/master/rest_framework/generics.py)
+- [pagination](https://github.com/encode/django-rest-framework/blob/master/rest_framework/pagination.py)
+- [docs](https://www.django-rest-framework.org/api-guide/pagination/)
+- [slide](https://www.slideshare.net/c-bata/django-rest-framework-api-pycon-jp-2018-114941317)
+- [Override page size orderin](https://stackoverflow.com/questions/54198331/override-page-size-ordering-of-cursorpagination-in-django-rest-framework)
+
+
+Djangoのrest_frameworkで公開されているPaginationは次の三つです
+- PageNumberPagination :`~/?page=4`
+- LimitOffsetPagination:`~/?limit=5&offset=400`
+- CursorPagination     :`~/?cursor=cj0xJnA9MjAxOC` (id or time)
+
+特に，ツイッターのようにデータの更新が頻繁なアプリには，
+次にfetchするurlを相対的に指定するカーソル型Paginationが適しています．
+本サイトにて，CursorPaginationをカスタマイズしたので，方法をメモします．
+
+```javascript
+class CustonPagination (CursorPagination):
+    page_size = 5
+    max_page_size = 5
+    ordering = '-id'
+    cursor_query_param = 'cursor'
+    invalid_cursor_message = 'Invalid cursor(;_;)'
+```
+""",
+
+"""
+## viewsetに適用する
+ListViewsetなどでは，pagination_classを指定するだけで完了します．
+今回はGenericViewSetをもとに開発しているため，手動でページネーションを指定します．
+後半の関数引数`request`は，各クラスにrequestを与えるためあとでオーバーライドさせます
+```javascript
+class CustomViewSet (GenericViewSet):
+    queryset = CustomModel.objects.all()
+    serializer_class = CustomSerializer
+    pagination_class = CustomPagination
+    def list (self, request):
+        queryset = self.filter_queryset( self.get_queryset() )
+        paginate = self.paginate_qeryset(objs)
+        if paginate is None:
+            return self.get_paginated_response(None   , request=request)
+        data = self.get_serializer(paginate, many=True, request=request)
+        return self.get_paginated_response(data.data  , request=request)
+```
+""",
+
+"""## ViewsetのResponseを拡張する
+GenericViewSetで定義されている`self.get_paginated_response`は，`self.paginator`の値を参照し, Dictを返しているだけなので，簡単にオーバーライドできます．
+第二引数にrequestを指定することで，ユーザー情報によってResponseの値を本校させたりできます
+```javascript
+class CustomViewSet (GenericViewSet):
+    ...
+    def get_paginated_response(self, data, request=None):
+        return Response({
+            'next'    : self.paginator.get_next_link()     if data else None,
+            'previous': self.paginator.get_previous_link() if data else None,
+            'results' : data if data else "Page Not found.",
+            'isAuth'  : True if request.user else False,
+        }, status = 404 if data is None else 200)
+```
+""",
+
+"""## Serializerを拡張する
+ユーザーの情報によって，シリアライズする値を変更します．
+例えば，アクセスしたユーザーがそのデータの著者かどうかを判定します．
+```javascript
+from rest_framework import serializers as s
+
+class NoteSerializer(s.ModelSerializer):
+    ...
+    is_author   = s.SerializerMethodField()
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__()
+    def get_is_author(self, obj):
+        user = self.request and self.request.user
+        return user and user.id == obj.posted_user.id
+```
+""",
+
+"""## paginatorの値を変更する
+`self.patinator.xxx = yyy`のように，viewから値変更するとエラーがおこるので，
+各パラメータの[get_xxxのコード](https://github.com/encode/django-rest-framework/blob/master/rest_framework/pagination.py#L797)のコード（例えばorderingだと，`get_ordering`）をつぎのようにオーバーライドすると，
+ViewSetの途中のコードで，`self.ordering = yyy`と代入することで，
+`self.paginator`がviewsetで代入した値を参照してくれる．
+```javascript
+class CustomViewSet (GenericViewSet):
+    ordering = "-id"
+    ...
+
+class CustomPagination(CursorPagination):
+    ...
+    def get_ordering(self, request, queryset, view):
+        view_ordering = getattr(view, 'ordering', None)
+        if view_ordering:
+            self.ordering = view_ordering
+        return super(NotePagination, self).get_ordering(request, queryset, view)
+```
+""",
+
+0, # """"""""""""""""""""""""" Types """"""""""""""""""""""""" #
+"""# Typescriptの合併|と公差&について
+
+- [ref]()
+- [How to combine object properties](https://stackoverflow.com/questions/37042602/how-to-combine-object-properties-in-typescript)
+- [Typescript merge object types](https://stackoverflow.com/questions/49682569/typescript-merge-object-types/49683575)
+
+Typescriptの合併`|`と公差`&`がわかりにくかったので，食事の例で考えてみました．
+（OLのための）献立表を作るとき，次のようにサラダとパスタとピザの型を定義します．
+今回は，サラダとパスタのトマトは数を数えられるとしてnumber型，
+ピザのトマトはペースト状なのでboolean型にしているので注意してください．
+
+```javascript
+type Salad = {tomato:number}
+type Pasta = {tomato:number , macaroni:boolean}
+type Pizza = {tomato:boolean, cheeze  :boolean}
+```
+""",
+
+"""## 合併|について
+OLは `各食事で必ずサラダをとり，ランチではパスタ，ディナーではピザを食べる` とします．
+まず，一日目では，サラダとPasta,Pizzaの合併`|`を考えます．
+
+```javascript
+type Lunch  = Salad | Pasta
+type Dinner = Salad | Pizza
+```
+
+合併は，いわゆる`または`の意味なので，どちらかの食事をとる必要があります．
+ランチではPasta ⇒ Saladの関係なので， 少なくともSaladであれば (macaroni関係なく) trueとなり，
+ディナーではSaladとPizzaは全く異なるので，SaladでもPizzaでもないとfalseとエラーになります．
+
+```javascript
+const  salad: Lunch  = {tomato:0} //OK!
+const  pasta: Lunch  = {tomato:0,   macaroni:true} //OK!
+const  pizza: Dinner = {tomato:false, cheeze:true} //OK!
+const _pizza: Dinner = {tomato:1    , cheeze:true} //ERROR!
+//Object literal may only specify known properties, and 'cheeze' does not exist in type 'Salad'.
+```
+""",
+
+"""## 交差&について
+二日目でも，ランチではパスタ，ディナーではピザを食べる食生活として，サラダとの交差`&`を用いて定義します．
+```javascript
+type Lunch2  = Salad & Pasta
+type Dinner2 = Salad & Pizza
+```
+
+公差`&`はかつという意味なのですが，Typescriptでは少しあつかいにくいので注意が必要です．
+ランチではPasta ⇒ Saladの関係であり，必要条件であるパスタでないとfalseになるので，
+SaladかつPastaだとマカロニサラダしか該当しなくなります．
+ディナーに関しては，tomatoの型がSaladとPizzaで異なるので，
+`tomato:number&boolean)`=>`tomato:never`になり, どんな料理でも合致しなくなります．
+
+```javascript
+const salad2: Lunch2 = {tomato:0} //ERROR!
+const pasta2: Lunch2 = {tomato:0, macaroni:true} //OK!
+
+//Property 'macaroni' is missing in type '{ tomato: number; }' but required in type 'Pasta'.
+
+const  _pizza2: Dinner2 = {tomato:1   , cheeze:true} //ERROR!
+const __pizza2: Dinner2 = {tomato:true, cheeze:true} //ERROR!
+
+//  Type 'number' is not assignable to type 'never'.
+//  Type 'true' is not assignable to type 'never'.
+```
+""",
+
+"""
+# 型のmergeについて
+## 片方を優先するmerge
+重複したkeyの型が異なるSaladとPizzaの型を合体させるには，条件とマップが必要となります．
+Pizzaのkeyに対して，keyがSaladのkeyにあればSaladの型，出なければPizzaの型を返すことができます．
+このとき，tomatoの型は，saladが優先されるのでnumber型になります．
+
+```
+type Salad = {tomato:number}
+type Pizza = {tomato:boolean, cheeze:boolean}
+type Dinner<P=Pizza, S=Salad> = {
+    [K in keyof P]: K extends keyof S ? S[K] : P[K]
+} & S
+const  pizza : Dinner = {tomato:0    , cheeze:true} // OK !
+const _pizza : Dinner = {tomato:false, cheeze:true} //Error !
+
+//  Type 'false' is not assignable to type 'number'.
+//  Dinner is {tomato:number, cheeze:boolean}
+```
+""",
+
+"""
+## 完全な型のmergeについて
+次のように定義すれば，完全に型を合体できます.
+二つのObjectの型をspread演算子などで合体するときに利用しやすいです．
+```
+const pizza:Spread<Salad, Pizza> = { //OK!
+    ...{tomato:0},
+    ...{tomato:false, cheeze:true}
+}
+
+export type Spread<L extends object, R extends object> = Id<
+  Partial<{ [P in keyof (L & R)]: SpreadProp<L, R, P> }> &
+    Pick<L, Exclude<keyof L, keyof R>> &
+    Pick<R, RequiredProps<R>>
+>
+type SpreadProp<
+  L extends object,
+  R extends object,
+  K extends keyof (L & R)
+> = K extends keyof R
+  ? (undefined extends R[K] ? L[Extract<K, keyof L>] | R[K] : R[K])
+  : L[Extract<K, keyof L>]
+type RequiredProps<T extends object> = {
+  [P in keyof T]-?: undefined extends T[P] ? never : P
+}[keyof T]
+type Id<T> = { [P in keyof T]: T[P] }
+```
+""",
 
 0, # """"""""""""""""""""""""" JS """"""""""""""""""""""""" #
-'''# JS の落とし穴と対策
+"""# JS の落とし穴と対策
 よく指摘されるエラーと，回避させる方法をまとめました．
-''',
+""",
 
-'''## Object error
+"""## JS error
 ### `Uncaught SyntaxError: Unexpected token '.'` : keyがあるか先に確認
 - xxx.props.childrenなどで参照するとき，xxxにpropsがないとerrorが出る
 - `xxx.props && xxx.props.children`と一間開ける
 - TypeScriptなら，`xxx.props?.children`で回避できる
-''',
-
-'''## Array error
 ### `Uncaught TypeError: xxx.map is not a function` : mapできるか確認
 - props.children.map(v=>v.key)などで参照するとき, childrenが配列でないとerrorが出る
 - `const getarr =arr=> arr?(arr.length?arr:[arr]).filter(a=>a):[]`
@@ -1445,13 +1711,12 @@ const App = ({url="/static/README.md"}) => {
 ### `Cannot read property '1' of undefined`
 - 長さ1の配列`arr`に `arr[1]`するとプロパティーがないといわれる
 - arr[n]は使わない（tsともあわない）．
-''',
+""",
 
-'''## Typescript error
+"""## Typescript error
 ### `Argument of type 'any[]' is not assignable to parameter of type 'ConcatArray<never>'.` :as never[]を通す
 - (arr:any)=>[].concat(...arr) :
 - (arr:any)=>[].concat(...(arr as ever[])) :
-
 ###  `JSX element 'T' has no corresponding closing tag.` ：`<T extends any>`を使う
 - 例："任意の関数をとおして，配列に入れる関数"を取得する`getF`
 - Typescriptのジェネリック型と二重アロー関数を使うと怒られる．
@@ -1461,25 +1726,13 @@ const getF = (f:void) => <T>(ret:T) => [ f(ret) ]
 f = getF ( (value:number) => value*2 )
 f<number>(2)
 ```
-''',
+""",
 
-'''## Other error
-- const 以外使わない
-- Objectに入れるときは，key名の変数を定義してから入れる．
+"""## その他
+### Objectに入れるときは，key名の変数を定義してから入れる．
 - `const hoge = ...; setState({hoge})`
 
-```javascript
-const f=(p,q)=>{
-    const a = Object.keys(p).map(k=>[k,v[k]]).sort();
-    const b = Object.keys(q).map(k=>[k,w[k]]).sort();
-    return !a.map((v,j)=>!v.map((w,i)=>w===b[j][i]).includes(false)).includes(false);
-}
-```
-const f=(p,q)=>Array.from(new Set(...Object.keys(p),...Object.keys(q))).every(k=>p[k]===q[k])
-props.request_user[v]===props.posted_user[v])
-''',
-
-'''## Objectでmap関数を使えるようにする
+## Objectでmap関数を使えるようにする
 ```javascript
 import objsx from 'objsx'
 const obj = {a:[0,0,0], b:[1,2,0], c:[-1,2,0]}
@@ -1490,9 +1743,9 @@ const isLong = objsx({
     map:([k,v])=>[k,v>1]
 },  obj)
 ```
-''',
+""",
 
-'''
+"""
 ```javascript
 export const objsx = <T=any> (
     fns:{[mode:string]:(
@@ -1512,37 +1765,10 @@ export const objsx = <T=any> (
     return props instanceof Array ? state : state[0]
 }
 ```
-''',
-
-0, # """"""""""""""""""""""""" TS """"""""""""""""""""""""" #
-'''# Typescriptで引数に`(()=>T)|T`を使う
-`useState`のような状態を扱う自作hookを作る際，値を更新するset関数が必要になりますが，
-前の状態を踏まえて値を更新するには，引数に関数を使うことがあります．
-
-[useStateのソースコード](https://github.com/facebook/react/blob/c21c41ecfad46de0a718d059374e48d13cf08ced/packages/react-reconciler/src/ReactFiberHooks.js)
-をみると，引数に関数の結果を代入していた．（引数って値を代入していいのか．．．）
-''',
-
-'''## CODE OF USESTATE
-```javascript
-type Dispatch<A> = A => void;
-type BasicStateAction<S> = (S => S) | S;
-Dispatch<BasicStateAction<S>>
-
-function mountState<S>(
-  initialState: (() => S) | S,
-): [S, Dispatch<BasicStateAction<S>>] {
-  const hook = mountWorkInProgressHook();
-  if (typeof initialState === 'function') {
-    initialState = initialState();
-  }
-   /*...*/
-}
-```
-''',
+""",
 
 0, # """"""""""""""""""""""""" Atom """"""""""""""""""""""""" #
-'''# Atomのセットアップ
+"""# Atomのセットアップ
 外出中に突然Atomが起動しなくなったときに，再び入れたときのメモです．
 Atomはとにかく重く，起動時に毎回エラーが出るので不満があったこともあり，
 VisualStudioに挑戦したのですが，普段よりも進捗が出ず半日過ぎてました．
@@ -1553,9 +1779,9 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
 
 また，React (electron)で作られたアプリなので，拡張機能を作りやすい利点もあります．
 特にシンタックスやハイライトなどのテーマが豊富に利用でき，自分で自由に拡張できます．
-''',
+""",
 
-'''## インストール
+"""## インストール
 - cacheがあれば消す（設定ファイルがあれば`git clone`する）
   - `~/.atom`
   - `~/AppData/Local/atom`
@@ -1566,9 +1792,9 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
     - `~/.atom/gitignore`に`packages/*`を追加
     - `apm list --installed --bare > packages.txt`
     - `git add .` => `git commit`
-''',
+""",
 
-'''## 設定
+"""## 設定
 - [o]コア設定すべて
 - [o]エディタ設定すべて
 - [x]ソフトラップと右端ソフトラップ ：折り返して開業しないようにする
@@ -1579,17 +1805,19 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
     - [github-atom-light-syntax](https://atom.io/themes/github-atom-light-syntax)
 - インターフェーステーマ : `One Dark`
 - シンタックステーマ : `Github Atom Dark`
-''',
+""",
 
-'''## エディターとGithubの拡張
+"""## エディターとGithubの拡張
+-
 - [clipboard-plus](https://atom.io/packages/clipboard-plus) : clipboardの履歴の一覧を表示
 - [editor-stats](https://atom.io/packages/editor-stats) : 6時間分の作業履歴をグラフにして表示
 - [hyperclick](https://atom.io/packages/hyperclick) : `Ctrl+Alt+Enter`で，選択した単語が定義がされた場所を開く
 - [git-plus](https://atom.io/packages/git-plus) : atomでgithubを扱う決定版
 - [merge-conflicts](https://atom.io/packages/merge-conflicts) : githubでconfligtが起きたときに直しやすくする（精神を安定させる）
-''',
+""",
 
-'''## ツールの拡張
+"""## ツールの拡張
+-
 - [file-icons](https://atom.io/packages/file-icons) : ファイル名の隣にアイコンがつく
 - [foldername-tabs](https://atom.io/packages/foldername-tabs) : タブにディレクトリ名も表示
 - [multiline-tab](https://atom.io/packages/multiline-tab) : タブが多いとき，改行して表示する
@@ -1600,9 +1828,10 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
     - [x]Fullscreen : あるとよくバグる（別のコマンドで代用できる）
     - [x]SoftWrap && Width=200 （横幅が広いディスプレイ用）
     - [x]Typewriter : クリックした位置が中心になるが，邪魔．
-''',
+""",
 
-'''## HighLightの拡張
+"""## HighLightの拡張
+-
 - [activate-power-mode](https://atom.io/packages/activate-power-mode) : コーディングをゲームっぽくする
     - [x]screen-shake
     - [x]play audio
@@ -1622,9 +1851,9 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
 - [neon-selection](https://atom.io/packages/neon-selection) : 選択した場所がネオンの光を発する
 - [glowing-cursor](https://atom.io/packages/glowing-cursor) : カーソルがネオンの光を発する
 - [syntax-neonize](https://atom.io/packages/syntax-neonize)：シンタックスが光る（`Github Atom Dark`だと逆に見やすくなる）
-''',
+""",
 
-'''## for minimap
+"""## for minimap
 - [minimap](https://atom.io/packages/minimap) : ソースコードのプレビューを表示する
 - [minimap-cursorline](https://atom.io/packages/minimap-cursorline)：minimapにカーソル位置を表示
 - [minimap-find-and-replace](https://atom.io/packages/minimap-find-and-replace)：検索結果をminimapに表示できる
@@ -1634,9 +1863,9 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
 - [minimap-git-diff](https://atom.io/packages/minimap-git-diff) ：githubの差分の位置をminimapに表示できる
      - [o]Use Gutter Decoration
 （`minimap-linter`は，入れたときに入る`linter`と後で入れる`ide`が競合するので，お勧めしない）
-''',
+""",
 
-'''## for jsx, tsx
+"""## for jsx, tsx
 - [atom-browser](https://atom.io/packages/atom-browser) : atom内でブラウザを使用できる．自動リロード付き．
 - [atom-ide-ui](https://atom.io/packages/atom-ide-ui) : Atomをエディターから総合開発環境にする．
 - [atom-typescript](https://atom.io/packages/atom-typescript)：他の`ide-typescript`だと変なエラーが出る
@@ -1651,13 +1880,15 @@ Atomの一番の強みは，Atomはハッカブルなエディターなので，
 - [language-glsl]()
 - [lazy-unity-helper]()
 - [unity-shader-files]()
-''',
+""",
 
 0, # """"""""""""""""""""""""" CSS """"""""""""""""""""""""" #
-'''# css メモ
+"""# css メモ
 - absoluteの外はrelativeにする (今まで全absoluteにしていた)
 - 子要素のcenteringは`item:center;`
 - absoluteでcenteringは`margin:"0px auto",top:0,bottom:0,left:0,right:0`
 - そのほかのcenteringは`left:"50%, transform:"translateX(-50%)`
-''',#TODO
+""",#TODO
+
+0, # """"""""""""""""""""""""" Jest """"""""""""""""""""""""" #
 ]

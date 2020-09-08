@@ -21,3 +21,8 @@ class NotePagination(CursorPagination):
 #
 ### The offset in the cursor is used in situations where we have a nearly-unique index.
     offset_cutoff = 100 # 1000
+    def get_ordering(self, request, queryset, view):
+        view_ordering = getattr(view, 'ordering', None)
+        if view_ordering:
+            self.ordering = view_ordering
+        return super(NotePagination, self).get_ordering(request, queryset, view)

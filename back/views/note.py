@@ -12,6 +12,7 @@ from rest_framework.authentication import TokenAuthentication
 
 # """"""""""""""""""""""""" FOR NOTE """"""""""""""""""""""""" #
 class NoteViewSet(GenericViewSet):
+    ordering = "-id"
     queryset = NoteModel.objects.all()
     serializer_class = NoteSerializer
     pagination_class = NotePagination
@@ -41,8 +42,9 @@ class NoteViewSet(GenericViewSet):
     def retrieve(self, request, pk):
         objs = self.filter_queryset(self.get_queryset())
         if str(pk).isdecimal():
+            self.ordering = "id"
             reps = self.get_object().get_children_id()
-            retr = objs.filter(id__in=reps)
+            retr = objs.filter(id__in=reps)#.reverse()
         else:
             user = User.objects.filter(username=pk) or [None]
             retr = objs.filter(posted_user=user[0], note_object__isnull=True)

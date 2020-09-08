@@ -1,24 +1,31 @@
 import axios  from 'axios'
 import {UserCredit, joinURL} from '../src'
-import {MultiPage} from '../src/types'
+import {NoteURL} from '../src/types'
+export type CustomPage = {isHome:boolean,portname:string[], pathname:string[]}
+const  {animateScroll} = require('react-scroll');
 
-export type CustomPage = {pk:string, home:MultiPage<boolean>}
 export const customPage = {
-    home    :({id}:any) => !id, pk:"",
-    search  :({pk}:any) => ["",pk&&`?cursor=${pk}`],
-    pathname:({id}:any) => [`/note/${id?id+'/':''}`,`/api/note/${id?id+'/':''}`],
-    portname:({isLocal}:any) => isLocal?["3000","8000"]:null,
+    isHome  : ({id}:any)=>!id,
+    portname: ({isLocal}:any) => isLocal?["3000","8000"]:[],
+    pathname: ({id}:any) => ['','/api'].map(s=>`${s}/note/${ id?id+'/':'' }`),
 }
-//const url = window.location.origin.match('localhost')?"http://localhost:8000":"https://tsei.jp"
-//const headers = {'Content-Type':'application/json'}
+export const noteConfig = {
+    onChange:()=>{
+        animateScroll.scrollToTop({
+        //    duration: 800,
+            delay: 1000,
+            smooth: 'easeInOutQuart'
+        })
+    }
+}
 export const fetcher = async (
-    url:string|string[],
+    url:NoteURL,
     headers:any={'Content-Type':'application/json'}
 ) =>  {
     if (url instanceof Array)
         url = joinURL(...url)
     return axios
-        .get(url, headers)
+        .get(url as string, headers)
         .then(res => {
             if(!res || res.status!==200)
                 throw new Error('Bad Request')

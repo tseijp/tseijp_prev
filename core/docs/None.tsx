@@ -43,13 +43,12 @@ export const None :FC = () => {
             </div>
             <Sides {...{size}}>
                 <p onClick={()=>window.location.href="/"    }>Home</p>
-                <p onClick={()=>window.location.href="/hook"}>Hook</p>
                 <p onClick={()=>window.location.href="/note"}>Note</p>
             </Sides>
             <Trans {...{size}}>
-                <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>
-                <div onClick={()=>setDark( (p:any)=>({md:p.lg,lg:p.md}) )}>{dark?'🌛':'🌞'}</div>
-                <div onClick={()=>setSize( (p:any)=>({md:p.lg,lg:p.md}) )}>{size<75?'👶':'👨'}</div>
+                <div onClick={()=>setLang(p=>p!=='ja'?'en':'ja')}>{lang.toUpperCase()}</div>
+                <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
+                <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
             </Trans>
         </div>
     )

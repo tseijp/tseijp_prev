@@ -1,5 +1,6 @@
 import { ReactChild as RC, CSSProperties } from 'react'
 import { AxiosResponse } from 'axios'
+
 export type BasicProps<T>  = (()=>T) | T
 export type BasicState<T>  = ((pre:T)=>T) | T
 export type BasicAction<T> = (fn:BasicState<T>) => void
@@ -28,8 +29,8 @@ export type NoteElement = {
 }
 export type NoteNode = null | {
     [key:string]:any,
-    next    :string|null,
-    previous:string|null,
+    next    ?:string|null,
+    previous?:string|null,
     results :NoteNode
       | Partial<NoteElement>[]
       | null
@@ -38,6 +39,9 @@ export type NoteNode = null | {
 export type NoteURL = URLType | string | string[]
 //export type NoteConfig<T=NoteNode> = {mode:boolean|(()=>boolean),noteType:T}
 export type NoteFetcher<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
+export type NoteConfig = {
+    onChange:() => void
+}
 // ************************* 👌 For usePage 👌 ************************* //
 export type PageConfig<T={}> = Partial<{
     [key:string]:any,

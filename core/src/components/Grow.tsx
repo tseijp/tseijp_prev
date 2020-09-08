@@ -1,11 +1,19 @@
-import React, {FC,useMemo} from 'react'
+import React, {FC,useMemo, useRef} from 'react'
 import {BasedProps} from '../types'
-export const Grow:FC<BasedProps> = () => {
-    const style = useMemo<React.CSSProperties>(()=>({
-        position:"absolute",placeItems:"center",margin:"auto",
-        left:0,right:0,top:0,bottom:0,width:"50vh",height:"50vh"}),[])
+import {useView} from 'use-grid'
+export const Grow:FC<BasedProps> = ({
+    onView=null, role="status",
+    size=50, style={}, className="spinner-grow", ...props
+}) => {
+    const ref = useRef(null)
+    useView(ref, onView)
+    const styles = useMemo<React.CSSProperties[]>(()=>[
+       {position:"relative",display:"grid",margin:"auto", background:"rgba(0,0,255,0.5)",
+        width:size*50,height:size*50,...style},
+       {placeItems:"center"}
+    ], [size,style])
     return (
-        <div className="spinner-grow" style={style} role="status">
+        <div  {...props} {...{ref, role, style:styles[0]}} >
             <span className="sr-only">Loading...</span>
         </div>
     )

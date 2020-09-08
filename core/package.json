@@ -39,7 +39,7 @@
     "react-use-gesture": "^7.0.15",
     "swr": "^0.3.0",
     "three": "^0.119.0",
-    "use-grid": "^0.7.0"
+    "use-grid": "^0.8.1"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -76,6 +76,7 @@
     "react-app-rewired": "^2.1.6",
     "react-helmet-async": "^1.0.6",
     "react-scripts": "3.4.1",
+    "react-scroll": "^1.8.1",
     "rollup": "^2.23.0",
     "ts-jest": "^24.3.0",
     "typescript": "^3.8.3"
