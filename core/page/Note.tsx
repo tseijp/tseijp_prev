@@ -11,9 +11,8 @@ import { customPage, CustomPage, fetcher, signin } from './utils'
 export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //
     const [page, setPage] = usePage<CustomPage>(customPage)
-    const [note, setNote] = useNote(page.urls[1], fetcher)//[page.urls[1]]
-    const [sign, setSign] = useState(false) //TODO : merge to useUser
-    const [user, setUser] = useUser({onSign:()=>setSign(false)})
+    const [note, setNote] = useNote(page.urls[1], fetcher)
+    const [user, setUser] = useUser(page.urls[2], signin)
     // ******************** FOR DESIGN ******************** //
     const [lang, setLang] = useState<string> (window.navigator.language||'ja')// TODO:user.language
     const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:user.dark or not
@@ -57,9 +56,9 @@ export const Note :FC = () => {
                 //onView :(e:any)=>e.isIntersecting && setNote((p:any)=>p.next)
             }}/> }
             {/******************** Modals ********************/}
-            <Modal {...{dark,size,open:sign,onClose:()=>setSign(false)}}>
+            <Modal {...{dark,size,open:!!user.status,onClose:()=>setUser("")}}>
                 <Card {...{dark,size}}>
-                    <Icon fa="times" {...{size,style:styles[2]}} onOpen={()=>setSign(false)}/>
+                    <Icon fa="times" {...{size,style:styles[2]}} onOpen={()=>setUser("")}/>
                     <Head {...{dark,size}}>SIGN {user.status}
                         <Icon fa="exchange-alt" {...{dark,size}}
                           size={size} onOpen={()=>setUser()}/>
@@ -87,10 +86,10 @@ export const Note :FC = () => {
                 <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
             </Trans>
             <Pills {...{size}}>
-                <Icon fa="ellipsis-h"        {...{dark,size}} onOpen={()=>null}>
-                    <Icon fa="share-square"  {...{dark,size}} onOpen={()=>null}/>
-                    <Icon fa="sign-in-alt"   {...{dark,size}} onOpen={()=>setSign(true)}/>
-                    <Icon fa="location-arrow"{...{dark,size}} onOpen={()=>null}/>
+                <Icon fa="ellipsis-h"        {...{dark,size}} onClick={()=>null}>
+                    <Icon fa="share-square"  {...{dark,size}} onClick={()=>null}/>
+                    <Icon fa="sign-in-alt"   {...{dark,size}} onClick={()=>setUser("")}/>
+                    <Icon fa="location-arrow"{...{dark,size}} onClick={()=>null}/>
                 </Icon>
             </Pills>
         </div>

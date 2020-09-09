@@ -1,14 +1,37 @@
 import axios  from 'axios'
-import {UserCredit, joinURL} from '../src'
-import {NoteURL} from '../src/types'
-export type CustomPage = {isHome:boolean,portname:string[], pathname:string[]}
+import {Credit, joinURL} from '../src'
+import {NoteURL, Page} from '../src/types'
 const  {animateScroll} = require('react-scroll');
 
-export const customPage = {
-    isHome  : ({id}:any)=>!id,
-    portname: ({isLocal}:any) => isLocal?["3000","8000"]:[],
-    pathname: ({id}:any) => ['','/api'].map(s=>`${s}/note/${ id?id+'/':'' }`),
+export type CustomPage = Page<{
+    portname:string[], isHome:boolean,
+    pathname:string[], isSign:boolean,
+}>
+export const customPage : CustomPage = {
+    isHome  : ({id})=>!id,   isSign:true,
+    portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
+    pathname: ({id,isSign}) => [ // in ///error
+            `/note/${ id?id+'/':'' }`,
+        `/api/note/${ id?id+'/':'' }`,
+        isSign? `/auth`: `/api/user`
+    ]
 }
+/*
+export type CustomPage = {isHome:boolean,portname:string[], pathname:string[]}
+export const customPage : Page<{
+    portname:string[], isHome:boolean,
+    pathname:string[], sign:string,
+}> = {
+    isHome  : ({id})=>!id, sign:"",
+    portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
+    pathname: ({id,sign}) => [ // in ///error
+            `/note/${ id?id+'/':'' }`,
+        `/api/note/${ id?id+'/':'' }`,
+        sign==="in"? `/auth`: `/api/user`
+    ]
+}
+*/
+
 export const noteConfig = {
     onChange:()=>{
         animateScroll.scrollToTop({
@@ -34,7 +57,7 @@ export const fetcher = async (
 }
 export const signin = async (
     url:string|string[],
-    cred:UserCredit,
+    cred:Credit,
     headers:any={'Content-Type':'application/json'}
 ) => {
     if (url instanceof Array)

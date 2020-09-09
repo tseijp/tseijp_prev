@@ -1,4 +1,4 @@
-import {Page, PageConfig, URLType} from './types'
+import {Page, PageConfig, URLType, UserConfig} from './types'
 
 export const clamp = (x:number, min=0, max=1) :number  => (x<min)?min:(x>max)?max:x
 export const swap=(arr:number[],ind:number,row:number) => {
@@ -12,6 +12,9 @@ export const equalPathname = (...urls:(URLType|string)[]) =>
 export const typeOf    =(v:any,...ts:string[]):boolean=>!!ts.filter(t=>typeof v===t).length
 export const instanceOf=(v:any,...is:   any[]):boolean=>!!is.filter(i=>v instanceof i).length
 // ************************* 👌 use-page 👌 ************************* //
+export const defaultPageConfig:PageConfig = {
+    onChange:null,
+}
 export const defaultPage = {
     id      :window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===1)||"",
     isHome  :window.location.pathname.split('/').filter(v=>v).length > 1,
@@ -22,9 +25,7 @@ export const defaultPage = {
     pathname:window.location.pathname||"",
     search  :window.location.search  ||"",
     urls    :[new URL(window.location.href)],
-}
-export const defaultPageConfig:PageConfig = {
-    onChange:null,
+//    config  :defaultPageConfig
 }
 export const joinPage = <T={}>(page:Page<T>):string|string[] => {
     const {protocol,hostname,portname,pathname="",search=""} = page;
@@ -48,6 +49,16 @@ export const normPage = <T extends {}={}>(page:Page<T>) => {
       ? urls.map((u:any) => typeof u==="string" ? new URL(u) : u) as URLType[]
       : [typeof urls==="string" ? new URL(urls) : urls] as URLType[] } as Page<T>
 }
+
+// ************************* 🙍‍♂️ For useUser 🙍 ************************* //
+export const defaultUserConfig:UserConfig = {
+    keys:['username','authtoken'],
+    user:null,
+    onSign:null,
+    onSignin:null,
+    onSignout:null
+}
+
 // ************************* 🍡 join-url 🍡 ************************* //
 // * This function is fork of join-url/urljoin
 // * Code : https://github.com/jfromaniello/url-join/blob/master/lib/url-join.js

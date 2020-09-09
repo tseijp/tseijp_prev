@@ -1,36 +1,39 @@
-/*** ************************* USE PAGES *************************
-  * This is a hook to record the URL of the Restfl API
-  *   - `const [page, set] = usePage({id:null,home:({id})=>!id}, config)`
-  *   - `const onClick=()=>set({id:90}, config)`
-  *   - ```
-  *     {Page, id:null}  <=data=> (DB1 : URL1 by id), (DB2 : URL2 by id)
-  *          | change id
-  *          |  => change URLs by id (e.g. /api to /api/90)
-  *          v  => change user state (e.g. home:true to home:false)
-  *     {New Page, id:90}
-  *     ```
-  * # ***** usePage API Configs *****
-  * ## Props Values
-  *   - `const _ = usePage(@initPage, @config)`
-  *   - @initPage = {
-  *         @protocol?:string, e.g. "https:"
-  *         @hostname?:string, e.g. "localhost"
-  *         @portname?:string, e.g. "3000"   or ["3000"(npm), "8000"(django)]
-  *         @pathname?:string, e.g. "/note/" or ["/note/", "/api/note/"]
-  *         @search  ?:string, e.g. "/note/" or ["/note/", "/api/note/"]
-  *   - @config = {TODO}
-  *   - type MultiPage<T=any> = T|T[]|((p:Page)=>T|T[])
-  * ## Return Values
-  *   - @page : {...@initPage(as T|T[]),
-  *         @url ?: from initPage parameters    e.g. "http..." or ["http...", ...more]
-  *         @XXX ?: any value you set when init e.g. @home:true
-  *   - @set   : (args) => void ( setState )
- *** ************************* ********* *************************/
+/** ************************* USE PAGE *************************
+ * This is a hook to record the URL of the Restfl API
+ *   - `const [page, set] = usePage({id:null,home:({id})=>!id}, config)`
+ *   - `const onClick=()=>set({id:90}, config)`
+ *   - ```
+ *     {Page, id:null}  <=data=> (DB1 : URL1 by id), (DB2 : URL2 by id)
+ *          | change id
+ *          |  => change URLs by id (e.g. /api to /api/90)
+ *          v  => change user state (e.g. home:true to home:false)
+ *     {New Page, id:90}
+ *     ```
+ * # ***** usePage API Configs *****
+ * ## Props Values
+ *   - `const _ = usePage(@initPage, @config)`
+ *   - @initPage = {
+ *         @isHome  :boolean
+ *         @isLocal :boolean
+ *         @id      :string e.g. 2
+ *         @protocol:string e.g. "https:"
+ *         @hostname:string e.g. "localhost"
+ *         @portname:string e.g. "3000"   or ["3000"(npm), "8000"(django)]
+ *         @pathname:string e.g. "/note/" or ["/note/", "/api/note/"]
+ *         @search  :string e.g. "/note/" or ["/note/", "/api/note/"]
+ *   - @config = {TODO}
+ *   - type MultiPage<T=any> = T|T[]|((p:Page)=>T|T[])
+ * ## Return Values
+ *   - @page : {...@initPage(as T|T[]),
+ *         @url ?: from initPage parameters    e.g. "http..." or ["http...", ...more]
+ *         @XXX ?: any value you set when init e.g. @home:true
+ *   - @set   : (args) => void ( setState )
+ ** ************************* ********* *************************/
 
 import {useEffect, useState, useCallback, useRef} from 'react'
 import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
 import {defaultPageConfig as defaultConf, defaultPage, normPage} from '../utils'
-export const usePage = <T=any>(
+export const usePage = <T extends {}={}>(
     props :BasicProps<Partial<Page<T>>>,//BasicProps<Page<T>>,
     config:BasicProps<Partial<Conf<T>>>={},
 ) : [Page<T>, BasicAction<Partial<Page<T>>>] => {

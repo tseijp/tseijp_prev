@@ -13,7 +13,8 @@ module.exports = {
     },
     transformIgnorePatterns: ["/node_modules/(?!(xxxx.*?\\.js$))"],
     testPathIgnorePatterns : ["/node_modules/"],
-    testRegex: "(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    testRegex: ["(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$"],//ERROR if use together
+//  testMatch: ['<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'], //ERROR if use together
     modulePaths: [],
     moduleFileExtensions: ['ts','tsx','js','jsx','json','node'],
     moduleNameMapper: {
@@ -21,31 +22,30 @@ module.exports = {
         '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
         'src/(.*)$': '<rootDir>/src/$1',
     },
-        // preset: 'ts-jest',
-        // globals: {
-        //     'ts-jest': {
-        //         diagnostics: true,
-        //     },
-        // },
-        // collectCoverageFrom: [
-        //     'src/**/*.{js,jsx,ts,tsx}',
-        //     '!src/**/*.d.ts',
-        //     '!src/serviceWorker.ts',
-        //     '!src/setupTests.ts',
-        //     '!src/index.tsx',
-        // ],
-        // setupFiles: ['./config/jest/setupJest.ts', './config/jest/setupEnzyme.ts'],
-        // coveragePathIgnorePatterns: ['./src/*/*.types.{ts,tsx}'],
-        // coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
-        // coverageThreshold: {
-        //     global: {
-        //         statements: 95,
-        //         branches  : 95,
-        //         lines     : 95,
-        //         functions : 95,
-        //     },
-        // },
-        // snapshotSerializers: ['enzyme-to-json/serializer'],
-        // testMatch: ['<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'],
-        // automock : false,
+    automock : false,
+    preset: 'ts-jest',
+    globals: {
+        'ts-jest': {
+            diagnostics: true,
+        },
+    },
+    collectCoverageFrom: [
+        'src/**/*.{js,jsx,ts,tsx}',
+        '!src/**/*.d.ts',
+        '!src/serviceWorker.ts',
+        '!src/setupTests.ts',
+        '!src/index.tsx',
+    ],
+    //setupFiles: ['<rootDir>/setupTests.ts'],// './test/setupEnzyme.ts'], // ERROR
+    //snapshotSerializers: ['enzyme-to-json/serializer'], // ERROR
+    coveragePathIgnorePatterns: ['./src/*/*.types.{ts,tsx}'],
+    coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
+    // coverageThreshold: {
+    //     global: {
+    //         statements: 95,
+    //         branches  : 95,
+    //         lines     : 95,
+    //         functions : 95,
+    //     },
+    // },
 };

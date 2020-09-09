@@ -15,7 +15,7 @@ export type BindsProps = BasedProps<{bind?:any,spring?:any}>
 export type ModalProps = BasedProps<{open:boolean}>
 export type NotesProps = BasedProps<{grandren?:any,right?:RC,left?:RC,depth?:number}>
 
-// ************************* 👌 For useNote 👌 ************************* //
+// ************************* 📅 For useNote 📅 ************************* //
 export type URLType = {
     hash: string; hostname: string; search    : string;
     host: string; username: string; protocol  : string;
@@ -47,8 +47,8 @@ export type PageConfig<T={}> = Partial<{
     [key:string]:any,
     onChange:null|((p:Page<T>)=>void),
 }>
-export type DefaultPage<T> = { // (TODO extends PageConfig
-    [key:string]:any, config:PageConfig<T>|null, //TODO : DEV
+export type DefaultPage<T={}> = { // (TODO extends PageConfig
+    [key:string]:any, //config:PageConfig<T>|null, //TODO : DEV
     id:string|number,search :string,urls    :URLType[]
     isHome :boolean,protocol:string,hostname:string,
     isLocal:boolean,portname:string,pathname:string,
@@ -59,29 +59,20 @@ export type MultiPage<T> = {
 }
 export type Page<T extends {}={}> = Merge<DefaultPage<T>,MultiPage<T>>
 
-// ************************* 👌 For useUser 👌 ************************* //
-export type UserCredit<T=string> = {username:T,password:T,email?:T}
-export type User<T=string> = {
-    username :T, status:string,
-    authtoken:T, credit:UserCredit,
-    input ?: {[key:string]:{ onChange:(e:any)=>void, autoComplete?:"on",
+// ************************* 🙍‍♂️ For useUser 🙍 ************************* //
+export type Credit<T extends object|string=string> = {username:T,password:T,email?:T}
+export type User<T extends object|string=string> = {
+    username :T, //status:string,
+    authtoken:T, input ?: {
+        [key:string]:{ onChange:(e:any)=>void, autoComplete?:"on",
         group   :boolean, value:string, name:string, error  ?:"wrong",
         validate:boolean, label:string, type:string, success?:"right", }}
 }
-export type UserProps = Partial<{
-    [key:string]:any,
-    onSign   :null|(()=>void),
-    onSignin :null|(()=>void),
-    onSignout:null|(()=>void),
-}>
-export type UserConfig<T=User> = Partial<{
-    [key:string]:any  ,
-    url     :string  ,
-    keys    :string[],
-    initUser:T
-}>
-export type UserHandler = {
-    (
-        url:string, credit:UserCredit, headers?:any
-    ) : void | Promise<void|{username:string, authtoken:string}>
+export type UserConfig<T extends object|string=string,U=User<T>> = {
+    onSign   :null|((u?:U)=>void), user:null|T,
+    onSignin :null|((u?:U)=>void), keys:string[],
+    onSignout:null|((u?:U)=>void), [key:string]:any,
 }
+export type UserHandler = {(
+    url:string, credit:Credit, headers?:any
+) : void | Promise<void|{username:string, authtoken:string}>}

@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "test": "react-app-rewired test",
-    "jest": "jest -c config-jest.js --watch --coverage",
+    "jest": "jest -c config-jest.js --watch --coverage --runInBand",
     "eject": "react-app-rewired eject",
     "start": "cross-env NODE_ENV=development BABEL_ENV=development react-app-rewired start",
     "build": "cross-env NODE_ENV=production BABEL_ENV=production react-app-rewired build",
@@ -69,6 +69,7 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-test-renderer": "^16.9.3",
     "cross-env": "^7.0.2",
     "drei": "0.0.67",
     "fs": "0.0.1-security",
@@ -77,6 +78,7 @@
     "react-helmet-async": "^1.0.6",
     "react-scripts": "3.4.1",
     "react-scroll": "^1.8.1",
+    "react-test-renderer": "^16.13.1",
     "rollup": "^2.23.0",
     "ts-jest": "^24.3.0",
     "typescript": "^3.8.3"
