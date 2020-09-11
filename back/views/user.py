@@ -1,6 +1,7 @@
 #from django.shortcuts import render
 # """"""""""""""" REST """"""""""""""" #
 from rest_framework import viewsets, mixins, status as STATUS
+from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import TokenAuthentication

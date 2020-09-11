@@ -12,17 +12,19 @@ export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //
     const [page, setPage] = usePage<CustomPage>(customPage)
     const [note, setNote] = useNote(page.urls[1], fetcher)
-    const [user, setUser] = useUser(page.urls[2], signin)
+    const [user, setUser] = useUser(page.urls[2], signin, {onSign:()=>setPage({status:""})})
     // ******************** FOR DESIGN ******************** //
     const [lang, setLang] = useState<string> (window.navigator.language||'ja')// TODO:user.language
     const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:user.dark or not
     const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
     // ******************** FOR RENDER ******************** //
     const onClick = useMemo(()=>()=>setPage({id:""}), [setPage])
+    const onOpen  = useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
+    const onSign  = useMemo(()=>()=>setPage(p=>({status:p.status===  ""?"IN":""  })),[setPage])
+    //const onView  = useMemo(()=>(e:any)=>e.isIntersecting&&setNote((p:any)=>p.next) ,[setNote])
     const styles  = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
       { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50 },
       { position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%" },
-      { position:"absolute",transform:"translate(30%,-30%)" },
     ], [size, dark])
     return (
         <div style={styles[1]}>
@@ -40,8 +42,7 @@ export const Note :FC = () => {
                     <div key={id}>
                         <Card {...{dark,size:page.isHome?1:size,
                                ...(page.isHome?{style:{height:500}}:{})}}
-                            onClick={page.isHome?()=>setPage({id,pk:""}):null}>
-                            <h3>{id}</h3>
+                            onClick={page.isHome?()=>setPage({id}):null}>
                             <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
                                 source={lang==="ja"?ja_text:en_text}/>
                         </Card>
@@ -51,28 +52,17 @@ export const Note :FC = () => {
             { note && note.previous && <h3>previous : {note.previous}</h3> }
             { note && note.next && <h3>next : {note.next}</h3> }
             {!note && page.isHome && <Grow {...{size}}/> }
-            {(note && note.next)  && <Grow  {...{size,
-                onClick:()=>setNote((p:any)=>p.next),
-                //onView :(e:any)=>e.isIntersecting && setNote((p:any)=>p.next)
-            }}/> }
+            {(note && note.next)  && <Grow {...{size,onClick:()=>setNote((p:any)=>p.next)}}/> }
             {/******************** Modals ********************/}
-            <Modal {...{dark,size,open:!!user.status,onClose:()=>setUser("")}}>
-                <Card {...{dark,size}}>
-                    <Icon fa="times" {...{size,style:styles[2]}} onOpen={()=>setUser("")}/>
-                    <Head {...{dark,size}}>SIGN {user.status}
-                        <Icon fa="exchange-alt" {...{dark,size}}
-                          size={size} onOpen={()=>setUser()}/>
-                         </Head>
-                    { !user?.authtoken && <>
-                        <MDBInput {...user?.input?.username} icon="user"/>
-                        <MDBInput {...user?.input?.password} icon="lock"/> {user.status==="UP"&&
-                        <MDBInput {...user?.input?.email} icon="envelope"/>}
-                    </> }
+            <Modal {...{dark,size,open:!!page.status,onClose:()=>setPage({status:""})}}>
+                <Card {...{dark,size,style:{maxHeight:"100vh"}}}>
+                    <Head {...{dark,size}}>SIGN {page.status}
+                    <Icon fa="exchange-alt" {...{dark,size,onClick:onOpen}}/></Head>
+                    { !user.isAuth && user.input.map((v,k)=>v.name==="email"&&page.status!=="UP"?null:
+                    <MDBInput {...v} key={k}/> )}
                     <MDBBtn color="elegant" style={{width:"100%",borderRadus:size*50}}
-                        onClick={()=>setUser((cred:any)=>signin([
-                            page.urls[3].href,user.status==="IN"?"auth/":"api/user/"
-                        ],cred))}>{ user.authtoken?"Signout":"Get!" }
-                    </MDBBtn>
+                        onClick={()=>setUser(page.urls[2])}>
+                        { user.isAuth?"Signout":"Get!" }</MDBBtn>
                 </Card>
             </Modal>
             {/******************** FANTASTIC UI ********************/}
@@ -88,8 +78,8 @@ export const Note :FC = () => {
             <Pills {...{size}}>
                 <Icon fa="ellipsis-h"        {...{dark,size}} onClick={()=>null}>
                     <Icon fa="share-square"  {...{dark,size}} onClick={()=>null}/>
-                    <Icon fa="sign-in-alt"   {...{dark,size}} onClick={()=>setUser("")}/>
                     <Icon fa="location-arrow"{...{dark,size}} onClick={()=>null}/>
+                    <Icon fa="sign-in-alt"   {...{dark,size}} onClick={onSign}/>
                 </Icon>
             </Pills>
         </div>

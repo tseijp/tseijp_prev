@@ -12,7 +12,8 @@
 <hr>
 
 # Table of Contents
-- [Demo](#Demo)  
+- [Demo](#demo)  
+- [Docs](#docs)
 - [Install via npm](#install-via-npm)  
 - [Available hook](#available-hook)  
 - [Simple example](#simple-example)  
@@ -32,19 +33,27 @@
 - `cd myproject`
 - `npm install -S @tsei/core`
 
-
 #Available hook
 hooks | what?  
 :-----|:-----  
-useGrid  | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
-useUser  | basic function of account authentication using cookies
-usePages | manage page transitions and restful api urls
-useNotes | manage notes data 
+useGrid | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
+useNote | manage notes data and edit note
+usePage | manage page transitions and restful api urls
+useUser | basic function of account authentication using cookies
+
 
 # Simple example
 
 __CONTAINERS__
 
+<a href="https://github.com/tseijp/tseijp/core/component">
+    <img src="https://img.shields.io/badge/#Card.svg"/>
+    <img src="https://img.shields.io/badge/#Code.svg"/>
+    <img src="https://img.shields.io/badge/#Foot.svg"/>
+    <img src="https://img.shields.io/badge/#Grow.svg"/>
+</a>
+<!-- TODO show demo in left -->
+<!-- TODO use image in right -->
 ```typescript
 const App = () => <>
     <Modal>
@@ -66,6 +75,12 @@ const App = () => <>
 
 __NAVIGATORS__
 
+<a href="https://github.com/tseijp/tseijp/core/component">
+    <img src="https://img.shields.io/badge/#Head.svg"/>
+    <img src="https://img.shields.io/badge/#Icon.svg"/>
+</a>
+<!-- TODO show demo in left src="http://..."/ -->
+<!-- TODO use image in right -->
 ```typescript
 const App = () => <>
     <Sides>

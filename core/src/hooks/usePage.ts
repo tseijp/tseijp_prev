@@ -30,17 +30,15 @@
  *   - @set   : (args) => void ( setState )
  ** ************************* ********* *************************/
 
-import {useEffect, useState, useCallback, useRef} from 'react'
-import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
+import {useState, useCallback, useRef} from 'react'
 import {defaultPageConfig as defaultConf, defaultPage, normPage} from '../utils'
+import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
 export const usePage = <T extends {}={}>(
     props :BasicProps<Partial<Page<T>>>,//BasicProps<Page<T>>,
     config:BasicProps<Partial<Conf<T>>>={},
 ) : [Page<T>, BasicAction<Partial<Page<T>>>] => {
-    if (typeof props==="function")
-        props = props()
-    if (typeof config==="function")
-        config = config()
+    if (typeof props==="function") props  = props()
+    if (typeof config==="function")config = config()
     const pageRef = useRef<Page<T>>({...defaultPage, ...props } as Page<T>)
     const confRef = useRef<Conf<T>>({...defaultConf, ...config} as Conf<T>)
     const [page,set] = useState<Page<T>>( normPage(pageRef.current) )
@@ -49,67 +47,18 @@ export const usePage = <T extends {}={}>(
         if (typeof state==="function")
             state = state(pageRef.current as Partial<Page<T>>)
         pageRef.current = {...pageRef.current, ...state}
-        set( normPage(pageRef.current) )
-    }, [set])
-    //  ************************* useEffect *************************  //
-    useEffect(() => {
-        const {onChange=null} = confRef.current
-        onChange && onChange(pageRef.current)
-        if (page && page.pathname)
+        set(pre => {
+            const newPage = normPage(pageRef.current)
+            if (pre.pathname===newPage.pathname)
+                return newPage
+            const {onChange=null} = confRef.current
+            onChange && onChange(pageRef.current)
             window.history.pushState('','',
-                page.pathname instanceof Array
-                  ? page.pathname[0]||''
-                  : page.pathname   ||'')
-    }, [page])
+                newPage.pathname instanceof Array
+                  ? newPage.pathname[0]||''
+                  : newPage.pathname   ||'')
+            return newPage
+        })
+    }, [set])
     return [page, setPage]
 }
-
-/* Prev
-export type PageType = {
-    [key:string]:any,
-    url  : string,
-    bind?: (q?:string)=>(null | {
-        onClick?:void
-    })
-}[]
-export type UsePageProps  = BasicProps<PageType>
-export type UsePageState  = BasicState<PageType>
-export type UsePageAction = BasicAction<PageType>
-export function cP2P (props:PageType) : PageType {
-    const position = window.location.pathname.split('/').filter(v=>v)
-    return props.map((prop:any)=>({
-        active : prop.url===position[0],
-        bind : (query:string="")=>!prop?.url ? null : {
-            onClick : ()=>window.open(prop.url+query,"blank")
-        },
-        ...prop
-    }))
-}
-export const usePage = (
-    props:UsePageProps,
-) : [PageType, UsePageAction]=> {
-    if (typeof props==="function")
-        props = props()
-    const [page, set] = useState( cP2P(props) )
-    const propsRef = useRef(props)
-    const setPage = useCallback((state)=>{
-        if (typeof state==="function")
-            state = state(propsRef.current)
-        propsRef.current = state
-        set( cP2P(state) )
-	}, [])
-    return [page, setPage]
-}
-export const App = () => {
-    const [page, set] = usePage([
-        { url:"note", icon:{fa:"note"} },
-        { url:"hook", icon:{fa:"hook"} },
-    ])
-    // page : [["note",{}],[]...]
-    return (
-        {page.map(({url,icon,bind})=>
-            <Icon url={url} {...icon} {...bind()}/>
-        )}
-    )
-}
- */

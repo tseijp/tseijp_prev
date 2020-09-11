@@ -9,8 +9,7 @@ export const equalPathname = (...urls:(URLType|string)[]) =>
     urls.map(u => typeof u==="string"? new URL(u) : u)
         .map(u => joinURL(u.pathname, "/"))
         .every((u, _, self) => u===self[0])
-export const typeOf    =(v:any,...ts:string[]):boolean=>!!ts.filter(t=>typeof v===t).length
-export const instanceOf=(v:any,...is:   any[]):boolean=>!!is.filter(i=>v instanceof i).length
+
 // ************************* 👌 use-page 👌 ************************* //
 export const defaultPageConfig:PageConfig = {
     onChange:null,
@@ -25,7 +24,6 @@ export const defaultPage = {
     pathname:window.location.pathname||"",
     search  :window.location.search  ||"",
     urls    :[new URL(window.location.href)],
-//    config  :defaultPageConfig
 }
 export const joinPage = <T={}>(page:Page<T>):string|string[] => {
     const {protocol,hostname,portname,pathname="",search=""} = page;
@@ -81,7 +79,7 @@ export function joinURL (...strArray:(string|number)[]) : string { // TODO : can
         if (typeof str === 'number')
             str = String(str)
         if (typeof str !== 'string')
-            throw new TypeError('url must be a string. Received ' + str);
+            throw new TypeError(`${str} must be a string. Received ${typeof str}`);
         if (str === '')
             continue;
         if (i > 0)

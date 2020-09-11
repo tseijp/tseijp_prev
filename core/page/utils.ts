@@ -1,37 +1,21 @@
 import axios  from 'axios'
-import {Credit, joinURL} from '../src'
-import {NoteURL, Page} from '../src/types'
+import {Credit} from '../src'
+import {URLType, Page} from '../src/types'
 const  {animateScroll} = require('react-scroll');
 
-export type CustomPage = Page<{
+export type CustomPage = {
     portname:string[], isHome:boolean,
-    pathname:string[], isSign:boolean,
-}>
-export const customPage : CustomPage = {
-    isHome  : ({id})=>!id,   isSign:true,
-    portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
-    pathname: ({id,isSign}) => [ // in ///error
+    pathname:string[], status:string,}
+export const customPage : Partial<Page<CustomPage>> = {
+    isSign:false,status:"", portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
+    isHome:({id}) => !id  , pathname: ({id,status}) => [
             `/note/${ id?id+'/':'' }`,
         `/api/note/${ id?id+'/':'' }`,
-        isSign? `/auth`: `/api/user`
+        status!=="UP"? `/auth/`: `/api/user/`
     ]
 }
-/*
-export type CustomPage = {isHome:boolean,portname:string[], pathname:string[]}
-export const customPage : Page<{
-    portname:string[], isHome:boolean,
-    pathname:string[], sign:string,
-}> = {
-    isHome  : ({id})=>!id, sign:"",
-    portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
-    pathname: ({id,sign}) => [ // in ///error
-            `/note/${ id?id+'/':'' }`,
-        `/api/note/${ id?id+'/':'' }`,
-        sign==="in"? `/auth`: `/api/user`
-    ]
-}
-*/
 
+// TODO DEV
 export const noteConfig = {
     onChange:()=>{
         animateScroll.scrollToTop({
@@ -42,13 +26,11 @@ export const noteConfig = {
     }
 }
 export const fetcher = async (
-    url:NoteURL,
+    url:URLType,
     headers:any={'Content-Type':'application/json'}
 ) =>  {
-    if (url instanceof Array)
-        url = joinURL(...url)
     return axios
-        .get(url as string, headers)
+        .get(url.href, headers)
         .then(res => {
             if(!res || res.status!==200)
                 throw new Error('Bad Request')
@@ -56,14 +38,12 @@ export const fetcher = async (
         })
 }
 export const signin = async (
-    url:string|string[],
+    url:URLType,
     cred:Credit,
     headers:any={'Content-Type':'application/json'}
 ) => {
-    if (url instanceof Array)
-        url = joinURL(...url)
     return axios
-        .post(url, cred, {headers})
+        .post(url.href, cred, {headers})
         .then((res:any) => {
             if (res.status>201 || !res.data.token)
                 throw new Error('Bad Request')

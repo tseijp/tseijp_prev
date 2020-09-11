@@ -29,19 +29,18 @@ export type NoteElement = {
 }
 export type NoteNode = null | {
     [key:string]:any,
-    next    ?:string|null,
-    previous?:string|null,
-    results :NoteNode
+    next    :string|null,
+    previous:string|null,
+    //children: TODO DEV
+    results :
       | Partial<NoteElement>[]
       | null
       | undefined
 }
-export type NoteURL = URLType | string | string[]
-//export type NoteConfig<T=NoteNode> = {mode:boolean|(()=>boolean),noteType:T}
+//export type NoteURL = URLType | string | string[]
 export type NoteFetcher<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
-export type NoteConfig = {
-    onChange:() => void
-}
+export type NoteConfig = {onChange:() => void}
+
 // ************************* 👌 For usePage 👌 ************************* //
 export type PageConfig<T={}> = Partial<{
     [key:string]:any,
@@ -62,17 +61,16 @@ export type Page<T extends {}={}> = Merge<DefaultPage<T>,MultiPage<T>>
 // ************************* 🙍‍♂️ For useUser 🙍 ************************* //
 export type Credit<T extends object|string=string> = {username:T,password:T,email?:T}
 export type User<T extends object|string=string> = {
-    username :T, //status:string,
-    authtoken:T, input ?: {
-        [key:string]:{ onChange:(e:any)=>void, autoComplete?:"on",
-        group   :boolean, value:string, name:string, error  ?:"wrong",
-        validate:boolean, label:string, type:string, success?:"right", }}
+    username :T, isAuth: boolean,
+    authtoken:T, input : { onChange : (e:any)=>void, autoComplete?:"on",
+        group   :boolean, value:string, name:string, success ?:"right",
+        validate:boolean, label:string, type:string, error?:"wrong",}[]
 }
 export type UserConfig<T extends object|string=string,U=User<T>> = {
     onSign   :null|((u?:U)=>void), user:null|T,
     onSignin :null|((u?:U)=>void), keys:string[],
     onSignout:null|((u?:U)=>void), [key:string]:any,
 }
-export type UserHandler = {(
-    url:string, credit:Credit, headers?:any
-) : void | Promise<void|{username:string, authtoken:string}>}
+export type UserSignin = (
+    url:URLType, credit:Credit, headers?:any
+) => Promise<{username:string, authtoken:string}>
