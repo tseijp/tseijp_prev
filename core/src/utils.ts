@@ -5,9 +5,9 @@ export const swap=(arr:number[],ind:number,row:number) => {
     const ret = [...arr.slice(0, ind), ...arr.slice(ind+1, arr.length)]
     return [...ret.slice(0, row), ...arr.slice(ind, ind+1), ...ret.slice(row)]
 }
-export const equalPathname = (...urls:(URLType|string)[]) =>
+export const equalPathname = (...urls:(URLType|string|undefined|null|false)[]) =>
     urls.map(u => typeof u==="string"? new URL(u) : u)
-        .map(u => joinURL(u.pathname, "/"))
+        .map(u => u && joinURL(u.pathname, "/"))
         .every((u, _, self) => u===self[0])
 
 // ************************* 👌 use-page 👌 ************************* //

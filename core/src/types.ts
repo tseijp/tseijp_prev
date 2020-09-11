@@ -29,6 +29,7 @@ export type NoteElement = {
 }
 export type NoteNode = null | {
     [key:string]:any,
+    now     :string|null,
     next    :string|null,
     previous:string|null,
     //children: TODO DEV

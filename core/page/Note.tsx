@@ -18,16 +18,16 @@ export const Note :FC = () => {
     const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:user.dark or not
     const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
     // ******************** FOR RENDER ******************** //
-    const onClick = useMemo(()=>()=>setPage({id:""}), [setPage])
-    const onOpen  = useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
-    const onSign  = useMemo(()=>()=>setPage(p=>({status:p.status===  ""?"IN":""  })),[setPage])
-    //const onView  = useMemo(()=>(e:any)=>e.isIntersecting&&setNote((p:any)=>p.next) ,[setNote])
-    const styles  = useMemo<React.CSSProperties[]>(()=>[ // its IconStyle
-      { position:"relative",transform:"translate(-50%)",left:"50%",marginTop:size*50 },
-      { position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%" },
-    ], [size, dark])
+    const onClick     = useMemo(()=>()=>setPage({id:""}), [setPage])
+    const onSignin    = useMemo(()=>()=>setPage(p=>({status:p.status===  ""?"IN":""  })),[setPage])
+    const onMouseEnter= useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
+    const onView      = useMemo(()=>(e:any)=>e.isIntersecting&&setNote((p:any)=>p.next) ,[setNote])
+    const [left,right] = useMemo(()=>{
+        const style = {transform:"translate(-50%)",left:"50%",marginTop:size*50}
+        return ["cooment","home"].map(fa => (<Icon {...{fa,size,onClick,style}}/>))
+    }, [size,onClick])
     return (
-        <div style={styles[1]}>
+        <div style={{ position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%"}}>
             <Helmet>
                 <title>{note?"note":"Loading..."}</title>
                 <meta charSet="utf-8" />
@@ -35,34 +35,30 @@ export const Note :FC = () => {
                 <link rel="canonical" href="//tsei.jp/" />
             </Helmet>
             <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
-            { note && note.results instanceof Array ? <Notes size={page.isHome?1:size}
-                left={page.isHome?undefined:(<Icon fa="comment"{...{size,onClick,style:styles[0]}}/>)}
-               right={page.isHome?undefined:(<Icon fa="home"   {...{size,onClick,style:styles[0]}}/>)}>
+            { note && note.results instanceof Array ?
+            <Notes {...(page.isHome?{}:{size,left,right})}>
                 {note.results.map(({id,ja_text,en_text}) =>
                     <div key={id}>
-                        <Card {...{dark,size:page.isHome?1:size,
-                               ...(page.isHome?{style:{height:500}}:{})}}
-                            onClick={page.isHome?()=>setPage({id}):null}>
+                        <Card onClick={page.isHome?()=>setPage({id}):null}
+                           {...{dark,size:page.isHome?1:size,
+                            ...(page.isHome?{style:{height:500}}:{})}}>
                             <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
-                                source={lang==="ja"?ja_text:en_text}/>
+                                 source={lang==="ja"?ja_text:en_text}/>
                         </Card>
                     </div> )}
-            </Notes> : null}
-            { page && page.urls instanceof Array && page.urls.map((u,i)=><h3 key={i}>{u.href}</h3>) }
-            { note && note.previous && <h3>previous : {note.previous}</h3> }
-            { note && note.next && <h3>next : {note.next}</h3> }
-            {!note && page.isHome && <Grow {...{size}}/> }
-            {(note && note.next)  && <Grow {...{size,onClick:()=>setNote((p:any)=>p.next)}}/> }
+            </Notes> :
+            <Grow {...{size,onClick:()=>setNote((p:any)=>p.now )}}/>}  {(note&&note.next)&&
+            <Grow {...{size,onClick:()=>setNote((p:any)=>p.next),onView}}/> }
             {/******************** Modals ********************/}
             <Modal {...{dark,size,open:!!page.status,onClose:()=>setPage({status:""})}}>
                 <Card {...{dark,size,style:{maxHeight:"100vh"}}}>
-                    <Head {...{dark,size}}>SIGN {page.status}
-                    <Icon fa="exchange-alt" {...{dark,size,onClick:onOpen}}/></Head>
-                    { !user.isAuth && user.input.map((v,k)=>v.name==="email"&&page.status!=="UP"?null:
+                    <Head {...{dark,size,onMouseEnter}}>SIGN {user.isAuth?"OUT":page.status}</Head>
+                    {!user.isAuth && user.input.map((v,k)=>v.name==="email"&&page.status!=="UP"?null:
                     <MDBInput {...v} key={k}/> )}
-                    <MDBBtn color="elegant" style={{width:"100%",borderRadus:size*50}}
-                        onClick={()=>setUser(page.urls[2])}>
-                        { user.isAuth?"Signout":"Get!" }</MDBBtn>
+                    <MDBBtn color="elegant"
+                        style={{width:"100%",borderRadus:size*50}}
+                        onClick={()=>setUser(page.urls[2])}
+                        children={user.isAuth?"Signout":"Get!"}/>
                 </Card>
             </Modal>
             {/******************** FANTASTIC UI ********************/}
@@ -79,7 +75,7 @@ export const Note :FC = () => {
                 <Icon fa="ellipsis-h"        {...{dark,size}} onClick={()=>null}>
                     <Icon fa="share-square"  {...{dark,size}} onClick={()=>null}/>
                     <Icon fa="location-arrow"{...{dark,size}} onClick={()=>null}/>
-                    <Icon fa="sign-in-alt"   {...{dark,size}} onClick={onSign}/>
+                    <Icon fa="sign-in-alt"   {...{dark,size}} onClick={onSignin}/>
                 </Icon>
             </Pills>
         </div>
