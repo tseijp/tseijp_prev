@@ -47,14 +47,3 @@ export const Pills:FC<any> = ({
         </div>
     )
 }
-/* TODO 2014
-    use grandChild
-    <animated.div {...{key}} style={spring}>
-        {children[key]?.props?.children && <Pills>
-            {children[key].props.children} </Pills> }
-    </animated.div>
-
-    children[i].map(c=>c.props.children =()=> c.props.children.length
-        ? <Pills>c.props.children</Pills>
-        : c.props.children  )
-*/

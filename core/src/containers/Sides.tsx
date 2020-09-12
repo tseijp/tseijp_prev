@@ -38,19 +38,19 @@ export const SidesIcon : FC<BindsProps> = ({spring, bind, circ=false, size=1}) =
     )
 }
 
-export const SidesItem :FC<BindsProps> = ({children, size=1}) => { // TODO1701
-    //const x = spring.x.to( (x:number) => (x-width) ) // TODO1701
+export const SidesItem :FC<BindsProps> = ({children, size=1}) => {
     return <a.div {...{children, style:{
+        //x:spring.x.interpolate((x:any)=>(x-width)), // BAD DESIGN
         padding:"10px 10px 10px 32px",color:"#818181",
         display:"block",transition:"0.75s",fontSize:50*size}}} />
 }
 
 export const Sides : FC<BasedProps> = ({children, width=window.innerWidth/2, size=1, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
-    const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
-    const [spring, set] = useSpring<any>( () => ({x:0,y:0,scale:1}) )
-    const open  =(velocity:number)=>1&&(setOpened(true),set({x:width,y:0,config:velocity!==0?config.wobbly:config.slow}))
-    const close =(velocity:number)=>1&&(setOpened(false),set({x:0    ,y:0,config:{...config.stiff,velocity }}))
+    const setOpened = useCallback((bool=true)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
+    const [spring, set] = useSpring( () => ({x:0,y:0,scale:1}) )
+    const open  =(velocity=0)=>1&&(setOpened(true),set({x:width,y:0,config:velocity!==0?config.wobbly:config.slow}))
+    const close =(velocity=0)=>1&&(setOpened(false),set({x:0    ,y:0,config:{...config.stiff,velocity }}))
     const bind = useGesture({
         onHover : ({hovering}) => set({scale:hovering?1.2:1}),
         onDrag : ({last,down,vxvy:[vx,],movement:[mx,my],cancel}) => {
@@ -65,7 +65,7 @@ export const Sides : FC<BasedProps> = ({children, width=window.innerWidth/2, siz
             <SidesIcon   {...{size, spring, bind, }} />
             <SidesArea     {...{size, spring, bind, }} />
             <SidesContainer{...{size, spring, bind, }}>
-            {React.Children.map(children, ((child, key:number)=>
+            {React.Children.map(children, ((child, key)=>
                 <SidesItem {...{size, key}}>{child}</SidesItem>
             ))}
             </SidesContainer>

@@ -5,11 +5,12 @@ export type BasicProps<T>  = (()=>T) | T
 export type BasicState<T>  = ((pre:T)=>T) | T
 export type BasicAction<T> = (fn:BasicState<T>) => void
 export type Merge<A,B> = {[K in keyof A]:K extends keyof B ? B[K] : A[K] } & B
+export type None<T> = T|undefined|false|null
 // ************************* 🌌 For Containers 🌌 ************************* //
 export type BasedProps<T extends {}={}> = Partial<T & {
     [key:string]:any, style?:CSSProperties
-    dark:boolean, onOpen :null|(()=>void), className:string,
-    size:number , onClose:null|(()=>void), color:string,
+    onOpen :null|(()=>void), dark:number|0|1, className:string,
+    onClose:null|(()=>void), size:number    , color:string,
 }>
 export type BindsProps = BasedProps<{bind?:any,spring?:any}>
 export type ModalProps = BasedProps<{open:boolean}>
@@ -45,11 +46,11 @@ export type NoteConfig = {onChange:() => void}
 // ************************* 👌 For usePage 👌 ************************* //
 export type PageConfig<T={}> = Partial<{
     [key:string]:any,
-    onChange:null|((p:Page<T>)=>void),
+    onChange:null|(()=>void),
 }>
-export type DefaultPage<T={}> = { // (TODO extends PageConfig
+export type DefaultPage<T={}> = {
     [key:string]:any, //config:PageConfig<T>|null, //TODO : DEV
-    id:string|number,search :string,urls    :URLType[]
+    id:string|number,search :string,language:string,urls:URLType[]
     isHome :boolean,protocol:string,hostname:string,
     isLocal:boolean,portname:string,pathname:string,
 }

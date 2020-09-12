@@ -1,20 +1,20 @@
-import React, {FC,useMemo, useRef} from 'react'
+import React, {FC,useEffect, useMemo, useRef} from 'react'
 import {BasedProps} from '../types'
 import {useView} from 'use-grid'
 export const Grow:FC<BasedProps> = ({
     onView=null, role="status",
-    size=50, style={}, className="spinner-grow", ...props
+    size=1, className="spinner-grow", ...props
 }) => {
+    const fn = useRef()
     const ref = useRef(null)
-    useView(ref, onView)
-    const styles = useMemo<React.CSSProperties[]>(()=>[
-       {position:"relative",display:"grid",margin:"auto", background:"rgba(0,0,255,0.5)",
-        width:size*50,height:size*50,...style},
-       {placeItems:"center"}
-    ], [size,style])
-    return (
-        <div  {...props} {...{ref, role, style:styles[0]}} >
-            <span className="sr-only">Loading...</span>
-        </div>
-    )
+    useEffect(()=>{fn.current = onView}, [onView])
+    useView(ref, (e:any) => 1
+        && e.isIntersecting
+        && typeof fn.current==="function"
+        && (fn.current as any)())
+    const style = useMemo<React.CSSProperties>(()=>({
+        position:"relative",display:"grid",margin:`${size*50}px auto 0 auto`,
+        width:size*250,height:size*250,...(props.style||{})
+    }), [size, props.style])
+    return <div  {...props} {...{ref,role,className,style}} />
 }

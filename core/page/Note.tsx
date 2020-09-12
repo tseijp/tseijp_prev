@@ -6,49 +6,47 @@ import { useGrid } from 'use-grid'
 import { Card, Grow, Head, Icon } from '../src/components'
 import { useNote, usePage, useUser } from '../src/hooks'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
-import { customPage, CustomPage, fetcher, signin } from './utils'
+import { customPage, CustomPage, pageConfig, fetcher, signin } from './utils'
 
 export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //
-    const [page, setPage] = usePage<CustomPage>(customPage)
+    const [page, setPage] = usePage<CustomPage>(customPage, pageConfig)
     const [note, setNote] = useNote(page.urls[1], fetcher)
     const [user, setUser] = useUser(page.urls[2], signin, {onSign:()=>setPage({status:""})})
     // ******************** FOR DESIGN ******************** //
-    const [lang, setLang] = useState<string> (window.navigator.language||'ja')// TODO:user.language
-    const [dark, setDark] = useGrid <boolean>({md:true, lg:false})            // TODO:user.dark or not
-    const [size, setSize] = useGrid <number> ({md:1   , lg:1.5  })
+    const [lang, setLang] = useState<string>(page.language)
+    const [size, setSize] = useGrid <number>({md:1, lg:1.5})
+    const [dark, setDark] = useGrid <number>({md:1, lg:0  })
     // ******************** FOR RENDER ******************** //
-    const onClick     = useMemo(()=>()=>setPage({id:""}), [setPage])
-    const onSignin    = useMemo(()=>()=>setPage(p=>({status:p.status===  ""?"IN":""  })),[setPage])
-    const onMouseEnter= useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
-    const onView      = useMemo(()=>(e:any)=>e.isIntersecting&&setNote((p:any)=>p.next) ,[setNote])
+    const onView       = useMemo(()=>()=>setNote(p=>p?.next),[setNote])
+    const onClick      = useMemo(()=>()=>setPage({id:""})   ,[setPage])
+    const onSignin     = useMemo(()=>()=>setPage(p=>({status:p.status===  ""?"IN":""  })),[setPage])
+    const onMouseEnter = useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
     const [left,right] = useMemo(()=>{
         const style = {transform:"translate(-50%)",left:"50%",marginTop:size*50}
-        return ["cooment","home"].map(fa => (<Icon {...{fa,size,onClick,style}}/>))
+        return ["cooment","home"].map(fa => (<Icon {...{fa,size,style,onClick}}/>))
     }, [size,onClick])
     return (
-        <div style={{ position:"relative",background:dark?"#000":"#f1f1f1",minHeight:"100%"}}>
+        <div style={{background:dark?"#000":"#f1f1f1",minHeight:"100%",padding:100*size}}>
             <Helmet>
                 <title>{note?"note":"Loading..."}</title>
                 <meta charSet="utf-8" />
                 <meta name="Hatena::Bookmark" content="nocomment" />
-                <link rel="canonical" href="//tsei.jp/" />
+                <link rel="canonical" href="https://tsei.jp/" />
             </Helmet>
-            <Head {...{dark,size,onClick}} style={{padding:`${100*size}px 0 0 ${100*size}px`}}>Note</Head>
-            { note && note.results instanceof Array ?
-            <Notes {...(page.isHome?{}:{size,left,right})}>
-                {note.results.map(({id,ja_text,en_text}) =>
-                    <div key={id}>
-                        <Card onClick={page.isHome?()=>setPage({id}):null}
-                           {...{dark,size:page.isHome?1:size,
-                            ...(page.isHome?{style:{height:500}}:{})}}>
-                            <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
-                                 source={lang==="ja"?ja_text:en_text}/>
-                        </Card>
-                    </div> )}
-            </Notes> :
-            <Grow {...{size,onClick:()=>setNote((p:any)=>p.now )}}/>}  {(note&&note.next)&&
-            <Grow {...{size,onClick:()=>setNote((p:any)=>p.next),onView}}/> }
+            <Head {...{dark,size,onClick}}>Note</Head>
+            { note && note.results instanceof Array &&
+            <Notes {...(page.isHome?{}:{size,left,right})}>{note.results.map(({
+                ja_text="",//note_id="",author_name=null, //,posted_time=null,
+                en_text="",     id="" }) =>
+                <div key={id}>
+                    <Card {...{...page.isHome?{maxHeight:500,onClick:()=>setPage({id})}:{size},dark}}>
+                        <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
+                             source={lang==="ja"?ja_text:en_text}/>
+                    </Card>
+                </div> )}
+            </Notes> } { (!note || note.next) &&
+            <Grow {...{size,onView,onClick:()=>setNote(p=>p?p?.next||p?.now:null )}} /> }
             {/******************** Modals ********************/}
             <Modal {...{dark,size,open:!!page.status,onClose:()=>setPage({status:""})}}>
                 <Card {...{dark,size,style:{maxHeight:"100vh"}}}>
@@ -67,9 +65,9 @@ export const Note :FC = () => {
                 <p onClick={()=>window.location.href="/note"}>Note</p>
             </Sides>
             <Trans {...{size}}>
-                <div onClick={()=>setLang(p=>p!=='ja'?'en':'ja')}>{lang.toUpperCase()}</div>
+                <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>
                 <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
-                <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
+                <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size>1?'👶':'👨'}</div>
             </Trans>
             <Pills {...{size}}>
                 <Icon fa="ellipsis-h"        {...{dark,size}} onClick={()=>null}>

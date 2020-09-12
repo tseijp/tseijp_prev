@@ -30,7 +30,7 @@
  *   - @set   : (args) => void ( setState )
  ** ************************* ********* *************************/
 
-import {useState, useCallback, useRef} from 'react'
+import {useEffect, useState, useCallback, useRef} from 'react'
 import {defaultPageConfig as defaultConf, defaultPage, normPage} from '../utils'
 import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
 export const usePage = <T extends {}={}>(
@@ -51,14 +51,17 @@ export const usePage = <T extends {}={}>(
             const newPage = normPage(pageRef.current)
             if (pre.pathname===newPage.pathname)
                 return newPage
-            const {onChange=null} = confRef.current
-            onChange && onChange(pageRef.current)
             window.history.pushState('','',
                 newPage.pathname instanceof Array
                   ? newPage.pathname[0]||''
                   : newPage.pathname   ||'')
-            return newPage
+            return  newPage
         })
     }, [set])
+    useEffect(() => {
+        const {onChange} = confRef.current
+        typeof onChange==="function" && onChange()
+        //window.scrollTo(0, 0)
+    }, [page.id])
     return [page, setPage]
 }

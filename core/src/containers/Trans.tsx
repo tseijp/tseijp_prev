@@ -41,7 +41,7 @@ export const TransIcon : FC<BindsProps> = ({size=1, spring, bind, circ=false}) =
     )
 }
 
-export const TransItem :FC<BindsProps> = ({children, size=1}) => { // TODO1701
+export const TransItem :FC<BindsProps> = ({children, size=1}) => {
     const styles = useMemo<CSSProperties[]>( () => [
         { margin:`${50*size/4}px 0px`, borderRadius:`${50*size}px 0px  0px ${50*size}px`,
           backgroundColor:"#212121",color:"#818181", display:"inline-block" },

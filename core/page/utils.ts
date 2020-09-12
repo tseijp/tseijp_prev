@@ -1,7 +1,7 @@
 import axios  from 'axios'
 import {Credit} from '../src'
 import {URLType, Page} from '../src/types'
-const  {animateScroll} = require('react-scroll');
+//const  {animateScroll} = require('react-scroll');
 
 export type CustomPage = {
     portname:string[], isHome:boolean,
@@ -14,15 +14,18 @@ export const customPage : Partial<Page<CustomPage>> = {
         status!=="UP"? `/auth/`: `/api/user/`
     ]
 }
-
-// TODO DEV
-export const noteConfig = {
-    onChange:()=>{
-        animateScroll.scrollToTop({
-        //    duration: 800,
-            delay: 1000,
-            smooth: 'easeInOutQuart'
-        })
+export const pageConfig = {
+    onChange:() => {
+        document.getElementById('root')?.scroll({top:0,left: 0,behavior: 'smooth',});
+        //setTimeout(() => {
+            /*
+            animateScroll.scrollToTop({
+                duration: 800,
+                delay: 1000,
+                smooth: 'easeInOutQuart'
+            })
+            */
+        //}, 1)
     }
 }
 export const fetcher = async (

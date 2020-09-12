@@ -18,11 +18,12 @@ export const defaultPage = {
     id      :window.location.pathname.split('/').filter(v=>v).find((_,i)=>i===1)||"",
     isHome  :window.location.pathname.split('/').filter(v=>v).length > 1,
     isLocal :window.location.hostname==="localhost",
-    protocol:window.location.protocol||"",
-    hostname:window.location.hostname||"",
-    portname:window.location.port    ||"",
-    pathname:window.location.pathname||"",
-    search  :window.location.search  ||"",
+    protocol:window.location.protocol ||"",
+    hostname:window.location.hostname ||"",
+    portname:window.location.port     ||"",
+    pathname:window.location.pathname ||"",
+    search  :window.location.search   ||"",
+    language:window.navigator.language||"ja",
     urls    :[new URL(window.location.href)],
 }
 export const joinPage = <T={}>(page:Page<T>):string|string[] => {
@@ -61,7 +62,7 @@ export const defaultUserConfig:UserConfig = {
 // * This function is fork of join-url/urljoin
 // * Code : https://github.com/jfromaniello/url-join/blob/master/lib/url-join.js
 // ************************* *************** ************************* //
-export function joinURL (...strArray:(string|number)[]) : string { // TODO : can use number
+export function joinURL (...strArray:(string|number)[]) : string {
     var resultArray = [];
     if (strArray.length === 0)
         return ''
