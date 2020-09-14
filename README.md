@@ -1,4 +1,4 @@
-<p align="center"><a href="https://tsei.jp/mdmd/">
+<p align="center"><a href="https://tsei.jp/">
     <img width="200" src="https://res.cloudinary.com/dpimrj9cp/image/upload/v1555328364/IMG_0550.jpg">
 </a></p>
 <p align="center">
