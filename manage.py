@@ -22,6 +22,10 @@ def printqr():
         sub.run(['qr','http://%s:3000'%ip], shell=True, cwd='.')
     except:
         pass
+
+def clone(repo, cwd="."):
+    sub.run('git clone https://github.com/%s'%repo.split(), shell=True, cwd=cwd)
+
 def main():
 #  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
     def run (*args):
@@ -53,10 +57,16 @@ def main():
         static(*args)
     # TODO
     # async def init(*args):
+    #     await os.mkdir("hook")
     #     await sub.run([*args, 'startproject', 'temp'], shell=True, cwd='../')
     #     await shutil.move('../temp/tseijp', './')
     #     await shutil.rmtree('../temp')
     #     await sub.run([*args, 'createsuperuser'], shell=True, cwd='../')
+    #     clone('tseijp/colo')
+    #     clone('tseijp/mdmd')
+    #     clone('tseijp/use-grid', cwd='hook')
+    #     clone('tseijp/use-amazon', cwd='hook')
+    #     static(*args)
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:
         for key, fn in locals().items():
