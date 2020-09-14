@@ -10,6 +10,7 @@ public
 config-overrides.js
 config-rollup.js
 config-jest.js
+debug.log
 package-lock.json
 package.json
 tsconfig.json

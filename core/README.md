@@ -47,14 +47,12 @@ useUser | basic function of account authentication using cookies
 __CONTAINERS__
 
 <a href="https://github.com/tseijp/tseijp/core/component">
-    <img src="https://img.shields.io/badge/#Card.svg"/>
-    <img src="https://img.shields.io/badge/#Code.svg"/>
-    <img src="https://img.shields.io/badge/#Foot.svg"/>
-    <img src="https://img.shields.io/badge/#Grow.svg"/>
+    <img src="https://img.shields.io/badge/Card-black.svg"/>
+    <img src="https://img.shields.io/badge/Code-black.svg"/>
+    <img src="https://img.shields.io/badge/Grow-black.svg"/>
 </a>
-<!-- TODO show demo in left -->
-<!-- TODO use image in right -->
-```typescript
+
+```javascript
 const App = () => <>
     <Modal>
         <>hello🥰</>
@@ -76,12 +74,12 @@ const App = () => <>
 __NAVIGATORS__
 
 <a href="https://github.com/tseijp/tseijp/core/component">
-    <img src="https://img.shields.io/badge/#Head.svg"/>
-    <img src="https://img.shields.io/badge/#Icon.svg"/>
+    <img src="https://img.shields.io/badge/Head-black.svg"/>
+    <img src="https://img.shields.io/badge/Foot-black.svg"/>
+    <img src="https://img.shields.io/badge/Icon-black.svg"/>
 </a>
-<!-- TODO show demo in left src="http://..."/ -->
-<!-- TODO use image in right -->
-```typescript
+
+```javascript
 const App = () => <>
     <Sides>
         <>Home</>

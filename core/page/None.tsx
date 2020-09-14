@@ -9,7 +9,7 @@ import { Kinect } from './meshs'
 import * as THREE from 'three'
 export const None :FC = () => {
     /* state */
-    const url = '/static/kinect.mp4'
+    const url = '/static/core/kinect.mp4'
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:true, lg:false})
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })

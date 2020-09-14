@@ -1,4 +1,4 @@
-from .notes import notes
+from .note import notes
 from django.http import HttpResponseRedirect
 from back.models import NoteModel
 from django.contrib.auth.models import User
@@ -23,7 +23,7 @@ def create(note, user, id, parent):
 def register(request):
     NoteModel.objects.all().delete()
     user = request.user
-    id = 0
+    id = 1
     parent = id
     for note in notes:
         if (note):
@@ -31,7 +31,7 @@ def register(request):
             id += 1
         else:
             parent = id
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/note')
 
 # """"""""""""""""""""""""" PREV """"""""""""""""""""""""" #
 '''

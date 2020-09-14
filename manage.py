@@ -22,58 +22,54 @@ def printqr():
         sub.run(['qr','http://%s:3000'%ip], shell=True, cwd='.')
     except:
         pass
-
-#  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
-def run (*args):
-    sub.run([*args,'runserver','0.0.0.0:8000'],shell=True,cwd=".")
-    sub.run("start http://localhost:8000".split(), shell=True, cwd='.')
-
-def start(*args):
-    proc = sub.Popen("npm start".split(),shell=True,cwd='./core')
-    printqr()
-    run(*args)
-    proc.close()
-
-def static(*args):
-    sub.run([*args,*'collectstatic -c --noinput'.split()], shell=True)
-
-def update(*args):
-    sub.run("npm run build --prefix core".split(), shell=True, cwd='.')
-    static(*args)
-
-def fetch(*args):
-    sub.run('git fetch'.split(), shell=True, cwd='.')
-    #sub.run('git reset --hard origin/master'.split(), shell=True, cwd=".")
-    static(*args)
-
-async def init(*args):
-    return ''' TODO
-    await sub.run([*args, 'startproject', 'temp'], shell=True, cwd='../')
-    await shutil.move('../temp/tseijp', './')
-    await shutil.rmtree('../temp')
-    await sub.run([*args, 'createsuperuser'], shell=True, cwd='../')
-'''
-
-#  """""""""""""""""""""""""  FOR MAIN  """""""""""""""""""""""""  #
 def main():
-    # """""""""" FOR MANAGE """""""""" #
-    args = [sys.executable, sys.argv[0]]
-    if (sys.argv[-1]=="run"):
-        return run(*args)
-    if (sys.argv[-1]=="start"):
-        return start(*args)
-    if (sys.argv[-1]=="static"):
-        return static(*args)
-    if (sys.argv[-1]=="update"):
-        return update(*args)
-    if (sys.argv[-1]=="fetch"):
-        return fetch(*args)
-    if (sys.argv[-1]=="init"):
-        return init(*args)
-    #  """"""""""  FOR DJANGO  """"""""""  #
+#  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
+    def run (*args):
+        sub.run([*args,'runserver','0.0.0.0:8000'], shell=True, cwd=".")
+        sub.run("start http://localhost:8000".split(), shell=True, cwd='.')
+
+    def test(*args):
+        proc = sub.Popen("npm run jest".split(), shell=True, cwd='./core')
+        sub.run([*args,'runserver','0.0.0.0:8000'], shell=True, cwd=".")
+        proc.close()
+
+    def start(*args):
+        proc = sub.Popen("npm start".split(), shell=True, cwd='./core')
+        printqr()
+        run(*args)
+        proc.close()
+
+    def static(*args):
+        sub.run([*args, *'collectstatic -c --noinput'.split()], shell=True)
+
+    def update(*args):
+        sub.run("npm run compile".split(), shell=True, cwd='./core')
+        sub.run("npm run build".split(), shell=True, cwd='./core')
+        static(*args)
+
+    def pullf(*args):
+        sub.run('git fetch'.split(), shell=True, cwd='.')
+    #   sub.run('git reset --hard origin/master'.split(), shell=True, cwd=".")
+        static(*args)
+    # TODO
+    # async def init(*args):
+    #     await sub.run([*args, 'startproject', 'temp'], shell=True, cwd='../')
+    #     await shutil.move('../temp/tseijp', './')
+    #     await shutil.rmtree('../temp')
+    #     await sub.run([*args, 'createsuperuser'], shell=True, cwd='../')
+#  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
+    try:
+        for key, fn in locals().items():
+            if sys.argv[-1] == key:
+                return fn(sys.executable, sys.argv[0])
+    except ImportError as exc:
+        raise Error(
+            "Unexpected error (;_;)"
+            "Check your custom command."
+        ) from exc
     os.environ.setdefault(
         'DJANGO_SETTINGS_MODULE',
-        'tseijp.settings.dev'
+        'tseijp.settings.develop'
     )
     try:
         from django.core.management import execute_from_command_line

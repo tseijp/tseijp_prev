@@ -23,7 +23,6 @@ class NoteViewSet(GenericViewSet):
     # """"""""""""""" """"""""" """"""""""""""" #
     def get_paginated_response(self, data, request=None):
         assert self.paginator is not None
-        print(request.build_absolute_uri())
         return Response({
             'isAuth'  : "HI", # TODO,
             'now'     : request.build_absolute_uri(),

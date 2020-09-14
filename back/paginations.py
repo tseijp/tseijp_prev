@@ -9,7 +9,7 @@ from rest_framework.pagination import CursorPagination
 class NotePagination(CursorPagination):
     page_size = 5
     cursor_query_param = 'cursor'
-    ordering = '-id'  # TODO : home is -id, detail is id
+    ordering = '-id'
     invalid_cursor_message = {'results':'Invalid cursor(;_;)'}
 ### Client can control the page size using this query parameter.
 #   page_size_query_param = 'size'
