@@ -1,0 +1,32 @@
+<!----------------------------------------------------------------------------->
+<!--  Works                                                                  -->
+<!--code by https://codepen.io/niteshgourofficial/pen/LrXyom------------------->
+{% if works %}
+<h1>Works</h1>
+<div class="row flex-center">
+        {% for work in works %}
+        <div class="col-lg-4 col-md-5 mb-5" ontouchstart="this.classList.toggle('hover');">
+        <div class="container">
+                <div class="front z-depth-5 waves-effect waves-ligh" style="background-image: url({{work.back}})">
+                	<div class="inner">
+                		<p>{{work.head}}</p>
+                    {%if work.word %}<span>{{card.word}}</span>{% endif %}
+                	</div>
+                </div>
+                <div class="back" style="">
+                	<div class="inner">
+                	  <p>{{work.text}}</p>
+                    {%if work.url%}<a class="btn btn-outline-white" href="{{qork.url}}">Detail(Coming soon)</a>{% endif %}
+                    {%if work.link%}<a class="btn btn-outline-white" href="{{work.link}}">Link</a>{% endif %}
+                	</div>
+                </div>
+        </div>
+        </div>
+        {% endfor %}
+</div>
+{% else %}
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+{% endif %}

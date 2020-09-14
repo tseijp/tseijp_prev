@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block "js_block" %}
+  {% include  "app_note/note_list.js" %}
+  {% include "index/nav.js" %}
+  {% include "index/content.js" %}
+  {% include "app_note/list/objects.js" %}
+{% endblock %}
+
+{% block "css_block" %}
+  {% include "index/nav.css" %}
+  {% include "index/content.css" %}
+  {% include "app_note/list/objects.css" %}
+{% endblock %}
+
+{% block "nav_block" %}
+  {% include "index/nav.html" %}
+{% endblock %}
+
+{% block "head_block" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.js"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/mode/overlay.min.js"></script>#}
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/markdown/markdown.min.js"></script>#}
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/gfm/gfm.min.js"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/edit/continuelist.min.js"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.2/marked.min.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>#}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.2/paper-full.min.js"></script>
+{% include "app_note/list/objects_paper.html"%}
+{% endblock %}
+
+{% block "main_block" %}
+<div class="container">
+<div class="row">
+<div class="col-sm-5">
+      <h1 style="display:inline;font-size:75px">note</h1>
+  <p class="page-header lead"></p>
+</div>
+<div class="col-sm-7" style="padding:25px 25px 10px;">
+      {% if user.is_authenticated %}
+      <form action="" style="display:inline" enctype="multipart/form-data" method="POST" id="new_create_form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-dark btn-sm" id="new_create">new create{% if page_tag %}#{{ page_tag }}{% endif %}</button>
+      </form>
+      {% endif %}
+      <a href="{% url 'note' %}"><button class="btn btn-dark btn-sm"><i class="fas fa-home"></i></button></a>
+      {#%if id%#}
+          <!--button type="submit" class="btn btn-dark btn-sm" data-toggle="collapse" href="#collapseNewNote"
+          aria-expanded="false" aria-controls="collapseExample">reply!</button-->
+      {#%else%#}{#% if user.is_authenticated %#}
+          <!--button type="submit" class="btn btn-dark btn-sm" data-toggle="collapse" href="#collapseNewNote"
+          aria-expanded="false" aria-controls="collapseExample"onclick="ScrollHeight();">NEW CREATE</button-->
+      {#%endif%#}{#%endif%#}
+</div>
+</div>
+</div>
+<div class="container">
+<div class="row" >
+  {% include 'app_note/list/objects.html'%}
+</div>
+</div>
+{% endblock %}
+
+{% block "foot_block" %}
+{% include 'app_note/list/pagination.html' %}
+{% include "index/content.html" %}
+{%if id%}
+{% include "index/foot.html" %}
+{% endif %}
+{% endblock %}

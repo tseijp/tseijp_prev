@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block "main_block" %}
+<!--Carousel Wrapper-->
+{% include 'carousel.html' %}
+<!--/.Carousel Wrapper-->
+<br><br>
+<br><br>
+<!----------------------------------------------------------------------------->
+<!--  Begin                                                                  -->
+<!--Section: Pricing v.2------------------------------------------------------->
+<div class="tab-content" id="myTabContent">
+<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="live-tab">
+<div class="container">
+<div class="row o-12column">
+        <!--------------------------------------------------------------------->
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2">
+          <img class="img-fluid z-depth-1 rounded-circle rounded mx-auto d-block" src="https://scontent-nrt1-1.cdninstagram.com/vp/4a9e1641bcedf0b9fd8c535ecd0c3c64/5D681A69/t51.2885-19/s320x320/56582309_381193965942307_4376235344324984832_n.jpg?_nc_ht=scontent-nrt1-1.cdninstagram.com">
+        </div>
+        <div class="col-sm-1"></div>
+        <!--------------------------------------------------------------------->
+        <div class="col-sm-7">
+          <h3>
+            {{object.user}}{% if 1 %}<a href="#" class="text-dark"><i class="fas fa-cog"></i></a>{% endif %}
+          </h3>
+          <button class="btn btn-outline-grey btn-sm waves-effect" style="width:100%;">
+            <a href= "###" class="text-dark">
+            <i class="fa fa-copy mr-1"></i><font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;"> edit grid</font></font>
+            </a>
+          </button>
+        </div>
+        <div class="col-sm-1"></div>
+        <!--------------------------------------------------------------------->
+</div>
+<hr>
+<div class="row o-12column">
+        <hr>
+        <div class="col-md-4 col-md-offset-2 text-center">
+          <p><font style="vertical-align: inherit;">Posted</font></p>
+          <p>  </p>
+        </div>
+        <div class="col-md-4 col-md-offset-2 text-center">
+          <p><font style="vertical-align: inherit;">Follower</font></p>
+          <p>  </p>
+        </div>
+        <div class="col-md-4 col-md-offset-2 text-center">
+          <p><font style="vertical-align: inherit;">Following</font></p>
+          <p>  </p>
+          <p></p>
+        </div>
+        <hr>
+</div>
+</div>
+</div>
+</div>
+
+<div class="wrapper">
+  <div class="flex-center text-dark">
+    <ul class="list-group list-group-horizontal" id="myTabEx" role="tablist">
+        <!--home--------------------------------------------------------------->
+        <li class="list-group-item">
+          <a class="text-dark nav-link active show" id="home-tab-ex" data-toggle="tab" href="#home-ex" role="tab" aria-controls="home-ex"aria-selected="true">
+            <i class="fas fa-home fa-2x"></i></a>
+        </li>
+        <!--grid--------------------------------------------------------------->
+        <li class="list-group-item">
+          <a class="text-dark nav-link" id="grid-tab-ex" data-toggle="tab" href="#grid-ex" role="tab" aria-controls="grid-ex"aria-selected="false">
+            <i class="fas fa-th-large fa-2x"></i></a>
+        </li>
+        <!--note--------------------------------------------------------------->
+        <li class="list-group-item">
+          <a class="text-dark nav-link" id="note-tab-ex" data-toggle="tab" href="#note-ex" role="tab" aria-controls="note-ex"aria-selected="false">
+            <i class="fas fa-book-open fa-2x"></i></a>
+        </li>
+        <!--work--------------------------------------------------------------->
+        <li class="list-group-item">
+          <a class="text-dark nav-link" id="work-tab-ex" data-toggle="tab" href="#work-ex" role="tab" aria-controls="work-ex"aria-selected="false">
+            <i class="fas fa-crop fa-2x"></i></a>
+        </li>
+        <!--code--------------------------------------------------------------->
+        <li class="list-group-item">
+          <a class="text-dark nav-link" id="code-tab-ex" data-toggle="tab" href="#code-ex" role="tab" aria-controls="code-ex"aria-selected="false">
+            <i class="fab fa-codepen fa-2x"></i></a>
+        </li>
+        <!--card--------------------------------------------------------------->
+        <!--li class="list-group-item">
+          <a class="text-dark nav-link" id="card-tab-ex" data-toggle="tab" href="#card-ex" role="tab" aria-controls="card-ex"aria-selected="false">
+            <i class="fas fa-sticky-note fa-2x"></i></a>
+        </li-->
+        <!--------------------------------------------------------------------->
+    </ul>
+  </div>
+<div class="tab-content pt-5" id="myTabContentEx">
+  <div class="tab-pane fade active show" id="home-ex" role="tabpanel" aria-labelledby="home-tab-ex">
+  {% include "app_user/intro_grid.html" %}
+  {% include "app_user/intro_work.html" %}
+  {% include "app_user/intro_note.html" %}
+  {% include "app_user/intro_code.html" %}
+  {#% include "app_user/intro_card.html" %#}
+  </div>
+  <!--grid-->
+  <div class="tab-pane fade" id="grid-ex" role="tabpanel" aria-labelledby="grid-tab-ex">
+        {% include "app_user/intro_grid.html" %}
+  </div>
+  <!--note-->
+  <div class="tab-pane fade" id="note-ex" role="tabpanel" aria-labelledby="note-tab-ex">
+        {% include "app_user/intro_note.html" %}
+  </div>
+  <!--work-->
+  <div class="tab-pane fade" id="work-ex" role="tabpanel" aria-labelledby="work-tab-ex">
+        {% include "app_user/intro_work.html" %}
+  </div>
+  <!--code-->
+  <div class="tab-pane fade" id="code-ex" role="tabpanel" aria-labelledby="code-tab-ex">
+        {% include "app_user/intro_code.html" %}
+  </div>
+  <!--card-->
+  <!--div class="tab-pane fade" id="card-ex" role="tabpanel" aria-labelledby="card-tab-ex">
+        {% include "app_user/intro_card.html" %}
+  </div-->
+</div>
+</div>
+<style media="screen">
+  {% include "app_user/user_top.css" %}
+</style>
+
+{% endblock %}

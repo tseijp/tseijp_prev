@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+{% block "head_block" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/monokai_sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.js"></script>
+{% endblock %}
+
+{% block "css_block" %}{% include 'app_note/detail/note_base.css' %}{% endblock %}
+
+{% block "body_block" %}
+{% block "iframe_block" %}{% endblock %}
+<script type="text/javascript">{% include 'app_note/detail/note_base.js' %}</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block "head_block" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/mode/overlay.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/markdown/markdown.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/mode/gfm/gfm.min.js"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/addon/edit/continuelist.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
+{% endblock %}
+{% block "js_block" %}
+  {% include "index/nav.js" %}
+  {% include "index/content.js" %}
+{% endblock %}
+{% block "css_block" %}
+  {% include "index/nav.css" %}
+  {% include "index/content.css" %}
+  {% include "app_note/list/objects.css" %}
+{% endblock %}
+{% block "nav_block"  %}{% include "index/nav.html" %}{% endblock %}
+{% block "foot_block" %}{% include "index/content.html" %}{% endblock %}
+{% block "main_block" %}
+
+
+<section class="jumbotron">
+    <h1 class="jumbotron-heading" style="display:inline;">Edit</h1>
+    <button class="btn btn-dark btn-sm"id="origin">Update</button>
+    <a href="{% url 'note' %}"><button class="btn btn-dark btn-sm"><i class="fas fa-home"></i></button></a>
+    {% if user %}
+    <p class="lead text-muted">user: {{ user.username }}</p>
+    {% endif %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item"><a class="nav-link active" id="live-tab"   data-toggle="tab" href="#live"  role="tab" aria-controls="live"  aria-selected="true">Live</a></li>
+      <li class="nav-item"><a class="nav-link"        id="origin-tab" data-toggle="tab" href="#origin"role="tab" aria-controls="origin"aria-selected="false">Origin</a></li>
+      <li class="nav-item"><a class="nav-link"        id="tools-tab"  data-toggle="tab" href="#tools" role="tab" aria-controls="tools" aria-selected="false">Tools</a></li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+    {#% include 'app_note/form/live.html'   %#}
+    {#% include 'app_note/form/note_form_origin.html' %#}
+    {#% include 'app_note/form/note_form_tools.html'  %#}
+    </div>
+    <br><hr>
+    <div class="embed-responsive embed-responsive-1by1">
+    <!--iframe class="embed-responsive-item embed-responsive-16by9 z-depth-5"
+        src="{{object.update_frame_url }}"
+        id = "update_frame"
+        sandbox="allow-scripts"
+        allowfullscreen></iframe-->
+    </div>
+</section>
+<script type="text/javascript">
+  {% include 'app_note/form/note_form.js' %}
+</script>
+<style media="screen">
+  {% include 'app_note/form/note_form.css' %}
+</style>
+{% endblock %}

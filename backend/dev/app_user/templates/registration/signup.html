@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block "js_block" %}
+  {% include "index/nav.js" %}
+  {% include "index/content.js" %}
+{% endblock %}
+{% block "css_block" %}
+  {% include "index/nav.css" %}
+  {% include "index/content.css" %}
+{% endblock %}
+{% block "nav_block"  %}{% include "index/nav.html" %}{% endblock %}
+{% block "foot_block" %}{% include "index/content.html" %}{% endblock %}
+
+{% block "main_block" %}
+<!--Carousel Wrapper-->
+<!--/.Carousel Wrapper-->
+<section class="jumbotron text-center">
+<div class="container">
+
+
+        <h1 class="jumbotron-heading">Signup</h1>
+        <p class="lead text-muted"></p>
+
+
+        <form method="POST" action="{% url 'signup' %}" class="form-signup">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-dark btn-sm" style="width:100%" type="submit">Sign up</button>
+        </form>
+
+        <p><button class="btn btn-dark btn-sm" style="border-radius:30px;">OR</button></p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+          <button style="width:100%" class="btn btn-dark btn-sm">Signup with Google</button></a><br>
+</div>
+</section>
+{% endblock %}
