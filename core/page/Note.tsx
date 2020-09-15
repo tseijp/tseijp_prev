@@ -6,7 +6,7 @@ import { useGrid } from 'use-grid'
 import { Card, Grow, Head, Icon } from '../src/components'
 import { useNote, usePage, useUser } from '../src/hooks'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
-import { customPage, CustomPage, pageConfig, fetcher, signin } from './utils'
+import { customPage, CustomPage, pageConfig, fetcher, signin, scrollTop } from './utils'
 
 export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //
@@ -24,17 +24,17 @@ export const Note :FC = () => {
     const onMouseEnter = useMemo(()=>()=>setPage(p=>({status:p.status==="UP"?"IN":"UP"})),[setPage])
     const [left,right] = useMemo(()=>{
         const style = {transform:"translate(-50%)",left:"50%",marginTop:size*50}
-        return ["cooment","home"].map(fa => (<Icon {...{fa,size,style,onClick}}/>))
+        return ["cooment","arrow-left"].map(fa => (<Icon {...{fa,size,style,onClick}}/>))
     }, [size,onClick])
     return (
-        <div style={{background:dark?"#000":"#f1f1f1",minHeight:"100%",padding:100*size}}>
+        <div style={{background:dark?"#000":"#f1f1f1",minHeight:"100%",paddingTop:size*100,overflow:"hidden"}}>
             <Helmet>
                 <title>{note?"note":"Loading..."}</title>
                 <meta charSet="utf-8" />
                 <meta name="Hatena::Bookmark" content="nocomment" />
                 <link rel="canonical" href="https://tsei.jp/" />
             </Helmet>
-            <Head {...{dark,size,onClick}}>Note</Head>
+            <Head {...{dark,size,onClick,}}>Note</Head>
             { note && note.results instanceof Array &&
             <Notes {...(page.isHome?{}:{size,left,right})}>{note.results.map(({
                 ja_text="",//note_id="",author_name=null, //,posted_time=null,
@@ -71,8 +71,8 @@ export const Note :FC = () => {
             </Trans>
             <Pills {...{size}}>
                 <Icon fa="ellipsis-h"        {...{dark,size}} onClick={()=>null}>
-                    <Icon fa="share-square"  {...{dark,size}} onClick={()=>null}/>
-                    <Icon fa="location-arrow"{...{dark,size}} onClick={()=>null}/>
+                    <Icon fa="arrow-left"    {...{dark,size}} onClick={onClick}/>
+                    <Icon fa="location-arrow"{...{dark,size}} onClick={scrollTop}/>
                     <Icon fa="sign-in-alt"   {...{dark,size}} onClick={onSignin}/>
                 </Icon>
             </Pills>

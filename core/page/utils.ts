@@ -14,9 +14,10 @@ export const customPage : Partial<Page<CustomPage>> = {
         status!=="UP"? `/auth/`: `/api/user/`
     ]
 }
+export const scrollTop = () => document.getElementById('root')?.scroll({top:0,left:0,behavior: 'smooth',});
 export const pageConfig = {
     onChange:() => {
-        document.getElementById('root')?.scroll({top:0,left: 0,behavior: 'smooth',});
+        scrollTop()
         //setTimeout(() => {
             /*
             animateScroll.scrollToTop({

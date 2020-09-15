@@ -12,7 +12,7 @@ export const Card :FC<BasedProps> = ({
 }) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
     const style = useMemo(() => {
-        const [width,fontSize] = [`min(95vw,${size*500}px)`,size*50]
+        const [width,fontSize] = [`min(80vw,${size*500}px)`,size*50]
         const min = minHeight||size*500
         const max = maxHeight||null//size*500
         return {margin:"auto", overflow:"hidden", borderRadius:fontSize/2,
