@@ -61,7 +61,6 @@ export const usePage = <T extends {}={}>(
     useEffect(() => {
         const {onChange} = confRef.current
         typeof onChange==="function" && onChange()
-        //window.scrollTo(0, 0)
     }, [page.id])
     return [page, setPage]
 }

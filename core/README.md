@@ -19,14 +19,15 @@
 - [Simple example](#simple-example)  
 
 # Demo
-- ~[TSEI.JP/home](https://tsei.jp/)~COMING SOON
-- ~[TSEI.JP/note](https://tsei.jp/note)~COMING SOON
-- [TSEI.JP/mdmd](https://tsei.jp/mdmd)
+- [TSEI.jp/home](https://tsei.jp/)
+- [TSEI.jp/hook](https://tsei.jp/note)
+- [TSEI.jp/mdmd](https://tsei.jp/mdmd)
+- [TSEI.jp/note](https://tsei.jp/note)
 
 # Docs
-- ~[@tsei/core](https://tsei.jp/core/docs)~COMING SOON
-- ~[@tsei/mdmd](https://tsei.jp/mdmd/docs)~COMING SOON
-- ~[useGrid   ](https://tsei.jp/hook/use-grid/docs)~COMING SOON
+- [@tsei/core](https://tsei.jp/core/)
+- [@tsei/mdmd](https://tsei.jp/mdmd/)
+- [useGrid   ](https://tsei.jp/hook/use-grid/)
 
 # Install via npm
 - create your project - `create-react-app myproject`
@@ -43,14 +44,18 @@ useUser | basic function of account authentication using cookies
 
 
 # Simple example
-
-__CONTAINERS__
-
-<a href="https://github.com/tseijp/tseijp/core/component">
-    <img src="https://img.shields.io/badge/Card-black.svg"/>
-    <img src="https://img.shields.io/badge/Code-black.svg"/>
-    <img src="https://img.shields.io/badge/Grow-black.svg"/>
-</a>
+<p align="center">
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/containers/">
+        <strong>CONTAINERS</strong></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Card.tsx">
+        <img src="https://img.shields.io/badge/Card-black.svg"/></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Code.tsx">
+        <img src="https://img.shields.io/badge/Code-black.svg"/></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Edit.tsx">
+        <img src="https://img.shields.io/badge/Edit-black.svg"/></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Grow.tsx">
+        <img src="https://img.shields.io/badge/Grow-black.svg"/></a>
+</p>
 
 ```javascript
 const App = () => <>
@@ -58,26 +63,36 @@ const App = () => <>
         <>hello🥰</>
         <>login🌚</>
     </Modal>
-    <Notes>
-        <>note ➊</>
+    <Trees>
+        <>➊</>
         <>
-            <>note ➋</>
-            <>note ➋ - ➊</>
-            <>note ➋ - ➋</>
+            <>➋</>
+            <>➋ - ➊</>
+            <>➋ - ➋</>
+        </>
+    </Trees>
+    <Notes>
+        <>➊</>
+        <>
+            <>➋</>
+            <>➋ - ➊</>
+            <>➋ - ➋</>
         </>
     </Notes>
 <>
 ```
 
 <hr>
-
-__NAVIGATORS__
-
-<a href="https://github.com/tseijp/tseijp/core/component">
-    <img src="https://img.shields.io/badge/Head-black.svg"/>
-    <img src="https://img.shields.io/badge/Foot-black.svg"/>
-    <img src="https://img.shields.io/badge/Icon-black.svg"/>
-</a>
+<p align="center">
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/containers/">
+        <strong>NAVIGATORS</strong></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Head.tsx">
+        <img src="https://img.shields.io/badge/Head-black.svg"/></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Foot.tsx">
+        <img src="https://img.shields.io/badge/Foot-black.svg"/></a>
+    <a href="https://github.com/tseijp/tseijp/blob/master/core/src/components/Icon.tsx">
+        <img src="https://img.shields.io/badge/Icon-black.svg"/></a>
+</p>
 
 ```javascript
 const App = () => <>
