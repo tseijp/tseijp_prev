@@ -40,7 +40,7 @@ export const Note :FC = () => {
                 ja_text="",//note_id="",author_name=null, //,posted_time=null,
                 en_text="",     id="" }) =>
                 <div key={id}>
-                    <Card {...{...page.isHome?{maxHeight:500,onClick:()=>setPage({id})}:{size},dark}}>
+                    <Card {...{...page.isHome?{maxHeight:500,onClick:()=>setPage({id:id+""})}:{size},dark}}>
                         <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
                              source={lang==="ja"?ja_text:en_text}/>
                     </Card>

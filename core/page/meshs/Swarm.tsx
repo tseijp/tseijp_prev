@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useRef} from 'react'
 import { useFrame } from 'react-three-fiber'
 import * as THREE from 'three'
 
-export const Swarm = ({ dark=false, size=50, count=100}:any) => {
+export const Swarm = ({ dark=false, size=50, count=25}:any) => {
     const mesh = useRef<any>(null)
     const dummy = useMemo(() => new THREE.Object3D(), [])
     const random = useCallback((mul=1,add=0)=>add+Math.random()*mul, [])

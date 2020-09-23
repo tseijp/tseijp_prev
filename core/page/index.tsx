@@ -4,7 +4,7 @@ import {unregister} from './serviceWorker';
 import {HelmetProvider} from 'react-helmet-async';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {Hook} from './Hook';
-import {Home} from './Home';
+//import {Home} from './Home';
 import {Mesh} from './Mesh';
 import {None} from './None';
 import {Note} from './Note';
@@ -18,7 +18,7 @@ const App = (
     <HelmetProvider>
         <BrowserRouter>
             <Switch>
-                <Route    path="/"     component={Home} exact/>
+                <Route    path="/"     component={Mesh} exact/>//Home TODO
                 <Route    path='/mesh' component={Mesh}/>
                 <Route    path="/note" component={Note}/>
                 <Route    path='/none' component={None}/>

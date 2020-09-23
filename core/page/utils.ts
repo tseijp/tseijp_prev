@@ -1,13 +1,16 @@
 import axios  from 'axios'
 import * as THREE from 'three'
-import * as HOOKS from './hooks'
 import * as MESHS from './meshs'
-import {Credit, URLType, Page} from '../src'
-const oneUpper =(text:string)=> text.charAt(0).toUpperCase()+text.slice(1).toLowerCase()
+import * as HOOKS from './hooks'
+import {Credit, URLType, Page, topUp} from '../src'
 // ************************* FOR HOOK ************************* //
-export type  HookPage = {Hook:any}
+export type  HookPage = {pathname:string, Hook:any, hooks:any}
 export const hookPage = {
-    Hook: ({id=""}) => (HOOKS as any)[oneUpper(id)] || null,
+    pathname: ({id=""}) => `/hook/${id}`,
+    Hook: ({hooks={},id=""}) => (hooks as any)[topUp(id)],
+    hooks: Object.assign({}, ...Object.keys(HOOKS).map(key =>
+        key in HOOKS && {[key]: (HOOKS as any)[key]}
+    ))
 }
 // ************************* FOR MESH ************************* //
 const canvas = {
@@ -21,8 +24,8 @@ const canvas = {
 }
 export type  MeshPage = {canvas:any, Mesh:any}
 export const meshPage = {
-    Mesh  :({id=""}) => (MESHS  as any)[oneUpper(id)] || null,
-    Canvas:({id=""}) => (canvas as any)[oneUpper(id)] || null,
+    Mesh  :({id=""}) => (MESHS  as any)[topUp(id)] || null,
+    Canvas:({id=""}) => (canvas as any)[topUp(id)] || null,
 }
 
 // ************************* FOR NOTE ************************* //

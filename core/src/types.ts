@@ -40,7 +40,8 @@ export type NoteNode = null | {
       | undefined
 }
 //export type NoteURL = URLType | string | string[]
-export type NoteFetcher<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
+export type NoteGetter<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
+export type NotePoster<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
 export type NoteConfig = {onChange:() => void}
 
 // ************************* 👌 For usePage 👌 ************************* //
@@ -50,7 +51,7 @@ export type PageConfig<T={}> = Partial<{
 }>
 export type DefaultPage<T={}> = {
     [key:string]:any, //config:PageConfig<T>|null, //TODO : DEV
-    id:string|number,search :string,language:string,urls:URLType[]
+    id:string,search:string,language:string,urls:URLType[]
     isHome :boolean,protocol:string,hostname:string,
     isLocal:boolean,portname:string,pathname:string,
 }

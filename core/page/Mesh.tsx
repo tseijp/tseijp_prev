@@ -4,17 +4,18 @@
 //     </TransformControls>
 //     <Swarm {...{dark,size}}/>
 import React, {
-    CSSProperties as CSS, FC, //Suspense, useMemo
+    CSSProperties as CSS, FC, Suspense,// useMemo
 } from 'react'
 import {Sides, Trans} from '../src/containers'
 import {useGrid} from 'use-grid'
 import {Helmet} from 'react-helmet-async';
-// import {TransformControls} from 'drei'
+import {TransformControls} from 'drei'
 // import * as THREE from 'three'
-// import {Canvas} from "react-three-fiber"
+import {Canvas} from "react-three-fiber"
 import {meshPage,MeshPage} from './utils'
-import {usePage,Trees} from '../src'
-
+import {usePage,//Trees
+        } from '../src'
+import {Model, Swarm} from './meshs'
 const styles:{[key:string]:CSS} = {
     top   : {position:"relative", transition:"1s", minHeight:"100%", overflow:"hidden"},
     canvas: {position:"fixed", width:"100%", height:"100%", top:0, left:0}
@@ -23,20 +24,20 @@ export const Mesh :FC = () => {
     const [dark, setDark] = useGrid<number>({md:1, lg:0 })
     const [size, setSize] = useGrid<number>({md:1, lg:1.5})
     const [page, ] = usePage<MeshPage>(meshPage)
-    console.log(page.Mesh)
     return (
     <div style={{...styles.top, background:dark?"#000":"#fff"}}>
-        {/*<Canvas {...page.canvas} style={styles.canvas}>
+        <Canvas {...page.canvas} style={styles.canvas}>
             <fog attach="fog" args={[0xdfdfdf, 35, 65]} />
             <hemisphereLight intensity={0.68} position={[0, 50, 0]} />
             <directionalLight position={[-8, 12, 8]} castShadow />
             <Suspense fallback={null}>
-                {page.Mesh && <page.Mesh /> }
+                <TransformControls>
+                    <Model {...{dark,size}}/>
+                </TransformControls>
+                <Swarm {...{dark,size}}/>
+                {/*page.Mesh && <page.Mesh /> */}
             </Suspense>
-        </Canvas>*/}
-        <Trees content="1">
-            <Trees content="2"/>
-        </Trees>
+        </Canvas>
         <Sides {...{size}}>
             <p onClick={()=>window.location.href="/"   }>Home</p>
             <p onClick={()=>window.location.href="/note"}>Note</p>

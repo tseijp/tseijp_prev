@@ -1,6 +1,16 @@
 import React from 'react'
-export const Coontainers = () => {
-    return (
-        <div>Containers</div>
-    )
-}
+import {Modal, Notes} from '../../src'
+export const Containers = () => <>
+    <Modal>
+        <>hello🥰</>
+        <>login🌚</>
+    </Modal>
+    <Notes>
+        <>note ➊</>
+        <>
+            <>note ➋</>
+            <>note ➋ - ➊</>
+            <>note ➋ - ➋</>
+        </>
+    </Notes>
+</>

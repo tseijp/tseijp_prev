@@ -1,78 +1,84 @@
 import { useEffect, useCallback, useState, useRef } from 'react'
-import { None, NoteNode, NoteFetcher, NoteConfig, URLType, BasicProps } from '../types'
-import { equalPathname } from '../utils'
+import { None, NoteNode as NN, NoteGetter, NotePoster, NoteConfig, URLType, BasicProps } from '../types'
+import { is, equalPathname } from '../utils'
 //import useSWR from 'swr'
-//import { AxiosResponse } from 'axios'
 export const useNote = (
-    initURL:BasicProps<URLType|string>,
-    initFetcher:NoteFetcher<NoteNode>,
-    initNoteConfig:Partial<NoteConfig>={}
-) : [ NoteNode, (
-        updateUrl:((pre:NoteNode)=>None<URLType|string>)|None<URLType|string>,
-        updateFetcher?:NoteFetcher<NoteNode>|null,
-        updateConfig ?:Partial<NoteConfig>
+    initGetURL: BasicProps<URLType|string>,
+    initGetter: NoteGetter|null=null,
+    initPoster: NotePoster|null=null,
+    initNoteConfig: Partial<NoteConfig>={}
+) : [ NN, (
+        updateGetURL: ((pre:NN)=>None<URLType|string>)|None<URLType|string>,
+        updateGetter?: NoteGetter|null,
+        updateConfig?: Partial<NoteConfig>
+    ) => void, (
+        updatePoster?: NotePoster|null,
+        updateConfig?: Partial<NoteConfig>
     ) => void
 ] => {
-    if (typeof initURL==="function")initURL = initURL()
-    if (typeof initURL==="string")  initURL = new URL(initURL)
-    const urlRef     = useRef<URLType>()
-    const fetcherRef = useRef(initFetcher)
-    const isFetching = useRef<boolean>(false)
+    if (is.fun(initGetURL)) initGetURL = initGetURL()
+    if (is.str(initGetURL)) initGetURL = new URL(initGetURL)
+    const getURLRef  = useRef<URLType>()
+    const getterRef  = useRef(initGetter)
+    const posterRef  = useRef(initPoster)
     const configRef  = useRef(initNoteConfig)
-    const [note,set] = useState<NoteNode>(null) // TODO useSWR(urlRef.current,isFetching)
+    const isFetching = useRef<boolean>(false)
+    const [note,set] = useState<NN>(null)
     //  ************************* 📋 useEffect 📋 *************************  //
-    //  * setNote("/api/note", fetcher) => refresh note data from url
-    //  * setNote(p=>p.next  , fetcher) => add note data from url
-    //  ************************* ************** *************************  //
     useEffect(() => {
-        const preURL = urlRef.current
-        urlRef.current = initURL as URLType
-        if (equalPathname(preURL, urlRef.current))
-            return
-        isFetching.current = true
-        fetcherRef.current(urlRef.current).then((res:any) => {
-            //console.log ('\t\tinit fetting !!!!', res.results.map((p:any)=>p.id))
-            set(pre => res || pre)
-            setTimeout(() => void (isFetching.current = false), 1000)
-        })
-    }, [initURL])//[initURL])
-    //  ************************* 📋 SetNote 📋 *************************  //
-    //  * setNote("/api/note", fetcher) => refresh note data from url
-    //  * setNote(p=>p.next  , fetcher) => add note data from url
-    //  ************************* ************** *************************  //
-    const setNote = useCallback((updateURL,updateFetcher=null,updateConfig={}) => {
-        // ********** FOR REF ********** //
-        if (isFetching.current)
-            return
-        isFetching.current = true
-        if (typeof updateURL === "function")
-            updateURL = updateURL(note)
-        if (updateFetcher === null)
-            updateFetcher  = fetcherRef.current
-        fetcherRef.current = updateFetcher
-        configRef.current  = {...configRef.current, ...updateConfig}
-        if (!updateURL || !updateFetcher)
-            return void (isFetching.current = false)
-        const preURL = urlRef.current
-        if (typeof updateURL==="string")
-            updateURL = new URL(updateURL)
-        urlRef.current = updateURL
-        // ********** FOR FETCHING ********** //
-        updateFetcher(updateURL).then((res:any) => {
-            //console.log(`\t\t update fetting !!!`, res.results.map((p:any)=>p.id))
-            setTimeout(() => (isFetching.current = false), 1000)
-            return (res && res.results) && set(pre => {
-                if (!equalPathname(preURL, urlRef.current))
-                    return res
-                const {onChange=null} = configRef.current
-                const diff = pre
-                  ? (pre.results||[]).filter((p:any) =>
-                  ! (res.results||[]).find((r:any) => r.id===p.id)
-                ) : []
-                onChange && onChange()
-                return {...res, results:[...diff, ...res.results]}
+        if (equalPathname(getURLRef.current, initGetURL as URLType)) return
+        getURLRef.current = initGetURL as URLType
+        if  (isFetching.current) return
+        else isFetching.current = true;
+        if (getterRef.current)
+            getterRef.current(getURLRef.current).then((res:any) => {
+                setTimeout(() => void (isFetching.current = false), 1000)
+                set(pre => res || pre)
             })
-        })
+    }, [initGetURL])
+    //  ************************* 📋 getNote 📋 *************************  //
+    //  * getNote("/api/note", fetcher) => refresh note data from url
+    //  * getNote(p=>p.next  , fetcher) => add note data from url
+    //  ************************* ************** *************************  //
+    const getNote = useCallback((updateURL,updateGetter=null,updateConfig={}) => {
+        if  (isFetching.current) return
+        else isFetching.current = true;
+        if (is.fun(updateURL   )) updateURL = updateURL(note);
+        if (is.str(updateURL   )) updateURL = new URL(updateURL);
+        if (is.nul(updateGetter)) updateGetter = getterRef.current;
+        const previousURL = getURLRef.current
+        getURLRef.current = updateURL
+        getterRef.current = updateGetter
+        configRef.current = {...configRef.current, ...updateConfig}
+        if (getterRef.current)
+            getterRef.current(updateURL).then((res:any) => {
+                setTimeout(() => (isFetching.current = false), 1000)
+                set(pre => {
+                    console.log("update");
+                    if (!equalPathname(previousURL, getURLRef.current)) return res
+                    const {onChange=null} = configRef.current
+                    typeof onChange==="function" && onChange()
+                    const diff = pre
+                      ? (pre.results||[]).filter((p:any) =>
+                      ! (res.results||[]).find((r:any) => r.id===p.id)
+                    ) : []
+                    return {...res, results:[...diff, ...res.results]}
+                })
+            })
     }, [note])
-    return [note, setNote]
+    //  ************************* 📋 postNote 📋 *************************  //
+    //  ************************* ************** *************************  //
+    const postNote = useCallback((updatePoster=null,updateConfig={}) => {
+        if  (isFetching.current) return
+        else isFetching.current = true;
+        if (is.nul(updatePoster)) updatePoster = posterRef.current;
+        posterRef.current = updatePoster
+        configRef.current = {...configRef.current, ...updateConfig}
+        return
+        // TODO
+        // posterRef.current().then(res => {
+        //     setTimeout
+        // })
+    }, [])
+    return [note, getNote, postNote]
 }
