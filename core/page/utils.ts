@@ -3,16 +3,48 @@ import * as THREE from 'three'
 import * as MESHS from './meshs'
 import * as HOOKS from './hooks'
 import {Credit, URLType, Page, topUp} from '../src'
-// ************************* FOR HOOK ************************* //
+// *************************📋 FOR NOTE 📋************************* //
+export const scrollTop=()=>document.getElementById('root')?.scroll({top:0,left:0,behavior:'smooth',});
+export const pageConfig = { onChange:() => scrollTop() }
+export type CustomPage =
+   {portname:string[], isHome:boolean,
+    pathname:string[], status:string, }
+export const customPage : Partial<Page<CustomPage>> = {
+    isSign:false,status:"", portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
+    isHome:({id}) => !id  , pathname: ({id,status}) =>
+        [   `/note/${ id?id+'/':'' }`,
+        `/api/note/${ id?id+'/':'' }`,
+        status!=="UP"? `/auth/`: `/api/user/`]
+}
+export const fetcher = async (url:URLType,headers={'Content-Type':'application/json'}) =>
+   axios.get(url.href, {headers})
+        .then(res => {
+            if(!res || res.status!==200)
+                throw new Error('Bad Request')
+            return res.data
+        })
+export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'application/json'}) =>
+   axios.post(url.href, cred, {headers})
+        .then((res) => {
+            if (res.status>201 || !res.data.token)
+                throw new Error('Bad Request')
+            return {username:cred.username, authtoken:res.data.token}
+        })
+
+// *************************🤏 FOR HOOK 🤏************************* //
+export const hookTree = {
+    Components: ["Card","Code","Grow","Head","Icon"],
+    Containers: ["Modal","Notes","Trees"],
+}
 export type  HookPage = {pathname:string, Hook:any, hooks:any}
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,
-    Hook: ({hooks={},id=""}) => (hooks as any)[topUp(id)],
+    Hook : ({hooks={},id=""}) => (hooks as any)[topUp(id)],
     hooks: Object.assign({}, ...Object.keys(HOOKS).map(key =>
         key in HOOKS && {[key]: (HOOKS as any)[key]}
     ))
 }
-// ************************* FOR MESH ************************* //
+// *************************🧠 FOR MESH 🧠************************* //
 const canvas = {
     Kinect:{},
     Swarm :{
@@ -26,44 +58,4 @@ export type  MeshPage = {canvas:any, Mesh:any}
 export const meshPage = {
     Mesh  :({id=""}) => (MESHS  as any)[topUp(id)] || null,
     Canvas:({id=""}) => (canvas as any)[topUp(id)] || null,
-}
-
-// ************************* FOR NOTE ************************* //
-export type CustomPage = {
-    portname:string[], isHome:boolean,
-    pathname:string[], status:string, }
-export const customPage : Partial<Page<CustomPage>> = {
-    isSign:false,status:"", portname: ({isLocal}) => isLocal?["3000","8000","8000"]:[],
-    isHome:({id}) => !id  , pathname: ({id,status}) => [
-            `/note/${ id?id+'/':'' }`,
-        `/api/note/${ id?id+'/':'' }`,
-        status!=="UP"? `/auth/`: `/api/user/`
-    ]
-}
-export const scrollTop = () => document.getElementById('root')?.scroll({top:0,left:0,behavior: 'smooth',});
-export const pageConfig = { onChange:() => scrollTop() }
-export const fetcher = async (
-    url:URLType,
-    headers:any={'Content-Type':'application/json'}
-) =>  {
-    return axios
-        .get(url.href, headers)
-        .then(res => {
-            if(!res || res.status!==200)
-                throw new Error('Bad Request')
-            return res.data
-        })
-}
-export const signin = async (
-    url:URLType,
-    cred:Credit,
-    headers:any={'Content-Type':'application/json'}
-) => {
-    return axios
-        .post(url.href, cred, {headers})
-        .then((res:any) => {
-            if (res.status>201 || !res.data.token)
-                throw new Error('Bad Request')
-            return {username:cred.username, authtoken:res.data.token}
-    })
 }

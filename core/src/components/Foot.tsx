@@ -1,22 +1,18 @@
-import React, {FC, Children, useEffect, useMemo} from 'react'
-import {useSpring, animated as a} from 'react-spring'
+import React, {CSSProperties as CSS, FC, Children} from 'react'
+const styles:CSS[] = [
+   {position:"absolute",left:0,bottom:0,background:"#212121",minWidth:"100%",height:"auto",},
+   {position:"relative",textAlign:"center"},
+]
 export const Foot :FC<any> = ({
     children, size=1, style={}, ...props
 }) => {
-    const [{fontSize}, set] = useSpring(()=>({fontSize:size*50}))
-    useEffect(()=>{set({fontSize:size*50})}, [size,set])
-    const styles = useMemo<React.CSSProperties[]>(()=>[
-      { background:"#212121",minWidth:"100%", heihgt:"auto",
-        position:"absolute", left:0, bottom:0, ...style},
-      { position:"relative", fontSize, textAlign:"center"},
-  ], [fontSize, style])
     return (
-        <a.div {...props} style={{...styles[0],
-            borderRadius:fontSize.to(v=>`${v/2}px ${v/2}px 0px 0px`),
-            padding     :fontSize.to(v=>`0px ${v}px ${v/2}px ${v}px`),}}>
-            {Children.map(children, (child)=>
-                <div style={styles[1]}>{child}</div>
+        <div {...props} style={{...styles[0], ...style,
+            borderRadius:`${size*25}px ${size*25}px 0px 0px`,
+            padding     :`0px ${size*50}px ${size*25}px ${size*50}px`}}>
+            {Children.map(children, child =>
+                <div style={{...styles[1],fontSize:size*50}}>{child}</div>
             )}
-        </a.div>
+        </div>
     )
 }

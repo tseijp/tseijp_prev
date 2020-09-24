@@ -5,20 +5,19 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import { BasedProps } from '../types'
 import { useSpring, animated as a } from 'react-spring'
-//import { useGesture } from 'react-use-gesture'
 export const Card :FC<BasedProps> = ({
-    dark=false, size=1, children, color="",
-    minHeight=null, maxHeight=null, ...props
+    size=1, children, ...props
 }) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
     const style = useMemo(() => {
-        const [width,fontSize] = [`min(80vw,${size*500}px)`,size*50]
+        const {dark=false,color="",maxHeight=null, minHeight=null} = props
         const min = minHeight||size*500
         const max = maxHeight||null//size*500
-        return {margin:"auto", overflow:"hidden", borderRadius:fontSize/2,
-                background : dark?"#212121":"#fff", minHeight:min, fontSize,
-                color:color||dark?"#818181":"#000", maxHeight:max, width, ...props.style}
-    }, [dark, color, size, props.style, maxHeight, minHeight])
+        return {margin:"auto", overflow:"hidden",
+                background : dark?"#212121":"#fff", minHeight:min, fontSize:size*50,
+                color:color||dark?"#818181":"#000", maxHeight:max, borderRadius:size*25,
+                width:`min(80vw,${size*500}px)`, ...(props.style||{})}
+    }, [size, props])
     const calc = useCallback(({clientX:x, clientY:y})=>[
        (x - window.innerWidth  / 2) / size / 250, // -1 ~ 1
        (y - window.innerHeight / 2) / size / 250, // -1 ~ 1

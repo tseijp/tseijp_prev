@@ -1,4 +1,4 @@
-import React, {FC, useState, useMemo} from 'react'
+import React, {CSSProperties as CSS, FC, useState} from 'react'
 //import { Card, Foot, Head } from '../src/components'
 import { /*Modal, Pills, */Sides, Trans } from '../src/containers'
 import { useGrid } from 'use-grid'
@@ -10,21 +10,17 @@ import * as THREE from 'three'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 // import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 // import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+const styles:{[key:string]:CSS} = {
+    top: {position:"fixed",top:0,left:0,width:'100%',height:'100%'},
+}
+
 export const None :FC = () => {
     const [lang, setLang] = useState<string>(window?.navigator?.language||'ja')
     const [dark, setDark] = useGrid<boolean>({md:true, lg:false})
     const [size, setSize] = useGrid<number> ({md:1    , lg:1.5 })
-    const styles = useMemo<React.CSSProperties[]>(()=>[
-      { position:"relative", height:"100vw", padding:size*2, background:dark?"#000":"#fff"},
-      { padding:`${size}px`, color:dark?"#818181":"#000", background:dark?"#212121":"#fff" },
-    ], [size, dark])
     return (
-        <div style={{...styles[0]}}>
-            <Helmet>
-                <title>404 NOT FOUND</title>
-                <link rel="canonical" href="https://tsei.jp/" />
-            </Helmet>
-            <div style={{position:"fixed",top:0,left:0,width:'100%',height:'100%'}}>
+        <>
+            <div style={{...styles.top, background:dark?"#000":"#fff"}}>
                 <Canvas gl={{ alpha: false, antialias: false, logarithmicDepthBuffer: true }}
                         camera={{ position:[0,0,500], far:2000 }}
                         pixelRatio={window.devicePixelRatio}
@@ -40,6 +36,10 @@ export const None :FC = () => {
                     </TransformControls>
                 </Canvas>
             </div>
+            <Helmet>
+                <title>404 NOT FOUND</title>
+                <link rel="canonical" href="https://tsei.jp/" />
+            </Helmet>
             <Sides {...{size}}>
                 <p onClick={()=>window.location.href="/"    }>Home</p>
                 <p onClick={()=>window.location.href="/note"}>Note</p>
@@ -49,6 +49,6 @@ export const None :FC = () => {
                 <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
                 <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
             </Trans>
-        </div>
+        </>
     )
 }

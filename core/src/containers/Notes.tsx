@@ -9,7 +9,6 @@ export const Notes:FC<NotesProps> = ({
     children, size=1, style={},...props
 }) => {
     const [width,fontSize] = useMemo(()=>[size*500,size*50],[size])
-    //const length = useMemo(()=>(children as any)?.length || 1, [children])
     const [length, setLength] = useState<number>((children as any)?.length||1)
     const [height, setHeight] = useState<number>(width*length)
     const [isOpen, setIsOpen] = useState<boolean[]>(Array(length).fill(false))
@@ -31,7 +30,7 @@ export const Notes:FC<NotesProps> = ({
     }, [width,order,children])
     //  *************************  ➊ React Springs  *************************  //
     const getY =({pre=0,arr=orderRef.current})=>pre<1?0:arr.slice(0,pre).map(i=>childHeight.current[i]).reduce((a,b)=>a+b)
-    const getF =({i=-1,x=0,s=1.0})=>(j:number)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
+    const getF =({i=-1,x=0,s=1.0})=>(j=0)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
     const getG = useCallback(({i=-1,arr=orderRef.current,pre=-1,mx=0,my=0,down=false}) =>
         (j:number) => (down&&j===i)
             ? {scale:0.9, x:mx, y:getY({pre})+my}

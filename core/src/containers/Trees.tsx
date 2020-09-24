@@ -34,12 +34,11 @@
 //       content: PropTypes.node,
 //       springConfig: PropTypes.func,
 //     }
-
 import React, {
     CSSProperties as CSS, FC, //Children,
     useMemo, useCallback, useState, useEffect, //useRef
 } from 'react'
-import {Spring, config, animated as a} from 'react-spring'
+import {useSpring, config, animated as a} from 'react-spring'
 
 const styles:{[key:string]:CSS} = {
     tree: {
@@ -70,8 +69,8 @@ const styles:{[key:string]:CSS} = {
         marginLeft: 6,
     },
 }
-
-const Icons:{[key:string]:FC<{style:CSS,onClick:()=>void,className:string}>} = {
+const defaultConfig = {restSpeedThreshold: 1,restDisplacementThreshold: 0.01}
+const Icons:{[key:string]:FC<{style:CSS,onClick:()=>void,className?:string}>} = {
     MinusSquareO: props => (
       <svg {...props} viewBox="64 -65 897 897">
         <g>
@@ -114,84 +113,70 @@ const Icons:{[key:string]:FC<{style:CSS,onClick:()=>void,className:string}>} = {
       </svg>
     )
 }
-
-const Contents:FC = ({ children, ...style }) => (
-    <a.div style={{ ...style, ...styles.contents }}>
-        {children}
-    </a.div>
-)
-
-export const Trees:FC<Partial<{
+// const Contents:FC = ({ children, ...style }) => (
+//     <a.div style={{ ...style, ...styles.contents }}>
+//         {children}
+//     </a.div>
+// )
+export type Trees = FC<Partial<{
     open:boolean, visible:boolean, immediate:boolean,
-    canHide:boolean, content:any, springConfig:any, style:CSS, type:any
-}>> = ({
-    open=false, visible=true, immediate=false, children, ...props
+    springConfig:any, canHide:boolean, content:any, style:CSS, type:any
+}>>
+export const Trees:Trees = ({
+    open=false, visible=true, immediate=false,
+    springConfig=defaultConfig, children, ...props
 }) =>  {
     // ********** props and state **********
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})
+    const spring = useSpring<any>({
+        immediate:state.immediate,
+        config: {...config.default,...springConfig},
+        from: {height: 0, opacity: 0, transform: 'translate3d(20px,0,0)' },
+        to: {  height: state.open ? 'auto' : 0,
+              opacity: state.open ? 1 : 0,
+            transform: state.open ? 'translate3d(0px,0,0)' : 'translate3d(20px,0,0)'},
+    })
     const Icon = useMemo(() => Icons[`${ children
             ? (state.open ? 'Minus' : 'Plus')
             : 'Close'
         }SquareO`], [children, state.open])
-    const toggle = useCallback(() => {
-        children && set(p => ({open:!p.open, immediate:false}))
-    }, [children])
-    const toggleVisibility = useCallback(() => {
-        set(p => ({open:p.open, visible:p.visible, immediate:true}))
-    }, [])
     // ********** effect **********
-    // componentWillReceiveProps(props) {
-    //   this.setState(state => {
-    //     return ['open', 'visible'].reduce(
-    //       (acc, val) =>
-    //         this.props[val] !== props[val] ? { ...acc, [val]: props[val] } : acc,
-    //       {}
-    //     )
-    //   })
-    // }
+    /*componentWillReceiveProps(props) {
+      this.setState(state => {
+        return ['open', 'visible'].reduce(
+          (acc, val) =>
+            this.props[val] !== props[val] ? { ...acc, [val]: props[val] } : acc,
+          {}
+        )
+      })
+    }*/
     useEffect(() => {
         console.log('useEffect in Trees')
         // set(p => ['open'. 'visible'].reduce((acc, key) => ))
     }, [])
-    // children = Children.map(children, child => {
-    //     const grand = Children.toArray((child as any)?.props?.children) || []
-    //     return grand.length <= 1
-    //       ? child
-    //       : <Trees content={grand.slice(0)}>grand.slice(1)</Trees>
-    // })
+    // TODO
+    /*children = Children.map(children, child => {
+        const grand = Children.toArray((child as any)?.props?.children) || []
+        return grand.length <= 1
+          ? child
+          : <Trees content={grand.slice(0)}>grand.slice(1)</Trees>
+    })*/
     // ********** render **********
     return (
         <div style={{...styles.tree, ...props.style}} className="treeview">
-          <Icon
-            style={{...styles.toggle, opacity: children ? 1 : 0.3 } as CSS}
-            onClick={toggle}
-            className="toggle"
-          />
-          <span style={{...styles.type, marginRight: props.type ? 10 : 0 } as CSS}>
-            {props.type}
-          </span>
-          {props.canHide &&
+            <Icon onClick={() => set(p => ({open:!p.open, immediate:false}))}
+                  style={{...styles.toggle,   opacity: children? 1:0.3 } as CSS}/>
+            <span style={{...styles.type, marginRight: props.type?10:0 } as CSS}>
+                {props.type}
+            </span>
+            {props.canHide &&
             <Icons.EyeO
-              style={{...styles.toggle, opacity: state.visible ? 1 : 0.4 } as CSS}
-              onClick={toggleVisibility}
-              className="toggle"
-            /> }
-          <span style={{ verticalAlign: 'middle' }}>{props.content}</span>
-          <Spring native immediate={state.immediate} render={Contents}
-            config={{
-                ...config.default,
-                restSpeedThreshold: 1,
-                restDisplacementThreshold: 0.01,
-            }}
-            from={{ height: 0, opacity: 0, transform: 'translate3d(20px,0,0)' }}
-            to={{
-                height: state.open ? 'auto' : 0,
-                opacity: state.open ? 1 : 0,
-                transform: state.open ? 'translate3d(0px,0,0)' : 'translate3d(20px,0,0)',
-            }}
-            {...props.springConfig && props.springConfig(state.open)}>
-            {children}
-          </Spring>
+                style={{...styles.toggle, opacity: state.visible ? 1 : 0.4 } as CSS}
+                onClick={()=>set(p => ({open:p.open, visible:p.visible, immediate:true}))}/> }
+            <span style={{ verticalAlign: 'middle' }}>{props.content}</span>
+            <a.div style={{...spring, ...styles.contents}}>
+                {children}
+            </a.div>
         </div>
     )
 }

@@ -37,7 +37,7 @@
 #Available hook
 hooks | what?  
 :-----|:-----  
-useGrid | build responsive layouts of all shapes and sizes from [useGrid](https://github.com/tseijp/use-grid)
+[useGrid](https://github.com/tseijp/use-grid) | build responsive layouts of all shapes and sizes
 useNote | manage notes data and edit note
 usePage | manage page transitions and restful api urls
 useUser | basic function of account authentication using cookies
@@ -58,28 +58,29 @@ useUser | basic function of account authentication using cookies
 </p>
 
 ```javascript
-const App = () => <>
-    <Modal>
-        <>hello🥰</>
-        <>login🌚</>
-    </Modal>
-    <Trees>
-        <>➊</>
-        <>
-            <>➋</>
-            <>➋ - ➊</>
-            <>➋ - ➋</>
-        </>
-    </Trees>
-    <Notes>
-        <>➊</>
-        <>
-            <>➋</>
-            <>➋ - ➊</>
-            <>➋ - ➋</>
-        </>
-    </Notes>
-</>
+const App = () =>
+    <>
+        <Modal>
+            <>hello🥰</>
+            <>login🌚</>
+        </Modal>
+        <Trees>
+            <>➊</>
+            <>
+                <>➋</>
+                <>➋ - ➊</>
+                <>➋ - ➋</>
+            </>
+        </Trees>
+        <Notes>
+            <>➊</>
+            <>
+                <>➋</>
+                <>➋ - ➊</>
+                <>➋ - ➋</>
+            </>
+        </Notes>
+    </>
 ```
 
 <hr>
@@ -95,22 +96,23 @@ const App = () => <>
 </p>
 
 ```javascript
-const App = () => <>
-    <Sides>
-        <>Home</>
-        <>Hook</>
-        <>Note</>
-    </Sides>
-    <Trans>
-        <>JA</>
-        <>🌛</>
-        <>👶</>
-    </Trans>
-    <Pills>
-        <>
-            <>o‍</>
-            <>x</>
-        </>
-    </Pills>
-</>
+const App = () =>
+    <>
+        <Sides>
+            <>Home</>
+            <>Hook</>
+            <>Note</>
+        </Sides>
+        <Trans>
+            <>JA</>
+            <>🌛</>
+            <>👶</>
+        </Trans>
+        <Pills>
+            <>
+                <>o‍</>
+                <>x</>
+            </>
+        </Pills>
+    </>
 ```

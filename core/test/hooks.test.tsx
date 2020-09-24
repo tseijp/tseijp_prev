@@ -48,7 +48,7 @@ describe('useNote', () => {
         const host = "http://localhost:3000/api"
         const next = `${host}?cursor=c0glsl`
         const previous = null
-        //const response = async (results:any) => Promise.resolve({next,previous,results})
+        //const response = async (resultx,y,s) => Promise.resolve({next,previous,results})
         //    .then((res)=>{console.log("fetched"); return res})
         mockAxios.get
         // TODO double fetching

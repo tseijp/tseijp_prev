@@ -1,14 +1,14 @@
-import React, {FC,useEffect,useCallback,useMemo} from 'react';
+import React, {CSSProperties as CSS,FC,useEffect,useCallback,useMemo} from 'react';
 import { useSpring, animated as a } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
 import {createPortal} from 'react-dom';
 import { ModalProps } from '../types';
 export const Modal:FC<ModalProps> = ({
         open=false, onClose=null, dark=false, size=1, //onOpen=null,
-        children, color="", style={},
+        children, color="", ...props
     }) => {
     const width = useMemo(()=>500 * size,[size])
-    const [spring, set] = useSpring<any>(()=>({x:0,y:-width,scale:0}))
+    const [spring, set] = useSpring(()=>({x:0,y:-width,scale:0}))
     useEffect(()=>{open&&set({x:0,y:0,scale:1})}, [open, set])
     const close=useCallback( (vx=0,vy=0) => {
         set({x:vx*width, y:(vy-1)*width, scale:0})
@@ -25,14 +25,14 @@ export const Modal:FC<ModalProps> = ({
         },
     })
     const root = useMemo<HTMLElement|null>(()=>document.getElementById('root'),[])
-    const styles = useMemo<React.CSSProperties[]>(()=>[
-          { left:0, width:"100%", display:"flex",justifyContent:"center",
-             top:0,height:"100%",position:"fixed",   alignItems:"center",
-            transition:"1s", color:color||dark?"#212121":"#000",
-            zIndex:200,background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`, ...style},
-        ], [dark, color, style])
+    const style = useMemo<CSS>(()=>({
+        left:0, width:"100%",  display:"flex",justifyContent:"center",
+        top:0, height:"100%", position:"fixed",   alignItems:"center",
+        transition:"1s", color:color||dark?"#212121":"#000",
+        zIndex:200,background:`rgba(${dark?"80,80,80":"0,0,0"},.5)`, ...props.style
+    }), [dark, color, props.style])
     return open ? createPortal(
-        <div style={styles[0]} onClick={()=>onClose&&onClose()}>
+        <div style={style} onClick={()=>onClose&&onClose()}>
             <a.div style={{position:"relative",...spring}} {...bind()}
                 onClick={e=>e.stopPropagation()}>
                 {children}

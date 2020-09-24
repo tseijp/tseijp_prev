@@ -1,11 +1,10 @@
 import React, {CSSProperties as CSS, FC} from 'react'
-import {Sides, Trans} from '../src/containers'
 import {useGrid} from 'use-grid'
 import {Helmet} from 'react-helmet-async';
-import {hookPage,HookPage} from './utils'
-import {topUp,usePage,Head,//Card,Trees
+//import Trees from 'react-animated-tree';
+import {hookTree,hookPage,HookPage} from './utils'
+import {topUp,usePage,Sides,Trans,Head,Trees,//Card,
 } from '../src'
-
 const styles:{[key:string]:CSS} = {
     top   : {position:"relative", transition:"1s", minHeight:"100%", overflow:"hidden"},
     btn   : {fontSize:"1.5rem", borderRadius:"1rem", textAlign:"center", background:"rgba(0,0,0,0.2)"},
@@ -18,15 +17,23 @@ export const Hook:FC = () => {
     const [page, setPage] = usePage<HookPage>(hookPage)
     return (
     <div style={{...styles.top, background:dark?"#000":"#fff", paddingTop:size*100}}>
-        <Head {...{dark,size,onClick:()=>setPage({id:""}),}}>Hook {topUp(page.id)}</Head>
-        <Head>
-            {Object.keys(page.hooks).map(id =>
-                <p style={styles.btn} onClick={()=>setPage({id})}>{id||"Hook"}</p>
+        <Head {...{dark,size,onClick:()=>setPage({id:""}),}}>Hook {topUp(page.id)}
+        <Trees content="Hook">
+            {Object.entries(hookTree).map(([content,keys]:[string,string[]]) =>
+                <Trees key={content} content={content}>
+                    {keys.map(key =>
+                        <Trees key={key} content={key}/>
+                    )}
+                </Trees>
             )}
+            <Trees content="mdmd" />
+            <Trees content="use-grid" />
+            <Trees content="use-amazon" />
+        </Trees>
         </Head>
-        {page.Hook && <page.Hook />}
+        {/*page.Hook && <page.Hook />*/}
         <Sides {...{size}}>
-            <p onClick={()=>window.location.href="/"   }>Home</p>
+            <p onClick={()=>window.location.href="/"    }>Home</p>
             <p onClick={()=>window.location.href="/note"}>Note</p>
         </Sides>
         <Trans {...{size}}>

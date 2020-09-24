@@ -40,7 +40,7 @@ export const SidesIcon : FC<BindsProps> = ({spring, bind, circ=false, size=1}) =
 
 export const SidesItem :FC<BindsProps> = ({children, size=1}) => {
     return <a.div {...{children, style:{
-        //x:spring.x.interpolate((x:any)=>(x-width)), // BAD DESIGN
+        //x:spring.x.interpolate((x,y,s)=>(x-width)), // BAD DESIGN
         padding:"10px 10px 10px 32px",color:"#818181",
         display:"block",transition:"0.75s",fontSize:50*size}}} />
 }

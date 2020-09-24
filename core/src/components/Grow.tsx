@@ -1,4 +1,4 @@
-import React, {FC,useEffect, useMemo, useRef} from 'react'
+import React, {CSSProperties as CSS, FC,useEffect, useMemo, useRef} from 'react'
 import {BasedProps} from '../types'
 import {useView} from 'use-grid'
 export const Grow:FC<BasedProps> = ({
@@ -12,7 +12,7 @@ export const Grow:FC<BasedProps> = ({
         && e.isIntersecting
         && typeof fn.current==="function"
         && (fn.current as any)())
-    const style = useMemo<React.CSSProperties>(()=>({
+    const style = useMemo<CSS>(()=>({
         position:"relative",display:"grid",margin:`${size*50}px auto 0 auto`,
         width:size*250,height:size*250,...(props.style||{})
     }), [size, props.style])
