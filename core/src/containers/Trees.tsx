@@ -2,41 +2,16 @@
 //     https://github.com/drcmda/react-animated-tree/blob/master/src/index.js
 //     https://github.com/drcmda/react-animated-tree/blob/master/src/icons.js
 // demo: https://codesandbox.io/embed/rrw7mrknyp
-//     content, Name of the node (string or React-component)
-//     type, optional description, good for displaying icons, too (string or React-component)
-//     open, optional: default open state
-//     canHide, optional: when set true displays an eye icon
-//     visible, optional: default visible state
-//     onClick, optional: click events on the eye
-//     springConfig, optional: react-spring animation config
-// code
-//     import Tree from 'react-animated-tree'
-//     <Tree content="Apple" type="Fruit" open canHide visible onClick={console.log}>
-//       <Tree content="Contents">
-//         <Tree content="Seeds" />
-//       <Tree>
-//     <Tree>
-// to
-//     <Trees type="Fruit" open canHide visible onClick={}>
-//         <>➊</>
-//         <>
-//             <>➋</>
-//             <>➋ - ➊</>
-//             <>➋ - ➋</>
-//         </>
-//     </Trees>
-// prop
-//     static defaultProps = { open: false, visible: true, canHide: false }
-//     static propTypes = {
-//       open: PropTypes.bool,
-//       visible: PropTypes.bool,
-//       canHide: PropTypes.bool,
-//       content: PropTypes.node,
-//       springConfig: PropTypes.func,
-//     }
+//     @content, Name of the node (string or React-component)
+//     @type   , optional description, good for displaying icons, too (string or React-component)
+//     @open   , optional: default open state
+//     @canHide, optional: when set true displays an eye icon
+//     @visible, optional: default visible state
+//     @onClick, optional: click events on the eye
+//     @springConfig, optional: react-spring animation config
 import React, {
-    CSSProperties as CSS, FC, //Children,
-    useMemo, useCallback, useState, useEffect, //useRef
+    CSSProperties as CSS, FC, Children,
+    useMemo, useState, useEffect, //useRef
 } from 'react'
 import {useSpring, config, animated as a} from 'react-spring'
 
@@ -70,7 +45,8 @@ const styles:{[key:string]:CSS} = {
     },
 }
 const defaultConfig = {restSpeedThreshold: 1,restDisplacementThreshold: 0.01}
-const Icons:{[key:string]:FC<{style:CSS,onClick:()=>void,className?:string}>} = {
+export type TreeIcon = {[key:string]:FC<{style:CSS,onClick:()=>void,className?:string}>}
+export const TreeIcon:TreeIcon = {
     MinusSquareO: props => (
       <svg {...props} viewBox="64 -65 897 897">
         <g>
@@ -113,20 +89,16 @@ const Icons:{[key:string]:FC<{style:CSS,onClick:()=>void,className?:string}>} = 
       </svg>
     )
 }
-// const Contents:FC = ({ children, ...style }) => (
-//     <a.div style={{ ...style, ...styles.contents }}>
-//         {children}
-//     </a.div>
-// )
 export type Trees = FC<Partial<{
     open:boolean, visible:boolean, immediate:boolean,
-    springConfig:any, canHide:boolean, content:any, style:CSS, type:any
+    springConfig:any, canHide:boolean, content:any, style:CSS, type:any, depth:number
 }>>
 export const Trees:Trees = ({
-    open=false, visible=true, immediate=false,
+    open=true, visible=true, immediate=true, depth=0,
     springConfig=defaultConfig, children, ...props
 }) =>  {
     // ********** props and state **********
+    useEffect(() => void (set(p => visible!==p.visible? {...p, visible} : p)), [visible])
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})
     const spring = useSpring<any>({
         immediate:state.immediate,
@@ -136,32 +108,15 @@ export const Trees:Trees = ({
               opacity: state.open ? 1 : 0,
             transform: state.open ? 'translate3d(0px,0,0)' : 'translate3d(20px,0,0)'},
     })
-    const Icon = useMemo(() => Icons[`${ children
+    const Icon = useMemo(() => TreeIcon[`${ children instanceof Array && children.length>0
             ? (state.open ? 'Minus' : 'Plus')
-            : 'Close'
-        }SquareO`], [children, state.open])
-    // ********** effect **********
-    /*componentWillReceiveProps(props) {
-      this.setState(state => {
-        return ['open', 'visible'].reduce(
-          (acc, val) =>
-            this.props[val] !== props[val] ? { ...acc, [val]: props[val] } : acc,
-          {}
-        )
-      })
-    }*/
-    useEffect(() => {
-        console.log('useEffect in Trees')
-        // set(p => ['open'. 'visible'].reduce((acc, key) => ))
-    }, [])
-    // TODO
-    /*children = Children.map(children, child => {
+            : 'Close'}SquareO`], [children, state.open])
+    children = Children.map(children, child => {
         const grand = Children.toArray((child as any)?.props?.children) || []
-        return grand.length <= 1
-          ? child
-          : <Trees content={grand.slice(0)}>grand.slice(1)</Trees>
-    })*/
-    // ********** render **********
+        return <Trees {...{...props,
+                open:false,     children:grand.length>0 ? grand.slice(1) : null,
+                immediate:false, content:grand[0],}}/>
+    })
     return (
         <div style={{...styles.tree, ...props.style}} className="treeview">
             <Icon onClick={() => set(p => ({open:!p.open, immediate:false}))}
@@ -170,12 +125,12 @@ export const Trees:Trees = ({
                 {props.type}
             </span>
             {props.canHide &&
-            <Icons.EyeO
+            <TreeIcon.EyeO
                 style={{...styles.toggle, opacity: state.visible ? 1 : 0.4 } as CSS}
                 onClick={()=>set(p => ({open:p.open, visible:p.visible, immediate:true}))}/> }
             <span style={{ verticalAlign: 'middle' }}>{props.content}</span>
             <a.div style={{...spring, ...styles.contents}}>
-                {children}
+                {children && children}
             </a.div>
         </div>
     )

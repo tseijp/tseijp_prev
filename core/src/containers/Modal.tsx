@@ -3,7 +3,8 @@ import { useSpring, animated as a } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
 import {createPortal} from 'react-dom';
 import { ModalProps } from '../types';
-export const Modal:FC<ModalProps> = ({
+export type Modal = FC<ModalProps>
+export const Modal:Modal = ({
         open=false, onClose=null, dark=false, size=1, //onOpen=null,
         children, color="", ...props
     }) => {

@@ -3,7 +3,8 @@ import { useSprings, animated as a } from 'react-spring'
 import { useGesture, } from 'react-use-gesture'
 import { clamp, swap } from '../utils'
 import { NotesProps } from '../types'
-export const Notes:FC<NotesProps> = ({
+export type Notes = FC<NotesProps>
+export const Notes:Notes = ({
     order=null,
     grandren=null, right=null, left=null, depth=0,
     children, size=1, style={},...props

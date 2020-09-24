@@ -2,8 +2,8 @@ import React, {CSSProperties as CSS, FC, useMemo} from 'react'
 import {BasedProps} from '../types'
 import { useSpring, animated as a } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
-
-export const Icon :FC<BasedProps> = ({
+export type Icon = FC<BasedProps>
+export const Icon:Icon = ({
     fa="",dark=false,circ=true,size=1,onOpen=null, //onClose=null,
     children,className='',...props//,color=''
 }) => {

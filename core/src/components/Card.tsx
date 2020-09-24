@@ -5,9 +5,8 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import { BasedProps } from '../types'
 import { useSpring, animated as a } from 'react-spring'
-export const Card :FC<BasedProps> = ({
-    size=1, children, ...props
-}) => {
+export type Card = FC<BasedProps>
+export const Card:Card = ({size=1, children, ...props}) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
     const style = useMemo(() => {
         const {dark=false,color="",maxHeight=null, minHeight=null} = props

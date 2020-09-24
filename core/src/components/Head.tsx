@@ -1,7 +1,8 @@
 import React, {CSSProperties as CSS, FC, useMemo} from 'react'
 import {BasedProps} from '../types'
 
-export const Head :FC<BasedProps> = ({
+export type Head = FC<BasedProps>
+export const Head:Head = ({
     children, color="", dark=false,size=50, style={}, ...props
 }) => {
     style = useMemo<CSS>(()=>({

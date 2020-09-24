@@ -1,7 +1,8 @@
 import React, {CSSProperties as CSS, FC,useEffect, useMemo, useRef} from 'react'
 import {BasedProps} from '../types'
 import {useView} from 'use-grid'
-export const Grow:FC<BasedProps> = ({
+export type Grow = FC<BasedProps>
+export const Grow:Grow = ({
     onView=null, role="status",
     size=1, className="spinner-grow", ...props
 }) => {

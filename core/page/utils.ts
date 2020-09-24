@@ -32,10 +32,10 @@ export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'
         })
 
 // *************************🤏 FOR HOOK 🤏************************* //
-export const hookTree = {
-    Components: ["Card","Code","Grow","Head","Icon"],
-    Containers: ["Modal","Notes","Trees"],
-}
+// export const hookTree = {
+//     Components: ["Card","Code","Grow","Head","Icon"],
+//     Containers: ["Modal","Notes","Trees"],
+// }
 export type  HookPage = {pathname:string, Hook:any, hooks:any}
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,

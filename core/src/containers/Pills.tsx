@@ -1,8 +1,8 @@
 import React, {FC,Children,CSSProperties,useMemo,useState,useRef,/*useEffect*/} from 'react'
 import { useSprings, animated/*, config*/ } from 'react-spring'
 //import { useGesture, } from 'react-use-gesture'
-
-export const Pills:FC<any> = ({
+export type Pills = FC<any>
+export const Pills:Pills = ({
     position={x:0,y:0,r:Math.PI/4}, depth=0, rate=1.414,
     size=1, isOpen=true, ...props}) => {
     const length = useMemo( () => props?.children?.length||1, [props] )
@@ -20,7 +20,6 @@ export const Pills:FC<any> = ({
     const [springs, set] = useSprings( length, fn() )
     const setHub=(key=0,isopen=true)=>setChildHub(pre => Object.assign([],pre,{[key]:isopen}))
     const children = Children.map( props.children, (child,key) => {
-        //depth>1 && console.log(`\tChildren useMemo:${depth}`);
         set(fn())
         return child?.props?.children
           ? React.cloneElement(child, {children:
