@@ -1,4 +1,4 @@
-import { ReactChild as RC, CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 import { AxiosResponse } from 'axios'
 
 export type BasicProps<T>  = (()=>T) | T
@@ -8,13 +8,10 @@ export type Merge<A,B> = {[K in keyof A]:K extends keyof B ? B[K] : A[K] } & B
 export type None<T> = T|undefined|false|null
 // ************************* 🌌 For Containers 🌌 ************************* //
 export type BasedProps<T extends {}={}> = Partial<T & {
-    [key:string]:any, style?:CSSProperties
-    onOpen :null|(()=>void), dark:number|0|1, className:string,
-    onClose:null|(()=>void), size:number    , color:string,
+    [key:string]:any, style?:CSSProperties,
+    onOpen :null|(()=>void), dark:number|boolean, bind:any, color:string, 
+    onClose:null|(()=>void), size:number, spring:any, className:string,
 }>
-export type BindsProps = BasedProps<{bind?:any,spring?:any}>
-export type ModalProps = BasedProps<{open:boolean}>
-export type NotesProps = BasedProps<{grandren?:any,right?:RC,left?:RC,depth?:number}>
 
 // ************************* 📅 For useNote 📅 ************************* //
 export type URLType = {

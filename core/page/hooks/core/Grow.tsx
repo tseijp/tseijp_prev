@@ -1,7 +1,14 @@
-import React, {FC} from 'react'
-import {Card} from '../../../src'
+import React, {
+    FC, //CSSProperties as CSS, Children,
+    //useMemo, useCallback, useState, useEffect, useRef
+} from 'react'
+import {Grow as Target, Story} from '../../../src'
+const code = `
+`
 export const Grow:FC = () => {
     return (
-        <Card dark={1} />
+        <Story {...code}>
+            <Target />
+        </Story>
     )
 }

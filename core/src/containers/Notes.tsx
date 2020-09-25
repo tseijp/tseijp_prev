@@ -1,9 +1,11 @@
-import React, {FC, CSSProperties, Children,useCallback,useMemo,useEffect,useState,useRef} from 'react'
-import { useSprings, animated as a } from 'react-spring'
-import { useGesture, } from 'react-use-gesture'
-import { clamp, swap } from '../utils'
-import { NotesProps } from '../types'
-export type Notes = FC<NotesProps>
+import React, {ReactChild as RC, FC, CSSProperties, Children,useCallback,useMemo,useEffect,useState,useRef} from 'react'
+import {useSprings, animated as a} from 'react-spring'
+import {useGesture,} from 'react-use-gesture'
+import {clamp, swap} from '../utils'
+import {BasedProps} from '../types'
+export type Notes = FC<BasedProps<{
+    grandren:any,right:RC,left:RC,depth:number
+}>>
 export const Notes:Notes = ({
     order=null,
     grandren=null, right=null, left=null, depth=0,

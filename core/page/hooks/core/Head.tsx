@@ -1,16 +1,14 @@
-import React from 'react'
-import {Modal, Notes} from '../../../src'
-export const Head = () => <>
-    <Modal>
-        <>hello🥰</>
-        <>login🌚</>
-    </Modal>
-    <Notes>
-        <>note ➊</>
-        <>
-            <>note ➋</>
-            <>note ➋ - ➊</>
-            <>note ➋ - ➋</>
-        </>
-    </Notes>
-</>
+import React, {
+    FC, //CSSProperties as CSS, Children,
+    //useMemo, useCallback, useState, useEffect, useRef
+} from 'react'
+import {Head as Target, Story} from '../../../src'
+const code = `
+`
+export const Head:FC = () => {
+    return (
+        <Story {...code}>
+            <Target />
+        </Story>
+    )
+}

@@ -1,9 +1,10 @@
-import React, {CSSProperties as CSS, FC, useCallback, useMemo} from "react";
+import React, {FC, useCallback, useMemo} from "react";
+import {BasedProps} from '../types'
 const {atomOneLight, atomOneDark} = require('react-syntax-highlighter/dist/esm/styles/hljs');
 const {Light} = require('react-syntax-highlighter');
 
-export type Code = FC<Partial<{
-    code:string, language:string, inline:boolean, dark:boolean, style:CSS,
+export type Code = FC<BasedProps<{
+    code:string, language:string, inline:boolean
 }>>
 export const Code:Code = ({
     code='', language="javascript", inline=false, dark=false, style={}, ...props//children,
@@ -13,7 +14,7 @@ export const Code:Code = ({
         const display = inline?"inline-block":"fixed"
         const inlineStyle =inline?{verticalAlign:"top",padding:"0 0"}:{}
         return {position:'relative',display,...inlineStyle}
-    },[inline])
+    }, [inline])
     return (
         <Light  {...props} PreTag={inline?"span":"pre"}
                 {...{customStyle, onDoubleClick, language}}

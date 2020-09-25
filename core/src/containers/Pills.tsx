@@ -1,46 +1,52 @@
-import React, {FC,Children,CSSProperties,useMemo,useState,useRef,/*useEffect*/} from 'react'
-import { useSprings, animated/*, config*/ } from 'react-spring'
-//import { useGesture, } from 'react-use-gesture'
-export type Pills = FC<any>
+import React, {FC,Children,CSSProperties as CSS,
+    useCallback,useMemo,useState,useRef} from 'react'
+import {useSprings, animated} from 'react-spring'
+import {BasedProps} from '../types'
+const styles:{[key:string]:CSS} = {
+    pill: {position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,}
+}
+export type Pills = FC<BasedProps<{
+    position: {x:number, y:number, r:number},
+    depth:number, rate:number, size:number,
+    isOpen:boolean
+}>>
 export const Pills:Pills = ({
     position={x:0,y:0,r:Math.PI/4}, depth=0, rate=1.414,
-    size=1, isOpen=true, ...props}) => {
-    const length = useMemo( () => props?.children?.length||1, [props] )
+    size=1, isOpen=true, ...props
+}) => {
+    const length = useMemo( () => (props?.children as any)?.length||1, [props] )
     const childPos = useRef( Array(length).fill(position) )
-    const [childHub, setChildHub] = useState( Array(length).fill(false) )
-    // depth>0 && console.log(`Render Pills:${depth} isOpen:${isOpen} childHub:${childHub}`);
-    const fn = () => (i:number) => {
-        //depth>1 && console.log(`\tfn:${depth}-${i} ${isOpen?'':'no '}open`);
+    const fn = useCallback(() => (i=0) => {
         const r = position.r/2 + (Math.PI/2) * ((length-i-1)*10+1)/((length-1)*10+2)-Math.PI/8
         const x = isOpen ?  50*rate*size*Math.cos(r) : 0
         const y = isOpen ? -50*rate*size*Math.sin(r) : 0
         childPos.current[i] = {x,y:-y,r}
         return {x, y, scale:isOpen?1:0 }
-    }
+    }, [isOpen, length, position.r, rate, size])
     const [springs, set] = useSprings( length, fn() )
-    const setHub=(key=0,isopen=true)=>setChildHub(pre => Object.assign([],pre,{[key]:isopen}))
-    const children = Children.map( props.children, (child,key) => {
+    const [childHub, setChildHub] = useState( Array(length).fill(false) )
+    const setHub = useCallback((e, key)=>{
+        setChildHub(p => Object.assign([], p, {[key]:!p[key]}))
+        e.stopPropagation()
+    },[])
+    const children = useMemo(() => Children.map( props.children, (child,key) => {
         set(fn())
-        return child?.props?.children
-          ? React.cloneElement(child, {children:
+        return child && (child as any)?.props?.children
+          ? React.cloneElement(child as any, {children:
                 <Pills {...{key, isOpen:isOpen&&childHub[key],
                     depth:depth+1, position:childPos.current[key],
                     rate:rate*(1+(depth+1)*0.2),
                     fontSize:50*size/(1+(depth+1)*0.2),
-                    ...child.props}}/>
+                    ...((child as any).props||{})}}/>
             })
           : child
-    })//), [props.children, isOpen, childHub, dark,depth,pso])
-    const styles = useMemo<CSSProperties[]>(()=>[
-        {position:"fixed",left:position.x,bottom:position.y},
-        {position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,}
-    ], [position])
+    }), [childHub, depth, fn, isOpen, props.children, rate, set, size])
     return (
-        <div style={styles[0]}>
+        <div style={{position:"fixed",left:position.x,bottom:position.y}}>
             {springs.map((spring, key) =>
-                <animated.div key={`${depth}-${key}`} style={{...spring, ...styles[1]}}
-                    onClick={e=>1&&(setHub(key, !childHub[key]),e.stopPropagation())}>
-                    {children[key]}
+                <animated.div key={`${depth}-${key}`} style={{...spring, ...styles.pill}}
+                    onClick={e=>setHub(e, key)}>
+                    {(children as any)[key]}
                 </animated.div>
             )}
         </div>

@@ -3,7 +3,7 @@ import {BasedProps} from '../types'
 
 export type Head = FC<BasedProps>
 export const Head:Head = ({
-    children, color="", dark=false,size=50, style={}, ...props
+    children, color="", dark=false,size=1, style={}, ...props
 }) => {
     style = useMemo<CSS>(()=>({
         fontSize:size*50,
