@@ -32,7 +32,6 @@
   "dependencies": {
     "mdbreact": "^4.27.0",
     "react": "^16.13.1",
-    "react-animated-tree": "^1.0.10",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-postprocessing": "^1.3.2",

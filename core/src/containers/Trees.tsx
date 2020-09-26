@@ -21,7 +21,7 @@ const styles:{[key:string]:CSS} = {
            position:'relative',whiteSpace:'nowrap',textOverflow: 'ellipsis',},
     tggl: {width:'1em',height:'1em',cursor:'pointer',verticalAlign:'middle',marginRight:10,},
     type: {fontSize:'0.6em',fontFamily:'monospace',verticalAlign:'middle',textTransform:'uppercase',},
-    cont: {willChange:'transform, opacity, height',borderLeft:'1px dashed rgba(255,255,255,0.4)',marginLeft:6,},
+    cont: {willChange:'transform, opacity, height',marginLeft:6,},
 }
 const paths = {
     close:"M717.5 589.5q-10.5 10.5 -25.5 10.5t-26 -10l-154 -155l-154 155q-11 10 -26 10t-25.5 -10.5t-10.5 -25.5t11 -25l154 -155l-154 -155q-11 -10 -11 -25t10.5 -25.5t25.5 -10.5t26 10l154 155l154 -155q11 -10 26 -10t25.5 10.5t10.5 25t-11 25.5l-154 155l154 155 q11 10 11 25t-10.5 25.5zM888 760v0v0v-753v0h-752v0v753v0h752zM888 832h-752q-30 0 -51 -21t-21 -51v-753q0 -29 21 -50.5t51 -21.5h753q29 0 50.5 21.5t21.5 50.5v753q0 30 -21.5 51t-51.5 21v0z",
@@ -44,15 +44,16 @@ export const TreesContent:TreeContent = ({
     content,type,set,canHide=false,icon="Close",opacity=1,dark=false,//size=1,
 }) => {
     const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
+    const color = useMemo(() => dark?"#818181":"#212121", [dark])
     const iconClick = useCallback(() => set&&set((p:any) => ({open:!p.open,immediate:false})), [set])
     const eyeClick  = useCallback(() => set&&set((p:any) => ({...p        ,immediate:true })), [set])
     return !content ? null : (
         <>
-            <Icon style={{...styles.tggl, opacity}} onClick={iconClick}/>
-            <span style={{...styles.type, marginRight:type?10:0}}>{type}</span>
+            <Icon style={{...styles.tggl, opacity, color}} onClick={iconClick}/>
+            <span style={{...styles.type, marginRight:type?10:0,color}}>{type}</span>
             { canHide &&
             <TreeIcon.EyeOstyle style={{...styles.tggl}} onClick={eyeClick}/> }
-            <span style={{verticalAlign:'middle',color:dark?"#818181":"#212121"}}>{content}</span>
+            <span style={{verticalAlign:'middle',color}}>{content}</span>
         </>
     )
 }
@@ -64,7 +65,6 @@ export const Trees:Trees = ({
     open=true, visible=true, immediate=true, depth=0, springConfig=defaultConfig,
     dark=false, size=1, style={}, topStyle={}, ...props
 }) =>  {
-    useEffect(() => void (set(p => visible!==p.visible? {...p, visible} : p)), [visible])
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})
     const spring = useSpring<any>({
         immediate:state.immediate,
@@ -76,18 +76,23 @@ export const Trees:Trees = ({
     })
     const children = useMemo(() => Children.map(props.children, child => {
         const grand = Children.toArray((child as any)?.props?.children) || []
-        return props.children && <Trees {...{...props,
-                    dark, size, style, depth:depth+1, topStyle:{},
-                    open:false,     children:grand.length>0 ? grand.slice(1) : null,
-                    immediate:false, content:grand[0],}}/>
+        return props.children &&
+            <Trees {...{...props,
+                dark, size, style, depth:depth+1, topStyle:{},
+                open:false,     children:grand.length>1 ? grand.slice(1) : null,
+                immediate:false, content:grand.length>1 ? grand[0] : child,}}/>
     }), [props, dark, size, style, depth])
     const icon = useMemo(() => children instanceof Array && children.length>0
         ? (state.open ? 'Minus' : 'Plus')
         : 'Close', [children, state.open])
+    useEffect(() => void (set(p => visible!==p.visible? {...p, visible} : p)), [visible])
     return (
         <div style={{...styles.tree, fontSize:size*50, zIndex:-depth, ...style, ...topStyle}}>
-            <TreesContent{...{...props, dark, size, icon, set, opacity:children?1:.3}}/>
-            <a.div style={{...spring, ...styles.cont, padding:`4px 0px 0px ${size*50}px`}}>{children}</a.div>
+            <TreesContent{...{...props, dark, size, icon, set, opacity:children?.length?1:.3}}/>
+            <a.div style={{
+                ...(depth>0?{borderLeft:`1px dashed #${dark?818181:212121}`}:{}),
+                ...styles.cont, padding:`4px 0px 0px ${size*25}px`,
+                ...spring, }}>{children}</a.div>
         </div>
     )
 }

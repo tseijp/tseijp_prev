@@ -11,27 +11,28 @@ export const Hook:FC = () => {
     const [dark, setDark] = useGrid<number>({md:0, lg:0 })
     const [size, setSize] = useGrid<number>({md:1, lg:1.5})
     const [page, setPage] = usePage<HookPage>(hookPage)
-    const [width] = useGrid({xs:0,sm:250,lg:500})
+    const [side, setSide] = useGrid({xs:0,sm:250,lg:500})
     const style = useMemo(() => ({margin:`${size*25}px auto ${size*25}px auto`,padding:"auto"}),[size])
     return (
     <div style={{...styles.top, background:dark?"#000":"#fff"}}>
-        <Split order={[width/window.innerWidth, -1]} style={{paddingTop:size*100,height:"100%"}}>
+        <Split order={[side/window.innerWidth, -1]} style={{paddingTop:size*100,height:"100%"}}>
             <>
                 <Card min={1} {...{dark,size,style}}>
-                    <Trees size={0.5}>
-                        {hookTree.map((ids,i) => ids instanceof Array
-                          ? <span key={i}>{ids.map(id =>
-                            <span key={id} onClick={() => setPage({id})}>{id}</span>)}</span>
-                          : <span key={i}  onClick={() => setPage({id:ids})}>{ids}</span>)}
+                    <Trees {...{dark,size:size/2}}>
+                        { hookTree.map((ids,i) => ids instanceof Array
+                        ?   <span key={i}>{ ids.map((id, j) =>
+                            <span key={id} onClick={() => j&&setPage({id})}>{id}</span>) }</span>
+                        :   <span key={i}  onClick={() =>    setPage({id:ids})}>{ids}</span>) }
                     </Trees>
                 </Card>
+                { page.code &&
                 <Card min={1} {...{dark,size,style}}>
                     <Code {...{code:page.code,dark,size}}/>
-                </Card>
+                </Card> }
             </>
-            <>
-                {Hook && <page.Hook />}
-            </>
+            <div style={{padding:size*25}}>
+                {page.Hook && <page.Hook />}
+            </div>
         </Split>
         <Sides {...{size}}>
             <span onClick={()=>window.location.href="/"    }>Home</span><>
@@ -43,6 +44,7 @@ export const Hook:FC = () => {
         <Trans {...{size}}>
             <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
             <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
+            <div onClick={()=>setSide((p:any)=>p.lg?{xs:0,sm:0,lg:0}:{xs:0,sm:250,lg:500})}>{side?'😆':'😃'}</div>
         </Trans>
         <Helmet>
             <title>TSEI.jp {topUp(page.id)}</title>

@@ -6,7 +6,7 @@ import {Trees} from '../containers'
 import {Icon} from '../components'
 const styles:{[key:string]:CSS} = {
     area: {position:"fixed",top:0,left:0,height:"100%",zIndex:1},
-    cont:{ position:"fixed",top:"2%",left:0,zIndex:1,overflow:"hidden", height:`96%`},
+    cont: {position:"fixed",top:"2%",left:0,zIndex:1,overflowX:"hidden",height:`96%`},
     icon: {position:"absolute",transform:`translate(-50%,-50%)`},
     item: {padding:"10px 10px 10px 32px",color:"#818181",display:"block",}
 }

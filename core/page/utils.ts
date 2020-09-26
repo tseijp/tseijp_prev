@@ -34,8 +34,8 @@ export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'
 
 // *************************🤏 FOR HOOK 🤏************************* //
 export const hookTree = [
-    ["Components","Card","Code","Grow","Head","Icon"],
-    ["Containers","Modal","Notes","Trees"],
+    ["Components","Card","Code",],//"Grow","Head","Icon"],
+    ["Containers","Notes","Split","Trees"],
     "Mdmd"
 ]
 export type  HookPage = {pathname:string, code:any, codes:any, Hook:any, hooks:any}

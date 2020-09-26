@@ -11,11 +11,10 @@ export const Code:Code = ({
 }) => {
     const onDoubleClick = useCallback((_:any)=>navigator.clipboard.writeText(code),[code])
     const customStyle = useMemo(()=>{
-        const display = inline?"inline-block":"fixed"
-        const inlineStyle =inline?{verticalAlign:"top",padding:"0 0"}:{}
-        return {position:'relative',display,...inlineStyle}
+        return {...(inline?{verticalAlign:"top",padding:0}:{}),
+            display:inline?"inline-block":"fixed", position:'relative', margin:0,}
     }, [inline])
-    return  <Light  {...props} PreTag={inline?"span":"pre"}    useInlineStyles={true}
+    return <Light   {...props} PreTag={inline?"span":"pre"}    useInlineStyles={true}
                     {...{customStyle, onDoubleClick, language}}showLineNumbers={!inline}
              style={{...(dark?atomOneDark:atomOneLight),...style}}>
                     {code}</Light>

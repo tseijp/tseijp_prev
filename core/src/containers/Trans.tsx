@@ -5,8 +5,8 @@ import {BasedProps} from '../types'
 import {Icon} from '../components'
 
 const styles = {
-    area: {position:"fixed",top:0,right:0,height:"100%",zIndex:1,overflow:"hidden"},
-    cont: {position:"fixed",height:`96%`,top:"2%",right:0,zIndex:1,overflow:"hidden"},
+    area: {position:"fixed",top:0,right:0,height:"100%",zIndex:1},
+    cont: {position:"fixed",height:`96%`,top:"2%",right:0,zIndex:1,overflowX:"hidden"},
     icon: {position:"absolute",right:0,transform:`translate(-50%,-50%)`,},
     item: {backgroundColor:"#212121",color:"#818181", display:"inline-block"},
 }

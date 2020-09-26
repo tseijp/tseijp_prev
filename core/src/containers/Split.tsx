@@ -21,9 +21,7 @@ const move = (
         : null
 const getW = (o=[0],w=0,l=0) =>
     o instanceof Array && o.length > 0
-        ? o.map(v =>
-            v>=0? v
-                : w/window.innerWidth
+        ? o.map(v => v>=0? v : w/window.innerWidth
                 ||(1 - [...o.filter(v=>v>0),0].reduce((a,b)=>a+b))
                         /  o.filter(v=>v<0).length)
         : Array(l).fill(w/window.innerWidth || l?1/l:l)
@@ -53,10 +51,9 @@ export const Split:Split = ({
             sRef.current===sign(dir) && setW(move(mx,key,sign(dir),lRef,wRef,minWidth))
             if (!last) return
             wRef.current = springs.map((s:any) => s.w.animation.to || 0)
-            hRef.current = spring.h.animation.to as number
+            hRef.current = spring.h.animation.to as number || 0
         }
     })
-    console.log(wRef.current, window.innerWidth)
     const children = Children.map(props.children, child => child)
     useEffect(() => {
         const len = (props as any)?.children?.length||0
@@ -74,7 +71,7 @@ export const Split:Split = ({
         setH({h:hRef.current})
     }, [height, setH])
     return (
-        <a.div style={{...styles.top, height:spring.h, ...style}}>
+        <a.div style={{...styles.top, height:spring.h,...style}} {...props}>
             {springs.map(({w},key) =>
                 <a.div {...bind(key)} {...{key}} style={{...styles.item,width:w.interpolate(v=>`${100*v}%`)}}>
                     {(children as any)[key]}
