@@ -2,10 +2,10 @@ import React, {FC,CSSProperties as CSS,useCallback,useRef} from 'react';
 import {useSpring, animated as a, config} from 'react-spring'
 import {useGesture} from 'react-use-gesture'
 import {BasedProps} from'../types'
+import {Trees} from '../containers'
 import {Icon} from '../components'
-
 const styles:{[key:string]:CSS} = {
-    area: {position:"fixed",top:0,left:0,height:"100%",zIndex:1,overflow:"hidden"},
+    area: {position:"fixed",top:0,left:0,height:"100%",zIndex:1},
     cont:{ position:"fixed",top:"2%",left:0,zIndex:1,overflow:"hidden", height:`96%`},
     icon: {position:"absolute",transform:`translate(-50%,-50%)`},
     item: {padding:"10px 10px 10px 32px",color:"#818181",display:"block",}
@@ -31,11 +31,11 @@ export const SidesIcon : FC<BasedProps> = ({spring, bind, circ=false, size=1}) =
         <Icon fa="align-left" {...{circ,size}} />
     </a.div>
 
-export const SidesItem :FC<BasedProps> = ({children, size=1}) =>
-    <a.div style={{...styles.item,transition:"0.75s",fontSize:50*size}}>{children}</a.div>
+// export const SidesItem :FC<BasedProps> = ({children, size=1}) =>
+//     <a.div style={{...styles.item,transition:"0.75s",fontSize:50*size}}>{children}</a.div>
 
 export type Sides = FC<Partial<BasedProps<{}>>>
-export const Sides:Sides = ({children, width=window.innerWidth/2, size=1, onOpen=()=>null}={}) => {
+export const Sides:Sides = ({children, width=window.innerWidth/2,dark=false,size=1, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool=true)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring( () => ({x:0,y:0,scale:1}) )
@@ -55,9 +55,12 @@ export const Sides:Sides = ({children, width=window.innerWidth/2, size=1, onOpen
             <SidesIcon   {...{size, spring, bind, }} />
             <SidesArea     {...{size, spring, bind, }} />
             <SidesContainer{...{size, spring, bind, }}>
-            {React.Children.map(children, ((child, key)=>
-                <SidesItem {...{size, key}}>{child}</SidesItem>
-            ))}
+            <Trees {...{dark:true,size}}>
+                {children}
+                {/*React.Children.map(children, ((child, key) =>
+                    <SidesItem {...{size, key}}>{child}</SidesItem>
+                ))*/}
+            </Trees>
             </SidesContainer>
         </div>
     )

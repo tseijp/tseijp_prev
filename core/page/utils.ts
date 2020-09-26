@@ -2,6 +2,7 @@ import axios  from 'axios'
 import * as THREE from 'three'
 import * as MESHS from './meshs'
 import * as HOOKS from './hooks'
+import * as CODES from './codes'
 import {Credit, URLType, Page, topUp} from '../src'
 // *************************📋 FOR NOTE 📋************************* //
 export const scrollTop=()=>document.getElementById('root')?.scroll({top:0,left:0,behavior:'smooth',});
@@ -37,13 +38,13 @@ export const hookTree = [
     ["Containers","Modal","Notes","Trees"],
     "Mdmd"
 ]
-export type  HookPage = {pathname:string, Hook:any, hooks:any}
+export type  HookPage = {pathname:string, code:any, codes:any, Hook:any, hooks:any}
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,
-    Hook : ({hooks={},id=""}) => (hooks as any)[topUp(id)],
-    hooks: Object.assign({}, ...Object.keys(HOOKS).map(key =>
-        key in HOOKS && {[key]: (HOOKS as any)[key]}
-    ))
+    Hook : ({id="",hooks={}}) => (hooks as any)[topUp(id)],
+    code : ({id="",codes={}}) => (codes as any)[topUp(id)],
+    hooks: Object.assign({}, ...Object.keys(HOOKS).map(key => key in HOOKS && {[key]: (HOOKS as any)[key] })),
+    codes: Object.assign({}, ...Object.keys(CODES).map(key => key in CODES && {[key]: (CODES as any)[key] })),
 }
 // *************************🧠 FOR MESH 🧠************************* //
 const canvas = {

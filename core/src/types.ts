@@ -9,7 +9,7 @@ export type None<T> = T|undefined|false|null
 // ************************* 🌌 For Containers 🌌 ************************* //
 export type BasedProps<T extends {}={}> = Partial<T & {
     [key:string]:any, style?:CSSProperties,
-    onOpen :null|(()=>void), dark:number|boolean, bind:any, color:string, 
+    onOpen :null|(()=>void), dark:number|boolean, bind:any, color:string,
     onClose:null|(()=>void), size:number, spring:any, className:string,
 }>
 
@@ -48,9 +48,9 @@ export type PageConfig<T={}> = Partial<{
 }>
 export type DefaultPage<T={}> = {
     [key:string]:any, //config:PageConfig<T>|null, //TODO : DEV
-    id:string,search:string,language:string,urls:URLType[]
-    isHome :boolean,protocol:string,hostname:string,
-    isLocal:boolean,portname:string,pathname:string,
+    id:string,language:string,urls:URLType[]
+    isHome :boolean,protocol:string,hostname:string,hash:string,
+    isLocal:boolean,portname:string,pathname:string,search:string,
 }
 export type MultiPage<T> = {
     [K in keyof T] : null|T[K]

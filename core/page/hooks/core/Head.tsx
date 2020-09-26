@@ -2,13 +2,9 @@ import React, {
     FC, //CSSProperties as CSS, Children,
     //useMemo, useCallback, useState, useEffect, useRef
 } from 'react'
-import {Head as Target, Story} from '../../../src'
-const code = `
-`
+import {Head as Target} from '../../../src'
 export const Head:FC = () => {
     return (
-        <Story {...code}>
-            <Target />
-        </Story>
+        <Target />
     )
 }

@@ -23,15 +23,16 @@ export const defaultPage = {
     portname:window.location.port     ||"",
     pathname:window.location.pathname ||"",
     search  :window.location.search   ||"",
+    hash    :window.location.hash     ||"",
     language:window.navigator.language||"ja",
     urls    :[new URL(window.location.href)],
 }
 export const joinPage = <T={}>(page:Page<T>):string|string[] => {
-    const {protocol,hostname,portname,pathname="",search=""} = page;
-    const arr = [protocol,hostname,portname,pathname,search]
+    const {protocol,hostname,portname,pathname="",search="",hash=""} = page;
+    const arr  =[protocol,hostname,portname,pathname,search,hash]
     const getp =(port:any)=>port?`:${port}`:""
     const geti =(i=0,n:any)=>n instanceof Array?(i<n.length?n[i]:n[n.length-1]):n
-    if ( arr.every(v=>typeof v==="string") )
+    if (arr.every(v=>typeof v==="string"))
         return joinURL(`${protocol}//${hostname}${getp(portname)}/`,pathname as any, search as any)
     const maxLength = arr.map(v=>v instanceof Array?v.length:1).reduce((a,b)=>a>b?a:b)
     return [...Array(maxLength)].map((_,i) =>

@@ -21,6 +21,7 @@
  *         @portname:string e.g. "3000"   or ["3000"(npm), "8000"(django)]
  *         @pathname:string e.g. "/note/" or ["/note/", "/api/note/"]
  *         @search  :string e.g. "/note/" or ["/note/", "/api/note/"]
+ *         @hash    :string e.g. "#note"  or ["#note"]
  *   - @config = {TODO}
  *   - type MultiPage<T=any> = T|T[]|((p:Page)=>T|T[])
  * ## Return Values
@@ -42,7 +43,6 @@ export const usePage = <T extends {}={}>(
     const pageRef = useRef<Page<T>>({...defaultPage, ...props } as Page<T>)
     const confRef = useRef<Conf<T>>({...defaultConf, ...config} as Conf<T>)
     const [page,set] = useState<Page<T>>( normPage(pageRef.current) )
-    //  ************************* setPage *************************  //
     const setPage = useCallback((state:BasicState<Partial<Page<T>>>) => {
         if (typeof state==="function")
             state = state(pageRef.current as Partial<Page<T>>)

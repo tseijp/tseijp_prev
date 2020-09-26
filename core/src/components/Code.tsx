@@ -15,11 +15,8 @@ export const Code:Code = ({
         const inlineStyle =inline?{verticalAlign:"top",padding:"0 0"}:{}
         return {position:'relative',display,...inlineStyle}
     }, [inline])
-    return (
-        <Light  {...props} PreTag={inline?"span":"pre"}
-                {...{customStyle, onDoubleClick, language}}
-            style={{...style,...(dark?atomOneDark:atomOneLight)}}
-            useInlineStyles={true} showLineNumbers={!inline}>
-            {code}</Light>
-    );
+    return  <Light  {...props} PreTag={inline?"span":"pre"}    useInlineStyles={true}
+                    {...{customStyle, onDoubleClick, language}}showLineNumbers={!inline}
+             style={{...(dark?atomOneDark:atomOneLight),...style}}>
+                    {code}</Light>
 }

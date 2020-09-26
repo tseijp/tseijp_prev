@@ -5,17 +5,20 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import { BasedProps } from '../types'
 import { useSpring, animated as a } from 'react-spring'
-export type Card = FC<BasedProps>
-export const Card:Card = ({size=1, children, ...props}) => {
+export type Card = FC<BasedProps<{
+    max:null|number,
+    min:null|number
+}>>
+export const Card:Card = ({children, size=1, style={}, ...props}) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
-    const style = useMemo(() => {
-        const {dark=false,color="",maxHeight=null, minHeight=null} = props
-        const min = minHeight||size*500
-        const max = maxHeight||null//size*500
-        return {margin:"auto", overflow:"hidden",
-                background : dark?"#212121":"#fff", minHeight:min, fontSize:size*50,
-                color:color||dark?"#818181":"#000", maxHeight:max, borderRadius:size*25,
-                width:`min(80vw,${size*500}px)`, ...(props.style||{})}
+    const styleCard = useMemo(() => {
+        const {dark=false,color="",max=null, min=null} = props
+        const minHeight = min||size*500
+        const maxHeight = max||null//size*500
+        return {margin:"auto", overflow:"hidden", borderRadius:size*25,
+                ...(minHeight&&{minHeight}), background : dark?"#212121":"#fff",
+                ...(maxHeight&&{maxHeight}), color:color||dark?"#818181":"#000",
+                width:`min(80%,${size*500}px)`, }
     }, [size, props])
     const calc = useCallback(({clientX:x, clientY:y})=>[
        (x - window.innerWidth  / 2) / size / 250, // -1 ~ 1
@@ -36,7 +39,7 @@ export const Card:Card = ({size=1, children, ...props}) => {
                 `rotateX(${-y/10}deg)`,//-0.1 ~ 0.1
                 `rotateY(${ x/10}deg)`,//-0.1 ~ 0.1
                 `scale(${1+s/10})` ,].join(' ')),
-            ...style }}
+            ...styleCard, ...style }}
            {...{...props,onMouseMove,onMouseLeave,children}}/>
-        , [style,xys,onMouseMove,onMouseLeave,children,props,size])
+        , [style,styleCard,xys,onMouseMove,onMouseLeave,children,props,size])
 }

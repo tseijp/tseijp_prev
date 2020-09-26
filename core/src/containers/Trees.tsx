@@ -36,23 +36,23 @@ export const TreeIcon:TreeIcon = {
     PlusSquareO : props => <svg {...props} viewBox="64 -65 897 897"><g><path d={paths.plus}/></g></svg>,
     EyeO        : props => <svg {...props} viewBox="61 51 902 666"><g><path d={paths.eye}/></g></svg>,
 }
-export type TreeContent = FC<Partial<{
+export type TreeContent = FC<BasedProps<{
     [key:string]:any, set:any, content:any, type:any,
     canHide:boolean, opacity:number, icon:"Minus"|"Plus"|"Close"
 }>>
 export const TreesContent:TreeContent = ({
-    content,type,set,canHide=false,icon="Close",opacity=1
+    content,type,set,canHide=false,icon="Close",opacity=1,dark=false,//size=1,
 }) => {
     const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
     const iconClick = useCallback(() => set&&set((p:any) => ({open:!p.open,immediate:false})), [set])
     const eyeClick  = useCallback(() => set&&set((p:any) => ({...p        ,immediate:true })), [set])
     return !content ? null : (
         <>
-            <Icon style={{...styles.tggl,   opacity}} onClick={iconClick}/>
+            <Icon style={{...styles.tggl, opacity}} onClick={iconClick}/>
             <span style={{...styles.type, marginRight:type?10:0}}>{type}</span>
             { canHide &&
             <TreeIcon.EyeOstyle style={{...styles.tggl}} onClick={eyeClick}/> }
-            <span style={{ verticalAlign: 'middle' }}>{content}</span>
+            <span style={{verticalAlign:'middle',color:dark?"#818181":"#212121"}}>{content}</span>
         </>
     )
 }
@@ -71,12 +71,12 @@ export const Trees:Trees = ({
         config: {...config.default,...springConfig},
         from: {height: 0, opacity: 0, transform: 'translate3d(20px,0,0)' },
         to: {  height: state.open ? 'auto' : 0,
-              opacity: state.open ? 1 : 0,
+              opacity: state.open ? 1      : 0,
             transform: state.open ? 'translate3d(0px,0,0)' : 'translate3d(20px,0,0)'},
     })
     const children = useMemo(() => Children.map(props.children, child => {
         const grand = Children.toArray((child as any)?.props?.children) || []
-        return <Trees {...{...props,
+        return props.children && <Trees {...{...props,
                     dark, size, style, depth:depth+1, topStyle:{},
                     open:false,     children:grand.length>0 ? grand.slice(1) : null,
                     immediate:false, content:grand[0],}}/>
@@ -85,9 +85,9 @@ export const Trees:Trees = ({
         ? (state.open ? 'Minus' : 'Plus')
         : 'Close', [children, state.open])
     return (
-        <div style={{fontSize:size*50, zIndex:-depth, ...styles.tree, ...props.style, ...style, ...topStyle}}>
-            <TreesContent{...{...props,icon,set,opacity:children?1:.3}}/>
-            <a.div style={{...spring, ...styles.cont, padding:`4px 0px 0px ${size*50}px`,}}>{children}</a.div>
+        <div style={{...styles.tree, fontSize:size*50, zIndex:-depth, ...style, ...topStyle}}>
+            <TreesContent{...{...props, dark, size, icon, set, opacity:children?1:.3}}/>
+            <a.div style={{...spring, ...styles.cont, padding:`4px 0px 0px ${size*50}px`}}>{children}</a.div>
         </div>
     )
 }
