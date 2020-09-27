@@ -7,7 +7,7 @@ export type Code = FC<BasedProps<{
     code:string, language:string, inline:boolean
 }>>
 export const Code:Code = ({
-    code='', language="javascript", inline=false, dark=false, style={}, ...props//children,
+    code='', language="javascript", inline=false, dark=false, size=1, style={}, ...props//children,
 }) => {
     const onDoubleClick = useCallback((_:any)=>navigator.clipboard.writeText(code),[code])
     const customStyle = useMemo(()=>{
@@ -16,6 +16,6 @@ export const Code:Code = ({
     }, [inline])
     return <Light   {...props} PreTag={inline?"span":"pre"}    useInlineStyles={true}
                     {...{customStyle, onDoubleClick, language}}showLineNumbers={!inline}
-             style={{...(dark?atomOneDark:atomOneLight),...style}}>
+             style={{...(dark?atomOneDark:atomOneLight),fontSize:`${size}rem`,...style}}>
                     {code}</Light>
 }

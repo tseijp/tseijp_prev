@@ -41,7 +41,7 @@ export type TreeContent = FC<BasedProps<{
     canHide:boolean, opacity:number, root:number, icon:"Minus"|"Plus"|"Close"
 }>>
 export const TreesContent:TreeContent = ({
-    content,type,set,canHide=false,icon="Close",opacity=1,root=0,dark=false,//size=1,
+    content,type,set,canHide=false,icon="Close",opacity=1,dark=false,//size=1,
 }) => {
     const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
     const color = useMemo(() => dark?"#818181":"#212121", [dark])
@@ -62,7 +62,7 @@ export type Trees = FC<BasedProps<{
     canHide:boolean, topStyle:CSS, depth:number, type:any, content:any,
 }>>
 export const Trees:Trees = ({
-    open=true, visible=true, immediate=true, depth=0, root=0, springConfig=defaultConfig,
+    open=true, visible=true, immediate=true, depth=0, root=1, springConfig=defaultConfig,
     dark=false, size=1, style={}, topStyle={}, ...props
 }) =>  {
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})

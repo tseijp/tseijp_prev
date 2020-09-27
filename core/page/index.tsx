@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {unregister} from './serviceWorker';
 import {HelmetProvider} from 'react-helmet-async';
+import {ControlsProvider} from 'react-three-gui';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
+
 import {Hook} from './Hook';
 //import {Home} from './Home';
 import {Mesh} from './Mesh';
@@ -16,17 +18,19 @@ import "mdbreact/dist/css/mdb.css";
 
 const App = (
     <HelmetProvider>
-        <BrowserRouter>
-            <Switch>
-                <Route    path="/"     component={Mesh} exact/>//Home TODO
-                <Route    path='/mesh' component={Mesh}/>
-                <Route    path="/note" component={Note}/>
-                <Route    path='/none' component={None}/>
-                <Route    path='/hook' component={Hook}/>
-                <Redirect path="/home" to='/' />
-                <Redirect              to='/none' />
-            </Switch>
-        </BrowserRouter>
+        <ControlsProvider>
+            <BrowserRouter>
+                <Switch>
+                    <Route    path="/"     component={Mesh} exact/>//Home TODO
+                    <Route    path='/mesh' component={Mesh}/>
+                    <Route    path="/note" component={Note}/>
+                    <Route    path='/none' component={None}/>
+                    <Route    path='/hook' component={Hook}/>
+                    <Redirect path="/home" to='/' />
+                    <Redirect              to='/none' />
+                </Switch>
+            </BrowserRouter>
+        </ControlsProvider>
     </HelmetProvider>
 )
 

@@ -37,12 +37,12 @@ export const hookTree = [
     ["Containers","Notes","Split","Trees"],
     "Mdmd"
 ]
-export type  HookPage = {pathname:string, code:any, codes:any, Hook:any, hooks:any}
-const getval = (obj={},key='') => key in obj ? (obj as any)[key] : null
+export type  HookPage = {pathname:string, Hook:any, code:any, codes:any}
+const getval = (obj={},key='') => key in obj ? (obj as any)[key] : ""
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,
-    Hook : ({id="",codes={}}) => getval(codes, topUp(id)),
-    code : ({id="",codes={}}) => getval(codes, topUp(id) + "Code")||"",
+    Hook : ({id="",codes={}}) => getval(codes,          topUp(id)),
+    code : ({id="",codes={}}) => getval(codes, 'code' + topUp(id)),
     codes: Object.assign({}, ...Object.entries(CODES).map(([k,v])=>({[k]:v})))
 }
 // *************************🧠 FOR MESH 🧠************************* //
