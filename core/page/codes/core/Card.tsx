@@ -5,6 +5,6 @@ import React, {
 import {Card as Target} from '../../../src'
 export const Card:FC = () => {
     return (
-        <Target />
+        <Target dark={true} size={0.5} style={{margin:"100px auto 100px auto"}}/>
     )
 }

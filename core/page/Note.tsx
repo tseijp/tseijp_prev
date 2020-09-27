@@ -61,8 +61,9 @@ export const Note :FC = () => {
             </Modal>
             {/******************** FANTASTIC UI ********************/}
             <Sides {...{size}}>
-                <p onClick={()=>window.location.href="/"    }>Home</p>
-                <p onClick={()=>window.location.href="/note"}>Note</p>
+                <a style={{color:"#818181"}} href="/"    >Home</a>
+                <a style={{color:"#818181"}} href="/hook">Hook</a>
+                <a style={{color:"#818181"}} href="/note">Note</a>
             </Sides>
             <Trans {...{size}}>
                 <div onClick={()=>setLang(p=>p!=='ja'?'ja':'en')}>{lang.toUpperCase()}</div>

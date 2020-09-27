@@ -1,7 +1,6 @@
 import axios  from 'axios'
 import * as THREE from 'three'
 import * as MESHS from './meshs'
-import * as HOOKS from './hooks'
 import * as CODES from './codes'
 import {Credit, URLType, Page, topUp} from '../src'
 // *************************📋 FOR NOTE 📋************************* //
@@ -34,17 +33,17 @@ export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'
 
 // *************************🤏 FOR HOOK 🤏************************* //
 export const hookTree = [
-    ["Components","Card","Code",],//"Grow","Head","Icon"],
+    ["Components","Card","Code","Grow",],//"Head","Icon"],
     ["Containers","Notes","Split","Trees"],
     "Mdmd"
 ]
 export type  HookPage = {pathname:string, code:any, codes:any, Hook:any, hooks:any}
+const getval = (obj={},key='') => key in obj ? (obj as any)[key] : null
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,
-    Hook : ({id="",hooks={}}) => (hooks as any)[topUp(id)],
-    code : ({id="",codes={}}) => (codes as any)[topUp(id)],
-    hooks: Object.assign({}, ...Object.keys(HOOKS).map(key => key in HOOKS && {[key]: (HOOKS as any)[key] })),
-    codes: Object.assign({}, ...Object.keys(CODES).map(key => key in CODES && {[key]: (CODES as any)[key] })),
+    Hook : ({id="",codes={}}) => getval(codes, topUp(id)),
+    code : ({id="",codes={}}) => getval(codes, topUp(id) + "Code")||"",
+    codes: Object.assign({}, ...Object.entries(CODES).map(([k,v])=>({[k]:v})))
 }
 // *************************🧠 FOR MESH 🧠************************* //
 const canvas = {

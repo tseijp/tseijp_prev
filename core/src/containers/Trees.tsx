@@ -34,14 +34,14 @@ export const TreeIcon:TreeIcon = {
     CloseSquareO: props => <svg {...props} viewBox="64 -65 897 897"><g><path d={paths.close}/></g></svg>,
     MinusSquareO: props => <svg {...props} viewBox="64 -65 897 897"><g><path d={paths.minus}/></g></svg>,
     PlusSquareO : props => <svg {...props} viewBox="64 -65 897 897"><g><path d={paths.plus}/></g></svg>,
-    EyeO        : props => <svg {...props} viewBox="61 51 902 666"><g><path d={paths.eye}/></g></svg>,
+    EyeO        : props => <svg {...props} viewBox="61  51 902 666"><g><path d={paths.eye}/></g></svg>,
 }
 export type TreeContent = FC<BasedProps<{
     [key:string]:any, set:any, content:any, type:any,
-    canHide:boolean, opacity:number, icon:"Minus"|"Plus"|"Close"
+    canHide:boolean, opacity:number, root:number, icon:"Minus"|"Plus"|"Close"
 }>>
 export const TreesContent:TreeContent = ({
-    content,type,set,canHide=false,icon="Close",opacity=1,dark=false,//size=1,
+    content,type,set,canHide=false,icon="Close",opacity=1,root=0,dark=false,//size=1,
 }) => {
     const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
     const color = useMemo(() => dark?"#818181":"#212121", [dark])
@@ -62,7 +62,7 @@ export type Trees = FC<BasedProps<{
     canHide:boolean, topStyle:CSS, depth:number, type:any, content:any,
 }>>
 export const Trees:Trees = ({
-    open=true, visible=true, immediate=true, depth=0, springConfig=defaultConfig,
+    open=true, visible=true, immediate=true, depth=0, root=0, springConfig=defaultConfig,
     dark=false, size=1, style={}, topStyle={}, ...props
 }) =>  {
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})
@@ -79,9 +79,9 @@ export const Trees:Trees = ({
         return props.children &&
             <Trees {...{...props,
                 dark, size, style, depth:depth+1, topStyle:{},
-                open:false,     children:grand.length>1 ? grand.slice(1) : null,
+                open:depth<root, children:grand.length>1 ? grand.slice(1) : null,
                 immediate:false, content:grand.length>1 ? grand[0] : child,}}/>
-    }), [props, dark, size, style, depth])
+    }), [props, dark, size, style, depth, root])
     const icon = useMemo(() => children instanceof Array && children.length>0
         ? (state.open ? 'Minus' : 'Plus')
         : 'Close', [children, state.open])

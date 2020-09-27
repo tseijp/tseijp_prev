@@ -7,9 +7,10 @@ import { BasedProps } from '../types'
 import { useSpring, animated as a } from 'react-spring'
 export type Card = FC<BasedProps<{
     max:null|number,
-    min:null|number
+    min:null|number,
+    rate:number,
 }>>
-export const Card:Card = ({children, size=1, style={}, ...props}) => {
+export const Card:Card = ({children, size=1, rate=1, style={}, ...props}) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
     const styleCard = useMemo(() => {
         const {dark=false,color="",max=null, min=null} = props
@@ -23,7 +24,7 @@ export const Card:Card = ({children, size=1, style={}, ...props}) => {
     const calc = useCallback(({clientX:x, clientY:y})=>[
        (x - window.innerWidth  / 2) / size / 250, // -1 ~ 1
        (y - window.innerHeight / 2) / size / 250, // -1 ~ 1
-        1], [size])
+        rate], [size, rate])
     const onMouseMove = useCallback((e) => set({xys:calc(e)}), [set,calc])
     const onMouseLeave = useCallback(() => set({xys:[0,0,0]}), [set,])
     return useMemo(()=>

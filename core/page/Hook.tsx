@@ -1,50 +1,53 @@
-import React, {CSSProperties as CSS, FC, useMemo} from 'react'
+import React, {CSSProperties as CSS, FC} from 'react'
 import {useGrid} from 'use-grid'
 import {Helmet} from 'react-helmet-async';
 import {hookTree,hookPage,HookPage} from './utils'
-import {topUp,usePage,Card,Code,Sides,Split,Trees,Trans} from '../src'
+import {topUp,usePage,Card,Code,Notes,Sides,Split,Trees,Trans} from '../src'
 const styles:{[key:string]:CSS} = {
-    top   : {position:"relative", transition:"1s", minHeight:"100%"},
+    top   : {position:"relative", transition:"1s", minHeight:"100%",overflowX:"hidden"},
+    card  : {margin:`auto`,padding:"auto", paddingLeft:"1rem", width:"100%",overflow:"auto"},
 }
 
 export const Hook:FC = () => {
     const [dark, setDark] = useGrid<number>({md:0, lg:0 })
     const [size, setSize] = useGrid<number>({md:1, lg:1.5})
     const [page, setPage] = usePage<HookPage>(hookPage)
-    const [side, setSide] = useGrid({xs:0,sm:250,lg:500})
-    const style = useMemo(() => ({margin:`${size*25}px auto ${size*25}px auto`,padding:"auto"}),[size])
+    const [side, setSide] = useGrid({xs:0,sm:250,lg:1/3,init:250})
     return (
-    <div style={{...styles.top, background:dark?"#000":"#fff"}}>
-        <Split order={[side/window.innerWidth, -1]} style={{paddingTop:size*100,height:"100%"}}>
-            <>
-                <Card min={1} {...{dark,size,style}}>
-                    <Trees {...{dark,size:size/2}}>
+    <div style={{...styles.top,background:dark?"#000":"#fff",}}>
+        {/*<Head style={{marginTop:size*100}}>Hook</Head>*/}
+        <Split order={page.Hook?[side,-1]:[1,0]} styleItem={{height:"100vh",overflow:"scroll"}}>
+            <Notes {...{dark,size}}>
+                <Card min={1} {...{dark,size,style:styles.card,rate:0}}>
+                    <Trees {...{dark,size:size/2,root:1,
+                            ...(page.Hook?{}:{topStyle:{padding:100*size}})}}
+                            content={<span onClick={() => setPage({id:""})}>Hook</span>}>
                         { hookTree.map((ids,i) => ids instanceof Array
                         ?   <span key={i}>{ ids.map((id, j) =>
                             <span key={id} onClick={() => j&&setPage({id})}>{id}</span>) }</span>
                         :   <span key={i}  onClick={() =>    setPage({id:ids})}>{ids}</span>) }
                     </Trees>
                 </Card>
+            </Notes>
+            <Notes {...{dark,size}}>
                 { page.code &&
-                <Card min={1} {...{dark,size,style}}>
+                <Card min={1} {...{dark,size,style:styles.card,rate:0}}>
                     <Code {...{code:page.code,dark,size}}/>
                 </Card> }
-            </>
-            <div style={{padding:size*25}}>
-                {page.Hook && <page.Hook />}
-            </div>
+                <Card min={1} {...{dark,size,style:{...styles.card},rate:0,height:"100%"}}>
+                    {page.Hook && <page.Hook />}
+                </Card>
+            </Notes>
         </Split>
         <Sides {...{size}}>
-            <span onClick={()=>window.location.href="/"    }>Home</span><>
-            <span onClick={()=>window.location.href="/hook"}>Hook</span>
-            <span onClick={()=>window.location.href="/hook/core"}>Core</span>
-            <span onClick={()=>window.location.href="/hook/mdmd"}>Mdmd</span></>
-            <span onClick={()=>window.location.href="/note"}>Note</span>
+            <a style={{color:"#818181"}} href="/"    >Home</a>
+            <a style={{color:"#818181"}} href="/hook">Hook</a>
+            <a style={{color:"#818181"}} href="/note">Note</a>
         </Sides>
         <Trans {...{size}}>
             <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
             <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
-            <div onClick={()=>setSide((p:any)=>p.lg?{xs:0,sm:0,lg:0}:{xs:0,sm:250,lg:500})}>{side?'😆':'😃'}</div>
+            <div onClick={()=>setSide((p:any)=>p.lg?{xs:0,sm:0,lg:0}:{xs:0,sm:250,lg:1/3})}>{side?'😆':'😃'}</div>
         </Trans>
         <Helmet>
             <title>TSEI.jp {topUp(page.id)}</title>
