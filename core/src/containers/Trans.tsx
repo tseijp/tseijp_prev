@@ -1,16 +1,17 @@
-import React, {FC,useCallback,useMemo,useRef} from 'react';
+import React, {FC,CSSProperties as CSS,useCallback,useRef} from 'react';
 import {useSpring, animated as a, config, UseSpringProps} from 'react-spring'
 import {useGesture} from 'react-use-gesture'
 import {BasedProps} from '../types'
 import {Icon} from '../components'
 
-const styles = {
-    area: {position:"fixed",top:0,right:0,height:"100%",zIndex:1},
-    cont: {position:"fixed",height:`96%`,top:"2%",right:0,zIndex:1,overflowX:"hidden"},
-    icon: {position:"absolute",right:0,transform:`translate(-50%,-50%)`,},
+const styles:{[key:string]:CSS} = {
+    top : {position:"fixed",top:0,right:0,zIndex:100                        },//*dev*/, background:"rgba(0,0,0,.1)"},
+    area: {position:"fixed",top:0,right:0,height:"100%"                     },//*dev*/,background:"rgba(255,0,0,.1)"},
+    cont: {position:"fixed",height:`96%`,top:"2%",right:0,overflowX:"hidden"},//*dev*/,background:"rgba(0,255,0,.1)"},
+    icon: {position:"absolute",right:0,transform:`translate(-50%,-50%)`     },//*dev*/,background:"rgba(0,0,255,.1)"},
     item: {backgroundColor:"#212121",color:"#818181", display:"inline-block"},
 }
-export const TransArea :FC<BasedProps> = ({size=1, spring, bind}) =>
+export const TransArea :FC<BasedProps> = ({size=1, spring}) =>
     <a.div style={{
         width: spring.r.interpolate((r:number)=>`${
             50*size*( Math.cos(r/90*Math.PI)+1.5)
@@ -21,24 +22,24 @@ export const TransArea :FC<BasedProps> = ({size=1, spring, bind}) =>
             `rgba(0,0,0,${s-1}))`
         ].join(',')),
         ...styles.area}}
-       {...bind()} />
+       />
 
-export const TransContainer : FC<BasedProps> = ({children, size=1, spring, bind}) =>
-    <a.div {...bind()} style={{...styles.cont,
-        width:spring.r.interpolate((r=0) => `${ 50*size*(Math.cos(r/90*Math.PI)+1) }px` )}}>
-        <div style={{margin:`calc(${50*size*2}px - 2%) 0px 0px 0px`}}>{children}</div>
+export const TransIcon : FC<BasedProps> = ({size=1, spring, circ=false}) =>
+    <a.div style={{...styles.icon, top:50*size, rotateZ:spring.r}}>
+        <Icon fa="align-justify" {...{circ,size}} />
     </a.div>
 
-export const TransIcon : FC<BasedProps> = ({size=1, spring, bind, circ=false}) =>
-    <a.div {...bind()} style={{...styles.icon, top:50*size, rotateZ:spring.r}}>
-        <Icon fa="align-justify" {...{circ,size}} />
+export const TransContainer : FC<BasedProps> = ({children, size=1, spring, }) =>
+    <a.div style={{...styles.cont,
+        width:spring.r.interpolate((r=0) => `${ 50*size*(Math.cos(r/90*Math.PI)+1) }px` )}}>
+        <div style={{margin:`calc(${50*size*2}px - 2%) 0px 0px 0px`}}>{children}</div>
     </a.div>
 
 export const TransItem :FC<BasedProps> = ({children, size=1}) =>
     <a.div style={{...styles.item,
         margin:`${50*size/4}px 0px`,
         borderRadius:`${50*size}px 0px  0px ${50*size}px`,}}>
-        <div style={{
+        <div onClick={e=>e?.stopPropagation()} style={{
             height:50*size, margin:`auto ${50*size/2}px`,
             fontSize:50*size, zIndex:1, display:"flex", alignItems:"center",
         }}>{children}</div>
@@ -53,13 +54,12 @@ export const Trans : FC<BasedProps> = ({children, size=1, onOpen=()=>null}={}) =
         const unit = ((opened.current?1:0) === (pre%2)?0:1) ? 0:1 //to change:1 no diff:0
         return 90 * ( pre + unit * (velocity<0?-1:1) )
     }
-    const width = useMemo(()=>500*size, [size])
     const open  =(v=0)=>1&&(setOpened(true) ,set({r:getr(v),config:v!==0?config.wobbly:config.slow}))
     const close =(v=0)=>1&&(setOpened(false),set({r:getr(v),config:{...config.stiff }}))
     const onBind=({mx=0,vx=0,down=false,last=false}) => {
-        if (!last) return set({r:spring.r.animation.to+(down?2*(-mx)/width:0)})
-        if(!opened.current) return (mx===0||mx<-width*0.5||vx<-0.5) ?  open(-vx) : close(-vx)
-        if( opened.current) return (mx===0||mx<-width*0.5||vx<-0.5||0.5<vx) ? close(-vx) :  open(-vx)
+        if (!last) return set({r:spring.r.animation.to+(down?2*(-mx)/size/500:0)})
+        if(!opened.current) return (mx===0||mx<-size*250||vx<-0.5) ?  open(-vx) : close(-vx)
+        if( opened.current) return (mx===0||mx<-size*250||vx<-0.5||0.5<vx) ? close(-vx) :  open(-vx)
     }
     const bind = useGesture({
         onHover: ({hovering}) => set({scale:hovering?1.2:1}),
@@ -67,14 +67,14 @@ export const Trans : FC<BasedProps> = ({children, size=1, onOpen=()=>null}={}) =
         onDrag : ({last,down,vxvy:[vx,],movement:[mx,],}) => onBind({down,last,vx,mx:mx})
     })
     return (
-        <div style={{position:"fixed",top:0,right:0,zIndex:100}}>
-            <TransIcon      {...{size, spring, bind, }} />
-            <TransArea      {...{size, spring, bind, }} />
-            <TransContainer {...{size, spring, bind, }} >
+        <a.div {...bind()} style={{...styles.top}}>
+            <TransIcon      {...{size, spring, }} />
+            <TransArea      {...{size, spring, }} />
+            <TransContainer {...{size, spring, }} >
             {React.Children.map(children, ((child, key:number)=>
-                <TransItem {...{size/*, spring, width*/, key}} >{child}</TransItem>
+                <TransItem {...{size/*, spring*/, key}} >{child}</TransItem>
             ))}
             </TransContainer>
-        </div>
+        </a.div>
     )
 }

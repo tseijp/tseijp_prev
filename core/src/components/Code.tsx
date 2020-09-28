@@ -11,7 +11,7 @@ export const Code:Code = ({
 }) => {
     const onDoubleClick = useCallback((_:any)=>navigator.clipboard.writeText(code),[code])
     const customStyle = useMemo(()=>{
-        return {...(inline?{verticalAlign:"top",padding:0}:{}),
+        return {...(inline?{verticalAlign:"top",padding:0}:{}),padding:"1rem",
             display:inline?"inline-block":"fixed", position:'relative', margin:0,}
     }, [inline])
     return <Light   {...props} PreTag={inline?"span":"pre"}    useInlineStyles={true}

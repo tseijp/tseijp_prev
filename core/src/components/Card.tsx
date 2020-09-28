@@ -2,30 +2,38 @@
   *     Ref : https://codesandbox.io/embed/rj998k4vmm
   *           https://coliss.com/articles/build-websites/operation/css/
  ***/
-import React, {FC, useCallback, useMemo} from 'react'
-import { BasedProps } from '../types'
-import { useSpring, animated as a } from 'react-spring'
+import React, {CSSProperties as CSS, FC, useCallback, useMemo} from 'react'
+import {BasedProps} from '../types'
+import {useGesture} from 'react-use-gesture'
+import {useSpring, animated as a} from 'react-spring'
 export type Card = FC<BasedProps<{
     max:number,
     min:number,
     rate:number,
+    space:number,
 }>>
-export const Card:Card = ({children, size=1, rate=1, style={}, ...props}) => {
+export const Card:Card = ({
+    children, size=1, rate=1, space=0, style={},
+    dark=false, color="",max=0, min=0, ...props
+}) => {
     const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
-    const styleCard = useMemo(() => {
-        const {dark=false, color="",max=0, min=0} = props
+    const styleCard = useMemo<CSS>(() => {
         const minHeight = min||size*500
         const maxHeight = max||null//size*500
-        return {margin:"auto",padding:0,width:`min(80%,${size*500}px)`,borderRadius:size*25,
+        return {margin:`${space}px auto ${space}px auto`, padding:0,position:"relative",
+                width:`min(80%,${size*500}px)`,borderRadius:size*25,overflow:"hidden",
             ...(minHeight&&{minHeight}),background : dark?"#212121":"#fff",
             ...(maxHeight&&{maxHeight}),color:color||dark?"#818181":"#000",}
-    }, [size, props])
-    const calc = useCallback(({clientX:x, clientY:y})=>[
+    }, [size, space, color, dark, max, min])
+    const calc = useCallback((x, y)=>[
        (x - window.innerWidth  / 2) / size / 250, // -1 ~ 1
        (y - window.innerHeight / 2) / size / 250, // -1 ~ 1
         rate], [size, rate])
-    const onMouseMove = useCallback((e) => set({xys:calc(e)}), [set,calc])
-    const onMouseLeave = useCallback(() => set({xys:[0,0,0]}), [set,])
+    const bind = useGesture({
+        onDrag : ({event})    => event?.stopPropagation(),
+        onHover: ({hovering}) => !hovering && set({xys:[0,0,0]}),
+        onMove : ({xy:[x,y]}) => set({xys:calc(x,y)}),
+    })
     return <a.div style={{
             boxShadow:xys.interpolate((x,y,s) => [
                 `${0.5-x*2}rem`,//offset-x     : -1.5 ~ 0.5 ~ 2.5
@@ -39,5 +47,6 @@ export const Card:Card = ({children, size=1, rate=1, style={}, ...props}) => {
                 `rotateY(${ x/10}deg)`     ,//-0.1 ~ 0.1
                 `scale(${1+s/10})` ,].join(' ')),
             ...styleCard, ...style }}
-           {...{...props,onMouseMove,onMouseLeave,children}}/>
+           {...bind()}
+           {...{...props,children}}/>
 }

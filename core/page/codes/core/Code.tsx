@@ -4,18 +4,43 @@ import React, {
 } from 'react'
 import {useControl} from 'react-three-gui';
 import {Code as Target} from '../../../src'
-const langs = ['javascript', 'python']
+const items = ['javascript', 'python']
 const codes = [
-`const f = (x) => x**2`,
-`def f(x):
-    return x**2`
-]
+`import React from 'react'
+
+export const usePage = (props, config) => {
+    if (typeof props ==="function")  props = props()
+    if (typeof config==="function") config = config()
+    const pageRef = React.useRef({...defaultPage, ...props })
+    const confRef = React.useRef({...defaultConf, ...config})
+    const [p,set] = React.useState( normPage(pageRef.current) )
+    const setPage = React.useCallback((state) => {
+        if (typeof state==="function")
+            state = state(pageRef.current)
+        pageRef.current = {...pageRef.current, ...state}
+        set(pre => {
+            const newPage = normPage(pageRef.current)
+            if (pre.pathname===newPage.pathname)
+                return newPage
+            window.history.pushState('','',
+                newPage.pathname instanceof Array
+                  ? newPage.pathname[0]||''
+                  : newPage.pathname   ||'')
+            return  newPage
+        })
+    }, [set])
+    React.useEffect(() => {
+        const {onChange} = confRef.current
+        typeof onChange==="function" && onChange()
+    }, [p.id])
+    return [p, setPage]
+}`,]
 export const Code:FC = () => {
     const dark  = useControl('dark'   , {type: 'boolean', value: false})
     const inline= useControl('inline' , {type: 'boolean', value: false})
     const size  = useControl('size'   , {type: 'number' , value: 1, min: 0, max: 2})
-    const code     = useControl('code'    , {type: 'select', value:codes[0], items:codes})
-    const language = useControl('language', {type: 'select', value:langs[0], items:langs})
+    const code     = useControl('code'    , {type: 'string', value:codes[0]})
+    const language = useControl('language', {type: 'select', value:items[0], items})
     return (
         <Target {...{dark,inline,size,code,language}} />
     )
@@ -29,5 +54,5 @@ const App =  => (
         inline  = {false}
         size    = {1}
         code    = {"javascript"}
-        language= {"const f = (x) = x**2"}/>
+        language= {"..."}/>
 )`

@@ -1,54 +1,54 @@
-import React, {CSSProperties as CSS, FC} from 'react'
-import {useGrid}  from 'use-grid'
+import React, {CSSProperties as CSS, FC} from 'react';
+import {useGrid}  from 'use-grid';
 import {Controls} from 'react-three-gui';
 import {Helmet}   from 'react-helmet-async';
-import {hookTree,hookPage,HookPage} from './utils'
+import {hookTree,hookPage,HookPage} from './utils';
 
 import {is,topUp,usePage,Card,Code,Notes,Sides,Split,Trees,Trans} from '../src'
 const styles:{[key:string]:CSS} = {
-    top : {position:"relative", transition:"1s", minHeight:"100%",overflowX:"hidden"},
-    item: {height:"100vh",overflow:"scroll",},
-    card: {margin:`auto`,padding:"auto", paddingLeft:"1rem", width:"100%",overflow:"auto"},
-    ctrl: {position:"relative",width:"100%",zIndex:1,top:0,left:0,margin:0}
+    top : {position:"relative",overflowX:"hidden",transition:"1s", minHeight:"100%",},
+    item: {position:"relative",overflow:"scroll",height:"100vh",},
+    card: {position:"relative",overflow:"hidden",width:"100%",},
+    ctrl: {position:"relative",width:"100%",zIndex:1,top:0,left:0,margin:0,padding:0},
 }
-
+const CardHook:FC = (props) => <Card min={-1} style={styles.card} rate={.1} {...props}/>
 export const Hook:FC = () => {
-    const [dark, setDark] = useGrid<number>({md:0, lg:0 })
-    const [size, setSize] = useGrid<number>({md:1, lg:1.5})
+    const [dark, setDark] = useGrid<number>({init:0, md:1, lg:0  })
+    const [size, setSize] = useGrid<number>({init:0, md:1, lg:1.5})
     const [page, setPage] = usePage<HookPage>(hookPage)
-    const [side, setSide] = useGrid({xs:0,sm:size*100,lg:250,init:250})
+    const [side, setSide] = useGrid({xs:0,sm:size*100,lg:89/233,init:250})
     return (
     <div style={{...styles.top,background:dark?"#000":"#fff",}}>
-        {/*<Head style={{marginTop:size*100}}>Hook</Head>*/}
         <Split order={page.Hook?[side,-1]:[1,0]} min={size*100} styleItem={styles.item}>
-            <Notes {...{dark,size}}>
-                {page.Hook &&
+            <Notes {...{dark,size,space:"1rem"}}>
+                <CardHook {...{dark,size}}>{page.id!=="" &&
                     <Controls
-                        title={topUp(page.id)}
-                        anchor={'top_left'}
-                        style={{...styles.ctrl,fontSize:size*25}}
+                        title={topUp(page.id)} anchor='top_left'
+                        style={{background:dark?"#212121":"#fff",...styles.ctrl,
+                                color:dark?"#818181":"#000",fontSize:size*25,x:0,y:0}}
                         collapsed={true}/>}
-                <Card min={-1} {...{dark,size,style:styles.card,rate:0}}>
+                </CardHook>
+                <CardHook {...{dark,size}}>
                     <Trees  {...{dark,size:size/2,root:page.id?0:1}}
                             {...(page.id?{fontSize:"14px"}:{})}
                            topStyle={{padding:page.Hook?25*size:100*size}}
-                           content={
+                           content ={
                             <span onClick={() => setPage({id:""})}>Hook</span>}>
                         { hookTree.map((ids,i) => ids instanceof Array
                         ?   <span key={i}>{ ids.map((id, j) =>
                             <span key={id} onClick={() => j&&setPage({id})}>{id}</span>) }</span>
                         :   <span key={i}  onClick={() =>    setPage({id:ids})}>{ids}</span>) }
                     </Trees>
-                </Card>
-                <Card min={-1} {...{dark,size,style:styles.card,rate:0}}/>
+                </CardHook>
             </Notes>
-            <Notes {...{dark,size}}>{ page.code && is.str(page.code) &&
-                <Card min={-1} {...{dark,size,style:styles.card,rate:0}}>
-                    <Code {...{code:page.code,dark,size}}/>
-                </Card> }
-                <Card min={-1} {...{dark,size,style:styles.card,rate:0}}>
-                        {page.Hook && <page.Hook />}
-                </Card>
+            <Notes {...{dark,size,space:"1rem"}}>
+                <CardHook {...{dark,size}}>
+                    {page.Hook && <page.Hook />}
+                </CardHook>
+                { page.code && is.str(page.code) &&
+                <CardHook {...{dark,size}}>
+                    <Code {...{dark,size,code:page.code}}/>
+                </CardHook> }
             </Notes>
         </Split>
         <Sides {...{size}}>

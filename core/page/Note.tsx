@@ -1,4 +1,4 @@
-import React, {FC, useState, useMemo} from 'react'
+import React, {FC, CSSProperties as CSS,useState, useMemo} from 'react'
 import { Helmet } from 'react-helmet-async';
 import { MDBInput, MDBBtn } from 'mdbreact'
 import { Mdmd } from '@tsei/mdmd'
@@ -8,6 +8,10 @@ import { useNote, usePage, useUser } from '../src/hooks'
 import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
 import { customPage, CustomPage, pageConfig, fetcher, signin, scrollTop } from './utils'
 
+const styles:{[key:string]:CSS} = {
+    top: {minHeight:"100%",overflow:"hidden"},
+
+}
 export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //
     const [page, setPage] = usePage<CustomPage>(customPage, pageConfig)
@@ -27,20 +31,14 @@ export const Note :FC = () => {
         return ["cooment","arrow-left"].map(fa => (<Icon {...{fa,size,style,onClick}}/>))
     }, [size,onClick])
     return (
-        <div style={{background:dark?"#000":"#f1f1f1",minHeight:"100%",paddingTop:size*100,overflow:"hidden"}}>
-            <Helmet>
-                <title>{note?"note":"Loading..."}</title>
-                <meta charSet="utf-8" />
-                <meta name="Hatena::Bookmark" content="nocomment" />
-                <link rel="canonical" href="https://tsei.jp/" />
-            </Helmet>
+        <div style={{...styles.top, background:dark?"#000":"#f1f1f1", paddingTop:size*100,}}>
             <Head {...{dark,size,onClick,}}>Note</Head>
             { note && note.results instanceof Array &&
             <Notes {...(page.isHome?{}:{size,left,right})}>{note.results.map(({
                 ja_text="",//note_id="",author_name=null, //,posted_time=null,
                 en_text="",     id="" }) =>
                 <div key={id}>
-                    <Card {...{...page.isHome?{max:500,onClick:()=>setPage({id:id+""})}:{size},dark}}>
+                    <Card {...{...page.isHome?{max:500,onClick:()=>setPage({id:id+""})}:{size},dark,space:size*25}}>
                         <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
                              source={lang==="ja"?ja_text:en_text}/>
                     </Card>
@@ -49,7 +47,7 @@ export const Note :FC = () => {
             <Grow {...{size,onView,onClick:()=>setNote(p=>p?p?.next||p?.now:null )}} /> }
             {/******************** Modals ********************/}
             <Modal {...{dark,size,open:!!page.status,onClose:()=>setPage({status:""})}}>
-                <Card {...{dark,size,style:{max:"100vh"}}}>
+                <Card {...{dark,size,style:{max:"100vh"},space:size*25}}>
                     <Head {...{dark,size,onMouseEnter}}>SIGN {user.isAuth?"OUT":page.status}</Head>
                     {!user.isAuth && user.input.map((v,k)=>v.name==="email"&&page.status!=="UP"?null:
                     <MDBInput {...v} key={k}/> )}
@@ -77,6 +75,12 @@ export const Note :FC = () => {
                     <Icon fa="sign-in-alt"   {...{dark,size}} onClick={onSignin}/>
                 </Icon>
             </Pills>
+            <Helmet>
+                <title>{note?"note":"Loading..."}</title>
+                <meta charSet="utf-8" />
+                <meta name="Hatena::Bookmark" content="nocomment" />
+                <link rel="canonical" href="https://tsei.jp/" />
+            </Helmet>
         </div>
     )
 }

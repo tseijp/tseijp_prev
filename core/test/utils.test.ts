@@ -1,8 +1,34 @@
-import {clamp,swap,defaultPage,joinPage,normPage,equalPathname,joinURL} from '../src/utils'
+import {
+    topUp,samp,getWRate,clamp,swap,
+    defaultPage,joinPage,normPage,equalPathname,joinURL
+} from '../src/utils'
 import {Page} from '../src/types'
 //import { mocked } from 'ts-jest/utils'
 //jest.mock('./utilsStore')
-//describe('*************** FOR BASIC ***************', () => {
+//describe('*************** FOR COMPONENTS ***************', () => {
+describe('topUp', () => {
+    test('base', () => {
+        expect(topUp("abc")).toBe("Abc");
+        expect(topUp("ABC")).toBe("Abc");
+        expect(topUp("AbC")).toBe("Abc");
+    })
+});
+describe('samp', () => {
+    test('base', () => {
+        expect(samp([1,2,3],2  )).toStrictEqual([1,2]);
+        expect(samp([1,2,3],4  )).toStrictEqual([1,2,3,1]);
+        expect(samp([1,2,3],4,4)).toStrictEqual([1,2,3,4]);
+    })
+});
+describe('getWRate', () => {//
+    test('no order', () => {
+        expect(getWRate([],5, 0,100)).toStrictEqual([.2,.2,.2,.2,.2]);
+        expect(getWRate([],5,20,100)).toStrictEqual([.2,.2,.2,.2,.2]);
+    })
+    test('width', () => {
+        expect(getWRate([1,1,1,1],5,20,100)).toStrictEqual([.2,.2,.2,.2,.2]);
+    })
+});
 describe('clamp', () => {
     test('base', () => {
         expect(clamp( -1,0,1)).toBe(0);

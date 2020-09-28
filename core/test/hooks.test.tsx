@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {Page, NoteFetcher} from '../src/types'
+import {Page} from '../src/types'
 import {useNote, usePage, useUser} from '../src/hooks'
 import '@testing-library/jest-dom/extend-expect'
 import {render, fireEvent} from '@testing-library/react'
@@ -11,7 +11,7 @@ const mockAxios = axios as jest.Mocked<typeof axios>;
 // ************************* 👌 use-page 👌 ************************* //
 const TestPage = ({testPage={}}) =>  {
     const [page, set] = usePage(testPage)
-    const onClick = () => set({id:2})
+    const onClick = () => set({id:"2"})
     const children = page.urls.map(u=>u.href).join(' and ')
     return <button {...{onClick, children}}/>
 }
@@ -55,7 +55,7 @@ describe('useNote', () => {
         //    .mockImplementationOnce(() => response([0,1,2].map(id=>({id}))) )
         //    .mockImplementationOnce(() => response([0,1,2].map(id=>({id}))) )
             .mockResolvedValue({next,previous,results:[0,1,2].map(id=>({id}))})
-        const fetcher:NoteFetcher = async (..._:any) => mockAxios.get("", {} as any)
+        const fetcher = async (..._:any) => mockAxios.get("", {} as any)
         const {findByText} = render(<TestNote {...{host,fetcher}}/>)
         await findByText("0;1;2") // fireEvent.click(getByRole('button'))
     })

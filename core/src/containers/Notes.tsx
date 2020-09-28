@@ -5,24 +5,36 @@ import {clamp, swap} from '../utils'
 import {BasedProps} from '../types'
 const styles:{[key:string]:CSS} = {
     cont: {position:"relative",width:"100%",margin:`auto`        },//*DEV*/,background:"rgba(100,0,0,0.5)"},
-    main: {position:"relative",width:"100%"/*,marginTop:size*50*/},//*DEV*/,background:"rgba(0,100,0,0.5)"},
+    main: {position:"relative",width:"100%"                      },//*DEV*/,background:"rgba(0,100,0,0.5)"},
     side: {position:"absolute",top:0,left:0,right:0,margin:"auto"},//*DEV*/,background:"rgba(0,0,100,0.5)"},
     btn : {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)" },
 }
+
+export const NotesSide:FC<BasedProps> = ({
+    children,size=1,height=0,x
+}) => x.interpolate((px:number)=>px**2<=0 ) ? null :
+    <a.div children={children} style={{...styles.side,height,
+        y:0,  x:x.to((px:number)=> -px+(px>0?-.5:.5)*(size*500)),
+        scale  :x.to((px:number)=>px**2/4>size**2?1:(px>0?px:-px)/(size)),
+        width  :x.to((px:number)=>px>0?px*2:-px*2),
+        display:x.to((px:number)=>px?"inline":"none") }}/>
+export const NotesItem:FC<BasedProps> = ({children,x}) => !children ? null :
+    <a.div style={{...styles.btn,display:x.to((px:number)=>px<0?"inline":"none")}}>
+        {children} </a.div>
 export type Notes = FC<BasedProps<{
-    grandren:any,right:RC,left:RC, depth:number,
+    grandren:any,right:RC,left:RC, depth:number, space:number|string,
 }>>
 export const Notes:Notes = ({
     order=null, grandren=null,
-    right=null, left=null, depth=0,
+    right=null, left=null, depth=0, space=0,
     size=1, style={}, ...props
 }) => {
     const [length, setLength] = useState<number>((props?.children as any)?.length||1)
     const [height, setHeight] = useState<number>(props.height || size*500*length)
     const [isOpen, setIsOpen] = useState<boolean[]>(Array(length).fill(false))
-    const orderRef  = useRef<number[]>(order||[...Array(length)].map((_,i:number)=>i))
-    const heightRef = useRef( Array(length).fill(size*500) )
-    const targetRef = useRef<HTMLDivElement|null>(null)
+    const orderRef    = useRef<number[]>(order||[...Array(length)].map((_,i:number)=>i))
+    const heightRef   = useRef( Array(length).fill(size*500) )
+    const targetRef   = useRef<HTMLDivElement|null>(null)
     const setPosition = useCallback(() => {
         if (props.height) return setHeight(props.height)
         const childs  = Array.from(targetRef?.current?.children||[])
@@ -38,8 +50,8 @@ export const Notes:Notes = ({
         heightRef.current = Array(len).fill(size*500)
     }, [size,order, props.children])
     //  *************************  ➊ React Springs  *************************  //
-    const getY =({pre=0,arr=orderRef.current})=>pre<1?0:[...arr.slice(0,pre).map(i=>heightRef.current[i]),0].reduce((a,b)=>a+b)
-    const getF =({i=-1,x=0,s=1.0})=>(j=0)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
+    const getY = ({pre=0,arr=orderRef.current})=>pre<1?0:[...arr.slice(0,pre).map(i=>heightRef.current[i]),0].reduce((a,b)=>a+b)
+    const getF = ({i=-1,x=0,s=1.0})=>(j=0)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
     const getG = useCallback(({i=-1,arr=orderRef.current,pre=-1,mx=0,my=0,down=false}) =>
         (j:number) => (down&&j===i)
             ? {scale:0.9, x:mx, y:getY({pre})+my}
@@ -60,7 +72,7 @@ export const Notes:Notes = ({
             setIsOpen(p=>[...Object.assign([],{[i]:!p[i]})])
             setTimeout(()=>{setPosition();set(getF({i,s:op?1:1}))},1)//TODO: s is .9?
         }
-    })//, {eventOptions:{passive:true,pointer:false}}
+    })
     //  *************************  ➋ Child Render  *************************  //
     const children = useMemo(() => Children.map(props.children, (child) => {
         const grand = Children.toArray((child as any)?.props?.children) || []//count(child.props.children) || 0
@@ -74,24 +86,14 @@ export const Notes:Notes = ({
         <div ref={targetRef} style={{...styles.cont,height,...style}}>
             {springs.map( ({x,y,scale}, key) =>
                 <a.div {...{key}} {...bind(key)} style={{x,y,position:"absolute",width:"100%"}}>
-                    <a.div style={{scale,...styles.main}}>
+                    <a.div style={{...styles.main,scale,padding:space}}>
                         {(children as any)[key]}
                     </a.div>
-                    {x.interpolate((px:number)=>px**2>0 ) &&
-                    <a.div style={{...styles.side,height:heightRef.current[key],
-                        y:0,  x:x.to((px:number)=> -px+(px>0?-.5:.5)*(size*500)),
-                        scale  :x.to((px:number)=>px**2/4>size**2?1:(px>0?px:-px)/(size)),
-                        width  :x.to((px:number)=>px>0?px*2:-px*2),
-                        display:x.to((px:number)=>px?"inline":"none")
-                    }}>
-                        { right&& <a.div style={{display:x.to((px:number)=>px>0?"inline":"none"),...styles.btn}}>
-                        { right } </a.div> }
-                        { left && <a.div style={{display:x.to((px:number)=>px<0?"inline":"none"),...styles.btn}}>
-                        { left  } </a.div> }
-                    </a.div>}
-                    { isOpen[key] &&
-                        ( (children as any)[key]?.props?.grandren || '' )
-                    }
+                    <NotesSide {...{x,size,height:heightRef.current[key]}}>
+                        <NotesItem x={x}>{right}</NotesItem>
+                        <NotesItem x={x}>{left}</NotesItem>
+                    </NotesSide>
+                    { isOpen[key] ? (children as any)[key]?.props?.grandren||'':'' }
                 </a.div>
             )}
         </div>
