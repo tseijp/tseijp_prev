@@ -7,14 +7,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 //import { draco } from 'drei'
 
 
-export const Model = ({dark=true, size=50, mouse={current:[0,0]}, position=[0,-11,0],scale=[7,7,7]}:any) => {
+export const Model = ({dark=true, size=50, position=[0,-11,0],scale=[7,7,7]}:any) => {
     const url = "https://tseijp-static.s3.ap-northeast-1.amazonaws.com/Xbot.glb"
     const {animations, nodes}:any = useLoader(GLTFLoader, url, )
     const group = useRef<any>(null)
     const actions = useRef<any>(null)
-    //const [action] = useState(3)
     const [mixer] = useState<any>(() => new THREE.AnimationMixer(undefined as any))
-    const modelPos  = {x:0,y:0}
+    const modelPos  = {x:position[0],y:position[2]}
     useFrame(({camera}:any, delta)=>{
         mixer.update(delta)
         if(! group?.current?.position) return

@@ -61,7 +61,7 @@ export const Notes:Notes = ({
         onClick:()=>setTimeout(()=>{setPosition();set(getG({})) },1),
         onDrag : ({ down,cancel,movement:[mx,my],startTime,
                     last, args:[i], vxvy:[vx,vy],timeStamp, }) => {
-            if(!isOpen[i] && cancel && timeStamp-startTime<1) cancel()
+            if(!last && cancel && timeStamp-startTime<1) cancel()
             const pre = orderRef.current.indexOf(i)
             const row = clamp( Math.round(pre+my/size*500), 0, length-1 )
             const arr = swap(orderRef.current, pre, row)
