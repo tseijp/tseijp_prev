@@ -5,7 +5,7 @@ import { useGrid } from 'use-grid'
 import { Canvas } from 'react-three-fiber'
 import { Helmet } from 'react-helmet-async';
 import { TransformControls } from 'drei'
-import { Kinect } from './meshs'
+import { Kinect } from '../src'
 import * as THREE from 'three'
 // import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 // import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
@@ -41,8 +41,9 @@ export const None :FC = () => {
                 <link rel="canonical" href="https://tsei.jp/" />
             </Helmet>
             <Sides {...{size}}>
-                <p onClick={()=>window.location.href="/"    }>Home</p>
-                <p onClick={()=>window.location.href="/note"}>Note</p>
+                <a style={{color:"#818181"}} href="/"    >Home</a>
+                <a style={{color:"#818181"}} href="/hook">Hook</a>
+                <a style={{color:"#818181"}} href="/note">Note</a>
             </Sides>
             <Trans {...{size}}>
                 <div onClick={()=>setLang(p=>p!=='ja'?'en':'ja')}>{lang.toUpperCase()}</div>

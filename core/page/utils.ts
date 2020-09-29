@@ -1,6 +1,4 @@
 import axios  from 'axios'
-import * as THREE from 'three'
-import * as MESHS from './meshs'
 import * as CODES from './codes'
 import {Credit, URLType, Page, topUp} from '../src'
 // *************************📋 FOR NOTE 📋************************* //
@@ -36,7 +34,6 @@ export const hookTree = [
     ["Components","Card","Code","Grow",],//"Head","Icon"],
     ["Containers","Notes","Split","Trees"],
     ["Mesh","Kinect","Model","Swarm"],
-    "Mdmd"
 ]
 export type  HookPage = {pathname:string, Hook:any, code:any, codes:any}
 const getval = (obj={},key='') => key in obj ? (obj as any)[key] : ""
@@ -45,19 +42,4 @@ export const hookPage = {
     Hook : ({id="",codes={}}) => getval(codes,          topUp(id)),
     code : ({id="",codes={}}) => getval(codes, 'code' + topUp(id)),
     codes: Object.assign({}, ...Object.entries(CODES).map(([k,v])=>({[k]:v})))
-}
-// *************************🧠 FOR MESH 🧠************************* //
-const canvas = {
-    Kinect:{},
-    Swarm :{
-        gl: {antialias:false, logarithmicDepthBuffer:true},
-        camera: {position:[0,-2,3]},
-        onCreated: ({gl}:any)=>{gl.outputEncoding=THREE.sRGBEncoding},
-        pixelRatio: window.devicePixelRatio,
-    }
-}
-export type  MeshPage = {canvas:any, Mesh:any}
-export const meshPage = {
-    Mesh  :({id=""}) => (MESHS  as any)[topUp(id)] || null,
-    Canvas:({id=""}) => (canvas as any)[topUp(id)] || null,
 }

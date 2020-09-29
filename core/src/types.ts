@@ -9,8 +9,8 @@ export type None<T> = T|undefined|false|null
 // ************************* 🌌 For Containers 🌌 ************************* //
 export type BasedProps<T extends {}={}> = Partial<T & {
     [key:string]:any, style?:CSSProperties,
-    onOpen :null|(()=>void), dark:number|boolean, bind:any, color:string,
-    onClose:null|(()=>void), size:number, spring:any, className:string,
+    onOpen :null|(()=>void), dark :number|boolean, color:string, bind:any, spring:any, 
+    onClose:null|(()=>void), debug:number|boolean, size:number, className:string,
 }>
 
 // ************************* 📅 For useNote 📅 ************************* //

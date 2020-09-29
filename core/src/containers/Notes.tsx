@@ -3,17 +3,17 @@ import {useSprings, animated as a} from 'react-spring'
 import {useGesture,} from 'react-use-gesture'
 import {clamp, swap} from '../utils'
 import {BasedProps} from '../types'
+const background = ({r=0,g=0,b=0,a=.1,debug=true}:any) => debug?{background:`rgba(${[r,g,b,a].join(',')})`}:{}
 const styles:{[key:string]:CSS} = {
-    cont: {position:"relative",width:"100%",margin:`auto`        },//*DEV*/,background:"rgba(100,0,0,0.5)"},
-    main: {position:"relative",width:"100%"                      },//*DEV*/,background:"rgba(0,100,0,0.5)"},
-    side: {position:"absolute",top:0,left:0,right:0,margin:"auto"},//*DEV*/,background:"rgba(0,0,100,0.5)"},
+    cont: {position:"relative",width:"100%",margin:`auto`        },
+    main: {position:"relative",width:"100%"                      },
+    side: {position:"absolute",top:0,left:0,right:0,margin:"auto"},
     btn : {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)" },
 }
-
 export const NotesSide:FC<BasedProps> = ({
-    children,size=1,height=0,x
+    children,size=1,height=0,x, debug=false,
 }) => x.interpolate((px:number)=>px**2<=0 ) ? null :
-    <a.div children={children} style={{...styles.side,height,
+    <a.div children={children} style={{...styles.side, height, ...background({b:255,debug}),
         y:0,  x:x.to((px:number)=> -px+(px>0?-.5:.5)*(size*500)),
         scale  :x.to((px:number)=>px**2/4>size**2?1:(px>0?px:-px)/(size)),
         width  :x.to((px:number)=>px>0?px*2:-px*2),
@@ -25,7 +25,7 @@ export type Notes = FC<BasedProps<{
     grandren:any,right:RC,left:RC, depth:number, space:number|string,
 }>>
 export const Notes:Notes = ({
-    order=null, grandren=null,
+    order=null, grandren=null, debug=false,
     right=null, left=null, depth=0, space=0,
     size=1, style={}, ...props
 }) => {
@@ -61,7 +61,7 @@ export const Notes:Notes = ({
         onClick:()=>setTimeout(()=>{setPosition();set(getG({})) },1),
         onDrag : ({ down,cancel,movement:[mx,my],startTime,
                     last, args:[i], vxvy:[vx,vy],timeStamp, }) => {
-            if(cancel && timeStamp-startTime<1) cancel()
+            if(!isOpen[i] && cancel && timeStamp-startTime<1) cancel()
             const pre = orderRef.current.indexOf(i)
             const row = clamp( Math.round(pre+my/size*500), 0, length-1 )
             const arr = swap(orderRef.current, pre, row)
@@ -83,13 +83,13 @@ export const Notes:Notes = ({
     }), [depth, props])
     useEffect(()=>{ setPosition(); set(getG({})) }, [setPosition, set, getG] )
     return (
-        <div ref={targetRef} style={{...styles.cont,height,...style}}>
+        <div ref={targetRef} style={{...styles.cont,height,...style, ...background({r:255,debug})}}>
             {springs.map( ({x,y,scale}, key) =>
                 <a.div {...{key}} {...bind(key)} style={{x,y,position:"absolute",width:"100%"}}>
-                    <a.div style={{...styles.main,scale,padding:space}}>
+                    <a.div style={{...styles.main,scale,padding:space, ...background({g:255,debug})}}>
                         {(children as any)[key]}
                     </a.div>
-                    <NotesSide {...{x,size,height:heightRef.current[key]}}>
+                    <NotesSide {...{x,size,debug,height:heightRef.current[key]}}>
                         <NotesItem x={x}>{right}</NotesItem>
                         <NotesItem x={x}>{left}</NotesItem>
                     </NotesSide>

@@ -6,8 +6,6 @@ import {ControlsProvider} from 'react-three-gui';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 
 import {Hook} from './Hook';
-//import {Home} from './Home';
-import {Mesh} from './Mesh';
 import {None} from './None';
 import {Note} from './Note';
 
@@ -21,8 +19,7 @@ const App = (
         <ControlsProvider>
             <BrowserRouter>
                 <Switch>
-                    <Route    path="/"     component={Mesh} exact/>//Home TODO
-                    <Route    path='/mesh' component={Mesh}/>
+                    <Route    path="/"     component={None} exact/>//Home TODO
                     <Route    path="/note" component={Note}/>
                     <Route    path='/none' component={None}/>
                     <Route    path='/hook' component={Hook}/>
