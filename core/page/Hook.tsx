@@ -6,7 +6,7 @@ import {hookTree,hookPage,HookPage,pageConfig} from './utils';
 
 import {is,topUp,usePage,Card,Code,Notes,Sides,Split,Trees,Trans} from '../src'
 const styles:{[key:string]:CSS} = {
-    top : {position:"relative",transition:"1s", minHeight:"100%",},
+    top : {position:"relative",transition:"1s",overflowX:"hidden",minHeight:"100%",},
     item: {position:"relative",height:"100vh",},
     card: {position:"relative",overflow:"hidden",width:"100%",height:"100%",},
     ctrl: {position:"relative",width:"100%",top:0,left:0,margin:0,padding:0},

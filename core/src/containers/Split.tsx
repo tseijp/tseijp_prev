@@ -5,7 +5,7 @@ import {BasedProps} from '../types'
 import {clamp,range,sign,getWRate,} from '../utils'
 
 const styles:{[key:string]:CSS} = {
-    cont: {position:"relative",overflow:"visible",width:"100%" ,whiteSpace:"nowrap",},
+    cont: {position:"relative",overflowX:"hidden",width:"100%" ,whiteSpace:"nowrap",},
     item: {position:"relative",overflow:"visible",height:"100%",display:"inline-block",verticalAlign:"top"},
 }
 export type Split = FC<BasedProps<{
