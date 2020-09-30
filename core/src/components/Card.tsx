@@ -16,7 +16,7 @@ export const Card:Card = ({
     children, size=1, rate=1, space=0, style={},
     dark=false, color="",max=0, min=0, ...props
 }) => {
-    const [{xys}, set] = useSpring(()=>({xys:[0,0,0]}))
+    const [{xyz}, set] = useSpring(()=>({xyz:[0,0,0]}))
     const styleCard = useMemo<CSS>(() => {
         const minHeight = min||size*500
         const maxHeight = max||null//size*500
@@ -31,21 +31,22 @@ export const Card:Card = ({
         rate], [size, rate])
     const bind = useGesture({
         onDrag : ({event})    => event?.stopPropagation(),
-        onHover: ({hovering}) => !hovering && set({xys:[0,0,0]}),
-        onMove : ({xy:[x,y]}) => set({xys:calc(x,y)}),
+        onHover: ({hovering}) => !hovering && set({xyz:[0,0,0]}),
+        onMove : ({xy:[x,y]}) => set({xyz:calc(x,y)}),
     })
     return <a.div style={{
-            boxShadow:xys.interpolate((x,y,s) => [
+            boxShadow:xyz.interpolate((x,y,z) => [
                 `${0.5-x*2}rem`,//offset-x     : -1.5 ~ 0.5 ~ 2.5
                 `${1.5-y*2}rem`,//offset-y     : -0.5 ~ 1.5 ~ 3.5
-                `${1.5 + s}rem`,//blur-radius  : 1.5 =hover=> 2.5
-                `${s - 0.5}rem`,//spread-radius:-0.5 =hover=> 0.5
-                `hsl(200 50% 20% / ${15+s*5}%)`].join(' ')),
-            transform:xys.interpolate((x,y,s) => [
+                `${1.5 + z}rem`,//blur-radius  : 1.5 =hover=> 2.5
+                `${z - 0.5}rem`,//spread-radius:-0.5 =hover=> 0.5
+                `hsl(200 50% 20% / ${15+z*5}%)`].join(' ')),
+            transform:xyz.interpolate((x,y,z) => [
                 `perspective(${size*50}px)`,
                 `rotateX(${-y/10}deg)`     ,//-0.1 ~ 0.1
                 `rotateY(${ x/10}deg)`     ,//-0.1 ~ 0.1
-                `scale(${1+s/10})` ,].join(' ')),
+                `scale(${1+z/10})` ,].join(' ')),
+            zIndex:xyz.interpolate((x,y,z) => x*y*z>0 ? 1 : 0),
             ...styleCard, ...style }}
            {...bind()}
            {...{...props,children}}/>

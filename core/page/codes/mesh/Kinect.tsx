@@ -3,17 +3,29 @@ import * as THREE from 'three'
 import {Canvas, } from 'react-three-fiber'
 import {useControl as use} from 'react-three-gui';
 import {TransformControls} from 'drei'
-import {Kinect as Target} from '../../../src'
+import {Kinect} from '../../../src'
 
-export const Kinect :FC = () => {
-    const depthTest = use('depthTest', {type:'boolean', value:"false"})
-    const depthWrite = use('depthWrite', {type:'boolean', value:"false"})
-    const nearClipping = use('nearClipping', {type:'number', value:850, min:0, max:2000})
+export const HookKinect :FC = () => {
+    const depthTest = use('depthTest', {type:'boolean', value:false, })
+    const depthWrite = use('depthWrite', {type:'boolean', value:false})
+    const nearClipping = use('nearClipping', {type:'number', value:1000, min:0, max:2000})
     const farClipping = use('farClipping', {type:'number', value:4000, min:0, max:8000})
-    const pointSize = use('pointSize', {type:'number', value:2, min:0, max:10})
+    const pointSize = use('pointSize', {type:'number', value:5, min:0, max:10, spring: true})
     const zOffset = use('zOffset', {type:'number', value:1000, min:0, max:2000})
-    const space = use('space', {type:'number', value:2, min:0, max:10})
+    const space = use('space', {type:'number', value:5, min:0, max:10})
     const url = use('url', {type: "select", items: ["/static/core/kinect.mp4", ""]})
+    const pos = use('position', {type:'xypad', value: {x:0,y:0}, scrub:true, distance:1000})
+    const props = {
+        nearClipping,
+        farClipping,
+        depthTest,
+        depthWrite,
+        pointSize,
+        zOffset,
+        space,
+        url,
+        position:[pos.x, 0, 500+pos.y]
+    }
     return (
         <Canvas gl={{antialias:false, logarithmicDepthBuffer: true}}
                 style={{width:'100%',height:'calc(100vh - 2rem)'}}
@@ -28,16 +40,7 @@ export const Kinect :FC = () => {
             <pointLight position={[-100, -100, -100]} intensity={5} color="red" />
             <gridHelper position={[0,-1000,0]} args={[2000,50]}/>
             <TransformControls>
-                <Target {...{
-                    nearClipping,
-                    farClipping,
-                    depthTest,
-                    depthWrite,
-                    pointSize,
-                    zOffset,
-                    space,
-                    url,
-                }}/>
+                <Kinect {...props}/>
             </TransformControls>
         </Canvas>
     )

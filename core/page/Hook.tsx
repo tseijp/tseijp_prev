@@ -2,26 +2,26 @@ import React, {CSSProperties as CSS, FC} from 'react';
 import {useGrid}  from 'use-grid';
 import {Controls} from 'react-three-gui';
 import {Helmet}   from 'react-helmet-async';
-import {hookTree,hookPage,HookPage} from './utils';
+import {hookTree,hookPage,HookPage,pageConfig} from './utils';
 
 import {is,topUp,usePage,Card,Code,Notes,Sides,Split,Trees,Trans} from '../src'
 const styles:{[key:string]:CSS} = {
-    top : {position:"relative",overflowX:"hidden",transition:"1s", minHeight:"100%",},
-    item: {position:"relative",overflowY:"scroll",height:"100vh",},
+    top : {position:"relative",transition:"1s", minHeight:"100%",},
+    item: {position:"relative",height:"100vh",},
     card: {position:"relative",overflow:"hidden",width:"100%",height:"100%",},
-    ctrl: {position:"relative",width:"100%",zIndex:1,top:0,left:0,margin:0,padding:0},
+    ctrl: {position:"relative",width:"100%",top:0,left:0,margin:0,padding:0},
 }
 const CardHook:FC = (props) => <Card min={-1} style={styles.card} rate={.1} {...props}/>
 export const Hook:FC = () => {
     const [dark, setDark] = useGrid<number>({init:0, md:1, lg:0  })
     const [size, setSize] = useGrid<number>({init:0, md:1, lg:1.5})
-    const [page, setPage] = usePage<HookPage>(hookPage)
+    const [page, setPage] = usePage<HookPage>(hookPage, pageConfig)
     const [side, setSide] = useGrid({xs:0,sm:size*100,lg:89/233,init:250})
     return (
     <div style={{...styles.top,background:dark?"#000":"#fff",}}>
         <Split order={page.Hook?[side,-1]:[1,0]} min={.1} styleItem={styles.item}>
             <Notes {...{dark,size,space:"1rem"}}>
-                <CardHook {...{dark,size}}>{page.id!=="" &&
+                <CardHook {...{dark,size}}>{page.Hook &&
                     <Controls
                         title={topUp(page.id)} anchor='top_left'
                         style={{background:dark?"#212121":"#fff",...styles.ctrl,

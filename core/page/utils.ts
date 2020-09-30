@@ -33,13 +33,13 @@ export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'
 export const hookTree = [
     ["Components","Card","Code","Grow",],//"Head","Icon"],
     ["Containers","Notes","Split","Trees"],
-    ["Mesh","Kinect","Model","Swarm"],
+    ["Mesh","Kinect","Model","Motion"],
 ]
 export type  HookPage = {pathname:string, Hook:any, code:any, codes:any}
 const getval = (obj={},key='') => key in obj ? (obj as any)[key] : ""
 export const hookPage = {
     pathname: ({id=""}) => `/hook/${id}`,
-    Hook : ({id="",codes={}}) => getval(codes,          topUp(id)),
+    Hook : ({id="",codes={}}) => getval(codes, 'Hook' + topUp(id)), //'page' +
     code : ({id="",codes={}}) => getval(codes, 'code' + topUp(id)),
     codes: Object.assign({}, ...Object.entries(CODES).map(([k,v])=>({[k]:v})))
 }

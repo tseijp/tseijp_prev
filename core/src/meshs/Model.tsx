@@ -6,9 +6,10 @@ import { useLoader, useFrame } from "react-three-fiber"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 //import { draco } from 'drei'
 
+const defaultURL = "https://tseijp-static.s3.ap-northeast-1.amazonaws.com/Xbot.glb"
 
-export const Model = ({dark=true, size=50, position=[0,-11,0],scale=[7,7,7]}:any) => {
-    const url = "https://tseijp-static.s3.ap-northeast-1.amazonaws.com/Xbot.glb"
+export const Model = ({
+    url=defaultURL,dark=true, size=50, position=[0,-11,0],scale=[7,7,7]}:any) => {
     const {animations, nodes}:any = useLoader(GLTFLoader, url, )
     const group = useRef<any>(null)
     const actions = useRef<any>(null)
@@ -32,6 +33,7 @@ export const Model = ({dark=true, size=50, position=[0,-11,0],scale=[7,7,7]}:any
     }, [animations,mixer,size])
     if (!nodes)
         return null
+    console.log(nodes)
     return (
         <group ref={group} {...{position, scale}} dispose={null}>
           <group rotation={[Math.PI/2,0,0]} scale={[0.01,0.01,0.01]}>

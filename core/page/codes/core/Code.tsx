@@ -3,7 +3,7 @@ import React, {
     //useMemo, useCallback, useState, useEffect, useRef
 } from 'react'
 import {useControl} from 'react-three-gui';
-import {Code as Target} from '../../../src'
+import {Code} from '../../../src'
 const items = ['javascript', 'python']
 const codes = [
 `import React from 'react'
@@ -35,14 +35,14 @@ export const usePage = (props, config) => {
     }, [p.id])
     return [p, setPage]
 }`,]
-export const Code:FC = () => {
+export const HookCode:FC = () => {
     const dark  = useControl('dark'   , {type: 'boolean', value: false})
     const inline= useControl('inline' , {type: 'boolean', value: false})
     const size  = useControl('size'   , {type: 'number' , value: 1, min: 0, max: 2})
     const code     = useControl('code'    , {type: 'string', value:codes[0]})
     const language = useControl('language', {type: 'select', value:items[0], items})
     return (
-        <Target {...{dark,inline,size,code,language}} />
+        <Code {...{dark,inline,size,code,language}} />
     )
 }
 export const codeCode =

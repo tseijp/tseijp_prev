@@ -3,7 +3,6 @@
 index.cjs.js
 index.d.ts
 index.js
-
 # dependencies
 /node_modules
 /.pnp

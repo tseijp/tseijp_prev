@@ -5,8 +5,8 @@ import {clamp, swap} from '../utils'
 import {BasedProps} from '../types'
 const background = ({r=0,g=0,b=0,a=.1,debug=true}:any) => debug?{background:`rgba(${[r,g,b,a].join(',')})`}:{}
 const styles:{[key:string]:CSS} = {
-    cont: {position:"relative",width:"100%",margin:`auto`        },
-    main: {position:"relative",width:"100%"                      },
+    cont: {position:"relative",width:"100%",zIndex:0,margin:`auto`},
+    main: {position:"relative",width:"100%",zIndex:0,},
     side: {position:"absolute",top:0,left:0,right:0,margin:"auto"},
     btn : {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)" },
 }

@@ -1,8 +1,8 @@
 import React, {FC} from 'react'
 import {useControl} from 'react-three-gui';
-import {Trees as TREES, Head} from '../../../src'
+import {Trees, Head} from '../../../src'
 const items = ['0', '1', '2', '3']
-export const Trees:FC = () => {
+export const HookTrees:FC = () => {
     const dark     = useControl('dark'     , {type: 'boolean', value: false})
     const open     = useControl('open'     , {type: 'boolean', value: true })
     const visible  = useControl('visible'  , {type: 'boolean', value: true })
@@ -15,7 +15,7 @@ export const Trees:FC = () => {
     const content  = useControl('content'  , {type: 'select' , value: items[0], items})
     return (
         <Head {...{dark,open,visible,immediate,canHide,depth,root,size,icon,content}}>
-            <TREES>
+            <Trees>
                 <>
                     <>1</>
                     <>1 - 1</>
@@ -26,7 +26,7 @@ export const Trees:FC = () => {
                     <>2 - 1</>
                     <>2 - 2</>
                 </>
-            </TREES>
+            </Trees>
         </Head>
     )
 }
