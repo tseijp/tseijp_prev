@@ -1,16 +1,17 @@
 import React, {FC, Suspense, } from 'react'
 import * as THREE from 'three'
 import {Canvas} from "react-three-fiber"
-import {useControl} from 'react-three-gui'
+import {useControl as use} from 'react-three-gui'
 import {Motion} from "../../../src"
 export const HookMotion :FC = () => {
-    const dark = useControl('dark' , {type: 'boolean', value: false})
-    const size = useControl('size' , {type: 'number' , distance:2, value: 1})
-    const scl  = useControl('scale', {type: 'number' , distance:2, value: 1})
-    const xz   = useControl('xz'   , {type: 'xypad'  , distance:2, value: {x:0,y:0}, scrub:true})
-    const y    = useControl('y'    , {type: 'number' , distance:2, value: 0, min:-1})
-    const rxz  = useControl('rxz'  , {type: 'xypad'  , distance:2, value: {x:0,y:0}, scrub:true})
-    const ry   = useControl('ry'   , {type: 'number' , distance:2, value: 0, min:-1})
+    const dark = use('dark' , {type: 'boolean', value: false})
+    const size = use('size' , {type: 'number' , distance:2, value: 1})
+    const scl  = use('scale', {type: 'number' , distance:2, value: 1})
+    const xz   = use('xz'   , {type: 'xypad'  , distance:2, value: {x:0,y:0}, scrub:true})
+    const y    = use('y'    , {type: 'number' , distance:2, value: 0, min:-1})
+    const rxz  = use('rxz'  , {type: 'xypad'  , distance:2, value: {x:0,y:0}, scrub:true})
+    const ry   = use('ry'   , {type: 'number' , distance:2, value: 0, min:-1})
+    const action= use('action'   , {type: 'number' , distance:10, value: 0})
     return (
         <Canvas gl={{antialias:false, logarithmicDepthBuffer:true}}
                 style={{width:"100%", height:"calc(100vh - 2rem)"}}
@@ -23,7 +24,7 @@ export const HookMotion :FC = () => {
             <directionalLight position={[-8, 12, 8]} castShadow />
             <Suspense fallback={null}>
                 <Motion {...{
-                    dark,size,
+                    dark,size,action:~~action,
                     position:[ xz.x,  y,  xz.y],
                     rotation:[rxz.y, rxz.x,-ry],
                     scale   :[scl,scl,scl]}}/>

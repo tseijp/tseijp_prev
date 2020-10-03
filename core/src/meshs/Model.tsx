@@ -13,7 +13,7 @@ export const Model = ({
     const {animations, nodes}:any = useLoader(GLTFLoader, url, )
     const group = useRef<any>(null)
     const actions = useRef<any>(null)
-    const [mixer] = useState<any>(() => new THREE.AnimationMixer(undefined as any))
+    const [mixer] = useState<any>(() => new THREE.AnimationMixer(null as any))
     const modelPos  = {x:position[0],y:position[2]}
     useFrame(({camera}:any, delta)=>{
         mixer.update(delta)
@@ -29,6 +29,7 @@ export const Model = ({
         actions.current.idle.play()
         actions.current.idle.weight = 1
         actions.current.idle.timeScale = 1
+        console.log(actions.current.idle)
         return () => animations.forEach((clip:any) => mixer.uncacheClip(clip))
     }, [animations,mixer,size])
     if (!nodes)

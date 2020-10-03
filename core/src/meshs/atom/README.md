@@ -52,6 +52,6 @@ or
 
 ## More
 ```
-import {Atom} from 'react-three-atom'
-const = Cl =()=> Atom()
+import {Element} from 'react-three-atom'
+const = Cl =()=> Element()
 ```
