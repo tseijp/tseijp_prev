@@ -8,7 +8,7 @@ export const HookSplit:FC = () => {
     const min   = useControl('min'   , {type: 'number' , value: 0, min: 0, max: 1})
     const width = useControl('width' , {type: 'number' , value: 0, min: 0, max: 1})
     const height= useControl('height', {type: 'number' , value: 0, min: 0, max: 1})
-    const number= useControl('number', {type: 'number' , value: 5, min: 0, max:10})
+    const number= useControl('number', {type: 'number' , value: 3, min: 0, max:10})
     return (
         <div style={{height:"50vh"}}>
             <Split {...{dark,size,min,width,height}}>

@@ -34,7 +34,6 @@ export const Model = ({
     }, [animations,mixer,size])
     if (!nodes)
         return null
-    console.log(nodes)
     return (
         <group ref={group} {...{position, scale}} dispose={null}>
           <group rotation={[Math.PI/2,0,0]} scale={[0.01,0.01,0.01]}>

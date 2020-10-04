@@ -34,6 +34,7 @@ export const hookTree = [
     ["Components","Card","Code","Grow",],//"Head","Icon"],
     ["Containers","Notes","Split","Trees"],
     ["Mesh","Kinect","Model","Motion"],
+    ["Home","Title"]
 ]
 export type  HookPage = {pathname:string, Hook:any, code:any, codes:any}
 const getval = (obj={},key='') => key in obj ? (obj as any)[key] : ""

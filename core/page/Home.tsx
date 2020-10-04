@@ -1,15 +1,15 @@
 //import * as THREE from 'three'
 import  React, {FC, //CSSProperties as CSS, FC, Children
         useRef,//useEffect, useState, useCallback, useLayoutEffect
-        Suspense, } from 'react'
+        Suspense,} from 'react'
 import {useThree, //useFrame, useLoader
-        Canvas, } from 'react-three-fiber'
+        Canvas,} from 'react-three-fiber'
 import {//useReflow, useFlexSize
         Flex, Box,} from 'react-three-flex'
-// import { Line } from 'drei/abstractions/Line'
-// import { Loader } from 'drei/prototyping/Loader'
-// import { useAspect } from 'drei/misc/useAspect'
-import { Text } from 'drei/abstractions/Text'
+// import {Line} from 'drei/abstractions/Line'
+// import {Loader} from 'drei/prototyping/Loader'
+// import {useAspect} from 'drei/misc/useAspect'
+import {Text} from 'drei/abstractions/Text'
 // import * as hooks from 'hooks'
 //import {} from '../src'
 
@@ -18,7 +18,7 @@ const Content:FC = () => {
     const {
         viewport,
         //size
-    } = useThree()
+   } = useThree()
     const scale = Math.min(1, viewport.width / 16)
     return (
         <group ref={group}>
@@ -44,8 +44,8 @@ export const Home:FC = () => {
             <Canvas
                 shadowMap concurrent pixelRatio={2}
                 noEvents colorManagement camera={{position:[0,0,10],far:1000}}
-                gl={{ powerPreference:'high-performance', alpha:false, antialias:false, stencil:false, depth:false }}
-                onCreated={({ gl }) => gl.setClearColor('#f5f5f5')}>
+                gl={{powerPreference:'high-performance', alpha:false, antialias:false, stencil:false, depth:false}}
+                onCreated={({gl}) => gl.setClearColor('#f5f5f5')}>
                 <pointLight position={[-10, -10, -10]} intensity={1} />
                 <ambientLight intensity={0.4} />
                 <spotLight  castShadow angle={0.3} penumbra ={1} shadow-mapSize-width ={1024}

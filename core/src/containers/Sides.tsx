@@ -31,8 +31,9 @@ export const SidesIcon : FC<BasedProps> = ({spring, bind, circ=false, size=1}) =
         <Icon fa="align-left" {...{circ,size}} />
     </a.div>
 
-// export const SidesItem :FC<BasedProps> = ({children, size=1}) =>
-//     <a.div style={{...styles.item,transition:"0.75s",fontSize:50*size}}>{children}</a.div>
+export const SidesItem :FC<BasedProps> = ({children, size=1}) =>
+    <a.div style={{...styles.item,transition:"0.75s",fontSize:50*size}}
+        onClick={(e:any)=>e.stopPropagation()}>{children}</a.div>
 
 export type Sides = FC<Partial<BasedProps<{}>>>
 export const Sides:Sides = ({children, width=window.innerWidth/2,dark=false,size=1, onOpen=()=>null}={}) => {
@@ -56,10 +57,9 @@ export const Sides:Sides = ({children, width=window.innerWidth/2,dark=false,size
             <SidesArea     {...{size, spring, bind, }} />
             <SidesContainer{...{size, spring, bind, }}>
             <Trees {...{dark:true,size}}>
-                {children}
-                {/*React.Children.map(children, ((child, key) =>
+                {React.Children.map(children, ((child, key) =>
                     <SidesItem {...{size, key}}>{child}</SidesItem>
-                ))*/}
+                ))}
             </Trees>
             </SidesContainer>
         </div>

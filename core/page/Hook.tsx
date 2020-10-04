@@ -18,7 +18,10 @@ export const Hook:FC = () => {
     const [page, setPage] = usePage<HookPage>(hookPage, pageConfig)
     const [side, setSide] = useGrid({xs:0,sm:size*100,lg:89/233,init:250})
     return (
-    <div style={{...styles.top,background:dark?"#000":"#fff",}}>
+    <div style={{...styles.top,background:dark?"#000":"#fff"}}>
+        {   (page.hash==="#app"&&page.Hook&&<page.Hook/>)
+        ||  (page.hash==="#raw"&&page.code&&<>{page.code}</>)
+        ||  (
         <Split order={page.Hook?[side,-1]:[1,0]} min={.1} styleItem={styles.item}>
             <Notes {...{dark,size,space:"1rem"}}>
                 <CardHook {...{dark,size}}>{page.Hook &&
@@ -31,8 +34,8 @@ export const Hook:FC = () => {
                 <CardHook {...{dark,size}}>
                     <Trees  {...{dark,size:size/2,root:page.id?0:1}}
                             {...(page.id?{fontSize:"14px"}:{})}
-                           topStyle={{padding:page.Hook?25*size:100*size}}
-                           content ={
+                            topStyle={{padding:page.Hook?25*size:100*size}}
+                            content ={
                             <span onClick={() => setPage({id:""})}>Hook</span>}>
                         { hookTree.map((ids,i) => ids instanceof Array
                         ?   <span key={i}>{ ids.map((id, j) =>
@@ -50,7 +53,7 @@ export const Hook:FC = () => {
                     <Code {...{dark,size,code:page.code}}/>
                 </CardHook> }
             </Notes>
-        </Split>
+        </Split>)}
         <Sides {...{size}}>
             <a style={{color:"#818181"}} href="/"    >Home</a>
             <a style={{color:"#818181"}} href="/hook">Hook</a>
@@ -60,6 +63,8 @@ export const Hook:FC = () => {
             <div onClick={()=>setDark((p:any)=>({md:p.lg,lg:p.md}))}>{dark?'🌞':'🌛'}</div>
             <div onClick={()=>setSize((p:any)=>({md:p.lg,lg:p.md}))}>{size<75?'👨':'👶'}</div>
             <div onClick={()=>setSide((p:any)=>p.lg?{xs:0,sm:0,lg:0}:{xs:0,sm:250,lg:1/3})}>{side?'😆':'😃'}</div>
+            <div onClick={()=>setPage(p=>({hash:p.hash!=="#app"?"#app":""}))}>{page.hash==="#app"?'👈':'🎴'}</div>
+            <div onClick={()=>setPage(p=>({hash:p.hash!=="#raw"?"#raw":""}))}>{page.hash==="#raw"?'👈':'🍖'}</div>
         </Trans>
         <Helmet>
             <title>TSEI.jp {topUp(page.id)}</title>

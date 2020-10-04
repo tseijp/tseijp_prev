@@ -5,7 +5,7 @@
 //     @content, Name of the node (string or React-component)
 //     @type   , optional description, good for displaying icons, too (string or React-component)
 //     @open   , optional: default open state
-//     @canHide, optional: when set true displays an eye icon
+//     @hide, optional: when set true displays an eye icon
 //     @visible, optional: default visible state
 //     @onClick, optional: click events on the eye
 //     @springConfig, optional: react-spring animation config
@@ -17,10 +17,10 @@ import {useSpring, config, animated as a} from 'react-spring'
 import {BasedProps} from '../types'
 const defaultConfig = {restSpeedThreshold: 1,restDisplacementThreshold: 0.01}
 const styles:{[key:string]:CSS} = {
-    tree: {padding:'4px 0px 0px 0px',overflow:'hidden',verticalAlign:'middle',
-           position:'relative',whiteSpace:'nowrap',textOverflow: 'ellipsis',},
-    tggl: {width:'1em',height:'1em',cursor:'pointer',verticalAlign:'middle',marginRight:10,},
-    type: {fontSize:'0.6em',fontFamily:'monospace',verticalAlign:'middle',textTransform:'uppercase',},
+    tree: {padding:'4px 0px 0px 0px',position:'relative',overflow:'hidden',
+           verticalAlign:'middle',whiteSpace:'nowrap',textOverflow:'ellipsis',},
+    tggl: {verticalAlign:'middle',width:'1em',height:'1em',cursor:'pointer',marginRight:10,},
+    type: {verticalAlign:'middle',fontSize:'0.6em',fontFamily:'monospace',textTransform:'uppercase',},
     cont: {willChange:'transform, opacity, height',marginLeft:6,},
 }
 const paths = {
@@ -38,10 +38,10 @@ export const TreeIcon:TreeIcon = {
 }
 export type TreeContent = FC<BasedProps<{
     [key:string]:any, set:any, content:any, type:any,
-    canHide:boolean, opacity:number, root:number, icon:"Minus"|"Plus"|"Close"
+    hide:boolean, opacity:number, root:number, icon:"Minus"|"Plus"|"Close"
 }>>
 export const TreesContent:TreeContent = ({
-    content,type,set,canHide=false,icon="Close",opacity=1,dark=false,//size=1,
+    content,type,set,hide=false,icon="Close",opacity=1,dark=false,
 }) => {
     const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
     const color = useMemo(() => dark?"#818181":"#212121", [dark])
@@ -51,23 +51,24 @@ export const TreesContent:TreeContent = ({
         <>
             <Icon style={{...styles.tggl, opacity, color}} onClick={iconClick}/>
             <span style={{...styles.type, marginRight:type?10:0,color}}>{type}</span>
-            { canHide &&
-            <TreeIcon.EyeOstyle style={{...styles.tggl}} onClick={eyeClick}/> }
+            { hide &&
+            <TreeIcon.EyeO style={{...styles.tggl, color}} onClick={eyeClick}/> }
             <span style={{verticalAlign:'middle',color}}>{content}</span>
         </>
     )
 }
 export type Trees = FC<BasedProps<{
-    open:boolean, visible:boolean, immediate:boolean, springConfig:any,
-    canHide:boolean, topStyle:CSS, depth:number, type:any, content:any,
+    open:boolean, visible:boolean, depth:number, springConfig:any,
+    hide:boolean, immediate:boolean, topStyle:CSS, type:any, content:any,
 }>>
 export const Trees:Trees = ({
-    open=true, visible=true, immediate=true, depth=0, root=1, springConfig=defaultConfig,
+    open=true, visible=true, immediate=true,
+    depth=0, root=1, springConfig=defaultConfig,
     dark=false, size=1, style={}, topStyle={}, ...props
 }) =>  {
     const [state, set] = useState<{[key:string]:boolean}>({open,visible,immediate})
-    const spring = useSpring<any>({
-        immediate:state.immediate,
+    const spring = useSpring({
+        immediate: state.immediate,
         config: {...config.default,...springConfig},
         from: {height: 0, opacity: 0, transform: 'translate3d(20px,0,0)' },
         to: {  height: state.open ? 'auto' : 0,
@@ -79,20 +80,20 @@ export const Trees:Trees = ({
         return props.children &&
             <Trees {...{...props,
                 dark, size, style, depth:depth+1, topStyle:{},
-                open:depth<root, children:grand.length>1 ? grand.slice(1) : null,
-                immediate:false, content:grand.length>1 ? grand[0] : child,}}/>
-    }), [props, dark, size, style, depth, root])
-    const icon = useMemo(() => children instanceof Array && children.length>0
+                open: depth<root, children: grand.length>1 ? grand.slice(1) : null,
+                immediate: false, content : grand.length>1 ? grand[0] : child,}}/>
+    }), [props, depth, root, dark, size, style])
+    const icon = useMemo(() => children instanceof Array && children.length > 0
         ? (state.open ? 'Minus' : 'Plus')
         : 'Close', [children, state.open])
-    useEffect(() => void (set(p => visible!==p.visible? {...p, visible} : p)), [visible])
+    useEffect(() => void (set(p => visible!==p.visible?{...p, visible}:p)), [visible])
     return (
-        <div style={{...styles.tree, fontSize:size*50, zIndex:-depth, ...style, ...topStyle}}>
-            <TreesContent{...{...props, dark, size, icon, set, opacity:children?.length?1:.3}}/>
+        <a.div style={{...styles.tree, fontSize:size*50, zIndex:-depth, ...style, ...topStyle}}>
+            <TreesContent{...{...props, icon, set, opacity:children?.length?1:.3, dark, size}}/>
             <a.div style={{
                 ...(depth>0?{borderLeft:`1px dashed #${dark?818181:212121}`}:{}),
                 ...styles.cont, padding:`4px 0px 0px ${size*25}px`,
                 ...spring, }}>{children}</a.div>
-        </div>
+        </a.div>
     )
 }

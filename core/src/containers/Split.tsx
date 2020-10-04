@@ -36,7 +36,7 @@ export const Split:Split = ({
             wRef.current = springs.map((s:any) => s.w.animation.to || 0)
             hRef.current = spring.h.animation.to as number || 0
         }
-    }, {drag:{lockDirection :true}})
+    })//, {drag:{lockDirection: true}}) //error if here
     const children = useMemo(() => Children.map(props.children, c=>c), [props.children])
     useEffect(() => {
         const len = (props as any)?.children?.length||0
