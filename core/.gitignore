@@ -1,3 +1,16 @@
+# my created
+
+/src/components/colo/*
+/src/components/mdmd/*
+/src/hooks/use-grid/*
+/src/hooks/use-page/*
+/src/hooks/use-amazon/*
+!/src/components/colo/src
+!/src/components/mdmd/src
+!/src/hooks/use-grid/src
+!/src/hooks/use-page/src
+!/src/hooks/use-amazon/src
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 index.cjs.js

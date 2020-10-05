@@ -1,0 +1,6 @@
+[submodule "core/src/hooks/use-grid"]
+	path = core/src/hooks/use-grid
+	url = https://github.com/tseijp/use-grid
+[submodule "core/src/hooks/use-amazon"]
+	path = core/src/hooks/use-amazon
+	url = https://github.com/tseijp/use-amazon

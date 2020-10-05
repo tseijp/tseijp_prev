@@ -1,27 +1,37 @@
 {
   "compilerOptions": {
-    "watch": true,
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+        "watch": true,
+        "target": "es5",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react"
+    },
+    "include": [
+        "page",
+        "src",
+        "src/components/mdmd/src",
+        "src/hooks/use-grid/src",
+        "src/hooks/use-page/src",
+        "src/hooks/use-amazon/src"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
-  },
-  "include": [
-    "page",
-    "src"
-  ]
+    "exclude": [
+        "src/components/mdmd/*",
+        "src/hooks/use-grid/*",
+        "src/hooks/use-page/*",
+        "src/hooks/use-amazon/*"
+    ]
 }

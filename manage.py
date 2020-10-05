@@ -23,9 +23,6 @@ def printqr():
     except:
         pass
 
-def clone(repo, cwd="."):
-    sub.run('git clone https://github.com/%s'%repo.split(), shell=True, cwd=cwd)
-
 def main():
 #  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
     def run (*args):
@@ -51,22 +48,15 @@ def main():
         sub.run("npm run build".split(), shell=True, cwd='./core')
         static(*args)
 
-    def pullf(*args):
-        sub.run('git fetch'.split(), shell=True, cwd='.')
-    #   sub.run('git reset --hard origin/master'.split(), shell=True, cwd=".")
-        static(*args)
     # TODO
-    # async def init(*args):
-    #     await os.mkdir("hook")
-    #     await sub.run([*args, 'startproject', 'temp'], shell=True, cwd='../')
-    #     await shutil.move('../temp/tseijp', './')
-    #     await shutil.rmtree('../temp')
-    #     await sub.run([*args, 'createsuperuser'], shell=True, cwd='../')
-    #     clone('tseijp/colo')
-    #     clone('tseijp/mdmd')
-    #     clone('tseijp/use-grid', cwd='hook')
-    #     clone('tseijp/use-amazon', cwd='hook')
-    #     static(*args)
+    def init(*args):
+        sub.run("git submodule foreach git fetch".spit(), shell=True, cwd='.')
+        sub.run("npm run build".split(), shell=True, cwd='./core')
+        sub.run("npm run build".split(), shell=True, cwd='./core/src/components/colo')
+        sub.run("npm run build".split(), shell=True, cwd='./core/src/components/mdmd')
+        sub.run("npm run build".split(), shell=True, cwd='./core/src/hooks/use-grid' )
+        sub.run("npm run build".split(), shell=True, cwd='./core/src/hooks/use-amazon')
+        static(*args)
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:
         for key, fn in locals().items():
