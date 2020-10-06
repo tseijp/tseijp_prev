@@ -7,14 +7,14 @@ import {Box,} from 'react-three-flex'
 import {Text} from 'drei/abstractions/Text'
 // import * as hooks from 'hooks'
 //import {} from '../src'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 const styles:{[key:string]:any} = {
     top:  { dir:"row",width:"100%",height:"100%",align:"center",justify:"center"},
     text: { anchorX:"center",letterSpacing:-.05,positionZ:0.5,
             anchorY:"middle",lineHeight:1.0,}
 }
 
-export const Title:FC<BasedProps> = ({
+export const Title:FC<Props> = ({
     children,dark=false,size=1
 }) => {
     const {viewport} = useThree()

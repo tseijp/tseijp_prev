@@ -7,9 +7,9 @@ export type BasicAction<T> = (fn:BasicState<T>) => void
 export type Merge<A,B> = {[K in keyof A]:K extends keyof B ? B[K] : A[K] } & B
 export type None<T> = T|undefined|false|null
 // ************************* 🌌 For Containers 🌌 ************************* //
-export type BasedProps<T extends {}={}> = Partial<T & {
+export type Props<T extends {}={}> = Partial<T & {
     [key:string]:any, style?:CSSProperties,
-    onOpen :null|(()=>void), dark :number|boolean, color:string, bind:any, spring:any, 
+    onOpen :null|(()=>void), dark :number|boolean, color:string, bind:any, spring:any,
     onClose:null|(()=>void), debug:number|boolean, size:number, className:string,
 }>
 

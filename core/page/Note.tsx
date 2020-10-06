@@ -10,7 +10,6 @@ import { customPage, CustomPage, pageConfig, fetcher, signin, scrollTop } from '
 
 const styles:{[key:string]:CSS} = {
     top: {minHeight:"100%",overflow:"hidden"},
-
 }
 export const Note :FC = () => {
     // ******************** FOR FETCH ******************** //

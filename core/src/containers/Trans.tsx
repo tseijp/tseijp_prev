@@ -1,7 +1,7 @@
 import React, {FC,CSSProperties as CSS,useCallback,useRef} from 'react';
 import {useSpring, animated as a, config, UseSpringProps} from 'react-spring'
 import {useGesture} from 'react-use-gesture'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 import {Icon} from '../components'
 
 const styles:{[key:string]:CSS} = {
@@ -11,7 +11,7 @@ const styles:{[key:string]:CSS} = {
     icon: {position:"absolute",right:0,transform:`translate(-50%,-50%)`     },//*dev*/,background:"rgba(0,0,255,.1)"},
     item: {backgroundColor:"#212121",color:"#818181", display:"inline-block"},
 }
-export const TransArea :FC<BasedProps> = ({size=1, spring}) =>
+export const TransArea :FC<Props> = ({size=1, spring}) =>
     <a.div style={{
         width: spring.r.interpolate((r:number)=>`${
             50*size*( Math.cos(r/90*Math.PI)+1.5)
@@ -24,18 +24,18 @@ export const TransArea :FC<BasedProps> = ({size=1, spring}) =>
         ...styles.area}}
        />
 
-export const TransIcon : FC<BasedProps> = ({size=1, spring, circ=false}) =>
+export const TransIcon : FC<Props> = ({size=1, spring, circ=false}) =>
     <a.div style={{...styles.icon, top:50*size, rotateZ:spring.r}}>
         <Icon fa="align-justify" {...{circ,size}} />
     </a.div>
 
-export const TransContainer : FC<BasedProps> = ({children, size=1, spring, }) =>
+export const TransContainer : FC<Props> = ({children, size=1, spring, }) =>
     <a.div style={{...styles.cont,
         width:spring.r.interpolate((r=0) => `${ 50*size*(Math.cos(r/90*Math.PI)+1) }px` )}}>
         <div style={{margin:`calc(${50*size*2}px - 2%) 0px 0px 0px`}}>{children}</div>
     </a.div>
 
-export const TransItem :FC<BasedProps> = ({children, size=1}) =>
+export const TransItem :FC<Props> = ({children, size=1}) =>
     <a.div style={{...styles.item,
         margin:`${50*size/4}px 0px`,
         borderRadius:`${50*size}px 0px  0px ${50*size}px`,}}>
@@ -45,7 +45,7 @@ export const TransItem :FC<BasedProps> = ({children, size=1}) =>
         }}>{children}</div>
     </a.div>
 
-export const Trans : FC<BasedProps> = ({children, size=1, onOpen=()=>null}={}) => {
+export const Trans : FC<Props> = ({children, size=1, onOpen=()=>null}={}) => {
     const opened = useRef<boolean>(false)
     const setOpened = useCallback((bool:boolean)=>1&&( (opened.current=bool), onOpen&&onOpen() ),[onOpen])
     const [spring, set] = useSpring<UseSpringProps>( () => ({x:0, y:0, r:90, scale:1,}) )

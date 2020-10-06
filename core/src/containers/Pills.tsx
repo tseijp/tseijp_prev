@@ -1,11 +1,11 @@
 import React, {FC,Children,CSSProperties as CSS,
     useCallback,useMemo,useState,useRef} from 'react'
 import {useSprings, animated} from 'react-spring'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 const styles:{[key:string]:CSS} = {
     pill: {position:"absolute",padding:"0px",zIndex:1,transform:`translate(-50%,-50%)`,}
 }
-export type Pills = FC<BasedProps<{
+export type Pills = FC<Props<{
     position: {x:number, y:number, r:number},
     depth:number, rate:number, size:number,
     isOpen:boolean

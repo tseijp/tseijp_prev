@@ -21,11 +21,11 @@ router.register(r'note', NoteViewSet)
 router.register(r'user', UserViewSet, basename="user")
 
 # """"""""""""""""""""""""" ROUTING """"""""""""""""""""""""" #
-def core      (request):return render(request, 'core/build/index.html')
 def mdmd      (request):return render(request, 'mdmd/build/index.html')
 def colo      (request):return render(request, 'colo/build/index.html')
-def use_grid  (request):return render(request, 'hook/use-grid/build/index.html')
-def use_amazon(request):return render(request, 'hook/use-amazon/build/index.html')
+def core      (request):return render(request, 'core/build/index.html')
+def use_grid  (request):return render(request, 'core/src/hooks/use-grid/build/index.html')
+def use_amazon(request):return render(request, 'core/src/hooks/use-amazon/build/index.html')
 
 # """"""""""""""""""""""""" URL """"""""""""""""""""""""" #
 urlpatterns = [

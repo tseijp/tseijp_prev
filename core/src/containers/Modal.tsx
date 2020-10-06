@@ -2,8 +2,8 @@ import React, {CSSProperties as CSS,FC,useEffect,useCallback,useMemo} from 'reac
 import {useSpring, animated as a} from 'react-spring';
 import {useGesture} from 'react-use-gesture';
 import {createPortal} from 'react-dom';
-import {BasedProps} from '../types';
-export type Modal = FC<BasedProps<{open:boolean}>>
+import {Props} from '../types';
+export type Modal = FC<Props<{open:boolean}>>
 export const Modal:Modal = ({
         open=false, onClose=null, dark=false, size=1, //onOpen=null,
         children, color="", ...props

@@ -23,15 +23,10 @@
     "include": [
         "page",
         "src",
-        "src/components/mdmd/src",
-        "src/hooks/use-grid/src",
-        "src/hooks/use-page/src",
-        "src/hooks/use-amazon/src"
+        "src/hooks/use-grid/src"
     ],
     "exclude": [
-        "src/components/mdmd/*",
-        "src/hooks/use-grid/*",
-        "src/hooks/use-page/*",
-        "src/hooks/use-amazon/*"
+        "src/hooks/use-amazon/*",
+        "src/hooks/use-grid/*"
     ]
 }

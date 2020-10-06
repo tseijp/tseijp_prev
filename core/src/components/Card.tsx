@@ -3,10 +3,10 @@
   *           https://coliss.com/articles/build-websites/operation/css/
  ***/
 import React, {CSSProperties as CSS, FC, useCallback, useMemo} from 'react'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 import {useGesture} from 'react-use-gesture'
 import {useSpring, animated as a} from 'react-spring'
-export type Card = FC<BasedProps<{
+export type Card = FC<Props<{
     max:number,
     min:number,
     rate:number,

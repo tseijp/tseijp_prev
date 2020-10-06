@@ -2,7 +2,7 @@ import React, {ReactChild as RC, FC, CSSProperties as CSS, Children,useCallback,
 import {useSprings, animated as a} from 'react-spring'
 import {useGesture,} from 'react-use-gesture'
 import {clamp, swap} from '../utils'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 const background = ({r=0,g=0,b=0,a=.1,debug=true}:any) => debug?{background:`rgba(${[r,g,b,a].join(',')})`}:{}
 const styles:{[key:string]:CSS} = {
     cont: {position:"relative",width:"100%",zIndex:0,margin:`auto`},
@@ -10,7 +10,7 @@ const styles:{[key:string]:CSS} = {
     side: {position:"absolute",top:0,left:0,right:0,margin:"auto"},
     btn : {position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)" },
 }
-export const NotesSide:FC<BasedProps> = ({
+export const NotesSide:FC<Props> = ({
     children,size=1,height=0,x, debug=false,
 }) => x.interpolate((px:number)=>px**2<=0 ) ? null :
     <a.div children={children} style={{...styles.side, height, ...background({b:255,debug}),
@@ -18,10 +18,10 @@ export const NotesSide:FC<BasedProps> = ({
         scale  :x.to((px:number)=>px**2/4>size**2?1:(px>0?px:-px)/(size)),
         width  :x.to((px:number)=>px>0?px*2:-px*2),
         display:x.to((px:number)=>px?"inline":"none") }}/>
-export const NotesItem:FC<BasedProps> = ({children,x}) => !children ? null :
+export const NotesItem:FC<Props> = ({children,x}) => !children ? null :
     <a.div style={{...styles.btn,display:x.to((px:number)=>px<0?"inline":"none")}}>
         {children} </a.div>
-export type Notes = FC<BasedProps<{
+export type Notes = FC<Props<{
     grandren:any,right:RC,left:RC, depth:number, space:number|string,
 }>>
 export const Notes:Notes = ({

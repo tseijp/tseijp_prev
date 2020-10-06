@@ -1,14 +1,14 @@
 import React, {CSSProperties as CSS,FC,Children,useMemo,useEffect,useRef} from 'react'
 import {useSpring, useSprings, animated as a} from 'react-spring'
 import {useGesture} from 'react-use-gesture'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 import {clamp,range,sign,getWRate,} from '../utils'
 
 const styles:{[key:string]:CSS} = {
     cont: {position:"relative",overflowX:"hidden",width:"100%" ,whiteSpace:"nowrap",},
     item: {position:"relative",overflow:"visible",height:"100%",display:"inline-block",verticalAlign:"top"},
 }
-export type Split = FC<BasedProps<{
+export type Split = FC<Props<{
     order :number[]|[], styleItem:CSS,
     width :number, height:number, min:number
 }>>

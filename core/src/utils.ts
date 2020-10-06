@@ -34,7 +34,7 @@ export const equalPathname = (...urls:(URLType|string|undefined|null|false)[]) =
         .map(u => u && joinURL(u.pathname, "/"))
         .every((u, _, self) => u===self[0])
 
-export const defaultPageConfig:PageConfig = {
+export const pageConfig:PageConfig = {
     onChange:null,
 }
 export const defaultPage = {

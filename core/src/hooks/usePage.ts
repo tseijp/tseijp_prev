@@ -32,7 +32,7 @@
  ** ************************* ********* *************************/
 
 import {useEffect, useState, useCallback, useRef} from 'react'
-import {defaultPageConfig as defaultConf, defaultPage, normPage} from '../utils'
+import {pageConfig as defaultConf, defaultPage, normPage} from '../utils'
 import {Page , PageConfig as Conf, BasicProps, BasicState, BasicAction} from '../types'
 export const usePage = <T extends {}={}>(
     props :BasicProps<Partial<Page<T>>>,//BasicProps<Page<T>>,

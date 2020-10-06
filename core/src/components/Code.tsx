@@ -1,9 +1,9 @@
 import React, {FC, useCallback, useMemo} from "react";
-import {BasedProps} from '../types'
+import {Props} from '../types'
 const {atomOneLight, atomOneDark} = require('react-syntax-highlighter/dist/esm/styles/hljs');
 const {Light} = require('react-syntax-highlighter');
 
-export type Code = FC<BasedProps<{
+export type Code = FC<Props<{
     code:string, language:string, inline:boolean
 }>>
 export const Code:Code = ({

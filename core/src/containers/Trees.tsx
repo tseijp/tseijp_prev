@@ -14,7 +14,7 @@ import React, {
     useCallback,useMemo, useState, useEffect, //useRef
 } from 'react'
 import {useSpring, config, animated as a} from 'react-spring'
-import {BasedProps} from '../types'
+import {Props} from '../types'
 const defaultConfig = {restSpeedThreshold: 1,restDisplacementThreshold: 0.01}
 const styles:{[key:string]:CSS} = {
     tree: {padding:'4px 0px 0px 0px',position:'relative',overflow:'hidden',
@@ -36,7 +36,7 @@ export const TreeIcon:TreeIcon = {
     PlusSquareO : props => <svg {...props} viewBox="64 -65 897 897"><g><path d={paths.plus}/></g></svg>,
     EyeO        : props => <svg {...props} viewBox="61  51 902 666"><g><path d={paths.eye}/></g></svg>,
 }
-export type TreeContent = FC<BasedProps<{
+export type TreeContent = FC<Props<{
     [key:string]:any, set:any, content:any, type:any,
     hide:boolean, opacity:number, root:number, icon:"Minus"|"Plus"|"Close"
 }>>
@@ -57,7 +57,7 @@ export const TreesContent:TreeContent = ({
         </>
     )
 }
-export type Trees = FC<BasedProps<{
+export type Trees = FC<Props<{
     open:boolean, visible:boolean, depth:number, springConfig:any,
     hide:boolean, immediate:boolean, topStyle:CSS, type:any, content:any,
 }>>
