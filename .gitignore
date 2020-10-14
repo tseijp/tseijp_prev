@@ -3,6 +3,8 @@ run.bat
 tseijp.sock
 
 ### core ###
+**/build
+/core/build
 /core/src/hooks/use-grid/*
 /core/src/hooks/use-page/*
 /core/src/hooks/use-amazon/*
@@ -73,7 +75,7 @@ media
 
 # Distribution / packaging
 .Python
-# build/ my changed
+build/
 develop-eggs/
 dist/
 downloads/

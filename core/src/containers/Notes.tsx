@@ -48,7 +48,7 @@ export const Notes:Notes = ({
         if (orderRef.current.length === len) return
          orderRef.current = order||[...Array(len)].map((_,i:number)=>i)
         heightRef.current = Array(len).fill(size*500)
-    }, [size,order, props.children])
+    }, [size, order, props.children])
     //  *************************  ➊ React Springs  *************************  //
     const getY = ({pre=0,arr=orderRef.current})=>pre<1?0:[...arr.slice(0,pre).map(i=>heightRef.current[i]),0].reduce((a,b)=>a+b)
     const getF = ({i=-1,x=0,s=1.0})=>(j=0)=>({x:j===i?x:0,y:getY({pre:orderRef.current.indexOf(j)}),scale:j===i?s:1})
@@ -81,7 +81,11 @@ export const Notes:Notes = ({
                 <Notes {...{...props, depth:depth+1,children:grand.slice(1)}}/> )})
             : child
     }), [depth, props])
-    useEffect(()=>{ setPosition(); set(getG({})) }, [setPosition, set, getG] )
+    useEffect(()=>{
+        const resize =()=> 1 && (setPosition(), set(getG({})))
+        window.addEventListener('resize', resize); resize();
+        return () => window.removeEventListener('resize', resize);
+    }, [setPosition, set, getG] )
     return (
         <div ref={targetRef} style={{...styles.cont,height,...style, ...background({r:255,debug})}}>
             {springs.map( ({x,y,scale}, key) =>

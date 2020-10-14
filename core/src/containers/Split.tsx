@@ -5,7 +5,7 @@ import {Props} from '../types'
 import {clamp,range,sign,getWRate,} from '../utils'
 
 const styles:{[key:string]:CSS} = {
-    cont: {position:"relative",overflowX:"hidden",width:"100%" ,whiteSpace:"nowrap",},
+    cont: {position:"relative",overflow:"visible",width:"100%",whiteSpace:"nowrap",},
     item: {position:"relative",overflow:"visible",height:"100%",display:"inline-block",verticalAlign:"top"},
 }
 export type Split = FC<Props<{
@@ -13,7 +13,7 @@ export type Split = FC<Props<{
     width :number, height:number, min:number
 }>>
 export const Split:Split = ({
-    order=[], width=0, height=0, min=.1,
+    order=[], width=0, height=0, min=0,
     dark=false,size=1, style={}, styleItem={}, ...props
 }) => {
     const sRef = useRef<number>(0)
@@ -68,18 +68,3 @@ export const Split:Split = ({
         </a.div>
     )
 }
-
-//https://github.com/gregberge/react-merge-refs/blob/master/src/index.tsx
-// export default function mergeRefs<T = any>(
-//     refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>
-// ): React.RefCallback<T> {
-//     return (value) => {
-//         refs.forEach((ref) => {
-//             if (typeof ref === "function") {
-//                 ref(value);
-//             } else if (ref != null) {
-//                 (ref as React.MutableRefObject<T | null>).current = value;
-//             }
-//         });
-//     };
-// }

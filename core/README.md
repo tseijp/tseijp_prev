@@ -18,21 +18,20 @@
 - [Available hook](#available-hook)  
 - [Simple example](#simple-example)  
 
-# Demo
-- [TSEI.jp/home](https://tsei.jp/)
-- [TSEI.jp/hook](https://tsei.jp/note)
-- [TSEI.jp/mdmd](https://tsei.jp/mdmd)
-- [TSEI.jp/note](https://tsei.jp/note)
-
-# Docs
-- [@tsei/core](https://tsei.jp/core/)
-- [@tsei/mdmd](https://tsei.jp/mdmd/)
-- [useGrid   ](https://tsei.jp/hook/use-grid/)
+# Demo and Docs
+- [home](https://tsei.jp/home/)
+- [core](https://tsei.jp/hook/)
+- [mdmd](https://tsei.jp/mdmd/)
+- [note](https://tsei.jp/note/)
+- [useGrid](https://tsei.jp/hook/use-grid/)
+- ~[useUrei](https://tsei.jp/hook/use-urei/)~
 
 # Install via npm
 - create your project - `create-react-app myproject`
 - `cd myproject`
 - `npm install -S @tsei/core`
+- open browser and visit [http://localhost:3000](http://localhost:3000)
+- Now you can go to our [demo](https://tsei.jp/hook/), and try its usage.
 
 #Available hook
 hooks | what?  
@@ -41,7 +40,6 @@ hooks | what?
 useNote | manage notes data and edit note
 usePage | manage page transitions and restful api urls
 useUser | basic function of account authentication using cookies
-
 
 # Simple example
 <p align="center">
@@ -58,28 +56,28 @@ useUser | basic function of account authentication using cookies
 </p>
 
 ```javascript
+import React from 'react'
+import { Split, Trees, Notes, Modal } from '@tsei/core'
 const App = () =>
     <>
-        <Modal>
-            <>hello🥰</>
-            <>login🌚</>
-        </Modal>
-        <Trees>
-            <>➊</>
-            <>
-                <>➋</>
-                <>➋ - ➊</>
-                <>➋ - ➋</>
-            </>
-        </Trees>
-        <Notes>
-            <>➊</>
-            <>
-                <>➋</>
-                <>➋ - ➊</>
-                <>➋ - ➋</>
-            </>
-        </Notes>
+        <Split>
+            <Trees>
+                <>➊</>
+                <>
+                    <>➋</>
+                    <>➋ - ➊</>
+                    <>➋ - ➋</>
+                </>
+            </Trees>
+            <Notes>
+                <>➊</>
+                <>
+                    <>➋</>
+                    <>➋ - ➊</>
+                    <>➋ - ➋</>
+                </>
+            </Notes>
+        </Split>
     </>
 ```
 
@@ -114,5 +112,9 @@ const App = () =>
                 <>x</>
             </>
         </Pills>
+        <Modal>
+            <>🥰</>
+            <>🌚</>
+        </Modal>
     </>
 ```

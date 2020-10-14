@@ -1,4 +1,4 @@
-import {Page, PageConfig, URLType, UserConfig} from './types'
+import {Page, PageConfig, URL as U, UserConfig} from './types'
 // ************************* 👌 FOR Components 👌 ************************* //
 
 export const topUp = (text=""):string => ""+text.charAt(0).toUpperCase()+""+text.slice(1).toLowerCase()
@@ -29,7 +29,7 @@ export const getWRate = (o=[] as number[],l=0,w=0,width=window.innerWidth) =>
         : Array(l).fill(l>0?1/l:l)
 
 // ************************* 👌 use-page 👌 ************************* //
-export const equalPathname = (...urls:(URLType|string|undefined|null|false)[]) =>
+export const equalPathname = (...urls:(U|string|undefined|null|false)[]) =>
     urls.map(u => typeof u==="string"? new URL(u) : u)
         .map(u => u && joinURL(u.pathname, "/"))
         .every((u, _, self) => u===self[0])
@@ -69,8 +69,8 @@ export const normPage = <T extends {}={}>(page:Page<T>) => {
     .forEach(([key,val]:any) => (state[key]=typeof val==="function"?val(state):val))
     const urls = joinPage<T>(state as Page<T>)
     return {...state, urls:urls instanceof Array
-      ? urls.map((u:any) => typeof u==="string" ? new URL(u) : u) as URLType[]
-      : [typeof urls==="string" ? new URL(urls) : urls] as URLType[] } as Page<T>
+      ? urls.map((u:any) => typeof u==="string" ? new URL(u) : u) as U[]
+      : [typeof urls==="string" ? new URL(urls) : urls] as U[] } as Page<T>
 }
 
 // ************************* 🙍‍♂️ For useUser 🙍 ************************* //

@@ -1,6 +1,6 @@
 import axios  from 'axios'
 import * as CODES from './codes'
-import {Credit, URLType, Page, topUp} from '../src'
+import {Credit, URL, Page, topUp} from '../src'
 // *************************📋 FOR NOTE 📋************************* //
 export const scrollTop=()=>document.getElementById('root')?.scroll({top:0,left:0,behavior:'smooth',});
 export const pageConfig = { onChange:() => scrollTop() }
@@ -14,14 +14,14 @@ export const customPage : Partial<Page<CustomPage>> = {
         `/api/note/${ id?id+'/':'' }`,
         status!=="UP"? `/auth/`: `/api/user/`]
 }
-export const fetcher = async (url:URLType,headers={'Content-Type':'application/json'}) =>
+export const fetcher = async (url:URL,headers={'Content-Type':'application/json'}) =>
    axios.get(url.href, {headers})
         .then(res => {
             if(!res || res.status!==200)
                 throw new Error('Bad Request')
             return res.data
         })
-export const signin = async (url:URLType, cred:Credit, headers={'Content-Type':'application/json'}) =>
+export const signin = async (url:URL, cred:Credit, headers={'Content-Type':'application/json'}) =>
    axios.post(url.href, cred, {headers})
         .then((res) => {
             if (res.status>201 || !res.data.token)

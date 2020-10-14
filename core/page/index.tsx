@@ -5,7 +5,7 @@ import {HelmetProvider} from 'react-helmet-async';
 import {ControlsProvider} from 'react-three-gui';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 
-// import {Home} from './Home';
+import {Home} from './Home';
 import {Hook} from './Hook';
 import {None} from './None';
 import {Note} from './Note';
@@ -20,11 +20,11 @@ const App = (
         <ControlsProvider>
             <BrowserRouter>
                 <Switch>
-                    <Route    path="/"     component={None} exact/>
+                    <Route    path="/"     component={Home} exact/>
+                    <Route    path="/home" component={Home}  exact/>
+                    <Route    path='/hook' component={Hook}/>
                     <Route    path="/note" component={Note}/>
                     <Route    path='/none' component={None}/>
-                    <Route    path='/hook' component={Hook}/>
-                    <Redirect path="/home" to='/' />
                     <Redirect              to='/none' />
                 </Switch>
             </BrowserRouter>

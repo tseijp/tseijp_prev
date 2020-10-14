@@ -5,7 +5,7 @@ import { Mdmd } from '@tsei/mdmd'
 import { useGrid } from 'use-grid'
 import { Card, Grow, Head, Icon } from '../src/components'
 import { useNote, usePage, useUser } from '../src/hooks'
-import { Modal, Notes, Pills, Sides, Trans } from '../src/containers'
+import { Modal, Notes, Pills, Split, Sides, Trans, Trees } from '../src/containers'
 import { customPage, CustomPage, pageConfig, fetcher, signin, scrollTop } from './utils'
 
 const styles:{[key:string]:CSS} = {
@@ -20,6 +20,7 @@ export const Note :FC = () => {
     const [lang, setLang] = useState<string>(page.language)
     const [size, setSize] = useGrid <number>({md:1, lg:1.5})
     const [dark, setDark] = useGrid <number>({md:1, lg:0  })
+    const [side,        ] = useGrid({xs:0,xl:89/233}) // todo ref and hidden:0 (edit useGrid)
     // ******************** FOR RENDER ******************** //
     const onView       = useMemo(()=>()=>setNote(p=>p?.next),[setNote])
     const onClick      = useMemo(()=>()=>setPage({id:""})   ,[setPage])
@@ -32,18 +33,35 @@ export const Note :FC = () => {
     return (
         <div style={{...styles.top, background:dark?"#000":"#f1f1f1", paddingTop:size*100,}}>
             <Head {...{dark,size,onClick,}}>Note</Head>
-            { note && note.results instanceof Array &&
-            <Notes {...(page.isHome?{}:{size,left,right})}>{note.results.map(({
-                ja_text="",//note_id="",author_name=null, //,posted_time=null,
-                en_text="",     id="" }) =>
-                <div key={id}>
-                    <Card {...{...page.isHome?{max:500,onClick:()=>setPage({id:id+""})}:{size},dark,space:size*25}}>
-                        <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
-                             source={lang==="ja"?ja_text:en_text}/>
-                    </Card>
-                </div> )}
-            </Notes> } { (!note || note.next) &&
-            <Grow {...{size,onView,onClick:()=>setNote(p=>p?p?.next||p?.now:null )}} /> }
+            <Split order={note?[side,-1]:[0,1]}>
+                <Card {...{dark,size,space:size*25, min:1}}>
+                    <Trees  {...{dark,size:size/2,root:page.id?0:1}}
+                            {...(page.id?{fontSize:"14px"}:{})}
+                        style={{fontSize:"1.2rem"}}
+                        topStyle={{padding:"1.2rem"}}>
+                        {side > 0 && note && note.results instanceof Array && note.results
+                            .map(n => [lang==='ja'? n?.ja_text : n?.en_text, n.id+""])
+                            .filter(([text]) => typeof text==="string" && text.trim()[0]==="#" )
+                            .map(([text,id]) => [text?.trim()?.split('\n')[0]?.replace(/#+ /g, ''), id])
+                            .map(([text,id]) => <span key={id}>{text}</span>)}
+                    </Trees>
+                </Card>
+                <>
+                    { note && note.results instanceof Array &&
+                    <Notes {...(page.isHome?{}:{size,left,right})}>
+                        {note.results.map(({
+                        ja_text="",//note_id="",author_name=null, //,posted_time=null,
+                        en_text="",     id="" }) =>
+                        <div key={id}>
+                            <Card {...{...page.isHome?{max:500,onClick:()=>setPage({id:id+""})}:{size},dark,space:size*25}}>
+                                <Mdmd color={dark?"dark":"elegant"} style={{fontSize:"1.2rem"}}
+                                     source={lang==="ja"?ja_text:en_text}/>
+                            </Card>
+                        </div> )}
+                    </Notes> } { (!note || note.next) &&
+                    <Grow {...{size,onClick:()=>onView(),onView}} /> }
+                </>
+            </Split>
             {/******************** Modals ********************/}
             <Modal {...{dark,size,open:!!page.status,onClose:()=>setPage({status:""})}}>
                 <Card {...{dark,size,style:{max:"100vh"},space:size*25}}>

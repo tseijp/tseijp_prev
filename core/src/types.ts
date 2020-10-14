@@ -14,7 +14,7 @@ export type Props<T extends {}={}> = Partial<T & {
 }>
 
 // ************************* 📅 For useNote 📅 ************************* //
-export type URLType = {
+export type URL = {
     hash: string; hostname: string; search    : string;
     host: string; username: string; protocol  : string;
     href: string; password: string; toString(): string;
@@ -36,9 +36,9 @@ export type NoteNode = null | {
       | null
       | undefined
 }
-//export type NoteURL = URLType | string | string[]
-export type NoteGetter<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
-export type NotePoster<T=NoteNode> = (url:URLType, headers?:any) => Promise<AxiosResponse<T>>
+//export type NoteURL = URL | string | string[]
+export type NoteGetter<T=NoteNode> = (url:URL, headers?:any) => Promise<AxiosResponse<T>>
+export type NotePoster<T=NoteNode> = (url:URL, headers?:any) => Promise<AxiosResponse<T>>
 export type NoteConfig = {onChange:() => void}
 
 // ************************* 👌 For usePage 👌 ************************* //
@@ -48,7 +48,7 @@ export type PageConfig<T={}> = Partial<{
 }>
 export type DefaultPage<T={}> = {
     [key:string]:any, //config:PageConfig<T>|null, //TODO : DEV
-    id:string,language:string,urls:URLType[]
+    id:string,language:string,urls:URL[]
     isHome :boolean,protocol:string,hostname:string,hash:string,
     isLocal:boolean,portname:string,pathname:string,search:string,
 }
@@ -72,5 +72,5 @@ export type UserConfig<T extends object|string=string,U=User<T>> = {
     onSignout:null|((u?:U)=>void), [key:string]:any,
 }
 export type UserSignin = (
-    url:URLType, credit:Credit, headers?:any
+    url:URL, credit:Credit, headers?:any
 ) => Promise<{username:string, authtoken:string}>

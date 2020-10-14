@@ -1,14 +1,14 @@
 import { useEffect, useCallback, useState, useRef } from 'react'
-import { None, NoteNode as NN, NoteGetter, NotePoster, NoteConfig, URLType, BasicProps } from '../types'
+import { None, NoteNode as NN, NoteGetter, NotePoster, NoteConfig, URL as U, BasicProps } from '../types'
 import { is, equalPathname } from '../utils'
 //import useSWR from 'swr'
 export const useNote = (
-    initGetURL: BasicProps<URLType|string>,
+    initGetURL: BasicProps<U|string>,
     initGetter: NoteGetter|null=null,
     initPoster: NotePoster|null=null,
     initNoteConfig: Partial<NoteConfig>={}
 ) : [ NN, (
-        updateGetURL: ((pre:NN)=>None<URLType|string>)|None<URLType|string>,
+        updateGetURL: ((pre:NN)=>None<U|string>)|None<U|string>,
         updateGetter?: NoteGetter|null,
         updateConfig?: Partial<NoteConfig>
     ) => void, (
@@ -18,7 +18,7 @@ export const useNote = (
 ] => {
     if (is.fun(initGetURL)) initGetURL = initGetURL()
     if (is.str(initGetURL)) initGetURL = new URL(initGetURL)
-    const getURLRef  = useRef<URLType>()
+    const getURLRef  = useRef<U>()
     const getterRef  = useRef(initGetter)
     const posterRef  = useRef(initPoster)
     const configRef  = useRef(initNoteConfig)
@@ -26,8 +26,8 @@ export const useNote = (
     const [note,set] = useState<NN>(null)
     //  ************************* 📋 useEffect 📋 *************************  //
     useEffect(() => {
-        if (equalPathname(getURLRef.current, initGetURL as URLType)) return
-        getURLRef.current = initGetURL as URLType
+        if (equalPathname(getURLRef.current, initGetURL as U)) return
+        getURLRef.current = initGetURL as U
         if  (isFetching.current) return
         else isFetching.current = true;
         if (getterRef.current)
@@ -75,10 +75,6 @@ export const useNote = (
         posterRef.current = updatePoster
         configRef.current = {...configRef.current, ...updateConfig}
         return
-        // TODO
-        // posterRef.current().then(res => {
-        //     setTimeout
-        // })
     }, [])
     return [note, getNote, postNote]
 }

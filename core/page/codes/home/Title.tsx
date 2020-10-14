@@ -2,7 +2,7 @@ import React, {FC, Suspense} from 'react'
 import {Flex} from 'react-three-flex'
 import {useSpring} from 'react-spring'
 import {useGesture} from 'react-use-gesture'
-import {Canvas,useFrame,useThree} from 'react-three-fiber'
+import {Canvas,useThree} from 'react-three-fiber'
 import {useControl as use} from 'react-three-gui'
 import {Title} from '../../../src'
 
@@ -17,18 +17,10 @@ const Content:FC = (props) => {
         </Flex>
     )
 }
-const Control = ({position=[0,0,0]}) => {
-    useFrame(({camera}) => {
-        camera.position.x =-position[0]
-        camera.position.y = position[1]
-        camera.position.z = position[2]
-    })
-    return null
-}
 export const HookTitle:FC = () => {
     const dark = use('dark', {type:'boolean', value:false})
     const size = use('size', {type:'number', value:1})
-    const camera = use('camera', {type:'xypad', value: {x:0,y:0}, scrub:true, distance:10})
+    // const camera = use('camera', {type:'xypad', value: {x:0,y:0}, scrub:true, distance:10})
     const position = use('position', {type:'xypad', value: {x:0,y:0}, scrub:true, distance:10})
     const children = use('title', {type:"select", value:items[0], items})
     const [, set] = useSpring(()=>({x:0,y:0}))
@@ -52,7 +44,6 @@ export const HookTitle:FC = () => {
                     position:[position.x, position.y, 0],
                     children,dark,size}}/>
             </Suspense>
-            <Control {...{position:[camera.x, camera.y, 10]}}/>
         </Canvas>
     )
 }

@@ -1,12 +1,14 @@
-import React, {FC,useEffect,useRef} from "react"
+import React, {FC,useEffect,useMemo,useRef} from "react"
 import {useFrame} from "react-three-fiber"
+import {Props} from '../../src'
 import * as THREE from "three"
-
+type Vec3 = [number,number,number]
 const vertexShader = `
+uniform float size;
 attribute float scale;
 void main() {
     vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-    gl_PointSize = scale * ( 300.0 / - mvPosition.z ) * 0.1;
+    gl_PointSize = size * scale * ( 300.0 / - mvPosition.z ) * 0.1;
     gl_Position = projectionMatrix * mvPosition;
 }`
 
@@ -16,11 +18,16 @@ void main() {
     if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
     gl_FragColor = vec4( color, 1.0 );
 }`
-
-const Points = ({amp=100,dist=1000,time=1,amount={x:50,y:50,}, ...props}) => {
+type Point = FC<Props<{amp:number,dist:number,time:number,amount:{x:number,y:number}}>>
+const Points:Point = ({
+    amp=1,dist=5,time=1,amount={x:50,y:50,},
+    color="", dark=false, size=1, style={}, ...props}) => {
     const geometry  = useRef<any>(null)
     const material  = useRef<any>(null)
-    const uniforms = {color:{value:new THREE.Color(0xffffff)}}
+    const uniforms = useMemo(() => ({
+        color: {value:new THREE.Color(color||dark?0xffffff:0x000000)},
+        size: {value: size}
+    }), [color,dark,size])
     const delta = useRef(0)
     useEffect(() => {
         const scales    = new Float32Array(amount.x*amount.y)
@@ -72,13 +79,19 @@ const Plane = ({...props}) => {
     )
 }
 
-export const Stage:FC<any> = ({
+export type Stage = FC<Props<{
+    position: Vec3,
+    rotation: Vec3,
+    scale   : Vec3,
+}>>
+export const Stage: Stage = ({
     position=[0, -11, 0],
     rotation=[0, 0, 0],
-    scale=[0.1,0.1,0.1]
+    scale=[0.1,0.1,0.1],
+    ...props
 }) => (
     <>
-        <Points {...{position,rotation,scale}}/>
+        <Points {...props} {...{position,rotation,scale}}/>
         <Plane  rotation={[-0.5*Math.PI, 0, 0]} position={[0, -11, 0]} />
     </>
 )

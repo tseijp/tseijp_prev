@@ -29,18 +29,18 @@
  ** ************************* ************** *************************/
 import {useCallback, useState, useMemo, useRef} from 'react'
 import {useCookies} from 'react-cookie'
-import {URLType,User,UserConfig,UserSignin} from '../types'
+import {URL,User,UserConfig,UserSignin} from '../types'
 import {defaultUserConfig} from '../utils'
 export const useUser = (
-    initURL :URLType,
+    initURL :URL,
     initSign:UserSignin,
     initConfig:Partial<UserConfig>=defaultUserConfig // TODO to config.keys.map
 ) : [ User, {(
-    updateURL ?:URLType|null,
+    updateURL ?:URL|null,
     updateSignin?:UserSignin|null,
     updateConfig?:Partial<UserConfig>,
 ) : void } ] => {
-    const urlRef    = useRef<URLType>(initURL)
+    const urlRef    = useRef<URL>(initURL)
     const signinRef = useRef<UserSignin>(initSign)
     const configRef = useRef<UserConfig>({...defaultUserConfig,...initConfig})
     const [cookies, set, del] = useCookies(configRef.current.keys)

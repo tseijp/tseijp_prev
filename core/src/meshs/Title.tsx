@@ -15,7 +15,7 @@ const styles:{[key:string]:any} = {
 }
 
 export const Title:FC<Props> = ({
-    children,dark=false,size=1
+    children,dark=false,size=1,//...props
 }) => {
     const {viewport} = useThree()
     return (
