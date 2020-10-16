@@ -1,33 +1,23 @@
 //import * as THREE from 'three'
-import  React, {FC, //CSSProperties as CSS, FC,
-        //useRef,useEffect, useState, useCallback, useLayoutEffect
-        } from 'react'
-import {useThree} from 'react-three-fiber'
-import {Box,} from 'react-three-flex'
-import {Text} from 'drei/abstractions/Text'
-// import * as hooks from 'hooks'
-//import {} from '../src'
+import React, {FC} from 'react'
+import {Text} from "drei";
+// import { EffectComposer, Bloom } from "react-postprocessing";
+import { useReflow} from "react-three-flex";
 import {Props} from '../types'
-const styles:{[key:string]:any} = {
-    top:  { dir:"row",width:"100%",height:"100%",align:"center",justify:"center"},
-    text: { anchorX:"center",letterSpacing:-.05,positionZ:0.5,
-            anchorY:"middle",lineHeight:1.0,}
-}
+type Anchor = number|"center"|"left"|"right"|undefined
 
-export const Title:FC<Props> = ({
-    children,dark=false,size=1,//...props
+export type Title = FC<Props<{anchorX:Anchor, anchorY:Anchor, textAlign:"center",href:string}>>
+export const Title:Title = ({
+    anchorX="center", anchorY="middle", textAlign="center", href="",
+    size=1, space=0, maxWidth=1, children, ...props
 }) => {
-    const {viewport} = useThree()
+    const reflow = useReflow()
+    const onClick = href? null: () => window.open(href)
     return (
-        <Box {...styles.top} centerAnchor>
-            <Text {...styles.text}
-                color={dark?"#818181":"#212121"}
-                fontSize={size}
-                maxWidth={(viewport.width/4) * 3}
-                letterSpacing={0.1}>
-                {children}
-               <meshStandardMaterial />
-            </Text>
-        </Box>
-    );
+        <Text {...props as any} {...{anchorX, anchorY, textAlign, maxWidth, onClick}}
+            onSync={reflow} letterSpacing={space} fontSize={size/2} lineHeight={size/2}>
+            {typeof children==="string"? children: (children as any)?.props?.children||''}
+            <meshStandardMaterial />
+        </Text>
+    )
 }

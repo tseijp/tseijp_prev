@@ -21,12 +21,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # """"""""""""""""""""""""" STATIC SETTINGS """"""""""""""""""""""""" #
 STATIC_URL = 'static/'
-STATIC_ROOT = osp.join(BASE_DIR, "/tseijp/static/")
+STATIC_ROOT = osp.join(BASE_DIR, "tseijp/static/")
 STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',)
 STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s/static/"%s) for s in
    ['core/build', 'core/public',
     'mdmd/build', 'core/src/hooks/use-grid/build',
-    'colo/build', 'core/src/hooks/use-amazon/build']]
+    'colo/build', 'core/src/hooks/use-book/build']]
 
 # """"""""""""""""""""""""" ORIGINAL SETTINGS """"""""""""""""""""""""" #
 INSTALLED_APPS += ['back']

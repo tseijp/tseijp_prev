@@ -1,12 +1,12 @@
 [submodule "core/src/hooks/use-grid"]
 	path = core/src/hooks/use-grid
 	url = https://github.com/tseijp/use-grid
-[submodule "core/src/hooks/use-amazon"]
-	path = core/src/hooks/use-amazon
-	url = https://github.com/tseijp/use-amazon
 [submodule "mdmd"]
 	path = mdmd
 	url = https://github.com/tseijp/mdmd
 [submodule "colo"]
 	path = colo
 	url = https://github.com/tseijp/colo
+[submodule "core/src/hooks/use-book"]
+	path = core/src/hooks/use-book
+	url = https://github.com/tseijp/use-book

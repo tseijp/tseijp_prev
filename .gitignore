@@ -4,13 +4,14 @@ tseijp.sock
 
 ### core ###
 **/build
+**/build/*
 /core/build
 /core/src/hooks/use-grid/*
 /core/src/hooks/use-page/*
-/core/src/hooks/use-amazon/*
+/core/src/hooks/use-book/*
 !/core/src/hooks/use-grid/src
 !/core/src/hooks/use-page/src
-!/core/src/hooks/use-amazon/src
+!/core/src/hooks/use-book/src
 
 # created by create-react-app
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

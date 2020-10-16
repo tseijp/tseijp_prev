@@ -14,7 +14,6 @@ export const HookKinect :FC = () => {
     const zOffset = use('zOffset', {type:'number', value:1000, min:0, max:2000})
     const space = use('space', {type:'number', value:5, min:0, max:10})
     const url = use('url', {type: "select", items: ["/static/core/kinect.mp4", ""]})
-    const pos = use('position', {type:'xypad', value: {x:0,y:0}, scrub:true, distance:1000})
     const props = {
         nearClipping,
         farClipping,
@@ -24,7 +23,6 @@ export const HookKinect :FC = () => {
         zOffset,
         space,
         url,
-        position:[pos.x, 0, 500+pos.y]
     }
     return (
         <Canvas gl={{antialias:false, logarithmicDepthBuffer: true}}

@@ -21,11 +21,11 @@ router.register(r'note', NoteViewSet)
 router.register(r'user', UserViewSet, basename="user")
 
 # """"""""""""""""""""""""" ROUTING """"""""""""""""""""""""" #
-def mdmd      (request):return render(request, 'mdmd/build/index.html')
-def colo      (request):return render(request, 'colo/build/index.html')
-def core      (request):return render(request, 'core/build/index.html')
-def use_grid  (request):return render(request, 'core/src/hooks/use-grid/build/index.html')
-def use_amazon(request):return render(request, 'core/src/hooks/use-amazon/build/index.html')
+def mdmd    (request):return render(request, 'mdmd/build/index.html')
+def colo    (request):return render(request, 'colo/build/index.html')
+def core    (request):return render(request, 'core/build/index.html')
+def use_grid(request):return render(request, 'core/src/hooks/use-grid/build/index.html')
+def use_book(request):return render(request, 'core/src/hooks/use-book/build/index.html')
 
 # """"""""""""""""""""""""" URL """"""""""""""""""""""""" #
 urlpatterns = [
@@ -34,8 +34,8 @@ urlpatterns = [
     path('api/'  , include(router.urls)),
     path('register', register),
     *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
-    re_path('hook/use-amazon', use_amazon, name='use_amazon'),
-    re_path('hook/use-grid'  , use_grid  , name='use_grid'),
+    re_path('hook/use-book', use_book, name='use_book'),
+    re_path('hook/use-grid', use_grid, name='use_grid'),
     re_path('mdmd', mdmd, name='mdmd'),
     re_path('colo', colo, name='colo'),
     re_path(''    , core, name='home'),
