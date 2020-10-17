@@ -9,15 +9,15 @@ import {
     Title, Stage,
     Sides, Trans,
 } from '../src'
-
-const state = {
-  top: 0
-};
 const styles: {[key:string]: React.CSSProperties} = {
     scroll:{position: "absolute",top: 0,left: 0,width: "100vw",height: "100vh",overflow: "auto",},
     html: {display:"flex", justifyContent: "space-evenly"},
 }
-
+const width  = "100%"
+const height = "100%"
+const state = {
+    top: 0
+};
 function Page ({ onChangePages }:any) {
     const vec = new THREE.Vector3();
     const group = useRef<THREE.Group>();
@@ -28,11 +28,11 @@ function Page ({ onChangePages }:any) {
     return (
         <group ref={group}>
             <Stage position={[0,-1,-10]} size={.1} dark={true}/>
-            <Flex dir="column" size={[...aspect, 0] as any} onReflow={onReflow} width="100%" height="100%">
-                <Box marginBottom={2}><Title>TSEI.jp</Title></Box>
-                <Box dir="column" width="100%" height="100%">
-                    <Box width="100%" height="100%">
-                        <Html center style={{width:"50vw", height:"100%", ...styles.html}}>
+            <Flex dir="column" size={[...aspect, 0] as any} {...{onReflow,width,height}}>
+                <Box marginBottom={2}><Title dark>TSEI.jp</Title></Box>
+                <Box dir="column" {...{width, height}}>
+                    <Box {...{width, height}}>
+                        <Html center style={{width:"50vw", height, ...styles.html}}>
                             <Icon fab="twitter"    onClick={()=>window.open('https://twitter.com/tseijp')}/>
                             <Icon fab="github"     onClick={()=>window.open('https://github.com/tseijp')} />
                             <Icon fab="soundcloud" onClick={()=>window.open('https://soundcloud.com/tsei')}/>

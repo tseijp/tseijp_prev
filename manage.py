@@ -48,14 +48,19 @@ def main():
         sub.run("npm run build".split(), shell=True, cwd='./core')
         static(*args)
 
+    def reset(*args):
+        sub.run("git fetch".spit(), shell=True, cwd='.')
+        sub.run("git reset --hard origin/master".spit(), shell=True, cwd='.')
+        sub.run("sudo systemcsl restart gunicorn.service".split(), shell=True, cwd='.')
+
     # TODO
     def init(*args):
         sub.run("git submodule foreach git fetch".spit(), shell=True, cwd='.')
         sub.run("npm run build".split(), shell=True, cwd='./core')
-        sub.run("npm run build".split(), shell=True, cwd='./core/src/components/colo')
-        sub.run("npm run build".split(), shell=True, cwd='./core/src/components/mdmd')
+        sub.run("npm run build".split(), shell=True, cwd='./colo')
+        sub.run("npm run build".split(), shell=True, cwd='./mdmd')
         sub.run("npm run build".split(), shell=True, cwd='./core/src/hooks/use-grid' )
-        sub.run("npm run build".split(), shell=True, cwd='./core/src/hooks/use-amazon')
+        sub.run("npm run build".split(), shell=True, cwd='./core/src/hooks/use-book')
         static(*args)
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:

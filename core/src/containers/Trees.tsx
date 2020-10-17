@@ -43,10 +43,10 @@ export type TreeContent = FC<Props<{
 export const TreesContent:TreeContent = ({
     content,type,set,hide=false,icon="Close",opacity=1,dark=false,
 }) => {
-    const Icon = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
-    const color = useMemo(() => dark?"#818181":"#212121", [dark])
-    const iconClick = useCallback(() => set&&set((p:any) => ({open:!p.open,immediate:false})), [set])
+    const Icon  = useMemo(() => TreeIcon[`${icon}SquareO`], [icon])
+    const color = useMemo(() => dark? "#818181": "#212121", [dark])
     const eyeClick  = useCallback(() => set&&set((p:any) => ({...p        ,immediate:true })), [set])
+    const iconClick = useCallback(() => set&&set((p:any) => ({open:!p.open,immediate:false})), [set])
     return !content ? null : (
         <>
             <Icon style={{...styles.tggl, opacity, color}} onClick={iconClick}/>

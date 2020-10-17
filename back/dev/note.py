@@ -1144,9 +1144,9 @@ scripts
 - [ref]
 - [Quagga.js on react - CodeSandbox](https://codesandbox.io/s/quaggajs-on-react-eexx8)
 
-React上でブックカバーのバーコードから商品の画像を取得する[ライブラリ](https://github.com/tseijp/use-amazon)を公開しました．
+React上でブックカバーのバーコードから商品の画像を取得する[ライブラリ](https://github.com/tseijp/use-book)を公開しました．
 Webでカメラからバーコードを認識して探索結果の一覧を表示します．
-[デモ](https://tsei.jp/useamazon)で用いたコードは，[Github](https://github.com/tseijp/use-amazon/blob/master/src/components/Scanner.tsx)で公開してます．
+[デモ](https://tsei.jp/hook/use-book)で用いたコードは，[Github](https://github.com/tseijp/use-book/blob/master/src/components/Scanner.tsx)で公開してます．
 """,
 
 """## スキャナーのサンプルコード
