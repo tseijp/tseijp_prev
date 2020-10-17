@@ -2,11 +2,6 @@
 run.bat
 tseijp.sock
 
-### core ###
-**/build
-**/build/*
-/core/build
-
 # created by create-react-app
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -70,7 +65,7 @@ media
 
 # Distribution / packaging
 .Python
-build/
+#build/
 develop-eggs/
 dist/
 downloads/
