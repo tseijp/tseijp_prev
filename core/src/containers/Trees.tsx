@@ -21,7 +21,8 @@ const styles:{[key:string]:CSS} = {
            verticalAlign:'middle',whiteSpace:'nowrap',textOverflow:'ellipsis',},
     tggl: {verticalAlign:'middle',width:'1em',height:'1em',cursor:'pointer',marginRight:10,},
     type: {verticalAlign:'middle',fontSize:'0.6em',fontFamily:'monospace',textTransform:'uppercase',},
-    cont: {willChange:'transform, opacity, height',marginLeft:6,},
+    cont: {verticalAlign:'middle',display:"inline-block",},
+    top: {willChange:'transform, opacity, height',marginLeft:6,},
 }
 const paths = {
     close:"M717.5 589.5q-10.5 10.5 -25.5 10.5t-26 -10l-154 -155l-154 155q-11 10 -26 10t-25.5 -10.5t-10.5 -25.5t11 -25l154 -155l-154 -155q-11 -10 -11 -25t10.5 -25.5t25.5 -10.5t26 10l154 155l154 -155q11 -10 26 -10t25.5 10.5t10.5 25t-11 25.5l-154 155l154 155 q11 10 11 25t-10.5 25.5zM888 760v0v0v-753v0h-752v0v753v0h752zM888 832h-752q-30 0 -51 -21t-21 -51v-753q0 -29 21 -50.5t51 -21.5h753q29 0 50.5 21.5t21.5 50.5v753q0 30 -21.5 51t-51.5 21v0z",
@@ -53,7 +54,7 @@ export const TreesContent:TreeContent = ({
             <span style={{...styles.type, marginRight:type?10:0,color}}>{type}</span>
             { hide &&
             <TreeIcon.EyeO style={{...styles.tggl, color}} onClick={eyeClick}/> }
-            <span style={{verticalAlign:'middle',color}}>{content}</span>
+            <span style={{...styles.cont,color}}>{content}</span>
         </>
     )
 }
@@ -92,7 +93,7 @@ export const Trees:Trees = ({
             <TreesContent{...{...props, icon, set, opacity:children?.length?1:.3, dark, size}}/>
             <a.div style={{
                 ...(depth>0?{borderLeft:`1px dashed #${dark?818181:212121}`}:{}),
-                ...styles.cont, padding:`4px 0px 0px ${size*25}px`,
+                ...styles.top, padding:`4px 0px 0px ${size*25}px`,
                 ...spring, }}>{children}</a.div>
         </a.div>
     )

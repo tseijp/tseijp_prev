@@ -28,22 +28,3 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY    = '243261037962-c4dg6k0nahvsho217f070c3togq62jd6.apps.googleusercontent.com'  #Paste CLient Key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2FX1OYni7_LhdNgpQuwgPQzE'  #Paste Secret Key
-
-""" NOT USING
-# Static files (CSS, JavaScript, Images) -------------------------------------
-### [ref:Django staticファイルとAWS S3 - Qiita](https://qiita.com/sand/items/2eae781e2b904e0e67b9)
-INSTALLED_APPS+=['storages']
-
-#STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-### AWS SETTINGS
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = 'AKIAR7LHZIYFUK4SNPU7'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'tseijp-static'
-
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
-ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-"""

@@ -1686,8 +1686,8 @@ type Id<T> = { [P in keyof T]: T[P] }
 ```
 """,
 
-0, # """"""""""""""""""""""""" JS """"""""""""""""""""""""" #
-"""# JS の落とし穴と対策
+0, # """"""""""""""""""""""""" JS, TS """"""""""""""""""""""""" #
+"""# JS, TS の落とし穴と対策
 よく指摘されるエラーと，回避させる方法をまとめました．
 
 
@@ -1718,6 +1718,10 @@ f<number>(2)
 
 `Argument of type 'any[]' is not assignable to parameter of type 'ConcatArray<never>'.`
 - 型がない場合は，`.concat(...(arr as never[])`を通す
+
+TypeScript error in **/node_modules/**/types.d.ts(1,13): '=' expected.  TS1005
+- `> 1 | import type React from 'react';`でエラー
+- typescript<3.8.3だと子の構文に対応していないので，`npm i -D typescript`を実行する
 """,
 
 """## その他

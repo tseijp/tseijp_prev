@@ -25,10 +25,10 @@ export const HookTitle:FC = () => {
     const anchorY   = use('anchorY'   , {type:"select", value:  ANCHORY[0], items: ANCHORY})
     const textAlign = use('textAllign', {type:"select", value:TEXTALIGN[0], items: TEXTALIGN})
     const children  = use('children'  , {type:"select", value:items[0], items})
-    const dark = use('dark', {type:'boolean', value:false})
-    const size = use('size', {type:'number', value:1, min:0, max:10})
-    const space = use('space', {type:'number', value:1, min:0, max:10})
     const maxWidth = use('maxWidth', {type:'number', value:-1, min:-2, max:2})
+    const space = use('space', {type:'number', value:1, min:0, max:10})
+    const size = use('size', {type:'number', value:1, min:0, max:10})
+    const dark = use('dark', {type:'boolean', value:false})
     return (
         <Canvas
             style={{width:"100%",height:"100vh",margin:0,padding:0}}
@@ -41,6 +41,7 @@ export const HookTitle:FC = () => {
             <ambientLight intensity={0.4} />
             <spotLight  castShadow angle={0.3} penumbra ={1} shadow-mapSize-width ={1024}
                         position={[0, 10, 20]} intensity={5} shadow-mapSize-height={1024} />
+            <gridHelper position={[0,-.1,1]} scale={[.2,.2,.2]}/>
             <Suspense fallback={null}>
                 <TransformControls>
                     <Content {...{
@@ -64,8 +65,9 @@ const App = () =>
         anchorX="center"
         anchorY="center"
         textAlign="center"
-        dark={false}
-        size={1}
+        maxWidth={-1}
         space={[1,1]}
-        maxWidth={-1}>
-        TSEIJP</Title>`
+        size={1}
+        dark={false}>
+        TSEIJP
+    </Title>`
