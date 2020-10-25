@@ -25,7 +25,7 @@ STATIC_ROOT = osp.join(BASE_DIR, "static/")
 STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',)
 STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s/static/"%s) for s in
    ['core/build', 'core/public',
-    'rmil/build', #'urei/build',
+    'rmol/build', #'urei/build',
     'mdmd/build', 'core/src/hooks/use-grid/build',
     'colo/build', 'core/src/hooks/use-book/build']]
 
