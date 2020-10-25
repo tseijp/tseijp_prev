@@ -10,3 +10,9 @@
 [submodule "core/src/hooks/use-book"]
 	path = core/src/hooks/use-book
 	url = https://github.com/tseijp/use-book
+[submodule "urei"]
+	path = urei
+	url = https://github.com/tseijp/urei
+[submodule "rmol"]
+	path = rmol
+	url = https://github.com/tseijp/react-mol
