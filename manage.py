@@ -12,7 +12,7 @@ import sys
 import shutil
 import socket
 import subprocess as sub
-
+from django.core.management.utils import get_random_secret_key
 #  """""""""""""""""""""""""  FOR UTILS  """""""""""""""""""""""""  #
 def printqr():
     try:
@@ -43,6 +43,11 @@ def main():
     def static(*args):
         sub.run([*args, *'collectstatic -c --noinput'.split()], shell=True)
 
+    def secret(*args):
+        secret_key = get_random_secret_key()
+        text = 'SECRET_KEY = \'{0}\''.format(secret_key)
+        print(text)
+
     def update(*args):
         sub.run("npm run compile".split(), shell=True, cwd='./core')
         sub.run("npm run build".split(), shell=True, cwd='./core')
@@ -56,9 +61,9 @@ def main():
 
     # TODO
     def init(*args):
+        sub.run("git submodule update --init --recursive".spit(), shell=True, cwd='.')
         sub.run("git submodule foreach git fetch".spit(), shell=True, cwd='.')
         sub.run("git submodule foreach git merge".spit(), shell=True, cwd='.')
-        sub.run("git submodlue foreach npm run build".split(), shell=True, cwd='.')
         static(*args)
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:

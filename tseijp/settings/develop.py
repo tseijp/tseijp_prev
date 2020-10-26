@@ -1,12 +1,10 @@
 from .base import *
-
+from django.core.management.utils import get_random_secret_key
 # """"""""""""""""""""""""" DEV SETTINGS """"""""""""""""""""""""" #
-SECRET_KEY = '27-i4ny+76!c1+5soukzg72q!2zh^-9@@$h*hnfs=cv3lj*yi6'
+SECRET_KEY = get_random_secret_key()
 DEBUG = True
 ALLOWED_HOSTS = ['*', 'localhost', '192.168.0.112']
 DATABASES = {'default': {
-   #'ENGINE': 'django.db.backends.sqlite3',
-   #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),}}
     'PASSWORD': 'django1234',
     'ENGINE'  : 'django.db.backends.postgresql_psycopg2',
     'NAME'    : 'tseijp', 'HOST': 'localhost',
