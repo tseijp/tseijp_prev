@@ -5,11 +5,10 @@ SECRET_KEY = get_random_secret_key()
 DEBUG = True
 ALLOWED_HOSTS = ['*', 'localhost', '192.168.0.112']
 DATABASES = {'default': {
-    'PASSWORD': 'django1234',
-    'ENGINE'  : 'django.db.backends.postgresql_psycopg2',
-    'NAME'    : 'tseijp', 'HOST': 'localhost',
-    'USER'    : 'tseijp', 'PORT': '5432',
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': osp.join(BASE_DIR, 'db.sqlite3'),
 }}
+
 
 # """"""""""""""""""""""""" CORS SETTING """"""""""""""""""""""""" #
 INSTALLED_APPS += ['corsheaders']

@@ -1,18 +1,20 @@
-[submodule "core/src/hooks/use-grid"]
-	path = core/src/hooks/use-grid
-	url = https://github.com/tseijp/use-grid
 [submodule "mdmd"]
 	path = mdmd
 	url = https://github.com/tseijp/mdmd
+	branch = master
 [submodule "colo"]
 	path = colo
 	url = https://github.com/tseijp/colo
-[submodule "core/src/hooks/use-book"]
-	path = core/src/hooks/use-book
-	url = https://github.com/tseijp/use-book
+	branch = master
 [submodule "urei"]
 	path = urei
 	url = https://github.com/tseijp/urei
+	branch = master
 [submodule "rmol"]
 	path = rmol
 	url = https://github.com/tseijp/react-mol
+	branch = master
+[submodule "core"]
+	path = core
+	url = https://github.com/tseijp/core
+	branch = master

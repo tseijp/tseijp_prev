@@ -32,9 +32,6 @@ STATICFILES_DIRS = [ osp.join(BASE_DIR, "%s/static/"%s) for s in
 # """"""""""""""""""""""""" ORIGINAL SETTINGS """"""""""""""""""""""""" #
 INSTALLED_APPS += ['back']
 INSTALLED_APPS += ['rest_framework%s'%s for s in ['','.authtoken']]
-INSTALLED_APPS += ['django_hosts' ,# it's sub domain lib for exam : note.tsei.jp/1
-                   'widget_tweaks',# from ocw
-                   'social_django']# signup with google
 REST_FRAMEWORK = {'DEFAULT_%s_CLASSES'%a:('rest_framework.%s'%b,) for a,b in
   [['AUTHENTICATION','authentication.TokenAuthentication'],
    ['PERMISSION'    ,'permissions.IsAuthenticated'       ],

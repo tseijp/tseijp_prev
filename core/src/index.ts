@@ -1,6 +1,0 @@
-export * from './components'
-export * from './containers'
-export * from './hooks'
-export * from './meshs'
-export * from './types'
-export * from './utils'
