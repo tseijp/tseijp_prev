@@ -9,11 +9,12 @@
 #  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  #
 import os
 import sys
-import shutil
 import socket
 import subprocess as sub
 from django.core.management.utils import get_random_secret_key
 #  """""""""""""""""""""""""  FOR UTILS  """""""""""""""""""""""""  #
+
+
 def printqr():
     try:
         host = socket.gethostname()
@@ -23,10 +24,12 @@ def printqr():
     except:
         pass
 
+
 def main():
-#  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
-    def run (*args):
-        sub.run([*args,'runserver','0.0.0.0:8000'], shell=True, cwd=".")
+    #  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
+
+    def run(*args):
+        sub.run([*args, 'runserver', '0.0.0.0:8000'],  shell=True, cwd=".")
         sub.run("start http://localhost:8000".split(), shell=True, cwd='.')
 
     def test(*args):
@@ -71,7 +74,7 @@ def main():
             if sys.argv[-1] == key:
                 return fn(sys.executable, sys.argv[0])
     except ImportError as exc:
-        raise Error(
+        raise ImportError(
             "Unexpected error (;_;)"
             "Check your custom command."
         ) from exc

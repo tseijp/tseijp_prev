@@ -41,6 +41,5 @@ urlpatterns = [
     re_path('colo', colo, name='colo'),
     re_path('mdmd', mdmd, name='mdmd'),
     re_path('rmol', rmol, name='rmol'),
-#    re_path('urei', urei, name='urei'),
-    re_path(''    , core, name='home'),
+    re_path('', core, name='home'),
 ]
