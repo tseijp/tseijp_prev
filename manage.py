@@ -27,44 +27,33 @@ def printqr():
 
 
 def main():
-    def run(*args):
+    def runserver(*args):
         sub.run([*args, 'runserver', '0.0.0.0:8000'], shell=True, cwd=".")
         sub.run("start http://localhost:8000".split(), shell=True)
 
-    def test(*args):
-        sub.run("npm run jest".split(), shell=True, cwd='./core')
-
     def start(*args):
-        # proc = sub.Popen("npm start".split(), shell=True, cwd='./core')
-        printqr()
-        run(*args)
-        # proc.close()
+        proc = sub.Popen("npm start".split(), shell=True, cwd='./note')
+        runserver(*args)
+        proc.close()
 
     def static(*args):
-        option = "-c --noinput -i static/".split()
-        sub.run([*args, 'collectstatic', *option], shell=True)
+        opt = "-c --noinput --ignore=static/".split()  # -i static/
+        sub.run([*args, 'collectstatic', *opt], shell=True)
 
     def secret(*args):
         secret_key = get_random_secret_key()
         text = 'SECRET_KEY = \'{0}\''.format(secret_key)
         print(text)
 
-    def reset(*args):
-        sub.run("git pull".spit(), shell=True)
-        sub.run("git reset --hard origin/master".spit(), shell=True)
-        static(*args)
-        sub.run("sudo systemcsl restart gunicorn.service".split(), shell=True)
-
     def update(*args):
         sub.run("git submodule foreach npm run build".split(), shell=True)
         static(*args)
-        run(*args)
-        sub.run("start http://localhost:8000/grid".split(), shell=True)
+        runserver(*args)
 
     def direction(*args):
         cmd = [sys.executable, "-m pip install".split(), REQUIREMENTS]
         sub.run(cmd, shell=True)
-        sub.run(*args)
+        runserver(*args)
         sub.run("start http://localhost:8000".split(), shell=True)
 
     def initialize(*args):
@@ -74,6 +63,14 @@ def main():
         sub.run("git submodule foreach npm run build".spit(), shell=True)
         sub.run("start http://localhost:8000".split(), shell=True)
         static(*args)
+
+    def reset(*args):
+        sub.run("git pull origin master".spit(), shell=True)
+        sub.run("git reset --hard origin/master".spit(), shell=True)
+        sub.run("git submodule git pull origin master".spit(), shell=True)
+        sub.run("git submodule git reset --hard origin/master".spit(), shell=True)
+        sub.run("sudo systemctl restart gunicorn.service".split(), shell=True)
+
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:
         for key, fn in locals().items():

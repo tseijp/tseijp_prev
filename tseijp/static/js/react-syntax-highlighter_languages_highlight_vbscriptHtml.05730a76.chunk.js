@@ -1,0 +1,2 @@
+(this["webpackJsonpuse-grid"]=this["webpackJsonpuse-grid"]||[]).push([[175],{269:function(n,s){n.exports=function(n){return{name:"VBScript in HTML",subLanguage:"xml",contains:[{begin:"<%",end:"%>",subLanguage:"vbscript"}]}}}}]);
+//# sourceMappingURL=react-syntax-highlighter_languages_highlight_vbscriptHtml.05730a76.chunk.js.map

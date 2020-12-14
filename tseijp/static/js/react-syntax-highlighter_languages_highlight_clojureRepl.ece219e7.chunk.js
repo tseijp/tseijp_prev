@@ -1,0 +1,2 @@
+(this["webpackJsonpuse-grid"]=this["webpackJsonpuse-grid"]||[]).push([[29],{118:function(s,e){s.exports=function(s){return{name:"Clojure REPL",contains:[{className:"meta",begin:/^([\w.-]+|\s*#_)?=>/,starts:{end:/$/,subLanguage:"clojure"}}]}}}}]);
+//# sourceMappingURL=react-syntax-highlighter_languages_highlight_clojureRepl.ece219e7.chunk.js.map

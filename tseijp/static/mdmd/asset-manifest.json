@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.js": "/static/js/main.1d0d2138.chunk.js",
+    "main.js.map": "/static/js/main.1d0d2138.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.4bfb6339.js",
+    "runtime-main.js.map": "/static/js/runtime-main.4bfb6339.js.map",
+    "static/css/2.d2cdd3c6.chunk.css": "/static/css/2.d2cdd3c6.chunk.css",
+    "static/js/2.137a67d0.chunk.js": "/static/js/2.137a67d0.chunk.js",
+    "static/js/2.137a67d0.chunk.js.map": "/static/js/2.137a67d0.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.c2dc74bc0975b557eb4ee9f4e2bc97c0.js": "/precache-manifest.c2dc74bc0975b557eb4ee9f4e2bc97c0.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.d2cdd3c6.chunk.css.map": "/static/css/2.d2cdd3c6.chunk.css.map",
+    "static/js/2.137a67d0.chunk.js.LICENSE.txt": "/static/js/2.137a67d0.chunk.js.LICENSE.txt",
+    "static/media/About.md": "/static/media/About.05374727.md",
+    "static/media/Basic.md": "/static/media/Basic.faa17e22.md",
+    "static/media/Component.md": "/static/media/Component.6c791648.md",
+    "static/media/Container.md": "/static/media/Container.ed6be2c2.md",
+    "static/media/Content.md": "/static/media/Content.185a9f22.md",
+    "static/media/Grid.md": "/static/media/Grid.8d3f1f49.md",
+    "static/media/Help.md": "/static/media/Help.5aecf85a.md",
+    "static/media/How.md": "/static/media/How.b77fae6b.md",
+    "static/media/Test.md": "/static/media/Test.f44e1c49.md",
+    "static/media/mdb.css": "/static/media/arrow_right.8ef6a08c.svg",
+    "static/media/all.min.css": "/static/media/fa-solid-900.8e1ed89b.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4bfb6339.js",
+    "static/css/2.d2cdd3c6.chunk.css",
+    "static/js/2.137a67d0.chunk.js",
+    "static/js/main.1d0d2138.chunk.js"
+  ]
+}

@@ -1,0 +1,2 @@
+(this["webpackJsonpuse-grid"]=this["webpackJsonpuse-grid"]||[]).push([[114],{208:function(s,n){s.exports=function(s){return{name:"Node REPL",contains:[{className:"meta",starts:{end:/ |$/,starts:{end:"$",subLanguage:"javascript"}},variants:[{begin:/^>(?=[ ]|$)/},{begin:/^\.\.\.(?=[ ]|$)/}]}]}}}}]);
+//# sourceMappingURL=react-syntax-highlighter_languages_highlight_nodeRepl.276528d1.chunk.js.map

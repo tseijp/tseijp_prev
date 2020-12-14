@@ -10,6 +10,7 @@
 import os
 import os.path as osp
 
+
 # """"""""""""""""""""""""" """""""""""" """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" BASE SETTING """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" """""""""""" """"""""""""""""""""""""" #
@@ -22,19 +23,25 @@ AUTH_PASSWORD_VALIDATORS = [
    ['UserAttributeSimilarity', 'MinimumLength'
     'CommonPassword', 'NumerizcPassword']]
 
+
 # """"""""""""""""""""""""" """"""""""""""" """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" STATIC SETTINGS """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" """"""""""""""" """"""""""""""""""""""""" #
-prjs = [s for s in os.listdir() if osp.isdir("%s/build/%s" % (s, s))]
+submodules = [s for s in os.listdir() if osp.isdir("%s/build/%s" % (s, s))]
 STATIC_URL = 'static/'
 STATIC_ROOT = osp.join(BASE_DIR, "tseijp/static/")
-STATICFILES_DIRS = [osp.join(BASE_DIR, "%s/build/%s/static" % (s, s)) for s in prjs]
-STATICFILES_DIRS += [osp.join(BASE_DIR, "%s/build" % (s)) for s in prjs]
+STATICFILES_DIRS = []
+for s in submodules:
+    STATICFILES_DIRS += [
+        osp.join(BASE_DIR, "%s/build/%s/static" % (s, s)),
+        osp.join(BASE_DIR, "%s/build" % (s))
+    ]
+
 
 # """"""""""""""""""""""""" """"""""""""""""" """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" ORIGINAL SETTINGS """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" """"""""""""""""" """"""""""""""""""""""""" #
-INSTALLED_APPS += ['back']
+INSTALLED_APPS += ['note']
 INSTALLED_APPS += ['rest_framework%s' % s for s in ['', '.authtoken']]
 REST_FRAMEWORK = {'DEFAULT_%s_CLASSES' % a: (
     'rest_framework.%s' % b,) for a, b in [
@@ -42,6 +49,7 @@ REST_FRAMEWORK = {'DEFAULT_%s_CLASSES' % a: (
     ['PERMISSION', 'permissions.IsAuthenticated'],
     ['RENDERER', 'renderers.JSONRenderer']
 ]}
+
 
 # """"""""""""""""""""""""" """""""""""""""" """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" DEFAULT SETTINGS """"""""""""""""""""""""" #
@@ -57,14 +65,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-MIDDLEWARE = ['django%smiddleware.%sMiddleware' % (a, b) for a, b in[
-    ['.', 'common.Common'],
-    ['.', 'csrf.CsrfView'],
-    ['.', 'security.Security'],
-    ['.', 'clickjacking.XFrameOptions'],
-    ['.contrib.sessions.', 'Session'],
-    ['.contrib.messages.', 'Message'],
-    ['.contrib.auth.', 'Authentication']]]
+MIDDLEWARE = ['django.%smiddleware.%sMiddleware' % (a, b) for a, b in [
+    ['', 'common.Common'],
+    ['', 'csrf.CsrfView'],
+    ['', 'security.Security'],
+    ['', 'clickjacking.XFrameOptions'],
+    ['contrib.sessions.', 'Session'],
+    ['contrib.messages.', 'Message'],
+    ['contrib.auth.', 'Authentication']]]
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [osp.normpath(BASE_DIR), ],
