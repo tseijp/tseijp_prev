@@ -20,8 +20,8 @@ INSTALLED_APPS = ['django.contrib.%s' % s for s in [
     'admin', 'auth', 'contenttypes', 'sessions', 'messages', 'staticfiles']]
 AUTH_PASSWORD_VALIDATORS = [
    {'NAME': 'django.contrib.auth.password_validation.%sValidator' % s} for s in
-   ['UserAttributeSimilarity', 'MinimumLength'
-    'CommonPassword', 'NumerizcPassword']]
+   ['UserAttributeSimilarity', 'MinimumLength',
+    'CommonPassword', 'NumericPassword']]
 
 
 # """"""""""""""""""""""""" """"""""""""""" """"""""""""""""""""""""" #
