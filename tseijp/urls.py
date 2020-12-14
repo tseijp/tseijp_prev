@@ -21,7 +21,7 @@ router = routers.SimpleRouter()
 router.register(r'note', NoteViewSet)
 router.register(r'user', UserViewSet, basename="user")
 
-submodules = [s for s in os.listdir() if osp.isdir("%s/build/%s" % (s, s))]
+submodules = [s for s in os.listdir() if osp.isfile("tseijp/static/%s/index.html" % (s))]
 submodules = sorted(submodules, key=lambda v: v == "core")
 
 urlpatterns = [
