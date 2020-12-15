@@ -29,7 +29,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # """"""""""""""""""""""""" """"""""""""""" """"""""""""""""""""""""" #
 submodules = [s for s in os.listdir() if osp.isdir("%s/build/%s" % (s, s))]
 STATIC_URL = 'static/'
-STATIC_ROOT = osp.join(BASE_DIR, "tseijp/static/")
+STATIC_ROOT = osp.join(BASE_DIR, "static/")
 STATICFILES_DIRS = []
 for s in submodules:
     STATICFILES_DIRS += [
