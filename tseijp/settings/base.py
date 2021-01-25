@@ -29,7 +29,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # """"""""""""""""""""""""" """"""""""""""" """"""""""""""""""""""""" #
 submodules = [s for s in os.listdir() if osp.isdir("%s/build/%s" % (s, s))]
 STATIC_URL = 'static/'
-STATIC_ROOT = osp.join(BASE_DIR, "static/")
+STATIC_ROOT = osp.join(BASE_DIR, "tseijp/static/")
 STATICFILES_DIRS = []
 for s in submodules:
     STATICFILES_DIRS += [
@@ -41,7 +41,7 @@ for s in submodules:
 # """"""""""""""""""""""""" """"""""""""""""" """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" ORIGINAL SETTINGS """"""""""""""""""""""""" #
 # """"""""""""""""""""""""" """"""""""""""""" """"""""""""""""""""""""" #
-INSTALLED_APPS += ['note']
+INSTALLED_APPS += ['tseijp', 'note']
 INSTALLED_APPS += ['rest_framework%s' % s for s in ['', '.authtoken']]
 REST_FRAMEWORK = {'DEFAULT_%s_CLASSES' % a: (
     'rest_framework.%s' % b,) for a, b in [
@@ -58,7 +58,7 @@ LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
 LANGUAGE_CODE = 'en-us'
-ROOT_HOSTCONF = 'tseij  p.hosts'  # host by django_hosts
+ROOT_HOSTCONF = 'tseijp.hosts'  # host by django_hosts
 ROOT_URLCONF = 'tseijp.urls'
 DEFAULT_HOST = 'www'
 TIME_ZONE = 'UTC'
@@ -73,6 +73,7 @@ MIDDLEWARE = ['django.%smiddleware.%sMiddleware' % (a, b) for a, b in [
     ['contrib.sessions.', 'Session'],
     ['contrib.messages.', 'Message'],
     ['contrib.auth.', 'Authentication']]]
+
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [osp.normpath(BASE_DIR), ],
