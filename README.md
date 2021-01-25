@@ -2,7 +2,7 @@
 <a href="https://tsei.jp/"><img width="600"
     src="https://i.imgur.com/Qk3OD3R.gif"></a>
 <a href="https://tsei.jp/hook/use-book/"><img width="200"
-    src="https://i.imgur.com/DzqbYHz.g1if"/></a>
+    src="https://i.imgur.com/DzqbYHz.gif"/></a>
 <a href="https://tsei.jp/hook/"><img width="200"
     src="https://i.imgur.com/bfZYVre.gif"></a>
 <a href="https://tsei.jp/rmol/"><img width="200"
