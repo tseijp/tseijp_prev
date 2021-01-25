@@ -2,10 +2,6 @@
 	path = mdmd
 	url = https://github.com/tseijp/mdmd
 	branch = master
-[submodule "colo"]
-	path = colo
-	url = https://github.com/tseijp/colo
-	branch = master
 [submodule "rmol"]
 	path = rmol
 	url = https://github.com/tseijp/react-mol
