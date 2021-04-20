@@ -3,7 +3,7 @@ tseijp.sock
 tseijp/settings/.gitignore
 **/build/static
 **/build
-
+**/static
 
 # created by create-react-app
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

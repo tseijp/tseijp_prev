@@ -1,0 +1,15 @@
+{
+  "name": "@tsei/monorepo",
+  "private": true,
+  "author": "tsei",
+  "version": "0.0.0",
+  "license": "MIT",
+  "workspaces": [
+    "*"
+  ],
+  "scripts": {
+    "test": "lerna exec -- npm run test",
+    "build": "lerna exec -- npm run build",
+    "publish": "lerna publish from-package"
+  }
+}
