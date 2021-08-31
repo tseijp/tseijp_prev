@@ -1,69 +1,83 @@
-#  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  #
-#  """""""""""""""""""""""""                          """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""                          """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""         TSEI .jp         """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""         ver3.0.0         """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""         20.08.06         """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""                          """""""""""""""""""""""""  #
-#  """""""""""""""""""""""""                          """""""""""""""""""""""""  #
-#  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  #
+#  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  #
+#  """""""""""""""""""""                          """""""""""""""""""""  #
+#  """""""""""""""""""""                          """""""""""""""""""""  #
+#  """""""""""""""""""""         TSEI .jp         """""""""""""""""""""  #
+#  """""""""""""""""""""         ver3.0.0         """""""""""""""""""""  #
+#  """""""""""""""""""""         20.08.06         """""""""""""""""""""  #
+#  """""""""""""""""""""                          """""""""""""""""""""  #
+#  """""""""""""""""""""                          """""""""""""""""""""  #
+#  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  #
 import os
 import sys
-import shutil
 import socket
 import subprocess as sub
-
+from django.core.management.utils import get_random_secret_key
 #  """""""""""""""""""""""""  FOR UTILS  """""""""""""""""""""""""  #
+REQUIREMENTS = "tseijp/requirements.txt"
+
+
 def printqr():
     try:
         host = socket.gethostname()
         ip = socket.gethostbyname(host)
-        print('\n\n  Open http://%s:3000'%ip)
-        sub.run(['qr','http://%s:3000'%ip], shell=True, cwd='.')
-    except:
+        print('\n\n  Open http://%s:3000' % ip)
+        sub.run(['qr', 'http://%s:3000' % ip], shell=True)
+    except ImportError:
         pass
-def main():
-#  """""""""""""""""""""""""  FOR COMMAND  """""""""""""""""""""""""  #
-    def run (*args):
-        sub.run([*args,'runserver','0.0.0.0:8000'], shell=True, cwd=".")
-        sub.run("start http://localhost:8000".split(), shell=True, cwd='.')
 
-    def test(*args):
-        proc = sub.Popen("npm run jest".split(), shell=True, cwd='./core')
-        sub.run([*args,'runserver','0.0.0.0:8000'], shell=True, cwd=".")
-        proc.close()
+
+def main():
+    def runserver(*args):
+        sub.run([*args, 'runserver', '0.0.0.0:8000'], shell=True, cwd=".")
+        sub.run("start http://localhost:8000".split(), shell=True)
 
     def start(*args):
-        proc = sub.Popen("npm start".split(), shell=True, cwd='./core')
-        printqr()
-        run(*args)
+        proc = sub.Popen("npm start".split(), shell=True, cwd='./note')
+        runserver(*args)
         proc.close()
 
     def static(*args):
-        sub.run([*args, *'collectstatic -c --noinput'.split()], shell=True)
+        opt = "-c --noinput --ignore=static/".split()  # -i static/
+        sub.run([*args, 'collectstatic', *opt], shell=True)
+
+    def secret(*args):
+        secret_key = get_random_secret_key()
+        text = 'SECRET_KEY = \'{0}\''.format(secret_key)
+        print(text)
 
     def update(*args):
-        sub.run("npm run compile".split(), shell=True, cwd='./core')
-        sub.run("npm run build".split(), shell=True, cwd='./core')
+        sub.run("git submodule foreach npm run build".split(), shell=True)
+        static(*args)
+        runserver(*args)
+
+    def direction(*args):
+        cmd = [sys.executable, "-m pip install".split(), REQUIREMENTS]
+        sub.run(cmd, shell=True)
+        runserver(*args)
+        sub.run("start http://localhost:8000".split(), shell=True)
+
+    def initialize(*args):
+        sub.run("git submodule update --init --recursive".spit(), shell=True)
+        sub.run("git submodule foreach git pull".spit(), shell=True)
+        sub.run("git submodule foreach npm i".spit(), shell=True)
+        sub.run("git submodule foreach npm run build".spit(), shell=True)
+        sub.run("start http://localhost:8000".split(), shell=True)
         static(*args)
 
-    def pullf(*args):
-        sub.run('git fetch'.split(), shell=True, cwd='.')
-    #   sub.run('git reset --hard origin/master'.split(), shell=True, cwd=".")
-        static(*args)
-    # TODO
-    # async def init(*args):
-    #     await sub.run([*args, 'startproject', 'temp'], shell=True, cwd='../')
-    #     await shutil.move('../temp/tseijp', './')
-    #     await shutil.rmtree('../temp')
-    #     await sub.run([*args, 'createsuperuser'], shell=True, cwd='../')
+    def reset(*args):
+        sub.run("git pull origin master".spit(), shell=True)
+        sub.run("git reset --hard origin/master".spit(), shell=True)
+        sub.run("git submodule git pull origin master".spit(), shell=True)
+        sub.run("git submodule git reset --hard origin/master".spit(), shell=True)
+        sub.run("sudo systemctl restart gunicorn.service".split(), shell=True)
+
 #  """""""""""""""""""""""""  FOR DJANGO  """""""""""""""""""""""""  #
     try:
         for key, fn in locals().items():
             if sys.argv[-1] == key:
                 return fn(sys.executable, sys.argv[0])
     except ImportError as exc:
-        raise Error(
+        raise ImportError(
             "Unexpected error (;_;)"
             "Check your custom command."
         ) from exc
@@ -81,5 +95,6 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
 if __name__ == '__main__':
-  main()
+    main()

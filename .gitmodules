@@ -1,0 +1,24 @@
+[submodule "mdmd"]
+	path = mdmd
+	url = https://github.com/tseijp/mdmd
+	branch = master
+[submodule "rmol"]
+	path = rmol
+	url = https://github.com/tseijp/react-mol
+	branch = master
+[submodule "core"]
+	path = core
+	url = https://github.com/tseijp/core
+	branch = master
+[submodule "grid"]
+	path = grid
+	url = https://github.com/tseijp/use-grid
+	branch = master
+[submodule "book"]
+	path = book
+	url = https://github.com/tseijp/use-book
+	branch = master
+[submodule "note"]
+	path = note
+	url = https://github.com/tseijp/note
+	branch = master
