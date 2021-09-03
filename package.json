@@ -1,15 +1,18 @@
 {
-  "name": "@tsei/monorepo",
-  "private": true,
-  "author": "tsei",
-  "version": "0.0.0",
-  "license": "MIT",
-  "workspaces": [
-    "*"
-  ],
-  "scripts": {
-    "test": "lerna exec -- npm run test",
-    "build": "lerna exec -- npm run build",
-    "publish": "lerna publish from-package"
-  }
+    "name": "@tsei/root",
+    "author": "tsei",
+    "license": "MIT",
+    "private": true,
+    "description": "@tsei/root",
+    "repository": "tseijp/tseijp",
+    "homepage": "tsei.jp",
+    "workspaces": ["**/*"],
+    "maintainers": ["tsei (https://github.com/tseijp)"],
+    "scripts": {
+        "deploy": "yarn @tsei/deploy",
+        "submodule": "yarn @submodule"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    }
 }

@@ -1,24 +1,52 @@
-[submodule "mdmd"]
-	path = mdmd
-	url = https://github.com/tseijp/mdmd
+[submodule "parsed-path"]
+	path = parsed-path
+	url = https://github.com/tseijp/parsed-path
 	branch = master
-[submodule "rmol"]
-	path = rmol
+[submodule "react-mixing"]
+	path = react-mixing
+	url = https://github.com/tseijp/react-mixing
+	branch = master
+[submodule "react-mol"]
+	path = react-mol
 	url = https://github.com/tseijp/react-mol
 	branch = master
-[submodule "core"]
-	path = core
-	url = https://github.com/tseijp/core
-	branch = master
-[submodule "grid"]
-	path = grid
-	url = https://github.com/tseijp/use-grid
-	branch = master
-[submodule "book"]
-	path = book
+[submodule "use-book"]
+	path = use-book
 	url = https://github.com/tseijp/use-book
 	branch = master
-[submodule "note"]
-	path = note
+[submodule "use-grid"]
+	path = use-grid
+	url = https://github.com/tseijp/use-grid
+	branch = master
+[submodule "use-midi"]
+	path = use-midi
+	url = https://github.com/tseijp/use-midi
+	branch = master
+[submodule "packages/core"]
+	path = packages/core
+	url = https://github.com/tseijp/core
+	branch = master
+[submodule "packages/mdmd"]
+	path = packages/mdmd
+	url = https://github.com/tseijp/mdmd
+	branch = master
+[submodule "packages/neui"]
+	path = packages/neui
+	url = https://github.com/tseijp/neui
+	branch = master
+[submodule "examples/colo"]
+	path = examples/colo
+	url = https://github.com/tseijp/colo
+	branch = master
+[submodule "examples/note"]
+	path = examples/note
 	url = https://github.com/tseijp/note
+	branch = master
+[submodule "examples/tsun"]
+	path = examples/tsun
+	url = https://github.com/tseijp/tsun
+	branch = master
+[submodule "examples/onem"]
+	path = examples/onem
+	url = https://github.com/tseijp/onem
 	branch = master

@@ -1,0 +1,34 @@
+{
+    "name": "@tsei/submodule",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "command utils for git",
+    "author": "tseijp",
+    "license": "MIT",
+    "keywords": [
+        "command",
+        "git",
+        "github",
+        "submodule"
+    ],
+    "homepage": "https://github.com/tseijp/tseijp#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tseijp/tseijp.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tseijp/tseijp/issues"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "chalk": "*",
+        "fs": "*",
+        "zx": "*"
+    },
+    "devDependencies": {
+        "parsed-path": "^0.1.15",
+        "react-mixing": "^0.1.0"
+    }
+}
