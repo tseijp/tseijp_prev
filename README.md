@@ -1,13 +1,30 @@
+
 <p align="center">
-<a href="https://tsei.jp/"><img width="600"
-    src="https://i.imgur.com/Qk3OD3R.gif"></a>
-<br/>
-<a href="https://tsei.jp/hook/use-book/"><img width="200"
-    src="https://i.imgur.com/DzqbYHz.gif"/></a>
-<a href="https://tsei.jp/hook/"><img width="200"
-    src="https://i.imgur.com/bfZYVre.gif"></a>
-<a href="https://tsei.jp/rmol/"><img width="200"
-    src="https://raw.githubusercontent.com/tseijp/react-mol/master/public/rmol.mp4.gif"></a>
-<a href="https://tsei.jp/mdmd/"><img width="200"
-    src="https://res.cloudinary.com/dpimrj9cp/image/upload/c_scale,w_1000/v1588494236/MDMD.png"></a>
+<!--img alt="🤏" width="100" src="https://i.imgur.com/"/>
+<img alt="👋" width="100" src="https://i.imgur.com/"/-->
+<img alt="🖖" width="100" src="https://i.imgur.com/VtQdK8z.gif/"/>
+<img alt="👺" width="100" src="https://i.imgur.com/lQQwQqx.gif"/>
+<img alt="✨" width="100" src="https://i.imgur.com/Qk3OD3R.gif"/>
+<img alt="📚" width="100" src="https://i.imgur.com/DzqbYHz.gif"/>
+<img alt="🌌" width="100" src="https://i.imgur.com/bfZYVre.gif"/>
+<img alt="♍" width="100" src="https://i.imgur.com/icOp6mk.png"/>
+<img alt="🍡" width="100" src="https://i.imgur.com/51MDyYo.gif"/>
+<img alt="🍡" width="100" src="https://i.imgur.com/2Ov68fn.gif"/>
+<img alt="🍡" width="100" src="https://i.imgur.com/soxnTL7.gif"/>
 </p>
+
+
+<h6 align="center">tech i use</h6>
+<h6 align="center">
+<img width="48px" height="48px" align="center" src="https://api.iconify.design/logos:react.svg"/>
+<img width="48px" height="48px" align="center" src="https://api.iconify.design/logos:typescript-icon.svg"/>
+<img width="48px" height="48px" align="center" src="https://api.iconify.design/logos:python.svg"/>
+<img width="48px" height="48px" align="center" src="https://api.iconify.design/logos:django-icon.svg"/>
+</h6>
+
+<h6 align="center">data</h6>
+<h6 align="center">
+🗼 tokyo<br/>
+📡 uec 18<br/>
+📝 age 22<br/>
+</h6>
