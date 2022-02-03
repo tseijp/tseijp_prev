@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://tsei.jp/">
-    <img width="200" src="https://res.cloudinary.com/dpimrj9cp/image/upload/v1555328364/IMG_0550.jpg">
-</a></p>
-=======
->>>>>>> master
 <p align="center">
 <a href="https://tsei.jp/"><img width="600"
     src="https://i.imgur.com/Qk3OD3R.gif"></a>
